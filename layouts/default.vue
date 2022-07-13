@@ -8,6 +8,7 @@
       app
     >
       <v-list class="temp">
+        
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -16,7 +17,8 @@
           exact
         >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+        
+            <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
@@ -29,11 +31,13 @@
       fixed
       app
     >
+    <span id="temp_menu">MENU</span>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
       >
+      
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
       <v-btn
@@ -48,11 +52,13 @@
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-text="title" id="temp-title"/>
       <v-spacer />
+       <span>username</span>
+      
       <v-btn
         icon
-        @click.stop="rightDrawer = !rightDrawer"
+        @click="rightDrawer = !rightDrawer"
       >
         <v-icon>mdi-menu</v-icon>
       </v-btn>
@@ -68,14 +74,21 @@
       temporary
       fixed
     >
+  
       <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+        <v-list-item 
+          v-for="(item, v) in itemsuser"
+          :key="v"
+          :to="itemsuser.to"
+          router
+          exact>
+        <v-list-item-action>
+        
+            <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -83,7 +96,7 @@
       :absolute="!fixed"
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; Groupomania dev scud</span>
     </v-footer>
   </v-app>
 </template>
@@ -96,6 +109,24 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      itemsuser:[
+        {
+      icon: 'mdi-chart-bubble',
+     title: 'mes publications',
+      } , 
+      {
+      icon: 'mdi-chart-bubble',
+     title: 'mes likes',
+      } ,  
+      {
+      icon: 'mdi-chart-bubble',
+     title: 'mon profil',
+      } , 
+      {
+      icon: 'mdi-chart-bubble',
+     title: 'se deconnecter',
+      } , 
+      ],
       items: [
         {
           icon: 'mdi-apps',
@@ -111,7 +142,8 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Groupomania'
+      title: 'Groupomania',
+    
     }
   }
 }
