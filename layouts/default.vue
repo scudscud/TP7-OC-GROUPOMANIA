@@ -122,12 +122,12 @@ export default {
       ],
       items: [
         {
-          icon: 'mdi-apps',
+          icon: ' mdi-chat',
           title: 'le Groupo-Chat',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-chat-plus',
           title: 'le Grou-Post-mania',
           to: '/post'
         }
