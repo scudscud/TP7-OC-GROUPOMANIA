@@ -31,7 +31,7 @@
       fixed
       app
     >
-    <span id="temp_menu">MENU</span>
+    <v-btn id="temp_menu"  @click.stop="drawer = !drawer">MENU</v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
         icon
@@ -40,21 +40,22 @@
       
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-btn
+      <!-- <v-btn
         icon
         @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
+      > -->
+        <!-- <v-icon>mdi-application</v-icon>
       </v-btn>
       <v-btn
         icon
         @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" id="temp-title"/>
+      > -->
+        <!-- <v-icon>mdi-minus</v-icon> -->
+      <!-- </v-btn> -->
+        <v-spacer />
+      <v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
-       <span>username</span>
+    <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
       
       <v-btn
         icon
@@ -130,13 +131,13 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Groupom-Accueil',
+          title: 'le Groupo-Chat',
           to: '/'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'le Groupoma-Chat',
-          to: '/inspire'
+          title: 'le Grou-Post',
+          to: '/post'
         }
       ],
       miniVariant: false,
@@ -153,13 +154,33 @@ export default {
 .v-toolbar__content { 
   background-color: $primary ;
 
-
-
+}
+#temp-user{
+background-color:$tertiary ;
+height:35px;
+width: auto;
+border: solid $secondary;
 }
 
+#temp_menu{
+background-color:$tertiary ;
+height:35px;
+width: auto;
+border: solid $secondary;
+}
+#temp-title{
 
+  font-family: Lato, sans-serif;
+  font-size: 35px;
+  letter-spacing: 2px;
+animation:textAnimated 30s ease infinite reverse;
+@keyframes textAnimated {
+	0% {background:linear-gradient(70deg, $primary,$tertiary, $secondary); background-position:-12em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+	50% {background:linear-gradient(85deg, $primary,$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+	100% {background:linear-gradient(70deg, $primary,$tertiary, $secondary); background-position:-12em; background-clip:text; -webkit-background-clip:text; color:transparent;}
+}
 
-
+}
 
 
 

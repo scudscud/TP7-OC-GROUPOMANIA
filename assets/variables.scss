@@ -4,3 +4,18 @@
 $primary :#FD2D01;
 $secondary : #FFD7D7;
 $tertiary : #4E5166;
+
+$decoration-temp:
+background-color currentColor
+border-radius 50%
+content ""
+display inline-block
+height 100%
+left 0
+opacity 0
+pointer-events none
+position absolute
+top 0
+transform scale(1.3)
+width 100%
+transition opacity 0.2s cubic-bezier(0.4, 0, 0.6, 1);
