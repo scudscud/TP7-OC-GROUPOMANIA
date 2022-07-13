@@ -99,11 +99,7 @@ export default {
       drawer: false,
       fixed: false,
       itemsuser:[
-        {
-      icon: 'mdi-lan-disconnect',
-      title: 'se deconnecter',
-      to: '/'
-      } , 
+      
         {
       icon: 'mdi-chart-bubble',
      title: 'mes publications',
@@ -130,12 +126,17 @@ export default {
           icon: 'mdi-chat-plus',
           title: 'le Grou-Post-mania',
           to: '/post'
-        }
+        },
+          {
+      icon: 'mdi-lan-disconnect',
+      title: 'se deconnecter',
+      to: '/'
+      } , 
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Groupomania',
+      title: 'Groupomania the social network',
     
     }
   }
