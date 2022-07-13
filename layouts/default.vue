@@ -40,18 +40,6 @@
       
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <!-- <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      > -->
-        <!-- <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      > -->
-        <!-- <v-icon>mdi-minus</v-icon> -->
-      <!-- </v-btn> -->
         <v-spacer />
       <v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
@@ -80,7 +68,7 @@
         <v-list-item 
           v-for="(item, v) in itemsuser"
           :key="v"
-          :to="itemsuser.to"
+          :to="item.to"
           router
           exact>
         <v-list-item-action>
@@ -97,7 +85,7 @@
       :absolute="!fixed"
       app
     >
-      <span>&copy; Groupomania dev scud</span>
+      <span>&copy; Groupomania le reseau dev by scud</span>
     </v-footer>
   </v-app>
 </template>
@@ -113,19 +101,23 @@ export default {
       itemsuser:[
         {
       icon: 'mdi-chart-bubble',
+      title: 'se deconnecter',
+      to: '/'
+      } , 
+        {
+      icon: 'mdi-chart-bubble',
      title: 'mes publications',
+     to: '/'
       } , 
       {
       icon: 'mdi-chart-bubble',
      title: 'mes likes',
+     to: '/'
       } ,  
       {
       icon: 'mdi-chart-bubble',
      title: 'mon profil',
-      } , 
-      {
-      icon: 'mdi-chart-bubble',
-     title: 'se deconnecter',
+     to: '/'
       } , 
       ],
       items: [
@@ -173,14 +165,14 @@ border: solid $secondary;
   font-family: Lato, sans-serif;
   font-size: 35px;
   letter-spacing: 2px;
-animation:textAnimated 30s ease infinite reverse;
+animation:textAnimated 30s linear infinite reverse;
 @keyframes textAnimated {
-	0% {background:linear-gradient(70deg, $primary,$tertiary, $secondary); background-position:-12em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
-	50% {background:linear-gradient(85deg, $primary,$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
-	100% {background:linear-gradient(70deg, $primary,$tertiary, $secondary); background-position:-12em; background-clip:text; -webkit-background-clip:text; color:transparent;}
-}
+	0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-12em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+	50% {background:linear-gradient(85deg, darken($primary,20%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+	100% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-12em; background-clip:text; -webkit-background-clip:text; color:transparent;}
+};
 
-}
+};
 
 
 
