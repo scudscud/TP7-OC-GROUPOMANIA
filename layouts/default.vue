@@ -8,7 +8,7 @@
       app
     >
       <v-list class="temp">
-        
+         
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -26,7 +26,7 @@
           
           </v-list-item-content>
         </v-list-item>
-        <a href="../components/popupdisconnect.vue"><button class="btn-disco" ><v-icon class="logo-disco">mdi-lan-disconnect</v-icon ><p class="text-disco">Deconnexion</p></button></a>
+      
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -40,18 +40,19 @@
         icon
         @click.stop="miniVariant = !miniVariant"
       >
-      
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+    
       </v-btn>
         <v-spacer />
       <img class="logo-white" src="../logo/logo.png"/><v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
     <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
-      
+    
       <v-btn
         icon
         @click="rightDrawer = !rightDrawer"
       >
+      
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
@@ -59,8 +60,9 @@
       <v-container>
        
         <Nuxt />
-       
+  
       </v-container>
+            
     </v-main>
     <v-navigation-drawer
       v-model="rightDrawer"
@@ -68,8 +70,9 @@
       temporary
       fixed
     >
-  
+    
       <v-list>
+       
         <v-list-item 
           v-for="(item, v) in itemsuser"
           :key="v"
@@ -80,7 +83,9 @@
         
             <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
+            
           <v-list-item-content>
+          
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
@@ -120,6 +125,12 @@ export default {
      title: 'mon profil',
      to: '/'
       } , 
+           {
+      icon: ' mdi-logout ',
+      title: 'Deconnexion',
+      to: '/disconnect'
+      
+      } , 
       ],
       items: [
         
@@ -135,17 +146,12 @@ export default {
           title: 'le Grou-Post-mania',
           to: '/post'
         },
-          {
-          icon: ' mdi-chat',
-          title: 'Connexion',
-          to: '/'
-        },
-          {
-      icon: 'mdi-lan-disconnect',
-      title: 'Deconnexion',
-      to: '/disconnect'
-      
-      } , 
+        //   {
+        //   icon: ' mdi-chat',
+        //   title: 'Connexion',
+        //   to: '/'
+        // },
+     
       ],
       miniVariant: false,
       right: true,
@@ -181,9 +187,9 @@ font-size: 35px;
 letter-spacing: 2px;
 animation:textAnimated 30s linear infinite reverse;
 @keyframes textAnimated {
-0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-20em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-15em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
 50% {background:linear-gradient(85deg, darken($primary,20%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
-100% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-12em; background-clip:text; -webkit-background-clip:text; color:transparent;}
+100% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-15em; background-clip:text; -webkit-background-clip:text; color:transparent;}
 };
 };
 
@@ -203,14 +209,20 @@ width: 30px;
   display: flex;
   align-items: center;
  justify-content: center;
-  padding-right: 10%;
+  padding-left:1%;
+  padding-top: 2%;
 }
+// .logo-disco::before{
+//   display: flex;
+//   align-items: center;
+//  justify-content: center;
+//   padding-left: 20%;
+// }
 .text-disco{
   display: flex;
 align-items: center;
 margin-top: 16px;
-margin-left: 9px;
-
+margin-left: 30px;
 
 
 
