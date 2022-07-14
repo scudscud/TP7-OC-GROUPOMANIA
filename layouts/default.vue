@@ -21,9 +21,12 @@
             <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
+
             <v-list-item-title v-text="item.title" />
+          
           </v-list-item-content>
         </v-list-item>
+        <a href="../components/popupdisconnect.vue"><button class="btn-disco" ><v-icon class="logo-disco">mdi-lan-disconnect</v-icon ><p class="text-disco">Deconnexion</p></button></a>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -54,7 +57,9 @@
     </v-app-bar>
     <v-main>
       <v-container>
+       
         <Nuxt />
+       
       </v-container>
     </v-main>
     <v-navigation-drawer
@@ -117,10 +122,13 @@ export default {
       } , 
       ],
       items: [
+        
+        
         {
           icon: ' mdi-chat',
           title: 'le Groupo-Chat',
-          to: '/'
+          to: '/chat'
+          
         },
         {
           icon: 'mdi-chat-plus',
@@ -128,9 +136,15 @@ export default {
           to: '/post'
         },
           {
+          icon: ' mdi-chat',
+          title: 'Connexion',
+          to: '/'
+        },
+          {
       icon: 'mdi-lan-disconnect',
-      title: 'se deconnecter',
-      to: '/'
+      title: 'Deconnexion',
+      to: '/disconnect'
+      
       } , 
       ],
       miniVariant: false,
@@ -167,7 +181,7 @@ font-size: 35px;
 letter-spacing: 2px;
 animation:textAnimated 30s linear infinite reverse;
 @keyframes textAnimated {
-0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-12em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-20em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
 50% {background:linear-gradient(85deg, darken($primary,20%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
 100% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-12em; background-clip:text; -webkit-background-clip:text; color:transparent;}
 };
@@ -178,6 +192,31 @@ margin-right: 1%;
 height: 30px;
 width: 30px;
 }
+.btn-disco{
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 48px;
+  
+}
+.logo-disco{
+  display: flex;
+  align-items: center;
+ justify-content: center;
+  padding-right: 10%;
+}
+.text-disco{
+  display: flex;
+align-items: center;
+margin-top: 16px;
+margin-left: 9px;
 
 
+
+
+
+
+
+
+}
 </style>
