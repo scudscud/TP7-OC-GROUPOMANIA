@@ -1,8 +1,8 @@
 <template>
   <v-col justify="center" align="center">
-  
-      <v-card class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click="toggleMenu" to="/sign-up" >inscription</nuxt-link></h2></v-card>
-      <v-card >
+  <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
+      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click="toggleMenu" to="/sign-up" >inscription</nuxt-link></h2></v-card>
+      <v-card id="body-index" >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
          <div class="form-popup" id="popup-Form">
@@ -12,7 +12,7 @@
     <h2>Votre Groupo-Mail</h2>
     </label>
       <v-spacer />
-    <input class="form-input" type="text" placeholder="Votre Email" name="email" required />
+    <input class="form-input" type="text" placeholder="Votre Email" value="@groupomania" name="email" required />
         <v-spacer />
     <label for="psw">
       <h2>Votre mot de passe</h2>
@@ -26,7 +26,7 @@
         </v-card-text>
         </v-col>
       </v-card>
-
+ 
   </v-col>
 </template>
 
@@ -36,12 +36,19 @@ export default {
 }
 </script>
 <style lang="scss">
-.logo{
+
+#header-index{
 white-space: nowrap;
 overflow: hidden;
 text-overflow:ellipsis;
+background:$tertiary;
+};
 
-}
+#body-index{
+background:$tertiary;
+
+};
+
 .btn-login{
 display: flex;
 justify-content: center;
@@ -55,12 +62,12 @@ cursor: pointer;
 white-space: nowrap;
 overflow: hidden;
 text-overflow:ellipsis;
-}
+};
 
 .btn-login:hover{
 background-color: $secondary;
 color:$tertiary;
-}
+};
 
 a.btn-sign{
 display: flex;
@@ -77,12 +84,12 @@ color:white;
 // overflow: hidden;
 // text-overflow: ellipsis;
 cursor: pointer;
-}
+};
 
 .btn-sign:hover{
 background-color: $secondary;
 color:$tertiary;
-}
+};
 // h1{
 // display: flex;
 // width: 100%;
@@ -108,26 +115,27 @@ color:$tertiary;
 h2{
 padding-bottom: 1rem;
 padding-top: 1rem;
-}
+};
 
 .form-input{
  
   border: solid 2px $secondary;
  font-size:  1.5em;
  color: $secondary;
-}
+};
 
 
 input{
 width: 50%;
 height: 2.5rem;
+};
 
-}
 button{
   padding-right: 1rem;
   padding-left: 1rem;
   border-radius: 30%;
-}
+};
+
 // .btn{
 // border: solid 2px $secondary;
 // margin-top: 20px
@@ -139,13 +147,11 @@ button{
 
 .h2-form{
 padding: 5px;
+};
 
-
-
-
+.span-instruction{
+  color:$primary;
 }
-
-
 
 
 </style>

@@ -141,22 +141,20 @@ export default {
         
         
         {
-          icon: ' mdi-chat',
-          title: 'le Groupo-Chat',
+          icon: ' mdi-newspaper-variant-multiple-outline',
+          title: 'le Groupo-book',
           to: '/chat'
-          
         },
         {
-          icon: 'mdi-chat-plus',
-          title: 'le Grou-Post-mania',
+          icon: ' mdi-chat',
+          title: 'le Groupo-chat',
+          to: '/chat'
+        },
+        {
+          icon: 'mdi-newspaper-plus ',
+          title: 'creer votre post',
           to: '/post'
         },
-        //   {
-        //   icon: ' mdi-chat',
-        //   title: 'Connexion',
-        //   to: '/'
-        // },
-     
       ],
       miniVariant: false,
       right: true,

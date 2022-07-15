@@ -5,7 +5,7 @@
       <v-card >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
-         <div class="form-popup" id="popup-Form">
+         <!-- <div class="form-popup" id="popup-Form"> -->
   <form  class="form-container">
      <label for="avatar">
     <h2>Votre photo / avatar</h2>
@@ -28,12 +28,14 @@
     <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button href="./index.vue" class="btn cancel" > <h2 class="h2-form">Annuler</h2></button>
   </form>
   <button id="form-span2"><nuxt-link id="link-sign" @click="toggleMenu" to="/">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></nuxt-link></button>
-</div>
+<!-- </div> -->
         </v-card-text>
         </v-col>
       </v-card>
     </v-col>
+   
   </v-col>
+
 </template>
 
 <script>
@@ -42,6 +44,12 @@ export default {
 }
 </script>
 <style lang="scss" >
+
+.form-sign{
+background: $secondary;
+}
+
+
 input{
 width: 50%;
 height: 2.5rem;
@@ -114,7 +122,7 @@ border-color: red;
 
 }
 
-.form-avatar-dl{
+img.form-avatar-dl{
 display: flex;
 width: 75px;
 height: 75px;
