@@ -134,7 +134,7 @@ export default {
            {
       icon: ' mdi-logout ',
       title: 'Deconnexion',
-      to: '/disconnect'
+      to: '/'
       } , 
       ],
       items: [

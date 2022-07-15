@@ -1,7 +1,7 @@
 <template>
   <v-col justify="center" align="center">
     <v-col cols="10" sm="16" md="60">
-      <v-card class="logo py-4 d-flex justify-center"><h1>Veuillez vous connecter</h1></v-card>
+      <v-card class="logo py-4 d-flex justify-center"><h1><v-bouton class="btn-login">connexion</v-bouton> / <v-bouton class="btn-login">vous inscrire</v-bouton> </h1></v-card>
       <v-card >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
@@ -20,16 +20,10 @@
         <v-spacer />
     <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
       <v-spacer />
-       
-    <button type="submit" class="btn"><h2>Se connecter</h2></button> /
-    <button type="submit" class="btn cancel" ><h2>Annuler</h2></button>
+    <button type="submit" class="btn"><h2>Se connecter</h2></button> / <button type="submit" class="btn cancel" ><h2>Annuler</h2></button>
   </form>
 </div>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          
-        </v-card-actions>
         </v-col>
       </v-card>
     </v-col>
@@ -47,10 +41,24 @@ padding-bottom: 1rem;
 padding-top: 1rem;
 }
 .form-input{
+ 
   border: solid 2px $secondary;
  font-size:  1.5em;
  color: $secondary;
 }
+.btn-login{
+border: solid 2px $secondary;
+padding-left: 5px;
+padding-right: 5px;
+cursor: pointer;
+}
+
+.btn-login:hover{
+background-color: $secondary;
+color:$tertiary;
+}
+
+
 input{
 width: 50%;
 height: 2.5rem;
@@ -60,8 +68,15 @@ button{
   padding-right: 1rem;
   padding-left: 1rem;
 }
-
-
+.btn{
+ 
+border: solid 2px $secondary;
+margin-top: 20px
+}
+.btn:hover{
+background-color: $secondary;
+color:$tertiary;
+}
 
 
 
