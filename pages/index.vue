@@ -47,6 +47,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 border: solid 2px $secondary;
+border-radius: 30%;
 padding-left: 5px;
 padding-right: 5px;
 text-decoration: none;
@@ -66,6 +67,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 border: solid 2px $secondary;
+border-radius: 30%;
 margin-left: 10px;
 padding-left: 5px;
 padding-right: 5px;
@@ -124,6 +126,7 @@ height: 2.5rem;
 button{
   padding-right: 1rem;
   padding-left: 1rem;
+  border-radius: 30%;
 }
 // .btn{
 // border: solid 2px $secondary;

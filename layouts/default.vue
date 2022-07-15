@@ -34,7 +34,7 @@
       fixed
       app
     >
-    <v-btn id="temp_menu"  @click.stop="drawer = !drawer">MENU</v-btn>
+    <v-btn id="temp-menu"  @click.stop="drawer = !drawer">MENU</v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
         icon
@@ -169,6 +169,9 @@ export default {
 </script>
 
 <style lang="scss">
+
+
+
 .v-toolbar__content { 
   background-color: $primary ;
 
@@ -179,15 +182,40 @@ height:35px;
 width: auto;
 border: solid $secondary;
 color: $secondary;
+border-radius: 30%;
+};
+
+#temp-user:hover{
+background-color:$secondary ;
+border: solid $tertiary;
+color: black;
+border-radius: 20%;
 }
 
-#temp_menu{
+
+
+#temp-menu{
 background-color:$tertiary ;
 height:35px;
 width: auto;
 border: solid $secondary;
 color: $secondary;
+border-radius: 30%;
+};
+
+#temp-menu:hover{
+background-color:$secondary ;
+border: solid $tertiary;
+color: black;
+border-radius: 20%;
 }
+
+
+
+
+
+
+
 #temp-title{
 font-family: Lato, sans-serif;
 font-size: 35px;
