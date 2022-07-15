@@ -116,6 +116,8 @@ border-color: red;
 
 .form-avatar-dl{
 display: flex;
+width: 75px;
+height: 75px;
 justify-content: center;
 align-items: center;
 border: solid 2px $tertiary;

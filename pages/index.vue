@@ -1,7 +1,7 @@
 <template>
   <v-col justify="center" align="center">
-    <v-col cols="10" sm="16" md="60">
-      <v-card class="logo py-4 d-flex justify-center"><h1><v-bouton class="btn-login">connexion</v-bouton> / <nuxt-link class="btn-sign" @click="toggleMenu" to="/sign-up" >inscription</nuxt-link></h1></v-card>
+  
+      <v-card class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click="toggleMenu" to="/sign-up" >inscription</nuxt-link></h2></v-card>
       <v-card >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
@@ -26,7 +26,7 @@
         </v-card-text>
         </v-col>
       </v-card>
-    </v-col>
+
   </v-col>
 </template>
 
@@ -36,15 +36,11 @@ export default {
 }
 </script>
 <style lang="scss">
-h2{
-padding-bottom: 1rem;
-padding-top: 1rem;
-}
-.form-input{
- 
-  border: solid 2px $secondary;
- font-size:  1.5em;
- color: $secondary;
+.logo{
+white-space: nowrap;
+overflow: hidden;
+text-overflow:ellipsis;
+
 }
 .btn-login{
 display: flex;
@@ -53,30 +49,70 @@ align-items: center;
 border: solid 2px $secondary;
 padding-left: 5px;
 padding-right: 5px;
-
 text-decoration: none;
 cursor: pointer;
+white-space: nowrap;
+overflow: hidden;
+text-overflow:ellipsis;
 }
 
 .btn-login:hover{
 background-color: $secondary;
 color:$tertiary;
 }
+
 a.btn-sign{
 display: flex;
 justify-content: center;
 align-items: center;
 border: solid 2px $secondary;
+margin-left: 10px;
 padding-left: 5px;
 padding-right: 5px;
-
 text-decoration: none;
 color:white;
+// white-space: nowrap;
+// overflow: hidden;
+// text-overflow: ellipsis;
 cursor: pointer;
 }
+
 .btn-sign:hover{
 background-color: $secondary;
 color:$tertiary;
+}
+// h1{
+// display: flex;
+// width: 100%;
+// height: auto;
+// flex-wrap: nowrap;
+// white-space: nowrap;
+// overflow: hidden;
+// text-overflow: ellipsis;
+
+
+// }
+
+// .logo{
+//   display: flex;
+//   width: 100%;
+//   flex-direction: row;
+//   flex-wrap:wrap;
+
+// }
+
+
+
+h2{
+padding-bottom: 1rem;
+padding-top: 1rem;
+}
+
+.form-input{
+ 
+  border: solid 2px $secondary;
+ font-size:  1.5em;
+ color: $secondary;
 }
 
 
@@ -89,15 +125,14 @@ button{
   padding-right: 1rem;
   padding-left: 1rem;
 }
-.btn{
-
-border: solid 2px $secondary;
-margin-top: 20px
-}
-.btn:hover{
-background-color: $secondary;
-color:$tertiary;
-}
+// .btn{
+// border: solid 2px $secondary;
+// margin-top: 20px
+// }
+// .btn:hover{
+// background-color: $secondary;
+// color:$tertiary;
+// }
 
 .h2-form{
 padding: 5px;
