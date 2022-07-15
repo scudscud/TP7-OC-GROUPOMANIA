@@ -1,11 +1,11 @@
 <template >
 
     
-      <v-card id="card-post" rows="2" > 
-      <img class="card-img mb-5"
+      <v-card id="card-post" cols="4"  md=""> 
+      <img class="card-img"
         src="/v.png"
         alt="Vuetify.js">
-      <v-card-text class="blockquote">
+      <v-card-text class="blockquote" >
         &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
     
         <v-card-text    class="card-autor">
