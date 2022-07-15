@@ -46,8 +46,8 @@
         <v-spacer />
       <img class="logo-white" src="../logo/logo.png"/><v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
-    <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
-    
+    <!-- <v-btn  id="temp-user"><nuxt-link @click="toggleMenu" to="/"> connexion</nuxt-link></v-btn> -->
+     <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
       <v-btn
         icon
         @click="rightDrawer = !rightDrawer"
@@ -72,7 +72,7 @@
     >
     
       <v-list>
-       
+       <v-btn  id="temp-user"><nuxt-link @click="toggleMenu" to="/"> connexion</nuxt-link></v-btn>
         <v-list-item 
           v-for="(item, v) in itemsuser"
           :key="v"
