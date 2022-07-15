@@ -15,7 +15,7 @@
         <v-card-action class="card-att">
       <v-button class="icon-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon>Like</v-button>
       <v-button class="icon-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon>Répondre </v-button>
-      <v-button class="icon-att"><v-icon class="img-att" > mdi-account-group </v-icon>Devenir ami </v-button>
+      <v-button class="icon-att" @focus=""><v-icon class="img-att" > mdi-account-group </v-icon>Devenir ami </v-button>
       </v-card-action>
 
         </v-card-text>
@@ -62,6 +62,7 @@ margin-right: 20px;
 overflow: "...";
 }
 
+
 .card-att{
 display: flex;
 width: 100%;
@@ -72,6 +73,7 @@ justify-content: space-between;
 .icon-att{
 width: 30%;
 height: auto;
+cursor: pointer;
 }
 
 .img-att{

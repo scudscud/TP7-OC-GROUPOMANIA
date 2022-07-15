@@ -18,7 +18,7 @@
         >
           <v-list-item-action>
         
-            <v-icon> {{ item.icon }}</v-icon>
+            <v-icon > {{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
 
@@ -81,7 +81,7 @@
           exact>
         <v-list-item-action>
         
-            <v-icon> {{ item.icon }}</v-icon>
+            <v-icon > {{ item.icon }}</v-icon>
           </v-list-item-action>
             
           <v-list-item-content>
@@ -230,12 +230,19 @@ width: 30px;
 align-items: center;
 margin-top: 16px;
 margin-left: 30px;
+}
+.v-navigation-drawer__content{
+  background-color: $tertiary;
 
-
-
-
-
+//   color: black;
+}
+.v-list-item__title{
+  color: $secondary;
+}
+.v-list-item__action{
+color:$secondary;
 
 
 }
+
 </style>
