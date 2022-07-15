@@ -49,6 +49,7 @@ padding-top: 1rem;
 .form-input{
   border: solid 2px $secondary;
  font-size:  1.5em;
+ color: $secondary;
 }
 input{
 width: 50%;

@@ -125,11 +125,16 @@ export default {
      title: 'mon profil',
      to: '/'
       } , 
+      
+            {
+      icon: ' mdi-account-group  ',
+      title: 'Amis',
+      to: '/'
+      } , 
            {
       icon: ' mdi-logout ',
       title: 'Deconnexion',
       to: '/disconnect'
-      
       } , 
       ],
       items: [
@@ -173,6 +178,7 @@ background-color:$tertiary ;
 height:35px;
 width: auto;
 border: solid $secondary;
+color: $secondary;
 }
 
 #temp_menu{
@@ -180,6 +186,7 @@ background-color:$tertiary ;
 height:35px;
 width: auto;
 border: solid $secondary;
+color: $secondary;
 }
 #temp-title{
 font-family: Lato, sans-serif;
@@ -187,9 +194,9 @@ font-size: 35px;
 letter-spacing: 2px;
 animation:textAnimated 30s linear infinite reverse;
 @keyframes textAnimated {
-0% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-15em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
-50% {background:linear-gradient(85deg, darken($primary,20%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
-100% {background:linear-gradient(70deg, darken($primary,20%),$tertiary, $secondary); background-position:-15em; background-clip:text; -webkit-background-clip:text; color:transparent;}
+0% {background:linear-gradient(70deg, darken($primary,10%),$tertiary, $secondary); background-position:-15em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+50% {background:linear-gradient(85deg, darken($primary,10%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+100% {background:linear-gradient(70deg, darken($primary,10%),$tertiary, $secondary); background-position:-15em; background-clip:text; -webkit-background-clip:text; color:transparent;}
 };
 };
 

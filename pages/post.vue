@@ -1,21 +1,29 @@
-<template>
-  <v-row>
-    <v-col class="text-center">
-      <img
+<template >
+
+    
+      <v-card id="card-post" rows="2" > 
+      <img class="card-img mb-5"
         src="/v.png"
-        alt="Vuetify.js"
-        class="mb-5"
-      >
-      <blockquote class="blockquote">
-        &#8220;First, solve the problem. Then, write the code.&#8221;
-        <footer>
-          <small>
-            <em>&mdash;John Johnson</em>
-          </small>
-        </footer>
-      </blockquote>
-    </v-col>
-  </v-row>
+        alt="Vuetify.js">
+      <v-card-text class="blockquote">
+        &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
+    
+        <v-card-text    class="card-autor">
+          <em>username le 'date'</em>
+        </v-card-text>
+        
+        <v-card-action class="card-att">
+      <v-button class="icon-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon>Like</v-button>
+      <v-button class="icon-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon>Répondre </v-button>
+      <v-button class="icon-att"><v-icon class="img-att" > mdi-account-group </v-icon>Devenir ami </v-button>
+      </v-card-action>
+
+        </v-card-text>
+    
+      
+      
+    </v-card>
+
 </template>
 
 <script>
@@ -23,3 +31,51 @@ export default {
   name: 'InspirePage'
 }
 </script>
+<style lang="scss">
+#card-post{
+display: flex;
+width: auto;
+max-height:auto;
+margin-top: 1%;
+margin-left: 3%;
+overflow:hidden;
+background-color: $tertiary;
+border: solid;
+border-color: $secondary;
+overflow: ellipsis; 
+}
+
+.card-autor{
+padding-top: 2%;
+}
+
+.card-img{
+max-height: 200px;
+height: auto;
+padding: 1%;
+width: 80%;
+}
+
+.blockquote{
+margin-top: 10px;
+margin-right: 20px;
+overflow: "...";
+}
+
+.card-att{
+display: flex;
+width: 100%;
+margin-top: 2%;
+justify-content: space-between;
+}
+
+.icon-att{
+width: 30%;
+height: auto;
+}
+
+.img-att{
+padding-right: 5%; 
+}
+
+</style>
