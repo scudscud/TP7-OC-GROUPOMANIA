@@ -58,26 +58,39 @@ padding: 1%;
 .blockquote{
 margin-top: 10px;
 margin-right: 20px;
-overflow: "...";
+// white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+
 }
 .card-att{
-display: flex;
-// flex-direction: row;
-flex-wrap: nowrap;
+display: flex;// flex-direction: row;
 width: 100%;
 margin-top: 2%;
-padding-right: 3%;
+padding-right: 2%;
 justify-content: space-between;
+
+
 }
 v-button.btn-att{
 display: flex;
-flex-direction: row;
-flex-wrap: nowrap;
-width: auto;
+width: 30%;
 justify-content: center;
 align-items: center;
 padding-top: 2%;
 cursor: pointer;
+
+}
+
+p.text-att{
+width: auto;
+flex-wrap: nowrap;
+justify-content: center;
+align-items: center;
+margin-bottom: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .img-att{
@@ -85,18 +98,8 @@ display: flex;
 align-items: center;
 justify-content: center;
 width:auto;
-
-padding-right: 10%; 
+padding-right: 5%; 
 }
-p.text-att{
-width: auto;
-flex-wrap: nowrap;
-justify-content: center;
-align-items: center;
-margin-bottom: 0px;
-// padding-right: 20%;
 
 
-
-}
 </style>

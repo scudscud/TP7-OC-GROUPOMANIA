@@ -11,7 +11,7 @@
     <h2>Votre photo / avatar</h2>
     </label>
      <img class="form-avatar-dl card-img mb-5" src="../static/v.png"/>
-      <input class="form-avatar" type="file" name="avatar" placeholder="votre photo/avatar" required />  
+      <input class="form-avatar" type="file" value="test" name="avatar" placeholder="votre photo/avatar" required />  
      <v-spacer />
     <label for="email">
     <h2 >Votre Groupo-Mail</h2>
@@ -101,6 +101,18 @@ padding-top: 0;
 border: solid 5px $secondary;
 padding: 0;
 };
+
+input{
+color: black;
+}
+
+.form-avatar{
+
+// background:black;
+border-color: red;
+
+
+}
 
 .form-avatar-dl{
 display: flex;
