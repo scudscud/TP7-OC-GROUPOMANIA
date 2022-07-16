@@ -44,13 +44,13 @@
     
       </v-btn>
         <v-spacer />
-      <v-toolbar-icon><img class="logo-white" src="../logo/logo.png"/></v-toolbar-icon><v-toolbar-title v-text="title" id="temp-title" />
+     <img class="logo-white" src="../logo/logo.png"/><v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
  
-     <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
+     <v-btn  @click.stop="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
       <v-btn
         icon
-        @click="rightDrawer = !rightDrawer"
+        @click.stop="rightDrawer = !rightDrawer"
       >
       
         <v-icon>mdi-menu</v-icon>
