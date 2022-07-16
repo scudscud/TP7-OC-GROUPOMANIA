@@ -1,11 +1,11 @@
 <template>
   <v-app dark >
-     <v-container>
+     <div>
       
-        <sign-in/>
+        <sign-in  id="modal-signin" v-show="show"  @close-modale="show=false"/>
 
   
-      </v-container>
+      </div>
 
     <v-navigation-drawer
       v-model="drawer"
@@ -110,11 +110,13 @@
 
 <script>
 import SignIn from '../pages/sign-in.vue'
-import SignUp from '../pages/sign-up.vue';
+// import SignUp from '../pages/sign-up.vue';
 export default {
+  components: { SignIn },
     name: "DefaultLayout",
     data() {
         return {
+            show:true,
             clipped: false,
             drawer: false,
             fixed: false,
@@ -142,7 +144,7 @@ export default {
                 {
                     icon: " mdi-logout ",
                     title: "Deconnexion",
-                    to: "/"
+                    to: '/index'
                 },
             ],
             items: [
@@ -167,9 +169,11 @@ export default {
             rightDrawer: false,
             icon: "../logo/logo.png",
             title: "Groupomania the social network",
+              
         };
     },
-    components: { SignIn , SignUp }
+  
+    
 }
 </script>
 

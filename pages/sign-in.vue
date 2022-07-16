@@ -3,7 +3,7 @@
   <v-col justify="center" align="center" >
     <v-container>  <SignUp v-show="show" @close-modal="show=false"   /></v-container>
   <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
-      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><button class="btn-sign" @click.stop="show=true">inscription</button></h2></v-card>
+      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button @click.stop="$emit('close-modale')" class="btn-login">connexion</button></h2> <h2><button class="btn-sign" @click.stop="show=true">inscription</button></h2></v-card>
       <v-card id="body-index" >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
@@ -22,7 +22,7 @@
         <v-spacer />
     <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
       <v-spacer />
-    <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button type="submit" class="btn cancel" ><h2 class="h2-form">Annuler</h2></button>
+    <button  class="btn" ><h2 class="h2-form">Se connecter</h2></button> / <button type="submit" class="btn cancel" ><h2 class="h2-form">Annuler</h2></button>
   </form>
 </div>
         </v-card-text>

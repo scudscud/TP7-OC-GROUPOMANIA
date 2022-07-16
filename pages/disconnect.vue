@@ -18,18 +18,6 @@
 
 <script type='test/javascript'>
 
-// // function disconnectpop(page) {
-// //   window.open('/disconnect');
-// // }
-
-
-// // process.disconnect()
-
-// // window.open('http://localhost:3000/popupdisconnect',"voulez-vous vraiment vous deconnecter","height=50px","width=50px")
-// export default {
-//   name: 'DisconnectPage'}
-
-
 </script>
 
 
