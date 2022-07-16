@@ -1,9 +1,9 @@
 <template>
   <v-col justify="center" align="center">
-    <v-col class="form-sign"  cols="10" sm="16" md="60">
-      <v-card class="logo py-4 d-flex justify-center"><h1><span id="form-span1">vous inscrire</span></h1></v-card>
+    <v-col  class="form-sign"  cols="10" sm="16" md="60">
+      <v-card id="logo-form" class="logo py-4 d-flex justify-center "><h1><span id="form-span1">vous inscrire</span></h1></v-card>
       <v-card >
-       <v-col cols="12" sm="12" md="12">
+       <v-col id="logo-form2"  cols="12" sm="12" md="12">
         <v-card-text>
          <!-- <div class="form-popup" id="popup-Form"> -->
   <form  class="form-container">
@@ -45,11 +45,6 @@ export default {
 </script>
 <style lang="scss" >
 
-.form-sign{
-background: $secondary;
-}
-
-
 input{
 width: 50%;
 height: 2.5rem;
@@ -64,6 +59,7 @@ h1{
 display: flex;
 width: 100%;
 justify-content: center;
+
 }
 
 h2{
@@ -82,10 +78,12 @@ color:$tertiary;
 }
 
 
-.logo{
+div.logo{
 flex-direction: row;
 flex-wrap: nowrap;
 height: 75px;
+
+
 }
 
 #form-span2{
@@ -105,22 +103,24 @@ div.v-card__text{
 padding-top: 0;
 }
 
-.form-sign{
+div.form-sign{
 border: solid 5px $secondary;
 padding: 0;
+background-color: red;
 };
 
 input{
 color: black;
 }
 
-.form-avatar{
-
-// background:black;
-border-color: red;
-
-
+#logo-form{
+background-color: $tertiary;
 }
+
+#logo-form2{
+background-color: $tertiary;
+}
+
 
 img.form-avatar-dl{
 display: flex;
