@@ -3,7 +3,7 @@
      <v-container>
       
         <sign-in/>
-   <SignUp/>
+
   
       </v-container>
 

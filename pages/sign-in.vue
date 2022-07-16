@@ -1,8 +1,9 @@
 <template>
 <div class="overlay">
   <v-col justify="center" align="center" >
+    <v-container>  <SignUp v-show="show" @close-modal="show=false"   /></v-container>
   <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
-      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click.stop="open =true" to="/sign-up" >inscription</nuxt-link></h2></v-card>
+      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><button class="btn-sign" @click.stop="show=true">inscription</button></h2></v-card>
       <v-card id="body-index" >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>
@@ -33,8 +34,15 @@
 </template>
 
 <script>
+import SignUp from './sign-up.vue'
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  components :{SignUp},
+  data() {
+    return {
+      show :false,
+    }
+  },
 }
 </script>
 <style lang="scss">
@@ -87,7 +95,7 @@ background-color: $secondary;
 color:$tertiary;
 };
 
-a.btn-sign{
+.btn-sign{
 display: flex;
 justify-content: center;
 align-items: center;

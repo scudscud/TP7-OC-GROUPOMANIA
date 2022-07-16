@@ -28,7 +28,7 @@
       <v-spacer />
     <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button href="./index.vue" class="btn cancel" > <h2 class="h2-form">Annuler</h2></button>
   </form>
-  <button id="form-span2"><nuxt-link id="link-sign" to="/">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></nuxt-link></button>
+  <button id="form-span2"><button class="btn" id="link-sign" @click="$emit('close-modal')">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></button></button>
 <!-- </div> -->
         </v-card-text>
         </v-col>
@@ -89,7 +89,6 @@ padding-top: 1rem;
 };
 
 .btn{
-
 border: solid 2px $secondary;
 margin-top: 20px
 }
@@ -104,7 +103,6 @@ flex-direction: row;
 flex-wrap: nowrap;
 height: 75px;
 
-
 }
 
 #form-span2{
@@ -115,10 +113,17 @@ padding-top: 2%;
 
 
 #link-sign{
+  display: flex;
 text-decoration: none;
 color: white;
+border: solid 2px $secondary;
+border-radius: 30%;
 };
 
+#link-sign:hover{
+background-color: $secondary;
+color:$tertiary;
+};
 
 div.v-card__text{
 padding-top: 0;
@@ -127,7 +132,7 @@ padding-top: 0;
 div.form-sign{
 border: solid 5px $secondary;
 padding: 0;
-background-color: red;
+background-color:$tertiary;
 };
 
 input{
