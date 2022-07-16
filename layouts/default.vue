@@ -170,7 +170,6 @@ export default {
 <style lang="scss">
 
 
-
 .v-toolbar__content { 
   background-color: $primary ;
 

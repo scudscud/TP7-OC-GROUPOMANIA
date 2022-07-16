@@ -1,4 +1,5 @@
 <template>
+<div class="overlay">
   <v-col justify="center" align="center">
     <v-col  class="form-sign"  cols="10" sm="16" md="60">
       <v-card id="logo-form" class="logo py-4 d-flex justify-center "><h1><span id="form-span1">vous inscrire</span></h1></v-card>
@@ -35,7 +36,7 @@
     </v-col>
    
   </v-col>
-
+</div>
 </template>
 
 <script>
@@ -43,7 +44,26 @@ export default {
   name: 'IndexPage'
 }
 </script>
+
+
 <style lang="scss" >
+
+ .overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+position: fixed;
+visibility: visible;
+opacity: 1;
+background-color: rgba(0, 0 ,0, 0.7);
+transition: opacity 0.4s;
+z-index:20;
+ } 
 
 input{
 width: 50%;

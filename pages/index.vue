@@ -1,5 +1,6 @@
 <template>
-  <v-col justify="center" align="center">
+<div class="overlay">
+  <v-col justify="center" align="center" >
   <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
       <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click.stop="open =true" to="/sign-up" >inscription</nuxt-link></h2></v-card>
       <v-card id="body-index" >
@@ -28,6 +29,7 @@
       </v-card>
  
   </v-col>
+  </div>
 </template>
 
 <script>
@@ -36,6 +38,22 @@ export default {
 }
 </script>
 <style lang="scss">
+ .overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+position: fixed;
+visibility: visible;
+opacity: 1;
+background-color: rgba(0, 0 ,0, 0.7);
+transition: opacity 0.4s;
+z-index:10;
+ } 
 
 #header-index{
 white-space: nowrap;
