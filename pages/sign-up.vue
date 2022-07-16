@@ -148,7 +148,7 @@ width: 75px;
 height: 75px;
 justify-content: center;
 align-items: center;
-border: solid 2px $tertiary;
+border: solid 2px $secondary;
 border-radius: 50%;
 }
 
