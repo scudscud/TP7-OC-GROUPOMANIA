@@ -106,7 +106,7 @@ export default {
   data () {
     return {
       clipped: false,
-      drawer: false,
+      drawer:false,
       fixed: false,
       itemsuser:[
       
