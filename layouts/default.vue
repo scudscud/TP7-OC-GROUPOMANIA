@@ -44,7 +44,7 @@
     
       </v-btn>
         <v-spacer />
-      <img class="logo-white" src="../logo/logo.png"/><v-toolbar-title v-text="title" id="temp-title" />
+      <v-toolbar-icon><img class="logo-white" src="../logo/logo.png"/></v-toolbar-icon><v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
     <!-- <v-btn  id="temp-user"><nuxt-link @click="toggleMenu" to="/"> connexion</nuxt-link></v-btn> -->
      <v-btn  @click="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
@@ -72,7 +72,7 @@
     >
     
       <v-list>
-       <v-btn  id="temp-user"><nuxt-link @click="toggleMenu" to="/"> connexion</nuxt-link></v-btn>
+      
         <v-list-item 
           v-for="(item, v) in itemsuser"
           :key="v"
@@ -159,6 +159,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
+       icon : '../logo/logo.png',
       title: 'Groupomania the social network',
     
     }
@@ -209,27 +210,24 @@ border-radius: 20%;
 }
 
 
-
-
-
-
-
 #temp-title{
 font-family: Lato, sans-serif;
 font-size: 35px;
 letter-spacing: 2px;
 animation:textAnimated 30s linear infinite reverse;
 @keyframes textAnimated {
-0% {background:linear-gradient(70deg, darken($primary,10%),$tertiary, $secondary); background-position:-15em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
+0% {background:linear-gradient(70deg, darken($primary,10%),$tertiary, $secondary); background-position:-16em 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
 50% {background:linear-gradient(85deg, darken($primary,10%),$tertiary, $secondary); background-position:0 0; background-clip:text; -webkit-background-clip:text; color:transparent;}
 100% {background:linear-gradient(70deg, darken($primary,10%),$tertiary, $secondary); background-position:-15em; background-clip:text; -webkit-background-clip:text; color:transparent;}
 };
 };
 
-.logo-white{
-margin-right: 1%;
+img.logo-white{
+  display: flex;
+margin-right: 10px;
 height: 30px;
 width: 30px;
+
 }
 .btn-disco{
   display: flex;
