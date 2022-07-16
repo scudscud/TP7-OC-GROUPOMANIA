@@ -1,10 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
 
-export default {
+export default({
+ 
+// export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - test',
-    title: 'test',
+    title: 'Groupomania',
     htmlAttrs: {
       lang: 'fr'
     },
@@ -15,7 +17,10 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto&display=swap'},
+
     ]
   },
 
@@ -38,6 +43,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -62,4 +68,5 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
-}
+
+})

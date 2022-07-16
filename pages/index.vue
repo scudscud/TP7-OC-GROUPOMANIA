@@ -1,7 +1,7 @@
 <template>
   <v-col justify="center" align="center">
   <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
-      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click="toggleMenu" to="/sign-up" >inscription</nuxt-link></h2></v-card>
+      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click="" to="/sign-up" >inscription</nuxt-link></h2></v-card>
       <v-card id="body-index" >
        <v-col cols="12" sm="12" md="12">
         <v-card-text>

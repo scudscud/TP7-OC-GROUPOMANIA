@@ -27,7 +27,7 @@
       <v-spacer />
     <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button href="./index.vue" class="btn cancel" > <h2 class="h2-form">Annuler</h2></button>
   </form>
-  <button id="form-span2"><nuxt-link id="link-sign" @click="toggleMenu" to="/">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></nuxt-link></button>
+  <button id="form-span2"><nuxt-link id="link-sign" to="/">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></nuxt-link></button>
 <!-- </div> -->
         </v-card-text>
         </v-col>
