@@ -40,6 +40,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'IndexPage'
 }
@@ -62,7 +63,7 @@ visibility: visible;
 opacity: 1;
 background-color: rgba(0, 0 ,0, 0.7);
 transition: opacity 0.4s;
-z-index:20;
+z-index:100;
  } 
 
 input{

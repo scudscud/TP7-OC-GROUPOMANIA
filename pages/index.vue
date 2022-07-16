@@ -1,175 +1,102 @@
 <template>
-<div class="overlay">
-  <v-col justify="center" align="center" >
-  <v-card class="instruction"><p class="span-instruction">  !! vous devez vous inscrire avec votre mail Groupomania, pour vous connecter la premiere fois >> </p></v-card>
-      <v-card  id="header-index" class="logo py-4 d-flex justify-center align-center"><h2><button class="btn-login">connexion</button></h2> <h2><nuxt-link class="btn-sign" @click.stop="open =true" to="/sign-up" >inscription</nuxt-link></h2></v-card>
-      <v-card id="body-index" >
-       <v-col cols="12" sm="12" md="12">
-        <v-card-text>
-         <div class="form-popup" id="popup-Form">
-  <form  class="form-container">
-    
-    <label for="email">
-    <h2>Votre Groupo-Mail</h2>
-    </label>
-      <v-spacer />
-    <input class="form-input" type="text" placeholder="Votre Email" value="@groupomania" name="email" required />
-        <v-spacer />
-    <label for="psw">
-      <h2>Votre mot de passe</h2>
-    </label>
-        <v-spacer />
-    <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
-      <v-spacer />
-    <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button type="submit" class="btn cancel" ><h2 class="h2-form">Annuler</h2></button>
-  </form>
-</div>
+
+ <v-card id="card-post" >
+      <v-card-text class="card-autor">
+          <em>username le 'date'</em>
         </v-card-text>
-        </v-col>
-      </v-card>
- 
-  </v-col>
-  </div>
+      <img class="card-img mb-5"
+        src="/v.png"
+        alt="Vuetify.js">
+      <v-card-text class="blockquote" >
+        &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
+        <v-card-action  class="card-att">
+      <v-button  class="btn-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-button>
+      <v-button class="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-button>
+      <v-button   class="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-button>
+      </v-card-action>
+        </v-card-text>
+    </v-card>
+
 </template>
-
 <script>
-export default {
-  name: 'IndexPage'
-}
 </script>
+
 <style lang="scss">
- .overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-position: fixed;
-visibility: visible;
-opacity: 1;
-background-color: rgba(0, 0 ,0, 0.7);
-transition: opacity 0.4s;
-z-index:10;
- } 
-
-#header-index{
-white-space: nowrap;
-overflow: hidden;
-text-overflow:ellipsis;
-background:$tertiary;
-};
-
-#body-index{
-background:$tertiary;
-
-};
-
-.btn-login{
-display: flex;
-justify-content: center;
-align-items: center;
-border: solid 2px $secondary;
-border-radius: 30%;
-padding-left: 5px;
-padding-right: 5px;
-text-decoration: none;
-cursor: pointer;
-white-space: nowrap;
-overflow: hidden;
-text-overflow:ellipsis;
-};
-
-.btn-login:hover{
-background-color: $secondary;
-color:$tertiary;
-};
-
-a.btn-sign{
-display: flex;
-justify-content: center;
-align-items: center;
-border: solid 2px $secondary;
-border-radius: 30%;
-margin-left: 10px;
-padding-left: 5px;
-padding-right: 5px;
-text-decoration: none;
-color:white;
-// white-space: nowrap;
-// overflow: hidden;
-// text-overflow: ellipsis;
-cursor: pointer;
-};
-
-.btn-sign:hover{
-background-color: $secondary;
-color:$tertiary;
-};
-// h1{
+#card-post{
 // display: flex;
-// width: 100%;
-// height: auto;
-// flex-wrap: nowrap;
-// white-space: nowrap;
-// overflow: hidden;
-// text-overflow: ellipsis;
-
-
-// }
-
-// .logo{
-//   display: flex;
-//   width: 100%;
-//   flex-direction: row;
-//   flex-wrap:wrap;
-
-// }
-
-
-
-h2{
-padding-bottom: 1rem;
-padding-top: 1rem;
-};
-
-.form-input{
- 
-  border: solid 2px $secondary;
- font-size:  1.5em;
- color: $secondary;
-};
-
-
-input{
-width: 50%;
-height: 2.5rem;
-};
-
-button{
-  padding-right: 1rem;
-  padding-left: 1rem;
-  border-radius: 30%;
-};
-
-// .btn{
-// border: solid 2px $secondary;
-// margin-top: 20px
-// }
-// .btn:hover{
-// background-color: $secondary;
-// color:$tertiary;
-// }
-
-.h2-form{
-padding: 5px;
-};
-
-.span-instruction{
-  color:$primary;
+// flex-direction: row;
+// width: auto;
+// max-height:auto;
+// margin-top: 1%;
+// margin-left: 3%;
+align-items: center;
+justify-content: center;
+overflow:hidden;
+background-color: $tertiary;
+border: solid;
+border-color: $secondary;
+overflow: ellipsis; 
 }
 
+.card-autor{
+display: flex;
+flex-direction: row;
+width: 100%;
+padding-top: 2%;
+}
 
+.card-img{
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+max-height: 200px;
+padding: 1%;
+
+}
+
+.blockquote{
+margin-top: 10px;
+margin-right: 20px;
+overflow: "...";
+}
+.card-att{
+display: flex;
+// flex-direction: row;
+flex-wrap: nowrap;
+width: 100%;
+margin-top: 2%;
+padding-right: 3%;
+justify-content: space-between;
+}
+v-button.btn-att{
+display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+width: auto;
+justify-content: center;
+align-items: center;
+padding-top: 2%;
+cursor: pointer;
+}
+
+.img-att{
+display: flex;
+align-items: center;
+justify-content: center;
+width:auto;
+
+padding-right: 10%; 
+}
+p.text-att{
+width: auto;
+flex-wrap: nowrap;
+justify-content: center;
+align-items: center;
+margin-bottom: 0px;
+// padding-right: 20%;
+
+
+
+}
 </style>

@@ -1,5 +1,12 @@
 <template>
   <v-app dark >
+     <v-container>
+      
+        <sign-in/>
+   <SignUp/>
+  
+      </v-container>
+
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -7,6 +14,7 @@
       fixed
       app
     >
+    
       <v-list class="temp">
          
         <v-list-item
@@ -58,7 +66,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
-       
+      
         <Nuxt />
   
       </v-container>
@@ -101,69 +109,67 @@
 </template>
 
 <script>
+import SignIn from '../pages/sign-in.vue'
+import SignUp from '../pages/sign-up.vue';
 export default {
-  name: 'DefaultLayout',
-  data () {
-    return {
-      clipped: false,
-      drawer:false,
-      fixed: false,
-      itemsuser:[
-      
-        {
-      icon: 'mdi-chart-bubble',
-     title: 'mes publications',
-     to: '/'
-      } , 
-      {
-      icon: 'mdi-thumb-up-outline ',
-     title: 'mes likes',
-     to: '/'
-      } ,  
-      {
-      icon: 'mdi-account',
-     title: 'mon profil',
-     to: '/'
-      } , 
-      
-            {
-      icon: ' mdi-account-group  ',
-      title: 'Amis',
-      to: '/'
-      } , 
-           {
-      icon: ' mdi-logout ',
-      title: 'Deconnexion',
-      to: '/'
-      } , 
-      ],
-      items: [
-        
-        
-        {
-          icon: ' mdi-newspaper-variant-multiple-outline',
-          title: 'le Groupo-book',
-          to: '/chat'
-        },
-        {
-          icon: ' mdi-chat',
-          title: 'le Groupo-chat',
-          to: '/chat'
-        },
-        {
-          icon: 'mdi-newspaper-plus ',
-          title: 'creer votre post',
-          to: '/post'
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-       icon : '../logo/logo.png',
-      title: 'Groupomania the social network',
-    
-    }
-  }
+    name: "DefaultLayout",
+    data() {
+        return {
+            clipped: false,
+            drawer: false,
+            fixed: false,
+            itemsuser: [
+                {
+                    icon: "mdi-chart-bubble",
+                    title: "mes publications",
+                    to: "/"
+                },
+                {
+                    icon: "mdi-thumb-up-outline ",
+                    title: "mes likes",
+                    to: "/"
+                },
+                {
+                    icon: "mdi-account",
+                    title: "mon profil",
+                    to: "/"
+                },
+                {
+                    icon: " mdi-account-group  ",
+                    title: "Amis",
+                    to: "/"
+                },
+                {
+                    icon: " mdi-logout ",
+                    title: "Deconnexion",
+                    to: "/"
+                },
+            ],
+            items: [
+                {
+                    icon: " mdi-newspaper-variant-multiple-outline",
+                    title: "le Groupo-book",
+                    to: "/chat"
+                },
+                {
+                    icon: " mdi-chat",
+                    title: "le Groupo-chat",
+                    to: "/chat"
+                },
+                {
+                    icon: "mdi-newspaper-plus ",
+                    title: "creer votre post",
+                    to: "/post"
+                },
+            ],
+            miniVariant: false,
+            right: true,
+            rightDrawer: false,
+            icon: "../logo/logo.png",
+            title: "Groupomania the social network",
+        };
+    },
+    components: { SignIn , SignUp }
 }
 </script>
 
