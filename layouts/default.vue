@@ -55,7 +55,7 @@
      <img class="logo-white" src="../logo/logo.png"/><v-toolbar-title v-text="title" id="temp-title" />
       <v-spacer />
  
-     <v-btn  @click.stop="rightDrawer = !rightDrawer" id="temp-user">username</v-btn>
+     <v-btn  @click.stop="rightDrawer = !rightDrawer" id="temp-user"><img class="avatar" src="../logo/avatar1.png"/><p class="username">username</p></v-btn>
       <v-btn
         icon
         @click.stop="rightDrawer = !rightDrawer"
@@ -144,19 +144,19 @@ export default {
                 {
                     icon: " mdi-logout ",
                     title: "Deconnexion",
-                    to: '/index'
+                    to: '/disconnect'
                 },
             ],
             items: [
                 {
                     icon: " mdi-newspaper-variant-multiple-outline",
                     title: "le Groupo-book",
-                    to: "/chat"
+                    to: "/"
                 },
                 {
                     icon: " mdi-chat",
                     title: "le Groupo-chat",
-                    to: "/chat"
+                    to: "/"
                 },
                 {
                     icon: "mdi-newspaper-plus ",
@@ -167,7 +167,7 @@ export default {
             miniVariant: false,
             right: true,
             rightDrawer: false,
-            icon: "../logo/logo.png",
+            // icon: "../logo/logo.png",
             title: "Groupomania the social network",
               
         };
@@ -179,14 +179,34 @@ export default {
 
 <style lang="scss">
 
-
 .v-toolbar__content { 
   background-color: $primary ;
+};
 
-}
+.avatar{
+display: flex;
+width: 40px;
+height: 40px;
+justify-content: center;
+align-items: center;
+border: solid 2px $secondary;
+border-radius: 50%;
+background-color:$tertiary;
+padding-left: 1%;
+};
+
+p.username{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 0;
+padding-left: 2%;
+};
+
 #temp-user{
+  display: flex;
 background-color:$tertiary ;
-height:35px;
+height:50px;
 width: auto;
 border: solid $secondary;
 color: $secondary;
@@ -198,9 +218,7 @@ background-color:$secondary ;
 border: solid $tertiary;
 color: black;
 border-radius: 20%;
-}
-
-
+};
 
 #temp-menu{
 background-color:$tertiary ;
@@ -216,8 +234,7 @@ background-color:$secondary ;
 border: solid $tertiary;
 color: black;
 border-radius: 20%;
-}
-
+};
 
 #temp-title{
 font-family: Lato, sans-serif;
@@ -231,51 +248,52 @@ animation:textAnimated 30s linear infinite reverse;
 };
 };
 
-img.logo-white{
+.logo-white{
   display: flex;
 margin-right: 10px;
 height: 30px;
 width: 30px;
+};
 
-}
 .btn-disco{
   display: flex;
   justify-content: left;
   width: 100%;
   height: 48px;
-  
-}
+};
+
 .logo-disco{
   display: flex;
   align-items: center;
  justify-content: center;
   padding-left:1%;
   padding-top: 2%;
-}
+};
+
 // .logo-disco::before{
 //   display: flex;
 //   align-items: center;
 //  justify-content: center;
 //   padding-left: 20%;
 // }
+
 .text-disco{
   display: flex;
 align-items: center;
 margin-top: 16px;
 margin-left: 30px;
-}
+};
+
 .v-navigation-drawer__content{
   background-color: $tertiary;
+};
 
-//   color: black;
-}
 .v-list-item__title{
   color: $secondary;
-}
+};
+
 .v-list-item__action{
 color:$secondary;
-
-
-}
+};
 
 </style>

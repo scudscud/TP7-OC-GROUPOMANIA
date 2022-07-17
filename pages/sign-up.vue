@@ -11,7 +11,7 @@
      <label for="avatar">
     <h2>Votre photo / avatar</h2>
     </label>
-     <img class="form-avatar-dl card-img mb-5" src="../static/v.png"/>
+     <img class="form-avatar-dl " src="../logo/avatar1.png"/>
       <input class="form-avatar" type="file" value="test" name="avatar" placeholder="votre photo/avatar" required />  
      <v-spacer />
     <label for="email">

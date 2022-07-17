@@ -1,26 +1,19 @@
 <template>
 
-<!-- <div></div> -->
-
-
-
-
 <div id="popup" class="overlay">
 <div class="popup">
   <p>test deco</p>
-<a href="'/index'" class="yes"><button>test</button></a>
-<a href="#"></a>
+<v-link ><v-btn type=text href="./">test</v-btn></v-link>
+
 
 </div>
 </div>
 </template>
 
 
-<script type='test/javascript'>
+<script type='text/javascript'>
 
 </script>
-
-
 
 <style>
  .overlay {
@@ -37,8 +30,7 @@ visibility: visible;
 opacity: 1;
 background-color: rgba(0, 0 ,0, 0.7);
 transition: opacity 0.4s;
- } 
-
-
+z-index: 100;
+ };
 
 </style>
