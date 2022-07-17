@@ -30,7 +30,7 @@ visibility: visible;
 opacity: 1;
 background-color: rgba(0, 0 ,0, 0.7);
 transition: opacity 0.4s;
-z-index: 100;
+z-index: 1000;
  };
 
 </style>

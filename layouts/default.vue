@@ -124,22 +124,22 @@ export default {
                 {
                     icon: "mdi-chart-bubble",
                     title: "mes publications",
-                    to: "/"
+                  
                 },
                 {
                     icon: "mdi-thumb-up-outline ",
                     title: "mes likes",
-                    to: "/"
+                   
                 },
                 {
                     icon: "mdi-account",
                     title: "mon profil",
-                    to: "/"
+                   
                 },
                 {
                     icon: " mdi-account-group  ",
                     title: "Amis",
-                    to: "/"
+                 
                 },
                 {
                     icon: " mdi-logout ",
@@ -156,7 +156,7 @@ export default {
                 {
                     icon: " mdi-chat",
                     title: "le Groupo-chat",
-                    to: "/"
+                
                 },
                 {
                     icon: "mdi-newspaper-plus ",
