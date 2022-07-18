@@ -6,7 +6,7 @@
       <v-card >
        <v-col id="logo-form2"  cols="12" sm="12" md="12">
         <v-card-text>
-         <!-- <div class="form-popup" id="popup-Form"> -->
+        
   <form  class="form-container">
      <label for="avatar">
     <h2>Votre photo / avatar</h2>

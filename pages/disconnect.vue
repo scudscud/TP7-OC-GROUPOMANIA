@@ -1,25 +1,27 @@
 <template>
 
-<div id="popup" class="overlay">
-<div class="popup">
+<v-col class="overlay d-flex  justify-center align-center">
+<v-card class="popup">
   <p>test deco</p>
-<v-link ><v-btn type=text href="./">test</v-btn></v-link>
+<v-btn type=text href="./">test</v-btn>
 
 
-</div>
-</div>
+</v-card>
+</v-col>
 </template>
 
 
-<script type='text/javascript'>
-
+<script>
+export default {
+  name: 'IndexPage'
+}
 </script>
 
 <style>
  .overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex;
+  justify-content: center; */
+  /* align-items: center; */
   width: 100%;
   top: 0px;
   bottom: 0;

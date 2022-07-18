@@ -109,10 +109,10 @@
 </template>
 
 <script>
-import SignIn from '../pages/sign-in.vue'
-// import SignUp from '../pages/sign-up.vue';
+// import disconnect from '../components/disconnect.vue';
+import SignIn from '../components/sign-in.vue'
 export default {
-  components: { SignIn },
+  components: { SignIn, },
     name: "DefaultLayout",
     data() {
         return {
@@ -134,18 +134,20 @@ export default {
                 {
                     icon: "mdi-account",
                     title: "mon profil",
-                   
+                   to: "/post"
                 },
                 {
                     icon: " mdi-account-group  ",
                     title: "Amis",
+                    to:"/pop"
                  
                 },
-                {
+                   {
                     icon: " mdi-logout ",
                     title: "Deconnexion",
                     to: '/disconnect'
                 },
+              
             ],
             items: [
                 {
@@ -163,6 +165,7 @@ export default {
                     title: "creer votre post",
                     to: "/post"
                 },
+               
             ],
             miniVariant: false,
             right: true,
