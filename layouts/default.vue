@@ -9,7 +9,7 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
+      :mini-variant="!miniVariant"
       :clipped="clipped"
       fixed
       app
@@ -42,7 +42,7 @@
       fixed
       app
     >
-    <v-btn id="temp-menu"  @click.stop="drawer = !drawer">MENU</v-btn>
+    <v-btn id="temp-menu"  @click.stop="miniVariant = !miniVariant">MENU</v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
         icon

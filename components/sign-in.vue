@@ -14,10 +14,10 @@
     <h2>Votre Groupo-Mail</h2>
     </label>
       <v-spacer />
-    <input class="form-input" type="text" placeholder="Votre Email" value="@groupomania" name="email" required />
+    <input class="form-input" type="text" placeholder="Votre Email" value="@groupomania.net" name="email" required />
         <v-spacer />
     <label for="psw">
-      <h2>Votre mot de passe</h2>
+      <h2>Votre mot de passe Groupomania</h2>
     </label>
         <v-spacer />
     <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
@@ -177,6 +177,8 @@ padding: 5px;
 
 .span-instruction{
   color:$primary;
+
+  
 }
 
 
