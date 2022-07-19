@@ -171,7 +171,7 @@ export default {
             right: true,
             rightDrawer: false,
             // icon: "../logo/logo.png",
-            title: "Groupomania the rsocial network",
+            title: "Groupomania the social network",
               
         };
     },
