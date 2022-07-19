@@ -10,11 +10,11 @@
       <v-card-text class="blockquote" >
         &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
         <!-- <v-card-action  class="card-att">
-      <!-- <button class="btn-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></button>
-      <button class="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button>
-      <button   class="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir amis</p></button>
+   <button class="btn-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></button> 
+      <button class="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button> 
+      <button   class="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir amis</p></button> 
       </v-card-action> -->
-        </v-card-text> -->
+        </v-card-text> 
     </v-card>
 
 </template>
