@@ -9,11 +9,11 @@
         alt="Vuetify.js">
       <v-card-text class="blockquote" >
         &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
-        <v-card-action  class="card-att">
+        <!-- <v-card-action  class="card-att">
       <button class="btn-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></button>
       <button class="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button>
       <button   class="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir amis</p></button>
-      </v-card-action>
+      </v-card-action> -->
         </v-card-text>
     </v-card>
 
@@ -62,49 +62,49 @@ overflow: hidden;
 text-overflow: ellipsis;
 
 }
-.card-att{
-display: flex;
-width: 100%;
-margin-top: 2%;
-padding-right: 2%;
-justify-content: space-between;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow:  ellipsis;
-
-}
-button.btn-att{
+// .card-att{
 // display: flex;
-width: auto;
-justify-content: center;
-align-items: center;
-padding-top: 2%;
-cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow:  ellipsis;
-}
+// width: 100%;
+// margin-top: 2%;
+// padding-right: 2%;
+// justify-content: space-between;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow:  ellipsis;
 
-p.text-att{
-width:30%;
-flex-wrap: nowrap;
-justify-content: center;
-align-items: center;
-margin-bottom: 0px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+// }
+// button.btn-att{
+// // display: flex;
+// width: auto;
+// justify-content: center;
+// align-items: center;
+// padding-top: 2%;
+// cursor: pointer;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow:  ellipsis;
+// }
 
-.img-att{
-display: flex;
-align-items: center;
-justify-content: center;
-padding-right: 5%; 
+// p.text-att{
+// width:30%;
+// flex-wrap: nowrap;
+// justify-content: center;
+// align-items: center;
+// margin-bottom: 0px;
 //   white-space: nowrap;
 //   overflow: hidden;
 //   text-overflow: ellipsis;
-}
+// }
+
+// .img-att{
+// display: flex;
+// align-items: center;
+// justify-content: center;
+// padding-right: 5%; 
+// //   white-space: nowrap;
+// //   overflow: hidden;
+// //   text-overflow: ellipsis;
+// }
 
 
 
