@@ -21,7 +21,7 @@
     <input class="form-input" type="text"  value="@groupomania.fr"  name="email"  required />
         <v-spacer />
     <label for="psw">
-      <h2>Votre mot de passe Groupomania</h2>
+      <h2>Votre mot de passe Grpomania</h2>
     </label>
         <v-spacer />
     <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
