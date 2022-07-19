@@ -182,6 +182,11 @@ export default {
 
 <style lang="scss">
 
+html{
+  font-family: 'Lato';
+};
+
+
 .v-toolbar__content { 
   background-color: $primary ;
 };

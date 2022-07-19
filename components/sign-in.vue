@@ -45,7 +45,9 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
+
  .overlay {
   display: flex;
   justify-content: center;
@@ -64,13 +66,16 @@ z-index:10;
  } 
 
 #header-index{
-white-space: nowrap;
-overflow: hidden;
-text-overflow:ellipsis;
+// white-space: nowrap;
+// overflow: hidden;
+// text-overflow:ellipsis;
+border: solid 2px $secondary;
+margin-bottom: 2px;
 background:$tertiary;
 };
 
 #body-index{
+  border: solid 2px $secondary;
 background:$tertiary;
 
 };
@@ -115,7 +120,9 @@ cursor: pointer;
 .btn-sign:hover{
 background-color: $secondary;
 color:$tertiary;
+
 };
+
 // h1{
 // display: flex;
 // width: 100%;
@@ -142,6 +149,13 @@ h2{
 padding-bottom: 1rem;
 padding-top: 1rem;
 };
+
+.h2-form:hover{
+  
+background-color: $secondary;
+color:$tertiary;
+};
+
 
 .form-input{
  

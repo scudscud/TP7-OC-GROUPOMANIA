@@ -1,8 +1,8 @@
 <template>
 <div class="overlay">
-  <v-col justify="center" align="center">
+  <v-col class="d-flex justify-center align-center">
     <v-col  class="form-sign"  cols="10" sm="16" md="60">
-      <v-card id="logo-form" class="logo py-4 d-flex justify-center "><h1><span id="form-span1">vous inscrire</span></h1></v-card>
+      <v-card id="logo-form" class="logo py-4 d-flex justify-center "><h1><span id="form-span1">Vous inscrire </span></h1></v-card>
       <v-card >
        <v-col id="logo-form2"  cols="12" sm="12" md="12">
         <v-card-text>
@@ -15,18 +15,18 @@
       <input class="form-avatar" type="file" value="test" name="avatar" placeholder="votre photo/avatar" required />  
      <v-spacer />
     <label for="email">
-    <h2 >Votre Groupo-Mail</h2>
+    <h2 >Votre mail Groupomania</h2>
     </label>
       <v-spacer />
     <input class="form-input" type="text"  value="@groupomania.fr"  name="email"  required />
         <v-spacer />
     <label for="psw">
-      <h2>Votre mot de passe</h2>
+      <h2>Votre mot de passe Groupomania</h2>
     </label>
         <v-spacer />
     <input class="form-input" type="password" placeholder="Votre mot de passe" name="psw" required />
       <v-spacer />
-    <button type="submit" class="btn"><h2 class="h2-form">Se connecter</h2></button> / <button href="./index.vue" class="btn cancel" > <h2 class="h2-form">Annuler</h2></button>
+    <button type="submit" class="btn"><h2 class="h2-form">Inscritpion</h2></button>&nbsp<button href="./index.vue" class="btn cancel" > <h2 class="h2-form">Annuler</h2></button>
   </form>
   <button id="form-span2"><button class="btn" id="link-sign" @click="$emit('close-modal')">retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon></button></button>
 <!-- </div> -->
@@ -77,13 +77,14 @@ padding-left: 1rem;
 };
 
 h1{
+  color : $secondary;
 display: flex;
 width: 100%;
 justify-content: center;
-
-}
+};
 
 h2{
+  color : $secondary;
 padding-bottom: 1rem;
 padding-top: 1rem;
 };
@@ -131,19 +132,26 @@ padding-top: 0;
 
 div.form-sign{
 border: solid 5px $secondary;
+border-radius: 10%;
 padding: 0;
-background-color:$tertiary;
+// background-color:$tertiary;
+overflow: hidden;
+// background-color: #fff;
 };
 
 input{
 color: black;
 }
 
+
 #logo-form{
+border-radius: 0%;
 background-color: $tertiary;
+border-bottom: solid 5px  red ;
 }
 
 #logo-form2{
+border-radius: 0%;
 background-color: $tertiary;
 }
 
