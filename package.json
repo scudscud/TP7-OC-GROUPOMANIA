@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "node": "nodemon server nodemon backend/index.js --watch server ",
+  
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
