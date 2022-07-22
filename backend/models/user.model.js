@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
   pseudo: {
     type: String,
     required: true,
-    minLenght: 3,
-    maxLenght: 22,
+    minlenght: 3,
+    maxlenght: 22,
     unique: true,
     trim: true,
   },
@@ -17,16 +17,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: [isEmail],
-    minLenght: 3,
-    maxLenght: 22,
+    minlenght: 3,
+    maxlenght: 22,
     unique: true,
     trim: true,
   },
   password: {
     type: String,
     required: true,
-    minLenght: 3,
-    maxLenght: 1024,
+    minlenght: 6,
+    maxlenght: 1024,
     unique: true,
     trim: true,
   },
@@ -52,14 +52,27 @@ default:"./upload/profil/random-user.png"
  timestamps : true
 }
 );
-//bcrypt password user \\
+                                        //bcrypt password user \\
 
+// crypt password from sign up \\
 userSchema.pre("save", async function(next){
 const salt = await bcrypt.genSalt();
 this.password = await bcrypt.hash(this.password, salt );
 next();
 });
 
+// decrypt to compare password login -- signup \\
+userSchema.statics.login = async function (email,password){
+const user = await this.findOne({email});
+if (user){
+  const auth = await bcrypt.compare(password, user.password);
+  if (auth){
+    return user;
+  }
+  throw Error ('accée refusé, Veuillez vérifié votre email et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ')
+}
+throw Error ('accée refusé, Veuillez vérifié votre email et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ')
+}
 
 
 const UserModel = mongoose.model('user',userSchema);
