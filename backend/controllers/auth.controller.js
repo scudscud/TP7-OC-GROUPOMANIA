@@ -11,7 +11,7 @@ const createToken = (id)=> {
   })
 }
 
-module.exports.signUp = async (req, res, next) => {
+exports.signUp = async (req, res, next) => {
   const { pseudo, email, password } = req.body;
   try {
     const user = await UserModel.create({  pseudo, email, password });
@@ -22,9 +22,8 @@ module.exports.signUp = async (req, res, next) => {
     res.status(200).json({errors});
   }
 };
- module.exports.signIn = async (req,res)=>{
+exports.signIn = async (req,res)=>{
   const {email , password} = req.body
-
   try{
  const user = await UserModel.login(email, password);
  const token = createToken (user._id )
@@ -34,12 +33,11 @@ module.exports.signUp = async (req, res, next) => {
 
   }catch (err) {
    const errors = signInErrors(err);
-
     res.status(200).json({errors});
   }
 }
 
-module.exports.logout = (req,res)=>{
+exports.logout = (req,res)=>{
  res.cookie('jwt', '' , {session:false, maxAge:durationTokenLogin}
    );
 //  res.status(200).json('vous etes déconnecté ')

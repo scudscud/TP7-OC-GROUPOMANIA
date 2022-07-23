@@ -1,4 +1,4 @@
-module.exports.signUpErrors = (err) =>{
+exports.signUpErrors = (err) =>{
     let errors = {pseudo: '', email:'', password:''}
     if(err.message.includes('pseudo'))
     errors.pseudo = "Pseudo incorrect";
@@ -19,13 +19,14 @@ errors.password = 'Le mot de passe doit faire 6 caractéres au minimum';
     return errors;
 }
 
-module.exports.signInErrors = (err) => {
- let errors = { email: '', password: ''}
+exports.signInErrors = (err) => {
+  
+    let errors = { email :'', password: ''};
+    // console.log(errors.password);
+    if (err.message.includes('email'))  errors.email = "accée refusé, Veuillez vérifié votre mail et / ou mot de passe, si le probleme persiste contactez un administrateur groupomania "; 
 
- if (err.message.includes('email')) {errors.email = "Email invalide"}
- 
 
- if (err.message.includes('password')) {errors.password = " Mot de passe invalide"}
+    if (err.message.includes('password')) errors.password = "accée refusé, Veuillez vérifié votre mail et / ou mot de passe, si le probleme persiste contactez un administrateur groupomania "; 
 
- return errors
+    return errors;
 }

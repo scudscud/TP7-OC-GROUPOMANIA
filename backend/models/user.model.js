@@ -69,9 +69,9 @@ if (user){
   if (auth){
     return user;
   }
-  throw Error ('accée refusé, Veuillez vérifié votre email et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ')
+  throw Error ('test password accée refusé, Veuillez vérifié votre mail et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ');
 }
-throw Error ('accée refusé, Veuillez vérifié votre email et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ')
+throw Error ('test email accée refusé, Veuillez vérifié votre mail et/ou mot de passe, si le probleme persiste contactez un administrateur groupomania ')
 }
 
 
