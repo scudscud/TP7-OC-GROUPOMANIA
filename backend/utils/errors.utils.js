@@ -18,3 +18,14 @@ errors.password = 'Le mot de passe doit faire 6 caractéres au minimum';
 
     return errors;
 }
+
+module.exports.signInErrors = (err) => {
+ let errors = { email: '', password: ''}
+
+ if (err.message.includes('email')) {errors.email = "Email invalide"}
+ 
+
+ if (err.message.includes('password')) {errors.password = " Mot de passe invalide"}
+
+ return errors
+}
