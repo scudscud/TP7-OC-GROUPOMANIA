@@ -22,7 +22,7 @@ errors.password = 'Le mot de passe doit faire 6 caractéres au minimum';
 exports.signInErrors = (err) => {
   
     let errors = { email :'', password: ''};
-    // console.log(errors.password);
+    
     if (err.message.includes('email'))  errors.email = "accée refusé, Veuillez vérifié votre mail et / ou mot de passe, si le probleme persiste contactez un administrateur groupomania "; 
 
 

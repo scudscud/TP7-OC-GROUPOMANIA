@@ -19,7 +19,7 @@ exports.signUp = async (req, res, next) => {
   } catch (err) {
     const errors = signUpErrors(err);
 
-    res.status(200).json({errors});
+    res.status(400).json({errors});
   }
 };
 exports.signIn = async (req,res)=>{
@@ -33,7 +33,7 @@ exports.signIn = async (req,res)=>{
 
   }catch (err) {
    const errors = signInErrors(err);
-    res.status(200).json({errors});
+    res.status(401).json({errors});
   }
 }
 
