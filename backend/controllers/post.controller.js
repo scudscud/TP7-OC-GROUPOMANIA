@@ -84,6 +84,38 @@ exports.likePost = (req,res) => {
     }
 };
 
+exports.unLikePost = (req,res) => {
+    if(!ObjectID.isValid(req.params.id))
+    return res.status(400).send('utilsateur inconnu :'+ req.params.id);
+
+    try {
+         PostModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull :{
+                    likers : req.body.id }
+                },
+                (err ,docs) => {
+                    if (err) {return res.status(400).send(err.message)}
+                  
+                    }
+        );
+         UserModel.findByIdAndUpdate(
+            req.body.id,
+            {
+                $pull : {likes : req.params.id},
+            },
+            {new:true },
+            (err,docs)=>{
+                if (!err) res.send(docs);
+                else return res.status(400).send(err.message);
+            }
+        );
+    } catch (err) {
+        return res.status(400).send(err.message)
+    }
+};
+
 
 
 // exports.unLikePost = async (req,res)=>{
