@@ -30,3 +30,15 @@ exports.signInErrors = (err) => {
 
     return errors;
 }
+
+exports.uploadError = (err) => {
+ let errors = {format: "" , maxSize: ""};
+
+ if ( err.message.includes('trop grande'));
+ errors.maxSize = ` l'image est trop grande`;
+
+ if ( err.message.includes('invalid'));
+ errors.format = "Format incompatible"
+
+ return errors
+}
