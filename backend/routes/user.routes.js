@@ -22,7 +22,7 @@ router.patch('/follow/:id', userController.follow);
 router.patch('/unfollow/:id', userController.unfollow);
 
 // upload\\
-router.post('/upload',upload.single('picture') , uploadController.uploadProfil)
+router.post('/upload', upload.single('file') , uploadController.uploadProfil)
 
 
 

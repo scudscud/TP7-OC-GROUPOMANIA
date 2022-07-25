@@ -13,16 +13,15 @@ exports.uploadProfil = async (req, res) => {
       req.file.detectedMime.type != "image/jpeg"
     )
       throw Error("invalid file");
-    if (req.file.size > 500000000) throw Error("image trop grande");
+    if (req.file.size > 5000000) throw Error("image trop grande");
   } catch (err) {
     const errors = uploadErrors(err)
     return res.status(201).json( {errors} );
   }
-  console.log(fileName);
   const fileName = req.body.name ;
 
 await pipeline (
-  console.log(req.file.stream),
+  // console.log(req.file.stream),
     req.file.stream,
     fs.createWriteStream(`${_dirname}/../static/${fileName}`,(err) => {
         if (err) {
@@ -32,20 +31,20 @@ await pipeline (
         }
       }
   ))
-    }
-//  try{
-//     UserModel.findByIdAndUpdate(
-//         req.bodyuserId,
-//         {
-//             $set : {photo:"../static    " }
-//         },
-//         {new:true, upsert : true , setDefaultsOnInsert : true},
-//         (err,docs) => {
-//             if (!err) return res.send(docs);
-//             else return res.status(500).send({ message: err})
-//         }
-//     );
-//  }catch (err) {
-//      return res.status(500).send({ message: err})
-//  }
-// };
+    
+ try{
+    UserModel.findByIdAndUpdate(
+        req.bodyuserId,
+        {
+            $set : {photo:"../static" }
+        },
+        {new:true, upsert : true , setDefaultsOnInsert : true},
+        (err,docs) => {
+            if (!err) return res.send(docs);
+            else return res.status(500).send({ message: err})
+        }
+    );
+ }catch (err) {
+     return res.status(500).send({ message: err})
+ }
+};
