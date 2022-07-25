@@ -31,7 +31,7 @@ exports.signInErrors = (err) => {
     return errors;
 }
 
-exports.uploadError = (err) => {
+exports.uploadErrors = (err) => {
  let errors = {format: "" , maxSize: ""};
 
  if ( err.message.includes('trop grande'));

@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     photo: {
+      data: Buffer,
       type: String,
       default: "./upload/profil/random-user.png",
     },

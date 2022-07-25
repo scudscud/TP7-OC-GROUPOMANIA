@@ -1,12 +1,16 @@
+const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const express = require("express");
+const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 require("./config/db");
 require("dotenv").config({ path: "../.env" });
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
-const cors = require("cors");
+
+// const multer = require('multer');
+
+
 const app = express();
 
 const corsOptions = {
@@ -33,10 +37,12 @@ app.get("/jwtid", requireAuth, (req, res) => {
 // routes\\
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
+
+
+
+
 // config serveur \\
 app.listen(process.env.PORT, (port) =>
   console.log(`listening on port ${process.env.PORT}`)
 );
-// body parser config \\
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+

@@ -1,7 +1,9 @@
 const UserModel = require("../models/user.model");
 const fs = require("fs");
-const { promisify } = require("util");
-const pipeline = promisify(require("stream").pipeline);
+// const promisify = require('util.promisify');
+const {promisify }  = require('util');
+const pipeline = promisify(require('stream').pipeline);
+const { uploadErrors } = require("../utils/errors.utils");
 
 exports.uploadProfil = async (req, res) => {
   try {
@@ -11,31 +13,39 @@ exports.uploadProfil = async (req, res) => {
       req.file.detectedMime.type != "image/jpeg"
     )
       throw Error("invalid file");
-    if (req.file.size > 500000) throw Error("image trop grande");
+    if (req.file.size > 500000000) throw Error("image trop grande");
   } catch (err) {
-    const errors = uploadError(err);
-    return res.status(201).json({ errors });
+    const errors = uploadErrors(err)
+    return res.status(201).json( {errors} );
   }
-  const fileName = req.body.name + ".jpg";
+  console.log(fileName);
+  const fileName = req.body.name ;
 
-await pipeline(
+await pipeline (
+  console.log(req.file.stream),
     req.file.stream,
-    fs.createWriteStream("`${_dirname}/../static/${fileName}`")
-  );
-
- try{
-    UserModel.findByIdAndUpdate(
-        req.bodyuserId,
-        {
-            $set : {picture:"uploads/profil/" + fileName}
-        },
-        {new:true, upsert : true , setDefaultsOnInsert : true},
-        (err,docs) => {
-            if (!err) return res.send(docs);
-            else return res.status(500).send({ message: err})
+    fs.createWriteStream(`${_dirname}/../static/${fileName}`,(err) => {
+        if (err) {
+          console.log("Pipeline failed", err);
+        } else {
+          console.log("Pipleline complete");
         }
-    );
- }catch (err) {
-     return res.status(500).send({ message: err})
- }
-};
+      }
+  ))
+    }
+//  try{
+//     UserModel.findByIdAndUpdate(
+//         req.bodyuserId,
+//         {
+//             $set : {photo:"../static    " }
+//         },
+//         {new:true, upsert : true , setDefaultsOnInsert : true},
+//         (err,docs) => {
+//             if (!err) return res.send(docs);
+//             else return res.status(500).send({ message: err})
+//         }
+//     );
+//  }catch (err) {
+//      return res.status(500).send({ message: err})
+//  }
+// };
