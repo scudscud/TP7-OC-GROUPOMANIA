@@ -32,7 +32,7 @@ exports.createPost = async (req,res) => {
         const fileName = req.body.posterId + Date.now() + '.jpg';
         await pipeline(
             req.file.stream,
-            fs.createWriteStream(`${_dirname}/../static/${fileName}`))
+            fs.createWriteStream(`${__dirname}/../client/public/uploads/profil/${fileName}`))
     }
     const newPost = new PostModel({
         posterId: req.body.posterId,
@@ -125,8 +125,7 @@ exports.unLikePost = (req,res) => {
                     likers : req.body.id }
                 },
                 (err ,docs) => {
-                    if (err) {return res.status(400).send(err.message)}
-                  
+                    if (err) {return res.status(400).send(err.message)}                
                     }
         );
          UserModel.findByIdAndUpdate(
@@ -154,7 +153,6 @@ exports.unLikePost = (req,res) => {
 //  .then( await PostModel.findByIdAndUpdate(req.params.id,{$pull : { likers : req.body.id}},
 //     (err,docs) => {
 //         if (err) return res.status(400).send(err.message)
-       
 //     };
 // )).then( await UserModel.findByIdUpdate(
 //     req.body.id,
