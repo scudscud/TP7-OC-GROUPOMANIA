@@ -5,7 +5,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 require("./config/db");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: ".env" });
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 
 // const multer = require('multer');

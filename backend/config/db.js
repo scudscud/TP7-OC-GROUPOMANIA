@@ -1,6 +1,6 @@
 // require("dotenv").config({ path:'./.env'});
 const mongoose = require("mongoose");
-console.log(require("dotenv").config({ path: "./config/.env" }));
+console.log(require("dotenv").config({ path: ".env" }));
 mongoose
   .connect(
     "mongodb+srv://" +
