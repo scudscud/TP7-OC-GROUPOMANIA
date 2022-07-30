@@ -37,8 +37,23 @@ exports.uploadErrors = (err) => {
  if ( err.message.includes('trop grande'));
  errors.maxSize = ` l'image est trop grande`;
 
- if ( err.message.includes('invalid'));
+ if ( err.message.includes('invalid'))
  errors.format = "Format incompatible"
 
  return errors
 }
+
+exports.MulterError = (error, req, res, next) => {
+    if (error instanceof multer.MulterError) {
+    error.status = 413;
+    error.message = "test";
+    const status = error.status || 500;
+    const message = error.message;
+    const response = { status: status, error: message };
+    res.status(status).json(response);
+    }else{
+        res.status(201).json("image charge")
+    }
+    }
+    
+    

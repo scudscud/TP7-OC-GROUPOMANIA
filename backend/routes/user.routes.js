@@ -1,11 +1,13 @@
 
 const express = require("express");
-const multer = require('multer');
-const upload = multer();
+const upload = require('../middleware/multer.user');
+const {MulterError} = require("../utils/errors.utils");
+
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
 const userController = require('../controllers/user.controller');
 const uploadController = require('../controllers/upload.controller');
+// const multer = require('../middleware/multer.user')
 
 
 
@@ -22,7 +24,22 @@ router.patch('/follow/:id', userController.follow);
 router.patch('/unfollow/:id', userController.unfollow);
 
 // upload\\
-router.post('/upload', upload.single('file') , uploadController.uploadProfil)
+router.post('/upload' ,
+(req, res,next) => {
+    upload(req, res, function (err) {
+      if (err) {
+     
+       res.status(400).send("l'image est trop grande" )
+      } else {
+        res.status(201).json("image charge")
+      }
+   
+    }
+   
+    
+    )},
+
+       uploadController.uploadProfil);
 
 
 
