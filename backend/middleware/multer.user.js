@@ -3,29 +3,36 @@ const { uploadErrors } = require("../utils/errors.utils");
 
 
 const fileFilter =  (req, file, cb) => {
+
   if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg")
   {cb(null,true)}
 
   else{
     cb( null,false);
-    return cb(new Error(`il n'y a que les formats .png, .jpg and .jpeg autorisé`));  
+    return cb(new Error (`il n'y a que les formats .png, .jpg and .jpeg autorisé`));  
   }
 }
 
   const storage = multer.diskStorage({
+
     destination : (req,res,cb)=> {
+      console.log(req.name);
       cb(null,`../client/public/uploads/profil/`)
     },
     filename: function (req, file, cb) { 
+      // console.log(file);
+      // console.log(body);
+
+      // const name = req.body + ".jpg"
         const name = file.originalname.split(" ").join("_");
         const extension = name.split(".");
           const type = extension[0] + ".jpg";
         // console.log(extension);
-        cb(null,type);
+        cb(null,name);
       },
   })
 
-  const  maxSize = 500;
+  const  maxSize = 5000000;
 
 const upload = multer({
     storage ,

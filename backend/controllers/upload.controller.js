@@ -11,43 +11,14 @@ const { uploadErrors } = require("../utils/errors.utils");
 
 
 exports.uploadProfil = async (req, res) => {
-  // console.log(req.body)
-  // console.log(req.file)
 
-  //   try {
-  //   if (
-  //     req.file.mimetype != 'image/jpeg' && 
-  //     req.file.mimetype != 'image/jpg' && 
-  //     req.file.mimetype != 'image/png' 
-  //     )
-  //     throw Error("invalid file");
-  //   if (req.file.size > 5000000 ) throw Error("image trop grande");
-  // } catch (err) {
-  //   const errors = uploadErrors(err)
-  //   return res.status(201).json( {errors} )
-  //  }
-
-
-
-//  const storage = multer.diskStorage ({
-//     destination : (req,res,cb)=> {
-//               cb(null,`../client/public/uploads/profil/`);
-//             },
-            
-//     filename : (req,file,cb) => {
-
-//         const fileName = filename + ".jpg";
-//         cb(null,fileName)
-
-
-//     }});
-
-    
+// console.log(req.file);
+// console.log(req.body);
  try {
     UserModel.findByIdAndUpdate(
         req.bodyuserId,
         {
-            $set : {picture:"../static" }
+            $set : {picture:"../client/public/uploads/profil/" }
         },
         {new:true, upsert : true , setDefaultsOnInsert : true},
         (err,docs) => {
@@ -81,3 +52,35 @@ exports.uploadProfil = async (req, res) => {
   //   const errors = uploadErrors(err)
   //   return res.status(201).json( {errors} )
   // }
+  // console.log(req.body)
+  // console.log(req.file)
+
+  //   try {
+  //   if (
+  //     req.file.mimetype != 'image/jpeg' && 
+  //     req.file.mimetype != 'image/jpg' && 
+  //     req.file.mimetype != 'image/png' 
+  //     )
+  //     throw Error("invalid file");
+  //   if (req.file.size > 5000000 ) throw Error("image trop grande");
+  // } catch (err) {
+  //   const errors = uploadErrors(err)
+  //   return res.status(201).json( {errors} )
+  //  }
+
+
+
+//  const storage = multer.diskStorage ({
+//     destination : (req,res,cb)=> {
+//               cb(null,`../client/public/uploads/profil/`);
+//             },
+            
+//     filename : (req,file,cb) => {
+
+//         const fileName = filename + ".jpg";
+//         cb(null,fileName)
+
+
+//     }});
+
+    

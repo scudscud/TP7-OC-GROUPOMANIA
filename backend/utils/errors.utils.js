@@ -35,7 +35,7 @@ exports.uploadErrors = (err) => {
  let errors = {format: "" , maxSize: ""};
 
  if ( err.message.includes('trop grande'));
- errors.maxSize = ` l'image est trop grande`;
+ errors.maxSize = "l'image est trop grande";
 
  if ( err.message.includes('invalid'))
  errors.format = "Format incompatible"
@@ -43,17 +43,18 @@ exports.uploadErrors = (err) => {
  return errors
 }
 
-exports.MulterError = (error, req, res, next) => {
-    if (error instanceof multer.MulterError) {
-    error.status = 413;
-    error.message = "test";
-    const status = error.status || 500;
-    const message = error.message;
-    const response = { status: status, error: message };
-    res.status(status).json(response);
-    }else{
-        res.status(201).json("image charge")
+exports.multerError = (err) => {
+     let errors = {maxSize:"", format: ""};
+
+     if ( err.message.includes('trop grande'));
+     errors.maxSize = "l'image est trop grande";
+    
+     if ( err.message.includes('formats'))
+     errors.format = "il n'y a que les formats .png, .jpg and .jpeg autorisé"
+
+    return errors
+
     }
-    }
+    
     
     
