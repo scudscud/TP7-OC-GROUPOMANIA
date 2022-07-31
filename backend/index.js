@@ -7,11 +7,13 @@ const postRoutes = require("./routes/post.routes");
 require("./config/db");
 require("dotenv").config({ path: ".env" });
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
-
+const path = require("path")
 // const multer = require('multer');
 
 
 const app = express();
+
+// Cors parametre \\
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
@@ -21,8 +23,10 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
 };
-
 app.use(cors(corsOptions));
+
+// parser \\
+
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,7 +34,7 @@ app.use(cookieParser());
 
 //jwt check user id \\
 app.get("*", checkUser);
-app.get("/jwtid", requireAuth, (req, res) => {
+app.get("/jwtid/:id", requireAuth, (req, res) => {
   res.status(200).send(res.locals.user);
 });
 
@@ -38,8 +42,8 @@ app.get("/jwtid", requireAuth, (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 
-
-
+// static image express \\
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 // config serveur \\
 app.listen(process.env.PORT, (port) =>

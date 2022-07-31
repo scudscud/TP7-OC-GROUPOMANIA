@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const postController = require('../controllers/post.controller');
-const image = require("../middleware/picture.post");
+const image = require("../middleware/picture.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
@@ -9,6 +9,9 @@ router.put('/:id', postController.updatePost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unLikePost);
+
+// router post + multer errors \\
+
 router.post('/',  (req, res, next) => {
     image(req, res, function (err) {
       if (err) {
@@ -20,6 +23,8 @@ router.post('/',  (req, res, next) => {
       }
     });
   },postController.createPost);
+
+
 // gestion des commentaire\\
 
 router.patch('/comment-post/:id', postController.commentPost);

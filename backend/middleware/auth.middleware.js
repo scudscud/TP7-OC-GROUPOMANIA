@@ -4,9 +4,7 @@ const UserModel = require('../models/user.model');
 const durationTokenLogout = 1
 
 exports.checkUser = ( req,res,next)=>{
-   
-const token = req.cookies.jwt;
-// console.log(token);
+const token = req.params.jwt;
 if(token){
     jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
    if (err){
@@ -24,7 +22,8 @@ if(token){
     res.locals.user = null;
     next();
 }
-}
+};
+
 
 exports.requireAuth = (req,res,next)=>{
     const token = req.cookies.jwt;
@@ -41,4 +40,4 @@ exports.requireAuth = (req,res,next)=>{
     console.log('access denied invalid token ');
     
    }
-}
+};
