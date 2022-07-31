@@ -1,5 +1,5 @@
 const UserModel = require("../models/user.model");
-const multer = require('multer');
+// const multer = require('multer');
 // const upload = multer({ storage: storage,
 //   limits: { fileSize: maxSize } 
 
@@ -12,13 +12,12 @@ const { uploadErrors } = require("../utils/errors.utils");
 
 exports.uploadProfil = async (req, res) => {
 
-// console.log(req.file);
-// console.log(req.body);
+
  try {
     UserModel.findByIdAndUpdate(
-        req.bodyuserId,
+        req.body.userId,
         {
-            $set : {picture:"../client/public/uploads/profil/" }
+            $set : {picture: "./upload/profil/random-user.png" }
         },
         {new:true, upsert : true , setDefaultsOnInsert : true},
         (err,docs) => {

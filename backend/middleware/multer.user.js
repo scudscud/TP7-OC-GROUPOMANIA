@@ -3,7 +3,8 @@ const { uploadErrors } = require("../utils/errors.utils");
 
 
 const fileFilter =  (req, file, cb) => {
-
+  // console.log(file);
+  
   if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg")
   {cb(null,true)}
 
@@ -16,17 +17,16 @@ const fileFilter =  (req, file, cb) => {
   const storage = multer.diskStorage({
 
     destination : (req,res,cb)=> {
-      console.log(req.name);
+      console.log(req);
       cb(null,`../client/public/uploads/profil/`)
     },
     filename: function (req, file, cb) { 
-      // console.log(file);
-      // console.log(body);
+       const name = req.body.name + ".jpg"
 
       // const name = req.body + ".jpg"
-        const name = file.originalname.split(" ").join("_");
-        const extension = name.split(".");
-          const type = extension[0] + ".jpg";
+        // const name = file.originalname.split(" ").join("_");
+        // const extension = name.split(".");
+        //   const type = extension[0] + ".jpg";
         // console.log(extension);
         cb(null,name);
       },
@@ -42,8 +42,27 @@ const upload = multer({
 
 )
 
-module.exports = upload.single('file');
+ image = upload.single('file'),(req, res,next) => {
 
+  upload(req, res, function (err) {
+
+      // const name = req.body;
+      
+   
+      // console.log(name);
+      // req.file.filename = req.body.name;
+    
+    if (err) {
+   const errors = multerError(err);
+     res.status(400).send({errors} )
+    } else {
+      res.status(201).json("image charge")
+    }
+  }
+  
+  )};
+
+  module.exports = image;
 //  console.log(req.file);
 
 //   const name = req.file.originalname.split(".")

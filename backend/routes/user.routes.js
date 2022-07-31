@@ -1,6 +1,6 @@
 
 const express = require("express");
-const upload = require('../middleware/multer.user');
+const image = require('../middleware/multer.user');
 const { multerError} = require("../utils/errors.utils");
 
 const router = express.Router();
@@ -24,30 +24,11 @@ router.patch('/follow/:id', userController.follow);
 router.patch('/unfollow/:id', userController.unfollow);
 
 // upload\\
-router.post('/upload',
-(req, res,next) => {
-    upload(req, res, function (err) {
-  
-        // const name = req.body;
-     
-     
-        // console.log(name);
-        req.file.filename = req.body.name;
-        //    console.log(req.file.filename);
-      if (err) {
-     const errors = multerError(err);
-       res.status(400).send({errors} )
-      } else {
-        res.status(201).json("image charge")
-      }
-     
-     
-    }
-   
-    
-    )},uploadController.uploadProfil,
-    );
+router.post('/upload',image
 
+    
+    ,uploadController.uploadProfil)
+    
 
 
 module.exports = router;
