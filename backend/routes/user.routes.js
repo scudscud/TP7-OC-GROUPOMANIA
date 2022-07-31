@@ -1,5 +1,5 @@
 const express = require("express");
-const image = require("../middleware/multer.user");
+const image = require("../middleware/photo.user");
 const { multerErrors } = require("../utils/errors.utils");
 
 const router = express.Router();
@@ -33,7 +33,8 @@ router.post(
         next();
       }
     });
-  },uploadController.uploadProfil);
+  }
+  ,uploadController.uploadProfil);
 
 module.exports = router;
   // (req, res,next) => {
