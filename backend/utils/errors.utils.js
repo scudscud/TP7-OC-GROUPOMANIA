@@ -31,25 +31,15 @@ exports.signInErrors = (err) => {
     return errors;
 }
 
-exports.uploadErrors = (err) => {
- let errors = {format: "" , maxSize: ""};
 
- if ( err.message.includes('trop grande'));
- errors.maxSize = "l'image est trop grande";
 
- if ( err.message.includes('invalid'))
- errors.format = "Format incompatible"
+exports.multerErrors = (err) => {
+     let errors = {maxsize:"", format: ""};
 
- return errors
-}
-
-exports.multerError = (err) => {
-     let errors = {maxSize:"", format: ""};
-
-     if ( err.message.includes('trop grande'));
-     errors.maxSize = "l'image est trop grande";
+     if ( err.message.includes('large'))
+     errors.maxsize = "l'image est trop grande";
     
-     if ( err.message.includes('formats'))
+     if ( err.message.includes('format'))
      errors.format = "il n'y a que les formats .png, .jpg and .jpeg autorisé"
 
     return errors
