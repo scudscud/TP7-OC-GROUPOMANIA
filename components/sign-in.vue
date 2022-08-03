@@ -3,6 +3,7 @@
     <v-col justify="center" align="center">
       <div>
         <SignUp v-show="showSignUp" @close-modal="showSignUp = false" />
+         <!-- <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" /> -->
       </div>
       <v-card class="instruction"
         ><p class="span-instruction">
@@ -103,8 +104,8 @@ export default {
   z-index: 10;
 }
 
-.overlaybis {
-}
+
+
 
 #header-index {
   // white-space: nowrap;

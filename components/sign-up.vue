@@ -1,8 +1,9 @@
 <template>
-    <!-- <div>
-        <TermOfUse v-show="termofuse" @close-modal="termofuse = false" />
-      </div> -->
+    
   <div class="overlay">
+    <div>
+        <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
+      </div>
     <v-col class="d-flex justify-center align-center overlaybis">
       <v-col class="form-sign">
         <v-card id="logo-form" class="logo py-4 d-flex justify-center"
@@ -11,7 +12,7 @@
         <v-card class="cont-card">
           <v-col id="logo-form2" cols="12" sm="12" md="12">
             <v-card-text>
-              <form class="form-container">
+              <form class="form-container" method="post">
                 <label for="avatar">
                   <h2 class="titleh2">Votre photo / avatar</h2>
                 </label>
@@ -99,20 +100,20 @@
                   name="psw"
                   required
                 />
-              
                 <v-spacer />
+                  
                <div class="check-box">
                 <label for="condition">
-                  <p
-                @clic.stop="termofuse=true"
-                     class="titleh2-check">Veuillez accepter nos condition d'utilisation
+                    <p
+                     @click.stop=" termofuse=true"
+                   class="titleh2-check">Veuillez accepter nos condition d'utilisation
                      </p>
                 </label>
                 <input
                   class="form-input-check"
                   type="checkbox"
                   name="condition"
-                  required
+                 required
                 /> 
               </div>
                 <v-spacer />
@@ -124,6 +125,7 @@
                   <h2 class="h2-form">Annuler</h2>
                 </button>
               </form>
+                      
               <button id="form-span2">
                 <button
                   class="btn"
@@ -150,7 +152,7 @@ export default {
   components: { TermOfUse},
   data() {
     return {
-      TermOfUse: false,
+      termofuse: false,
     };
   },
 };
@@ -175,9 +177,9 @@ export default {
   z-index: 100;
 }
 
-.overlaybis {
-  height: 100%;
-  width: 80%;
+div.overlaybis {
+  // height: 100%;
+  // width: 50%;
   padding-left: 10%;
   padding-right: 10%;
 }
@@ -189,7 +191,7 @@ export default {
 }
 
 .form-sign {
-  height: 90%;
+  height: 95%;
   width: 50%;
   border: solid 5px $secondary;
   border-radius: 10%;
@@ -245,6 +247,7 @@ align-items: baseline;
 .titleh2-check:hover{
   color: $primary;
   text-decoration: underline;
+  // font-size: 1.001rem;
 }
 
 //______________________________\\
