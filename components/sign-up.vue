@@ -39,7 +39,7 @@
                 />
                 <v-spacer />
                 <label for="prenom">
-                  <h2 class="titleh2">Prenom</h2>
+                  <h2 class="titleh2">Prénom</h2>
                 </label>
                 <v-spacer />
                 <input
@@ -64,7 +64,7 @@
 
                 <v-spacer />
                 <label for="badge">
-                  <h2 class="titleh2">Numero de badge</h2>
+                  <h2 class="titleh2">Numéro de badge</h2>
                 </label>
                 <v-spacer />
                 <input

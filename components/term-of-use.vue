@@ -5,7 +5,7 @@
        <p><h1-term>Bienvenue sur le reseau social de groupomania</h1-term></p> 
 
         <p>
-          Malgré le fait que ce réseau soit un endroit de détente, n'oublier
+          Malgré le fait que ce réseau soit un endroit de détente, n'oubliez
           pas qu'il reste dans le cadre de l'entreprise Groupomania. De ce fait
           le règlement de Groupomania s'applique ici aussi.
         </p>

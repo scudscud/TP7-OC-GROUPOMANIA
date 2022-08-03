@@ -40,13 +40,13 @@
                   class="form-input"
                   type="text"
                   placeholder="Votre Email"
-                  value="@groupomania.net"
+                  value="@groupomania.fr"
                   name="email"
                   required
                 />
                 <v-spacer />
                 <label for="psw">
-                  <h2>Votre mot de passe Groupomania</h2>
+                  <h2>Mot de passe Groupomania-socialnetwork </h2>
                 </label>
                 <v-spacer />
                 <input
