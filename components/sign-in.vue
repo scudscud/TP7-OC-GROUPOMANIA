@@ -1,9 +1,9 @@
 <template>
   <div class="overlay">
     <v-col justify="center" align="center">
-      <v-container>
+      <div>
         <SignUp v-show="showSignUp" @close-modal="showSignUp = false" />
-      </v-container>
+      </div>
       <v-card class="instruction"
         ><p class="span-instruction">
           !! vous devez vous inscrire, pour vous connecter la premiere fois >>
@@ -20,7 +20,7 @@
         <h2>
           <button
             class="btn-sign"
-            @click.stop="showSignUp = true || $emit('close-modale')"
+            @click.stop="showSignUp = true "
           >
             inscription
           </button>

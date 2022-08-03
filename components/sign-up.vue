@@ -1,5 +1,7 @@
 <template>
- 
+    <!-- <div>
+        <TermOfUse v-show="termofuse" @close-modal="termofuse = false" />
+      </div> -->
   <div class="overlay">
     <v-col class="d-flex justify-center align-center overlaybis">
       <v-col class="form-sign">
@@ -97,7 +99,22 @@
                   name="psw"
                   required
                 />
-
+              
+                <v-spacer />
+               <div class="check-box">
+                <label for="condition">
+                  <p
+                @clic.stop="termofuse=true"
+                     class="titleh2-check">Veuillez accepter nos condition d'utilisation
+                     </p>
+                </label>
+                <input
+                  class="form-input-check"
+                  type="checkbox"
+                  name="condition"
+                  required
+                /> 
+              </div>
                 <v-spacer />
                 <button type="submit" class="btn">
                   <h2 class="h2-form">Inscritpion</h2>
@@ -126,11 +143,16 @@
 </template>
 
 <script>
-import FailSignUp from "./fail-sign-up.vue";
-import ComfirmSignUp from "./comfirm-sign-up.vue";
+
+import TermOfUse from "./term-of-use.vue";
 export default {
   name: "IndexPage",
-  components: { FailSignUp, ComfirmSignUp },
+  components: { TermOfUse},
+  data() {
+    return {
+      TermOfUse: false,
+    };
+  },
 };
 </script>
 
@@ -193,7 +215,39 @@ h1 {
   width: 100%;
   justify-content: center;
 }
+// check box \\
 
+.check-box {
+  display: flex;
+  justify-content: center;
+align-items: baseline;
+  background-color: $tertiary;
+  padding-top: 1%;
+}
+
+.form-input-check {
+  justify-content: center;
+  align-items: center;
+  padding-left: 1%;
+  border: solid 1px $secondary;
+  font-size: 1em;
+  color: $secondary;
+  width: 10%;
+  height: 50%;
+}
+
+.titleh2-check {
+  color: $secondary;
+  // padding-bottom: 0.5rem;
+//  margin-top: 1rem;
+  color: $secondary;
+}
+.titleh2-check:hover{
+  color: $primary;
+  text-decoration: underline;
+}
+
+//______________________________\\
 .titleh2 {
   color: $secondary;
   padding-bottom: 0.5rem;
@@ -219,7 +273,8 @@ div.logo {
 #form-span2 {
   display: flex;
   font-size: 1em;
-  padding-top: 2%;
+  padding-top: 1%;
+  padding-bottom: 1%;
 }
 
 #link-sign {
