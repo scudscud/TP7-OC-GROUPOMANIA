@@ -96,7 +96,7 @@
                 <input
                   class="form-input"
                   type="password"
-                  placeholder="Comfirmer votre mot de passeComfirmer votre mot de passe"
+                  placeholder="Comfirmer votre mot de passe"
                   name="psw"
                   required
                 />
