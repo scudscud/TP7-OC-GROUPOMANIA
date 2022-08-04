@@ -44,6 +44,17 @@
                   name="email"
                   required
                 />
+                <label for="badge">
+                  <h2>Votre numéro de badge</h2>
+                </label>
+                <v-spacer />
+                <input
+                  class="form-input"
+                  type="text"
+                    placeholder="numéro de badge"
+                  name="badge"
+                  required
+                />
                 <v-spacer />
                 <label for="psw">
                   <h2>Mot de passe Groupomania-socialnetwork </h2>
