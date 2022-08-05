@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-const { isEmail} = require("validator");
+const { isEmail}= require("validator");
 const { isBadge}  = require("validator");
 
 const bcrypt = require("bcrypt");
 
 // schema model database mongoose\\
 
-const userSchema = new mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
 
     name: {
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       maxlength: 50,
       trim: true,
     },
-    firstName: {
+    firstname: {
       type: String,
       required: true,
       minlenth: 3,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     badge: {
       type: String,
       required: true,
-      validate: [isBadge],
+      // validate: [isBadge],
       minlenth: 3,
       maxlength: 22,
       unique: true,
@@ -45,18 +45,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlenth: 3,
-      maxlength: 22,
-      unique: true,
+      maxlength: 50,
       trim: true,
     },
-    comfirmPassword: {
-      type: String,
-      required: true,
-      minlength: 6,
-      maxlength: 1024,
-      unique: true,
-      trim: true,
-    },
+    // comfirmPassword: {
+    //   type: String,
+    //   minlength: 6,
+    //   maxlength: 50,
+    //   trim: true,
+    // },
     photo: {
       type: String,
       default: "./upload/profil/random-user.png",
@@ -81,25 +78,28 @@ const userSchema = new mongoose.Schema(
 );
 //bcrypt password and badge user \\
 
-// crypt password from sign up \\
+// crypt password and badge from sign up \\
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
+  this.badge = await bcrypt.hash(this.badge, salt);
   next();
 });
 
 // crypt badge from sign up \\
-userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.badge = await bcrypt.hash(this.badge, salt);
-  next();
-});
+// userSchema.pre("save", async function (next) {
+//   const salt = await bcrypt.genSalt();
+//   this.badge = await bcrypt.hash(this.badge, salt);
+//   next();
+// });
 
 // decrypt to compare badge and password login -- signup \\
 userSchema.statics.login = async function (email, badge, password) {
   const user = await this.findOne({ email });
   if (user) {
-    const auth = await bcrypt.compare((password, user.password) && (badge,user.badge));
+    const auth = await bcrypt.compare((password, user.password) )
+    // && (badge,user.badge))
+    ;
     if (auth) {
       return user;
     }
@@ -116,4 +116,5 @@ userSchema.statics.login = async function (email, badge, password) {
 
 const UserModel = mongoose.model("user", userSchema);
 
-module.exports = UserModel;
+
+module.exports = UserModel ;

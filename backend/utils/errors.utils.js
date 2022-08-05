@@ -1,7 +1,7 @@
 // errors signup \\
 
 exports.signUpErrors = (err) => {
-  let errors = { name: "", firstName: "", badege: "",email: "", password: "", };
+  let errors = { name: "", firstName: "", badge: "",email: "", password: "", };
   if (err.message.includes("name")) errors.name = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.message.includes("firstName"))
@@ -16,7 +16,7 @@ exports.signUpErrors = (err) => {
     errors.password = "Le mot de passe doit faire 6 caractéres au minimum";
 
   if (err.code === 11000 && Object.keys(err.keyValue)[0].includes("bagde"))
-    errors.pseudo = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
+    errors.badge = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.code === 11000 && Object.keys(err.keyValue)[0].includes("email"))
     errors.email = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
