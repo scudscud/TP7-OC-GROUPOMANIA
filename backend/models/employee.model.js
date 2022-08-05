@@ -5,16 +5,15 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 // schema model database mongoose\\
-const employeeSchema = new mongoose.Schema(
-  {
-  name: {
+const employeeSchema = new mongoose.Schema({
+  firstname: {
     type: String,
     // required: true,
     minlength: 3,
     maxlength: 50,
     trim: true,
   },
-  firstname: {
+  lastname: {
     type: String,
     // required: true,
     minlenth: 3,
@@ -39,31 +38,27 @@ const employeeSchema = new mongoose.Schema(
     unique: true,
     trim: true,
   },
-}
-);
-
+});
 
 employeeSchema.pre("save", async function (next) {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-    this.badge = await bcrypt.hash(this.badge, salt);
-    next();
-  });
-  employeeSchema.statics.login = async function (email, badge, password) {
-    const user = await this.findOne({ email });
-    if (user) {
-      const auth = await bcrypt.compare((password, user.password) && (badge,user.badge));
-      if (auth) {
-        return user;
-      }
-      throw Error(
-        "test password accée refusé  "
-      );
-    }
-    throw Error(
-      "test email accée refusé "
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  this.badge = await bcrypt.hash(this.badge, salt);
+  next();
+});
+employeeSchema.statics.login = async function (email, badge, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(
+      (password, user.password) && (badge, user.badge)
     );
-  };
-  
-  const EmployeesModel = mongoose.model("employee", employeeSchema);
-  module.exports =  EmployeesModel;
+    if (auth) {
+      return user;
+    }
+    throw Error("test password accée refusé  ");
+  }
+  throw Error("test email accée refusé ");
+};
+
+const EmployeesModel = mongoose.model("employee", employeeSchema);
+module.exports = EmployeesModel;

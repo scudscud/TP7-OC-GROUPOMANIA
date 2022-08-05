@@ -1,10 +1,10 @@
 // errors signup \\
 
 exports.signUpErrors = (err) => {
-  let errors = { name: "", firstName: "", badge: "",email: "", password: "", };
-  if (err.message.includes("name")) errors.name = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
+  let errors = { lastname: "", firstname: "", badge: "",email: "", password: "", };
+  if (err.message.includes("lastname")) errors.lastname = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
-  if (err.message.includes("firstName"))
+  if (err.message.includes("firstname"))
   errors.firstName= "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.message.includes("email")) errors.email = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
