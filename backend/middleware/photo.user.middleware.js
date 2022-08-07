@@ -18,6 +18,7 @@ function fileFilter(req, file, cb) {
       cb(null,`../client/public/uploads/profil/`)
     },
     filename: function (req, file, cb) { 
+       // id du user pour le name \\
        const name = req.body.name + ".jpg"
 
         cb(null,name);

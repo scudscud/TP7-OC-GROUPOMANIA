@@ -20,7 +20,9 @@ function fileFilter(req, file, cb) {
       cb(null,`../client/public/uploads/posts/`)
     },
     filename: function (req, file, cb) { 
+      // id du post pour le name photo \\
        const name = req.body.posterId+ Date.now() + ".jpg"
+       
 
         cb(null,name);
       },
