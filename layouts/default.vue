@@ -76,7 +76,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-footer :absolute="!fixed" app>
-      <span>&copy; Groupomania le reseau dev by scud </span>
+      <span>&copy; Groupomania socialNetwork res dev by scud </span>
     </v-footer>
   </v-app>
 </template>
