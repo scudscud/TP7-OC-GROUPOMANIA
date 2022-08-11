@@ -9,16 +9,33 @@
         alt="Vuetify.js">
       <v-card-text class="blockquote" >
         &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
-        <v-card id="card-att" >
+      </v-card-text>
+        <v-card-actions class="btn-card" id="card-att" >
       <v-btn  id="btn-att"  ><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-btn>
       <v-btn id="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn>
       <v-btn  id="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn>
-      </v-card>
-        </v-card-text>
+      </v-card-actions>
+   
     </v-card>
 
 </template>
 <script>
+// export default{
+// async fetch() {
+
+
+
+
+
+
+// }
+// }
+
+
+
+
+
+
 </script>
 
 <style lang="scss">
@@ -30,16 +47,19 @@
 // max-height:auto;
 // margin-top: 1%;
 // margin-left: 3%;
+
 align-items: center;
 justify-content: center;
 overflow:hidden;
 background-color: $tertiary;
-border: solid;
+border-radius: 5%;
+border: 5px solid;
 border-color: $secondary;
 overflow: ellipsis; 
 };
 
 .card-autor{
+  border-radius: 20%;
 display: flex;
 flex-direction: row;
 width: 100%;
@@ -58,20 +78,21 @@ border-bottom: solid 2px $secondary;
 border-radius: 2%;
 }
 
-.blockquote{
-margin-top: 10px;
-margin-right: 20px;
-overflow: "...";
+div.v-card__text.blockquote{
+// margin-top: 10px;
+// margin-right: 20px;
+// overflow: "...";
+text-align: center;
+padding-right: 2%;
 };
 
 #card-att{
-// justify-content: space-between;
+justify-content: center;
 background-color: $tertiary;
-box-shadow: none;
-// flex-wrap: nowrap;
 width: 100%;
-margin-top: 2%;
-padding-right: 3%;
+height: 20%;
+padding-bottom: 2%;
+padding-left: 3%;
 };
 
 #btn-att{
@@ -81,7 +102,7 @@ background-color: $secondary;
 color:$tertiary ;
 width: auto;
 cursor: pointer;
-
+padding: 2%;
 };
 
 #btn-att:hover{
