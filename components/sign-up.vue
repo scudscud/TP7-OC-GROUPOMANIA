@@ -64,7 +64,7 @@
 
                 <v-spacer />
                 <label for="badge">
-                  <h2 class="titleh2">Numéro de badge</h2>
+                  <h2 class="titleh2 ">Numéro de badge</h2>
                 </label>
                 <v-spacer />
                 <input
@@ -81,43 +81,45 @@
                   </h2>
                 </label>
                 <v-spacer />
-                <input
-                  class="form-input"
+                <input v-model="psw"
+                 @change="testpsw"
+                  class="form-input "
                   type="password"
                   placeholder="Votre mot de passe"
                   name="psw"
                   required
                 />
                 <v-spacer />
-                <label for="psw">
+                <label for="psw-com">
                   <h2 class="titleh2">Comfirmer votre mot de passe</h2>
                 </label>
                 <v-spacer />
-                <input
-                  class="form-input"
+                <input   v-model="pswcom"  @change="testpsw"
+            
+                  class="form-input "
                   type="password"
                   placeholder="Comfirmer votre mot de passe"
-                  name="psw"
+                  name="pswcom"
                   required
                 />
                 <v-spacer />
                   
-               <div class="check-box">
+                <div class="check-box">
                 <label for="condition">
                     <p
-                     @click.stop=" termofuse=true"
-                   class="titleh2-check">Veuillez accepter nos condition d'utilisation
-                     </p>
+                    @click.stop=" termofuse=true"
+                    class="titleh2-check">Veuillez accepter nos condition d'utilisation
+                    </p>
                 </label>
                 <input
                   class="form-input-check"
                   type="checkbox"
                   name="condition"
-                 required
+                  required
                 /> 
               </div>
                 <v-spacer />
-                <button type="submit" class="btn">
+                <button  type="submit" class="btn" >
                   <h2 class="h2-form">Inscritpion</h2>
                 </button>
                 &nbsp
@@ -147,15 +149,54 @@
 <script>
 
 import TermOfUse from "./term-of-use.vue";
+
 export default {
+ 
   name: "IndexPage",
   components: { TermOfUse},
   data() {
     return {
+      testpsw: true,
       termofuse: false,
-    };
-  },
-};
+      psw: '',
+      pswcom:'',
+    
+
+    methods : {
+
+       testpsw: function(){
+        console.log(this.psw);
+        console.log(this.pswcom);
+        if (this.psw != this.pswcom){
+       alert('erreur'); 
+        }else{
+          alert('ok')
+         
+        }
+      }
+    
+
+  //   testpsw(){
+  //  a = document.getElementById(psw-1).value;
+  //   b = document.getElementById(psw-2).value;
+  //   if( a != b){
+  //   alert('erreur')
+
+  //   }else{
+  //     alert('ok ')
+  //   }
+  //   }
+
+
+    },
+  }
+
+}
+}
+
+
+
+
 </script>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-// const { isEmail}= require("validator");
+const { isEmail}= require("validator");
 // const { isBadge}  = require("validator");
 
 const bcrypt = require("bcrypt");
@@ -23,7 +23,7 @@ const employeeSchema = new mongoose.Schema({
   email: {
     type: String,
     // required: true,
-    // validate: [isEmail],
+    validate: [isEmail],
     minlenth: 3,
     maxlength: 100,
     unique: true,
@@ -47,7 +47,7 @@ employeeSchema.pre("save", async function (next) {
   next();
 });
 employeeSchema.statics.login = async function (email, badge, password) {
-  const user = await this.findOne({ email });
+  const user = await this.find({ email, badge});
   if (user) {
     const auth = await bcrypt.compare(
       (password, user.password) && (badge, user.badge)

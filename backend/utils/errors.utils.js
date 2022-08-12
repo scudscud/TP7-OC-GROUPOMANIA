@@ -29,10 +29,14 @@ exports.signUpErrors = (err) => {
 
 
 exports.signInErrors = (err) => {
-  let errors = { email: "", password: "" };
+  let errors = { email: "", password: "" , badge:""};
 
   if (err.message.includes("email"))
     errors.email =
+      "accée refusé, Veuillez vérifié votre mail et / ou mot de passe, si le probleme persiste contactez un administrateur groupomania ";
+
+  if (err.message.includes("badge"))
+    errors.badge =
       "accée refusé, Veuillez vérifié votre mail et / ou mot de passe, si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.message.includes("password"))

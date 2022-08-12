@@ -15,6 +15,14 @@ const createToken = (id) => {
   });
 };
 
+// const createToken = (id) => {
+//   return jwt.sign({ id }, process.env.TOKEN_SECRET, {
+//         expiresIn: "1d",
+//       })
+// }
+
+
+
 // signup end point \\
 
 
@@ -29,7 +37,7 @@ exports.signUp = async (req, res, next) => {
     badge: badge,
   }).count();
 console.log(find);
-  if (!find || find > 2) {
+  if (find != 1) {
     return res.status(401).json({
       error:
         "echec veuillez réessayer, si le probleme persiste contacter un administrateur",

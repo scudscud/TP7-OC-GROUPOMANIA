@@ -6,7 +6,7 @@ const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 require("./config/db");
 require("dotenv").config({ path: ".env" });
-const { checkUser, requireAuth } = require("./middleware/auth.middleware");
+const { checkUser, requireAuth , authUser } = require("./middleware/auth.middleware");
 const path = require("path")
 // const multer = require('multer');
 
@@ -34,9 +34,8 @@ app.use(cookieParser());
 
 //jwt check user id \\
 app.get("*", checkUser);
-app.get("/jwtid/:id", requireAuth, (req, res) => {
-  res.status(200).send(res.locals.user);
-});
+app.get("/jwtid", requireAuth, (req,res)=>{res.send(req.user)});
+app.get('/me',authUser,(req,res)=>{res.send(req.user)});
 
 // routes\\
 app.use("/api/user", userRoutes);

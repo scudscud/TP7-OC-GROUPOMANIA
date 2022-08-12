@@ -1,4 +1,5 @@
 const express = require("express");
+// const jwt = require('jwt')
 const image = require("../middleware/photo.user.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
@@ -10,6 +11,9 @@ const uploadController = require("../controllers/upload.controller");
 
 //auth\\
 
+
+
+// router.get('/me', authenticateToken, (req,res,next) => res.send(req.user))
 router.post("/register", authController.signUp);
 router.post("/login", authController.signIn);
 router.get("/logout", authController.logout);

@@ -95,10 +95,13 @@ userSchema.pre("save", async function (next) {
 
 // decrypt to compare badge and password login -- signup \\
 userSchema.statics.login = async function (email, badge, password) {
-  const user = await this.findOne({ email });
-  if (user) {
-    const auth = await bcrypt.compare((password, user.password) )
-    // && (badge,user.badge))
+  // console.log(user);
+  const user = await this.findOne({email})
+
+  if (user) { 
+  
+    const auth = await bcrypt.compare(password, user.password)
+    && (badge,user.badge)
     ;
     if (auth) {
       return user;

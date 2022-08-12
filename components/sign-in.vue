@@ -3,30 +3,31 @@
     <v-col justify="center" align="center">
       <div>
         <SignUp v-show="showSignUp" @close-modal="showSignUp = false" />
-         <!-- <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" /> -->
+    
       </div>
-      <v-card class="instruction"
-        ><p class="span-instruction">
+      <!-- <v-card class="instruction">
+        <p class="span-instruction">
           !! vous devez vous inscrire, pour vous connecter la premiere fois >>
-        </p></v-card
-      >
+        </p>
+        </v-card> -->
       <v-card
         id="header-index"
-        class="logo py-4 d-flex justify-center align-center"
-        ><h2>
+        class="logo py-4 d-flex justify-center align-center">
+        <h2 class="h2-sign-in">
           <button @click.stop="$emit('close-modale')" class="btn-login">
             connexion
           </button>
         </h2>
-        <h2>
-          <button
-            class="btn-sign"
-            @click.stop="showSignUp = true "
-          >
+        <v-card-text class="sign-up-link">
+          <p class="span-instruction">
+          Vous n'avez pas encore de compte ?</p><p class="span-sign-up" @click.stop="showSignUp = true ">Créer un compte </p>
+      </v-card-text>
+         <!-- <h2>
+          <button class="btn-sign" @click.stop="showSignUp = true ">
             inscription
-          </button>
-        </h2></v-card
-      >
+          </button> 
+        </h2>  -->
+        </v-card>
       <v-card id="body-index">
         <v-col cols="12" sm="12" md="12">
           <v-card-text>
@@ -115,10 +116,13 @@ export default {
   z-index: 10;
 }
 
-
-
-
 #header-index {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
   // white-space: nowrap;
   // overflow: hidden;
   // text-overflow:ellipsis;
@@ -126,6 +130,34 @@ export default {
   margin-bottom: 2px;
   background: $tertiary;
 }
+
+
+h2.h2-sign-in{
+  padding-bottom: 0.5%;
+  padding-top: 0;
+}
+
+.sign-up-link{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+  padding-bottom: 0;
+}
+
+p.span-instruction {
+  display: flex;
+  color: $primary;
+  margin-right: 1%;
+  margin-bottom: 0;
+}
+
+p.span-sign-up{
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
 
 #body-index {
   border: solid 2px $secondary;
@@ -233,7 +265,5 @@ button {
   padding: 5px;
 }
 
-.span-instruction {
-  color: $primary;
-}
+
 </style>

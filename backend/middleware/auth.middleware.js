@@ -3,6 +3,7 @@ const UserModel = require('../models/user.model');
 
 const durationTokenLogout = 1
 
+
 exports.checkUser = ( req,res,next)=>{
 const token = req.params.jwt;
 if(token){
@@ -30,10 +31,10 @@ exports.requireAuth = (req,res,next)=>{
    if (token){
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken)=>{
         if(err){
-            console.log(err);
+            return res.status(401).send('token not found');
         }else{
-            console.log(decodedToken.id);
-            next()
+            req.user = decodedToken.id;
+            next();
         }
     })
    }else{
@@ -41,3 +42,19 @@ exports.requireAuth = (req,res,next)=>{
     res.status(400).json('token not found')
    }
 };
+
+
+exports.authUser = (req, res ,next) =>{
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(!token) {
+        return res.status(401).send('token not found');
+    }
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+        if(err) {
+            return res.status(401).send('invalid token')
+        }
+        req.user = user;
+        next();
+    });
+}
