@@ -46,19 +46,21 @@ employeeSchema.pre("save", async function (next) {
   this.badge = await bcrypt.hash(this.badge, salt);
   next();
 });
-employeeSchema.statics.login = async function (email, badge, password) {
-  const user = await this.find({ email, badge});
-  if (user) {
-    const auth = await bcrypt.compare(
-      (password, user.password) && (badge, user.badge)
-    );
-    if (auth) {
-      return user;
-    }
-    throw Error("test password accée refusé  ");
-  }
-  throw Error("test email accée refusé ");
-};
 
 const EmployeesModel = mongoose.model("employee", employeeSchema);
 module.exports = EmployeesModel;
+
+
+// employeeSchema.statics.login = async function (email, badge, password) {
+//   const user = await this.find({ email, badge});
+//   if (user) {
+//     const auth = await bcrypt.compare(
+//       (password, user.password) && (badge, user.badge)
+//     );
+//     if (auth) {
+//       return user;
+//     }
+//     throw Error("test password accée refusé  ");
+//   }
+//   throw Error("test email accée refusé ");
+// };

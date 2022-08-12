@@ -57,7 +57,28 @@ console.log(req.body);
 
 
 
-// signin end point \\
+// signin end point cookie jwt \\
+
+// exports.signIn = async (req, res) => {
+//   const { email, badge, password } = req.body;
+//   try {
+//     const user = await UserModel.login(email, badge, password);
+//     const token = createToken(user._id);
+//     // jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60),})
+//     res.cookie("jwt", token, {
+//       session: false,
+//       maxAge: durationTokenLogin,
+//       httpOnly: true,
+//     });
+//     res.status(200).json({ user: user._id });
+//   } catch (err) {
+//     const errors = signInErrors(err);
+//     res.status(401).json({ errors });
+//   }
+// };
+
+
+// signin end point header jwt \\
 
 exports.signIn = async (req, res) => {
   const { email, badge, password } = req.body;
