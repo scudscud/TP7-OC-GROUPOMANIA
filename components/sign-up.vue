@@ -184,6 +184,12 @@ export default {
   methods:{
    
     loginInfo() {
+      
+      if(this.psw != this.pswcom){  alert('Veuillez vérifier votre mot de passe')   
+      return false  
+
+      }else{
+
       axios.post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,
           lastname: this.lastname,
@@ -192,16 +198,17 @@ export default {
           password: this.psw,
         })
         .then(res => {res.status(201).json('compte creer ')
-         
+            window.location.href = "./index"
         },
-              window.location.href = "./index",
+            
         )
-        .catch(error => { this.error = error.response.data.error,
-          this.$refs.formsignup.reset()
+        .catch(error => { 
+            this.error = error.response.data.error,
+            this.$refs.formsignup.reset()
           }
         );
-    },
-  
+    }
+  }
       //    testpsw(){
       //     // a = this.psw
       //     console.log(this.badge);
