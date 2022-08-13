@@ -12,7 +12,7 @@
         <v-card class="cont-card">
           <v-col id="logo-form2" cols="12" sm="12" md="12">
             <v-card-text>
-              <form class="form-container" @submit.prevent ref="formsignup">
+              <form @submit.prevent class="form-container" ref="formsignup">
                 <!-- <label for="avatar">
                   <h2 class="titleh2">Votre photo / avatar</h2>
                 </label>
@@ -122,6 +122,7 @@
                     </p>
                 </label>
                 <input
+                 v-model="check"
                   class="form-input-check"
                   type="checkbox"
                   name="condition"
@@ -131,7 +132,10 @@
                 <div id="error" >{{error}}</div>
                 <div id="success" >{{success}}</div>
                 <v-spacer />
-                <button @click="loginInfo"  type="submit" class="btn" >
+                <button 
+                 @click="loginInfo"
+                 :disabled="validatedForm"
+                 type="submit" class="btn" >
                   <h2 class="h2-form">Inscritpion</h2>
                 </button>
                 &nbsp
@@ -159,7 +163,6 @@
 
 <script>
 import axios from "axios";
-
 import TermOfUse from "./term-of-use.vue";
 
 
@@ -172,28 +175,39 @@ export default {
   // },
       data() {
     return {
-      success:'',
-          error:'',
-          firstname:'',
-          lastname: '',
-          email:'',
-          password:'',
-      testpsw:true,
+    
+     
+      // testpsw:true,
       termofuse: false,
+      success:'',
+      error:'',
+      firstname:'',
+      lastname: '',
+      email:'',
+      password:'',
       psw: '',
       pswcom:'',
       badge:'',
+    check:'',
       }
 },
+computed:{
+validatedForm(){ 
+  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" ){
+    return false
+  }else{
+    return true
+  }}
+},
+
   methods:{
-    togglePasswordVisibility () {
-			this.passwordVisible = !this.passwordVisible
-		}	,
     loginInfo() {
       if(this.psw != this.pswcom){ 
-        alert('Veuillez vérifier votre mot de passe')   
+        this.error = 'Veuillez vérifier votre mot de passe'
+        // alert('Veuillez vérifier votre mot de passe')   
       return false 
-      }else{
+      }
+        
       axios.post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,
           lastname: this.lastname,
@@ -201,16 +215,18 @@ export default {
           email: this.email,
           password: this.psw,
         })
-        .then(res => {res.status(201).json('compte creer ')},
-         this.success = 'Compte creer avec succée, Bienvenue',
+        .then(
+          res => {res.status(201).json('compte creer ')
+           this.success = 'Compte creer avec succée, Bienvenue',
           setTimeout(()=>{
-            window.location.href = "./index"},3000) 
+            window.location.href = "./index"},3000) },
+        
         )
         .catch(error => { 
             this.error = error.response.data.error,
             this.$refs.formsignup.reset()
-          });
-      }
+          })
+      
     }
   },
   
