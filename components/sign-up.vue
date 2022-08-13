@@ -110,6 +110,8 @@
                   value=""
                   required
                 />
+
+                
                 <v-spacer />
                   
                 <div class="check-box">
@@ -127,6 +129,7 @@
                 /> 
                 </div>
                 <div id="error" >{{error}}</div>
+                <div id="success" >{{success}}</div>
                 <v-spacer />
                 <button @click="loginInfo"  type="submit" class="btn" >
                   <h2 class="h2-form">Inscritpion</h2>
@@ -169,6 +172,7 @@ export default {
   // },
       data() {
     return {
+      success:'',
           error:'',
           firstname:'',
           lastname: '',
@@ -182,14 +186,14 @@ export default {
       }
 },
   methods:{
-   
+    togglePasswordVisibility () {
+			this.passwordVisible = !this.passwordVisible
+		}	,
     loginInfo() {
-      
-      if(this.psw != this.pswcom){  alert('Veuillez vérifier votre mot de passe')   
-      return false  
-
+      if(this.psw != this.pswcom){ 
+        alert('Veuillez vérifier votre mot de passe')   
+      return false 
       }else{
-
       axios.post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,
           lastname: this.lastname,
@@ -197,38 +201,18 @@ export default {
           email: this.email,
           password: this.psw,
         })
-        .then(res => {res.status(201).json('compte creer ')
-            window.location.href = "./index"
-        },
-            
+        .then(res => {res.status(201).json('compte creer ')},
+         this.success = 'Compte creer avec succée, Bienvenue',
+          setTimeout(()=>{
+            window.location.href = "./index"},3000) 
         )
         .catch(error => { 
             this.error = error.response.data.error,
             this.$refs.formsignup.reset()
-          }
-        );
+          });
+      }
     }
-  }
-      //    testpsw(){
-      //     // a = this.psw
-      //     console.log(this.badge);
-      //     console.log(this.pswcom);
-      //     console.log(this.psw);
-      //  a = document.getElementById('psw').value
-      //  b = document.getElementById('pswcom').value
-      //     // console.log(a);
-      //     // console.log(b);
-      //   if (a != b){
-      //     // console.log(this.pswcom);
-      //     // console.log(this.psw);
-      //     alert('pas ok')
-      //     return false
-      //   }else{
-      //     alert('ok ')
-      //     return true
-      //   }
-      // }
-    },
+  },
   
 
 
@@ -422,6 +406,10 @@ img.form-avatar-dl {
 
 #error{
   color: $primary;
+}
+
+#success{
+  color: green;
 }
 
 

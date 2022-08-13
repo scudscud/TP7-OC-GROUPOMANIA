@@ -5,7 +5,7 @@ exports.signUpErrors = (err) => {
   if (err.message.includes("lastname")) errors.lastname = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.message.includes("firstname"))
-  errors.firstName= "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
+  errors.firstname= "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
   if (err.message.includes("email")) errors.email = "veuillez vérifié vos données ,si le probleme persiste contactez un administrateur groupomania ";
 
