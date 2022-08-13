@@ -9,8 +9,8 @@ const { multerErrors } = require("../utils/errors.utils");
 router.get('/', postController.readPost);
 router.put('/:id',authUser, postController.updatePost);
 router.delete('/:id',authUser, postController.deletePost);
-router.patch('/like-post/:id', postController.likePost);
-router.patch('/unlike-post/:id', postController.unLikePost);
+router.patch('/like-post/:id',authUser, postController.likePost);
+router.patch('/unlike-post/:id',authUser, postController.unLikePost);
 
 // router post + multer errors \\
 
@@ -21,6 +21,7 @@ router.post('/', authUser, (req, res, next) => {
         const errors = multerErrors(err);
         res.status(400).json({ errors });
       } else {
+        console.log(req.user);
         next();
       }
     });

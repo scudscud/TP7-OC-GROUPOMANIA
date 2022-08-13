@@ -19,7 +19,8 @@ const corsOptions = {
   origin: process.env.CLIENT_URL,
   Credentials: true,
   allowedHeaders: ["sessionId", "Content-type"],
-  exposeHeaders: ["sessionId"],
+  // exposeHeaders: ["sessionId"],
+  exposeHeaders:["*"] ,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
 };
@@ -33,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //jwt check user id \\
-app.get("*", checkUser,(req,res)=>{res.send(req.user)});
+app.get(".*", checkUser,(req,res)=>{res.send(req.user)});
 app.get("/jwtid", requireAuth, (req,res)=>{res.send(req.user)});
 app.get('/me',authUser,(req,res)=>{res.send(req.user)});
 
@@ -48,4 +49,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 app.listen(process.env.PORT, (port) =>
   console.log(`listening on port ${process.env.PORT}`)
 );
+
+// ===============ROUTE checkuser===============================================================================\\
 

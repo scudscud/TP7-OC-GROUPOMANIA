@@ -1,6 +1,6 @@
 <template>
     
-  <div class="overlay">
+  <div id='test' class="overlay">
     <div>
         <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
       </div>
@@ -12,8 +12,8 @@
         <v-card class="cont-card">
           <v-col id="logo-form2" cols="12" sm="12" md="12">
             <v-card-text>
-              <form class="form-container" method="post">
-                <label for="avatar">
+              <form class="form-container" @submit.prevent ref="formsignup">
+                <!-- <label for="avatar">
                   <h2 class="titleh2">Votre photo / avatar</h2>
                 </label>
                 <img class="form-avatar-dl" src="../logo/avatar1.png" />
@@ -24,12 +24,14 @@
                   name="avatar"
                   placeholder="votre photo/avatar"
                 />
-                <v-spacer />
+                <v-spacer /> -->
+                
                 <label for="nom">
                   <h2 class="titleh2">Nom</h2>
                 </label>
                 <v-spacer />
                 <input
+                v-model="lastname"
                   class="form-input"
                   type="text"
                   value=""
@@ -43,6 +45,7 @@
                 </label>
                 <v-spacer />
                 <input
+                 v-model="firstname"
                   class="form-input"
                   type="text"
                   placeholder="prenom"
@@ -55,9 +58,10 @@
                 </label>
                 <v-spacer />
                 <input
+                 v-model="email"
                   class="form-input"
                   type="text"
-                  value="@groupomania.fr"
+                  placeholder="nom.prenom@groupomania.fr"
                   name="email"
                   required
                 />
@@ -68,6 +72,7 @@
                 </label>
                 <v-spacer />
                 <input
+                v-model="badge"
                   class="form-input"
                   type="text"
                   placeholder="N° de badge"
@@ -75,31 +80,34 @@
                   required
                 />
                 <v-spacer />
-                <label for="psw">
+                <label for="pass">
                   <h2 class="titleh2">
                     Mot de passe Groupomania-socialnetwork
                   </h2>
                 </label>
-                <v-spacer />
-                <input v-model="psw"
-                 @change="testpsw"
+            
+                <input 
+                  id="pass"
+                  v-model="psw"
+                  name="pass"
                   class="form-input "
                   type="password"
                   placeholder="Votre mot de passe"
-                  name="psw"
+                  value=""
                   required
                 />
                 <v-spacer />
-                <label for="psw-com">
+                <label for="passcom">
                   <h2 class="titleh2">Comfirmer votre mot de passe</h2>
                 </label>
-                <v-spacer />
-                <input   v-model="pswcom"  @change="testpsw"
-            
+                <input 
+                id="passcom"
+                  v-model="pswcom"
+                  name="passcom"
                   class="form-input "
                   type="password"
                   placeholder="Comfirmer votre mot de passe"
-                  name="pswcom"
+                  value=""
                   required
                 />
                 <v-spacer />
@@ -117,9 +125,10 @@
                   name="condition"
                   required
                 /> 
-              </div>
+                </div>
+                <div id="error" >{{error}}</div>
                 <v-spacer />
-                <button  type="submit" class="btn" >
+                <button @click="loginInfo"  type="submit" class="btn" >
                   <h2 class="h2-form">Inscritpion</h2>
                 </button>
                 &nbsp
@@ -127,7 +136,7 @@
                   <h2 class="h2-form">Annuler</h2>
                 </button>
               </form>
-                      
+              
               <button id="form-span2">
                 <button
                   class="btn"
@@ -137,7 +146,6 @@
                   retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon>
                 </button>
               </button>
-              <!-- </div> -->
             </v-card-text>
           </v-col>
         </v-card>
@@ -147,56 +155,78 @@
 </template>
 
 <script>
+import axios from "axios";
 
 import TermOfUse from "./term-of-use.vue";
 
+
 export default {
- 
-  name: "IndexPage",
+  name: "test",
   components: { TermOfUse},
-  data() {
+  // props:{
+  //   psw:"",
+  //   pswcom:""
+  // },
+      data() {
     return {
-      testpsw: true,
+          error:'',
+          firstname:'',
+          lastname: '',
+          email:'',
+          password:'',
+      testpsw:true,
       termofuse: false,
       psw: '',
       pswcom:'',
-    
-
-    methods : {
-
-       testpsw: function(){
-        console.log(this.psw);
-        console.log(this.pswcom);
-        if (this.psw != this.pswcom){
-       alert('erreur'); 
-        }else{
-          alert('ok')
-         
-        }
+      badge:'',
       }
-    
-
-  //   testpsw(){
-  //  a = document.getElementById(psw-1).value;
-  //   b = document.getElementById(psw-2).value;
-  //   if( a != b){
-  //   alert('erreur')
-
-  //   }else{
-  //     alert('ok ')
-  //   }
-  //   }
-
-
+},
+  methods:{
+   
+    loginInfo() {
+      axios.post("http://localhost:5000/api/user/register", {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          badge: this.badge,
+          email: this.email,
+          password: this.psw,
+        })
+        .then(res => {res.status(201).json('compte creer ')
+         
+        },
+              window.location.href = "./index",
+        )
+        .catch(error => { this.error = error.response.data.error,
+          this.$refs.formsignup.reset()
+          }
+        );
     },
-  }
+  
+      //    testpsw(){
+      //     // a = this.psw
+      //     console.log(this.badge);
+      //     console.log(this.pswcom);
+      //     console.log(this.psw);
+      //  a = document.getElementById('psw').value
+      //  b = document.getElementById('pswcom').value
+      //     // console.log(a);
+      //     // console.log(b);
+      //   if (a != b){
+      //     // console.log(this.pswcom);
+      //     // console.log(this.psw);
+      //     alert('pas ok')
+      //     return false
+      //   }else{
+      //     alert('ok ')
+      //     return true
+      //   }
+      // }
+    },
+  
+
 
 }
-}
-
-
-
-
+// console.log(this.psw);
 </script>
 
 <style lang="scss">
@@ -382,4 +412,10 @@ img.form-avatar-dl {
 .h2-form {
   padding: 5px;
 }
+
+#error{
+  color: $primary;
+}
+
+
 </style>

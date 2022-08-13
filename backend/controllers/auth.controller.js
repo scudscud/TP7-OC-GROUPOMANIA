@@ -15,17 +15,7 @@ const createToken = (id) => {
   });
 };
 
-// const createToken = (id) => {
-//   return jwt.sign({ id }, process.env.TOKEN_SECRET, {
-//         expiresIn: "1d",
-//       })
-// }
-
-
-
 // signup end point \\
-
-
 
 exports.signUp = async (req, res, next) => {
   // console.log(req.body);
@@ -52,40 +42,16 @@ console.log(req.body);
     const errors = signUpErrors(err);
     res.status(400).send(errors);
   })
-         
 };
 
 
-
 // signin end point cookie jwt \\
-
-// exports.signIn = async (req, res) => {
-//   const { email, badge, password } = req.body;
-//   try {
-//     const user = await UserModel.login(email, badge, password);
-//     const token = createToken(user._id);
-//     // jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60),})
-//     res.cookie("jwt", token, {
-//       session: false,
-//       maxAge: durationTokenLogin,
-//       httpOnly: true,
-//     });
-//     res.status(200).json({ user: user._id });
-//   } catch (err) {
-//     const errors = signInErrors(err);
-//     res.status(401).json({ errors });
-//   }
-// };
-
-
-// signin end point header jwt \\
 
 exports.signIn = async (req, res) => {
   const { email, badge, password } = req.body;
   try {
     const user = await UserModel.login(email, badge, password);
     const token = createToken(user._id);
-    // jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60),})
     res.cookie("jwt", token, {
       session: false,
       maxAge: durationTokenLogin,
@@ -98,6 +64,21 @@ exports.signIn = async (req, res) => {
   }
 };
 
+
+// signin end point header jwt \\
+
+// exports.signIn = async (req, res) => {
+//   const { email, badge, password } = req.body;
+//   try {
+//     const user = await UserModel.login(email, badge, password);
+//     const token = createToken(user._id);
+//     res.status(200).json({ user: user._id, token});
+//   } catch (err) {
+//     const errors = signInErrors(err);
+//     res.status(401).json({ errors });
+//   }
+// };
+
 // logout end point \\
 
 exports.logout = (req, res) => {
@@ -105,6 +86,12 @@ exports.logout = (req, res) => {
   res.redirect("./");
 };
 
+
+
+
+//----------------------------------------end---------------------------------------------------------------------------------------\\
+
+//========================================================Code test or futur features=======================================================\\
 
 //_______________find and update ok ------------------------------\\\\\\\\\\\
 

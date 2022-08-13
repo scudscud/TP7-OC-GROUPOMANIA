@@ -17,6 +17,7 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
+  console.log(req.user);
   const newPost = new PostModel({
     posterId: req.body.posterId,
     message: req.body.message,
