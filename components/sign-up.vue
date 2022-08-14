@@ -129,19 +129,21 @@
                   required
                 /> 
                 </div>
-                <div id="error" >{{error}}</div>
-                <div id="success" >{{success}}</div>
+                <div class="errormsg" v-if="validatesForm=true"><span >{{formfull}}</span></div> 
+                 <div v-else  ><span >{{formfull}}</span></div> 
+                <div class="errormsg" >{{infomsg}}</div>
+                <div class="successmsg" >{{successreg}}</div>
                 <v-spacer />
                 <button 
                  @click="loginInfo"
                  :disabled="validatedForm"
-                 type="submit" class="btn" >
-                  <h2 class="h2-form">Inscritpion</h2>
+                 type="submit" class="btn-valid" >
+                  <h2 >Inscritpion</h2>
                 </button>
-                &nbsp
+                <!-- &nbsp
                 <button href="./index.vue" class="btn cancel">
                   <h2 class="h2-form">Annuler</h2>
-                </button>
+                </button> -->
               </form>
               
               <button id="form-span2">
@@ -179,8 +181,9 @@ export default {
      
       // testpsw:true,
       termofuse: false,
-      success:'',
-      error:'',
+      successreg:'',
+      infomsg:'',
+      formfull:'',
       firstname:'',
       lastname: '',
       email:'',
@@ -188,50 +191,56 @@ export default {
       psw: '',
       pswcom:'',
       badge:'',
-    check:'',
+      check:'',
       }
 },
 computed:{
 validatedForm(){ 
-  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" ){
+  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" && this.check != false){
+  this.formfull = ''
     return false
   }else{
+  
+    this.formfull = 'Veuillez completer le formulaire'
+
     return true
   }}
 },
 
   methods:{
-    loginInfo() {
+
+
+    async loginInfo()  {
       if(this.psw != this.pswcom){ 
-        this.error = 'Veuillez vérifier votre mot de passe'
+        this.infomsg = 'Veuillez vérifier votre mot de passe'
         // alert('Veuillez vérifier votre mot de passe')   
       return false 
       }
         
-      axios.post("http://localhost:5000/api/user/register", {
+      await axios.post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,
           lastname: this.lastname,
           badge: this.badge,
           email: this.email,
           password: this.psw,
-        })
-        .then(
-          res => {res.status(201).json('compte creer ')
-           this.success = 'Compte creer avec succée, Bienvenue',
-          setTimeout(()=>{
-            window.location.href = "./index"},3000) },
+        }).then(() => {
+          this.successreg = 'Compte creer avec succée, Bienvenue'
         
-        )
-        .catch(error => { 
-            this.error = error.response.data.error,
-            this.$refs.formsignup.reset()
+                 setTimeout(()=>{
+            window.location.href = "./index"},3000) 
+          }
+
+        ).catch((error) => { 
+            this.infomsg = error.response.data.error
+          
           })
-      
-    }
-  },
   
+      
+  }
+ 
 
 
+}
 }
 // console.log(this.psw);
 </script>
@@ -345,6 +354,28 @@ align-items: baseline;
   color: $tertiary;
 }
 
+.btn-valid:disabled {
+    margin-top: 20px;
+  border: solid 2px $secondary;
+  background: #ccc;
+ &:hover{
+   background: #ccc;
+   color:red
+ }
+ }
+
+ .btn-valid{
+    margin-top: 20px;
+    border: solid 2px $secondary;
+  &:hover{
+background-color: $secondary;
+  color: $tertiary;
+}
+ }
+
+
+
+
 div.logo {
   flex-direction: row;
   flex-wrap: nowrap;
@@ -420,12 +451,18 @@ img.form-avatar-dl {
   padding: 5px;
 }
 
-#error{
-  color: $primary;
+.errormsg{
+  
+ color: red
 }
 
-#success{
+ .successmsg{
   color: green;
+}
+
+.disabled{
+
+  color: red;
 }
 
 
