@@ -84,8 +84,9 @@
                   <h2 class="titleh2">
                     Mot de passe Groupomania-socialnetwork
                   </h2>
-                </label>
             
+                </label>
+                
                 <input 
                   id="pass"
                   v-model="psw"
@@ -96,13 +97,15 @@
                   value=""
                   required
                 />
+                  <div class="rules" ><div class="rulespan"  v-for='error in passwordValidation.errors'>{{error}}</div></div>
                 <v-spacer />
                 <label for="passcom">
                   <h2 class="titleh2">Comfirmer votre mot de passe</h2>
                 </label>
                 <input 
                 id="passcom"
-                  v-model="pswcom"
+                  v-model.lazy="pswcom" 
+                :disabled="!passwordValidation.valid"
                   name="passcom"
                   class="form-input "
                   type="password"
@@ -133,6 +136,7 @@
                  <div v-else  ><span >{{formfull}}</span></div> 
                 <div class="errormsg" >{{infomsg}}</div>
                 <div class="successmsg" >{{successreg}}</div>
+                
                 <v-spacer />
                 <button 
                  @click="loginInfo"
@@ -177,9 +181,17 @@ export default {
   // },
       data() {
     return {
-    
+    rules: [
+        { message:"le mot de passe doit contenir : 1 chiffre,", regex:/[0-9]+/ },
+				{ message:'1 miniscule,', regex:/[a-z]+/ },
+				{ message:"1 majuscule,",  regex:/[A-Z]+/ },
+				{ message:"8 caracteres minimun", regex:/.{8,}/ },
+				
+			],
+
      
       // testpsw:true,
+      // passwordValidation.valid :false,
       termofuse: false,
       successreg:'',
       infomsg:'',
@@ -195,8 +207,25 @@ export default {
       }
 },
 computed:{
+
+passwordValidation () {
+			let errors = []
+			for (let condition of this.rules) {
+				if (!condition.regex.test(this.psw)) {
+					errors.push(condition.message)
+				}
+			}
+			if (errors.length != 0) {
+			return {valid:false ,errors }
+			} 
+      
+      else {
+				return {valid:true, errors}
+			}
+		},
+
 validatedForm(){ 
-  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" && this.check != false){
+  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" && this.check != false ){
   this.formfull = ''
     return false
   }else{
@@ -211,9 +240,8 @@ validatedForm(){
 
 
     async loginInfo()  {
-      if(this.psw != this.pswcom){ 
-        this.infomsg = 'Veuillez vérifier votre mot de passe'
-        // alert('Veuillez vérifier votre mot de passe')   
+      if(this.psw != this.pswcom ){ 
+        this.infomsg = 'Veuillez vérifier votre mot de passe' 
       return false 
       }
         
@@ -262,6 +290,19 @@ validatedForm(){
   background-color: rgba(0, 0, 0, 0.7);
   transition: opacity 0.4s;
   z-index: 100;
+}
+
+.rules{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+  padding-right: 1%;
+}
+
+.rulespan{
+  padding-right: 3px;
 }
 
 div.overlaybis {
@@ -373,9 +414,6 @@ background-color: $secondary;
 }
  }
 
-
-
-
 div.logo {
   flex-direction: row;
   flex-wrap: nowrap;
@@ -406,9 +444,6 @@ div.v-card__text {
   padding-top: 0;
 }
 
-input {
-  color: black;
-}
 
 #logo-form {
   border-radius: 0%;
@@ -433,15 +468,16 @@ img.form-avatar-dl {
   border-radius: 50%;
 }
 
-.form-input {
+input.form-input {
   justify-content: center;
   align-items: center;
   padding-left: 1%;
   border: solid 1px $secondary;
+  background-color: rgb(35, 143, 172);
   font-size: 1em;
-  color: $secondary;
   width: 70%;
   height: 80%;
+  color:black;
 }
 
 .form-place {
