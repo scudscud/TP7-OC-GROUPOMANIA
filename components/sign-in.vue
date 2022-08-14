@@ -10,7 +10,7 @@
         class="logo py-4 d-flex justify-center align-center"
       >
         <h2 class="h2-sign-in">
-          <button @click.stop="$emit('close-modale')" class="btn-login">
+          <button class="btn-login">
             connexion
           </button>
         </h2>
@@ -68,6 +68,7 @@
                 <div class="errormsg">{{ infomsg }}</div>
                 <div class="successmsg">{{ successreg }}</div>
                 <button
+                
                   class="btn-valid"
                   @click="verifyUser"
                   :disabled="validatedForm"
@@ -114,7 +115,7 @@ export default {
           this.successreg = "Connexion reussit, Bienvenue";
           this.show = false;
           setTimeout(() => {
-            window.location.href = "./post";
+            this.$emit('close-modale', true)
           }, 1000);
         })
         .catch((error) => {
