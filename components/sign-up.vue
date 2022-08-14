@@ -329,9 +329,19 @@ div.overlaybis {
   // background-color: #fff;
 }
 
-input {
-  width: 50%;
-  height: 2.5rem;
+
+input.form-input {
+  justify-content: center;
+  align-items: center;
+  padding-left: 1%;
+  border-radius: 5%;
+  border: solid 3px $secondary;
+  background-color: rgb(35, 143, 172);
+  font-size: 1em;
+  width: 55%;
+  height: 80%;
+  color:black;
+  
 }
 
 button {
@@ -468,17 +478,6 @@ img.form-avatar-dl {
   border-radius: 50%;
 }
 
-input.form-input {
-  justify-content: center;
-  align-items: center;
-  padding-left: 1%;
-  border: solid 1px $secondary;
-  background-color: rgb(35, 143, 172);
-  font-size: 1em;
-  width: 70%;
-  height: 80%;
-  color:black;
-}
 
 .form-place {
   padding-left: 5%;
