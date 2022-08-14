@@ -1,9 +1,8 @@
 <template>
-    
-  <div id='test' class="overlay">
+  <div id="test" class="overlay">
     <div>
-        <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
-      </div>
+      <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
+    </div>
     <v-col class="d-flex justify-center align-center overlaybis">
       <v-col class="form-sign">
         <v-card id="logo-form" class="logo py-4 d-flex justify-center"
@@ -25,13 +24,13 @@
                   placeholder="votre photo/avatar"
                 />
                 <v-spacer /> -->
-                
+
                 <label for="nom">
                   <h2 class="titleh2">Nom</h2>
                 </label>
                 <v-spacer />
                 <input
-                v-model="lastname"
+                  v-model="lastname"
                   class="form-input"
                   type="text"
                   value=""
@@ -45,7 +44,7 @@
                 </label>
                 <v-spacer />
                 <input
-                 v-model="firstname"
+                  v-model="firstname"
                   class="form-input"
                   type="text"
                   placeholder="prenom"
@@ -58,7 +57,7 @@
                 </label>
                 <v-spacer />
                 <input
-                 v-model="email"
+                  v-model="email"
                   class="form-input"
                   type="text"
                   placeholder="nom.prenom@groupomania.fr"
@@ -68,11 +67,11 @@
 
                 <v-spacer />
                 <label for="badge">
-                  <h2 class="titleh2 ">Numéro de badge</h2>
+                  <h2 class="titleh2">Numéro de badge</h2>
                 </label>
                 <v-spacer />
                 <input
-                v-model="badge"
+                  v-model="badge"
                   class="form-input"
                   type="text"
                   placeholder="N° de badge"
@@ -84,72 +83,82 @@
                   <h2 class="titleh2">
                     Mot de passe Groupomania-socialnetwork
                   </h2>
-            
                 </label>
-                
-                <input 
+
+                <input
                   id="pass"
                   v-model="psw"
                   name="pass"
-                  class="form-input "
+                  class="form-input"
                   type="password"
                   placeholder="Votre mot de passe"
                   value=""
                   required
                 />
-                  <div class="rules" ><div class="rulespan"  v-for='error in passwordValidation.errors'>{{error}}</div></div>
+                <div class="rules">
+                  <div
+                    class="rulespan"
+                    v-for="error in passwordValidation.errors"
+                  >
+                    {{ error }}
+                  </div>
+                </div>
                 <v-spacer />
                 <label for="passcom">
                   <h2 class="titleh2">Comfirmer votre mot de passe</h2>
                 </label>
-                <input 
-                id="passcom"
-                  v-model.lazy="pswcom" 
-                :disabled="!passwordValidation.valid"
+                <input
+                  id="passcom"
+                  v-model.lazy="pswcom"
+                  :disabled="!passwordValidation.valid"
                   name="passcom"
-                  class="form-input "
+                  class="form-input"
                   type="password"
                   placeholder="Comfirmer votre mot de passe"
                   value=""
                   required
                 />
 
-                
                 <v-spacer />
-                  
+
                 <div class="check-box">
-                <label for="condition">
-                    <p
-                    @click.stop=" termofuse=true"
-                    class="titleh2-check">Veuillez accepter nos condition d'utilisation
+                  <label for="condition">
+                    <p @click.stop="termofuse = true" class="titleh2-check">
+                      Veuillez accepter nos condition d'utilisation
                     </p>
-                </label>
-                <input
-                 v-model="check"
-                  class="form-input-check"
-                  type="checkbox"
-                  name="condition"
-                  required
-                /> 
+                  </label>
+                  <input
+                    v-model="check"
+                    class="form-input-check"
+                    type="checkbox"
+                    name="condition"
+                    required
+                  />
                 </div>
-                <div class="errormsg" v-if="validatesForm=true"><span >{{formfull}}</span></div> 
-                 <div v-else  ><span >{{formfull}}</span></div> 
-                <div class="errormsg" >{{infomsg}}</div>
-                <div class="successmsg" >{{successreg}}</div>
-                
+                <div class="errormsg" v-if="(validatesForm = true)">
+                  <span>{{ formfull }}</span>
+                </div>
+                <div v-else>
+                  <span>{{ formfull }}</span>
+                </div>
+                <div class="errormsg">{{ infomsg }}</div>
+                <div class="successmsg">{{ successreg }}</div>
+
                 <v-spacer />
-                <button 
-                 @click="loginInfo"
-                 :disabled="validatedForm"
-                 type="submit" class="btn-valid" >
-                  <h2 >Inscritpion</h2>
+                <button
+                  @click="loginInfo"
+                  :disabled="validatedForm"
+                  type="submit"
+                  class="btn-valid"
+                >
+                  <h2 class="h2-form">Inscritpion</h2>
                 </button>
                 <!-- &nbsp
                 <button href="./index.vue" class="btn cancel">
                   <h2 class="h2-form">Annuler</h2>
                 </button> -->
               </form>
-              
+
               <button id="form-span2">
                 <button
                   class="btn"
@@ -171,105 +180,103 @@
 import axios from "axios";
 import TermOfUse from "./term-of-use.vue";
 
-
 export default {
   name: "test",
-  components: { TermOfUse},
+  components: { TermOfUse },
   // props:{
   //   psw:"",
   //   pswcom:""
   // },
-      data() {
+  data() {
     return {
-    rules: [
-        { message:"le mot de passe doit contenir : 1 chiffre,", regex:/[0-9]+/ },
-				{ message:'1 miniscule,', regex:/[a-z]+/ },
-				{ message:"1 majuscule,",  regex:/[A-Z]+/ },
-				{ message:"8 caracteres minimun", regex:/.{8,}/ },
-				
-			],
+      rules: [
+        {
+          message: "le mot de passe doit contenir : 1 chiffre,",
+          regex: /[0-9]+/,
+        },
+        { message: "1 miniscule,", regex: /[a-z]+/ },
+        { message: "1 majuscule,", regex: /[A-Z]+/ },
+        { message: "8 caracteres minimun", regex: /.{8,}/ },
+      ],
 
-     
       // testpsw:true,
       // passwordValidation.valid :false,
       termofuse: false,
-      successreg:'',
-      infomsg:'',
-      formfull:'',
-      firstname:'',
-      lastname: '',
-      email:'',
-      password:'',
-      psw: '',
-      pswcom:'',
-      badge:'',
-      check:'',
+      successreg: "",
+      infomsg: "",
+      formfull: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      psw: "",
+      pswcom: "",
+      badge: "",
+      check: "",
+    };
+  },
+  computed: {
+    passwordValidation() {
+      let errors = [];
+      for (let condition of this.rules) {
+        if (!condition.regex.test(this.psw)) {
+          errors.push(condition.message);
+        }
       }
-},
-computed:{
-
-passwordValidation () {
-			let errors = []
-			for (let condition of this.rules) {
-				if (!condition.regex.test(this.psw)) {
-					errors.push(condition.message)
-				}
-			}
-			if (errors.length != 0) {
-			return {valid:false ,errors }
-			} 
-      
-      else {
-				return {valid:true, errors}
-			}
-		},
-
-validatedForm(){ 
-  if(this.firstname !="" && this.lastname !="" && this.badge !="" && this.email != "" && this.psw != "" && this.check != false ){
-  this.formfull = ''
-    return false
-  }else{
-  
-    this.formfull = 'Veuillez completer le formulaire'
-
-    return true
-  }}
-},
-
-  methods:{
-
-
-    async loginInfo()  {
-      if(this.psw != this.pswcom ){ 
-        this.infomsg = 'Veuillez vérifier votre mot de passe' 
-      return false 
+      if (errors.length != 0) {
+        return { valid: false, errors };
+      } else {
+        return { valid: true, errors };
       }
-        
-      await axios.post("http://localhost:5000/api/user/register", {
+    },
+
+    validatedForm() {
+      if (
+        this.firstname != "" &&
+        this.lastname != "" &&
+        this.badge != "" &&
+        this.email != "" &&
+        this.psw != "" &&
+        this.check != false
+      ) {
+        this.formfull = "";
+        return false;
+      } else {
+        this.formfull = "Veuillez completer le formulaire";
+
+        return true;
+      }
+    },
+  },
+
+  methods: {
+    async loginInfo() {
+      if (this.psw != this.pswcom) {
+        this.infomsg = "Veuillez vérifier votre mot de passe";
+        return false;
+      }
+
+      await axios
+        .post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,
           lastname: this.lastname,
           badge: this.badge,
           email: this.email,
           password: this.psw,
-        }).then(() => {
-          this.successreg = 'Compte creer avec succée, Bienvenue'
-        
-                 setTimeout(()=>{
-            window.location.href = "./index"},3000) 
-          }
+        })
+        .then(() => {
+          this.successreg = "Compte creer avec succée, Bienvenue";
 
-        ).catch((error) => { 
-            this.infomsg = error.response.data.error
-          
-          })
-  
-      
-  }
- 
-
-
-}
-}
+          setTimeout(() => {
+            window.location.href = "./index";
+          }, 3000);
+        })
+        .catch((error) => {
+          this.infomsg = error.response.data.error;
+        });
+    },
+  },
+};
 // console.log(this.psw);
 </script>
 
@@ -292,16 +299,16 @@ validatedForm(){
   z-index: 100;
 }
 
-.rules{
+.rules {
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   padding-right: 1%;
 }
 
-.rulespan{
+.rulespan {
   padding-right: 3px;
 }
 
@@ -329,7 +336,6 @@ div.overlaybis {
   // background-color: #fff;
 }
 
-
 input.form-input {
   justify-content: center;
   align-items: center;
@@ -340,8 +346,7 @@ input.form-input {
   font-size: 1em;
   width: 55%;
   height: 80%;
-  color:black;
-  
+  color: black;
 }
 
 button {
@@ -360,7 +365,7 @@ h1 {
 .check-box {
   display: flex;
   justify-content: center;
-align-items: baseline;
+  align-items: baseline;
   background-color: $tertiary;
   padding-top: 1%;
 }
@@ -379,10 +384,10 @@ align-items: baseline;
 .titleh2-check {
   color: $secondary;
   // padding-bottom: 0.5rem;
-//  margin-top: 1rem;
+  //  margin-top: 1rem;
   color: $secondary;
 }
-.titleh2-check:hover{
+.titleh2-check:hover {
   color: $primary;
   text-decoration: underline;
   // font-size: 1.001rem;
@@ -405,24 +410,31 @@ align-items: baseline;
   color: $tertiary;
 }
 
+.h2-form {
+  padding: 5px;
+}
+
 .btn-valid:disabled {
-    margin-top: 20px;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-radius: 30%;
+  margin-top: 20px;
   border: solid 2px $secondary;
   background: #ccc;
- &:hover{
-   background: #ccc;
-   color:red
- }
- }
-
- .btn-valid{
-    margin-top: 20px;
-    border: solid 2px $secondary;
-  &:hover{
-background-color: $secondary;
-  color: $tertiary;
+  &:hover {
+    background: #ccc;
+    color: red;
+  }
 }
- }
+
+.btn-valid {
+  margin-top: 20px;
+  border: solid 2px $secondary;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 
 div.logo {
   flex-direction: row;
@@ -454,7 +466,6 @@ div.v-card__text {
   padding-top: 0;
 }
 
-
 #logo-form {
   border-radius: 0%;
   background-color: $tertiary;
@@ -478,7 +489,6 @@ img.form-avatar-dl {
   border-radius: 50%;
 }
 
-
 .form-place {
   padding-left: 5%;
 }
@@ -486,19 +496,15 @@ img.form-avatar-dl {
   padding: 5px;
 }
 
-.errormsg{
-  
- color: red
-}
-
- .successmsg{
-  color: green;
-}
-
-.disabled{
-
+.errormsg {
   color: red;
 }
 
+.successmsg {
+  color: green;
+}
 
+.disabled {
+  color: red;
+}
 </style>

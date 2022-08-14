@@ -59,7 +59,7 @@ font-size: 1.3em;
 
 .instruction-term{
     width: 60%;
-    height: 65%;
+    height: 75%;
     border: solid 2px;
     border-radius: 10%;
     padding: 2%;

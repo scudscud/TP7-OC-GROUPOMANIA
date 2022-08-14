@@ -99,16 +99,21 @@ userSchema.statics.login = async function (email, badge, password) {
   const user = await this.findOne({email})
 
   if (user) { 
-  
-    const auth = await bcrypt.compare(password, user.password)
-    && (badge,user.badge)
-    ;
-    if (auth) {
-      return user;
-    }
+    const auth = await bcrypt.compare(password, user.password ) 
+      if (auth) {
+
+      const test= await bcrypt.compare(badge,user.badge)
+       
+      if(test){
+
+        return user
+          }
+          throw Error(
+            "test password accée refusé  ")
+      }
     throw Error(
       "test password accée refusé  "
-    );
+    )
   }
   throw Error(
     "test email accée refusé "

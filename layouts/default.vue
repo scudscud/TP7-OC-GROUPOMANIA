@@ -34,7 +34,7 @@
       >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+        <!-- <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon> -->
       </v-btn>
       <v-spacer />
       <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title
@@ -47,9 +47,9 @@
         ><img class="avatar" src="../logo/avatar1.png" />
         <p class="username">username</p></v-btn
       >
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+      <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-main>
       <v-container>

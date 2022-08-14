@@ -1,43 +1,37 @@
 <template>
   <div class="overlay">
-    <v-col justify="center" align="center">
+    <v-col class="overlaybis" justify="center" align="center">
       <div>
         <SignUp v-show="showSignUp" @close-modal="showSignUp = false" />
-    
       </div>
-      <!-- <v-card class="instruction">
-        <p class="span-instruction">
-          !! vous devez vous inscrire, pour vous connecter la premiere fois >>
-        </p>
-        </v-card> -->
+
       <v-card
         id="header-index"
-        class="logo py-4 d-flex justify-center align-center">
+        class="logo py-4 d-flex justify-center align-center"
+      >
         <h2 class="h2-sign-in">
           <button @click.stop="$emit('close-modale')" class="btn-login">
             connexion
           </button>
         </h2>
         <v-card-text class="sign-up-link">
-          <p class="span-instruction">
-          Vous n'avez pas encore de compte ?</p><p class="span-sign-up" @click.stop="showSignUp = true ">Créer un compte </p>
-      </v-card-text>
-         <!-- <h2>
-          <button class="btn-sign" @click.stop="showSignUp = true ">
-            inscription
-          </button> 
-        </h2>  -->
-        </v-card>
+          <p class="span-instruction">Vous n'avez pas encore de compte ?</p>
+          <p class="span-sign-up" @click.stop="showSignUp = true">
+            Créer un compte
+          </p>
+        </v-card-text>
+      </v-card>
       <v-card id="body-index">
         <v-col cols="12" sm="12" md="12">
           <v-card-text>
             <div class="form-popup" id="popup-Form">
-              <form class="form-container">
+              <form @submit.prevent class="form-container">
                 <label for="email">
-                  <h2>Votre Groupo-Mail</h2>
+                  <h2>Votre mail Groupomania</h2>
                 </label>
                 <v-spacer />
                 <input
+                  v-model="email"
                   class="form-input"
                   type="text"
                   placeholder="Votre Email"
@@ -50,18 +44,20 @@
                 </label>
                 <v-spacer />
                 <input
+                  v-model="badge"
                   class="form-input"
                   type="text"
-                    placeholder="numéro de badge"
+                  placeholder="numéro de badge"
                   name="badge"
                   required
                 />
                 <v-spacer />
                 <label for="psw">
-                  <h2>Mot de passe Groupomania-socialnetwork </h2>
+                  <h2>Mot de passe Groupomania-socialnetwork</h2>
                 </label>
                 <v-spacer />
                 <input
+                  v-model="psw"
                   class="form-input"
                   type="password"
                   placeholder="Votre mot de passe"
@@ -69,12 +65,15 @@
                   required
                 />
                 <v-spacer />
-                <button class="btn">
+                <div class="errormsg">{{ infomsg }}</div>
+                <div class="successmsg">{{ successreg }}</div>
+                <button
+                  class="btn-valid"
+                  @click="verifyUser"
+                  :disabled="validatedForm"
+                  type="submit"
+                >
                   <h2 class="h2-form">Se connecter</h2>
-                </button>
-                /
-                <button type="submit" class="btn cancel">
-                  <h2 class="h2-form">Annuler</h2>
                 </button>
               </form>
             </div>
@@ -86,13 +85,57 @@
 </template>
 
 <script>
+import axios from "axios";
 import SignUp from "./sign-up.vue";
 export default {
   name: "IndexPage",
   components: { SignUp },
+  computed: {
+    validatedForm() {
+      if (this.badge != "" && this.email != "" && this.psw != "") {
+        this.formfull = "";
+        return false;
+      } else {
+        this.formfull = "Veuillez completer le formulaire";
+        return true;
+      }
+    },
+  },
+
+  methods: {
+    async verifyUser() {
+      axios
+        .post("http://localhost:5000/api/user/login", {
+          email: this.email,
+          password: this.psw,
+          badge: this.badge,
+        })
+        .then(() => {
+          this.successreg = "Connexion reussit, Bienvenue";
+          this.show = false;
+          setTimeout(() => {
+            window.location.href = "./post";
+          }, 1000);
+        })
+        .catch((error) => {
+          this.infomsg = error.response.data.errors;
+          setTimeout(() => {
+            this.infomsg = "";
+          }, 3000);
+        });
+    },
+  },
+
   data() {
     return {
+      show: true,
       showSignUp: false,
+      email: "",
+      psw: "",
+      badge: "",
+      successreg: "",
+      infomsg: "",
+      formfull: "",
     };
   },
 };
@@ -126,22 +169,21 @@ export default {
   // white-space: nowrap;
   // overflow: hidden;
   // text-overflow:ellipsis;
-  border: solid 2px $secondary;
+  border: solid 5px $secondary;
   margin-bottom: 2px;
   background: $tertiary;
 }
 
-
-h2.h2-sign-in{
+h2.h2-sign-in {
   padding-bottom: 0.5%;
   padding-top: 0;
 }
 
-.sign-up-link{
+.sign-up-link {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   padding-bottom: 0;
 }
 
@@ -152,18 +194,42 @@ p.span-instruction {
   margin-bottom: 0;
 }
 
-p.span-sign-up{
+p.span-sign-up {
   text-decoration: underline;
   cursor: pointer;
   margin-bottom: 0;
 }
-
-
 #body-index {
-  border: solid 2px $secondary;
+  border: solid 5px $secondary;
   background: $tertiary;
 }
 
+.btn-valid:disabled {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-radius: 30%;
+  margin-top: 20px;
+  border: solid 2px $secondary;
+  background: #ccc;
+  &:hover {
+    cursor: none;
+    background: #ccc;
+    color: red;
+  }
+}
+
+.btn-valid {
+  height: 50px;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-radius: 30%;
+  margin-top: 20px;
+  border: solid 2px $secondary;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 .btn-login {
   display: flex;
   justify-content: center;
@@ -184,27 +250,52 @@ p.span-sign-up{
   color: $tertiary;
 }
 
-.btn-sign {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 30%;
-  margin-left: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-  text-decoration: none;
-  color: white;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-  cursor: pointer;
+h2 {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 }
 
-.btn-sign:hover {
-  background-color: $secondary;
-  color: $tertiary;
+// .h2-form:hover {
+//   background-color: $secondary;
+//   color: $tertiary;
+// }
+
+.form-input {
+  border: solid 2px $secondary;
+  font-size: 1.5em;
+  color: $secondary;
 }
+
+input {
+  width: 50%;
+  height: 2.5rem;
+}
+
+.h2-form {
+  padding: 5px;
+}
+
+// .btn-sign {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border: solid 2px $secondary;
+//   border-radius: 30%;
+//   margin-left: 10px;
+//   padding-left: 5px;
+//   padding-right: 5px;
+//   text-decoration: none;
+//   color: white;
+//   // white-space: nowrap;
+//   // overflow: hidden;
+//   // text-overflow: ellipsis;
+//   cursor: pointer;
+// }
+
+// .btn-sign:hover {
+//   background-color: $secondary;
+//   color: $tertiary;
+// }
 
 // h1{
 // display: flex;
@@ -224,46 +315,4 @@ p.span-sign-up{
 //   flex-wrap:wrap;
 
 // }
-
-h2 {
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-}
-
-.h2-form:hover {
-  background-color: $secondary;
-  color: $tertiary;
-}
-
-.form-input {
-  border: solid 2px $secondary;
-  font-size: 1.5em;
-  color: $secondary;
-}
-
-input {
-  width: 50%;
-  height: 2.5rem;
-}
-
-button {
-  padding-right: 1rem;
-  padding-left: 1rem;
-  border-radius: 30%;
-}
-
-// .btn{
-// border: solid 2px $secondary;
-// margin-top: 20px
-// }
-// .btn:hover{
-// background-color: $secondary;
-// color:$tertiary;
-// }
-
-.h2-form {
-  padding: 5px;
-}
-
-
 </style>
