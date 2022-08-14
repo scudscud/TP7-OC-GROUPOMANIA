@@ -190,10 +190,7 @@ export default {
   data() {
     return {
       rules: [
-        {
-          message: "le mot de passe doit contenir : 1 chiffre,",
-          regex: /[0-9]+/,
-        },
+        { message: "le mot de passe doit contenir : 1 chiffre,",regex: /[0-9]+/,},
         { message: "1 miniscule,", regex: /[a-z]+/ },
         { message: "1 majuscule,", regex: /[A-Z]+/ },
         { message: "8 caracteres minimun", regex: /.{8,}/ },
@@ -273,6 +270,9 @@ export default {
         })
         .catch((error) => {
           this.infomsg = error.response.data.error;
+            setTimeout(() => {
+            this.infomsg = "";
+          }, 3000);
         });
     },
   },
