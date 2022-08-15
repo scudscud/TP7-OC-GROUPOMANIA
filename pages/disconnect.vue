@@ -2,10 +2,11 @@
 
 <v-col class="overlay d-flex  justify-center align-center">
 <v-card class="popup">
-  <p>test deco</p>
-<v-btn type=text href="./">test</v-btn>
-
-
+  <p> 😭 Vous-êtes sur de vouloir partir ?  😭 </p>
+  <p>si tel est votre choix ...</p>
+    <p>à bientôt ☺️ </p>
+<p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
+<v-btn id="btn-deco" type=text href="./">Deconnexion</v-btn>
 </v-card>
 </v-col>
 </template>
@@ -17,7 +18,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
  .overlay {
   /* display: flex;
   justify-content: center; */
@@ -35,4 +36,31 @@ transition: opacity 0.4s;
 z-index: 1000;
  };
 
+.popup{
+  padding-bottom: 1%;
+  padding-top: 1%;
+  background-color: $secondary;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-disconnect{
+display: flex;
+
+}
+
+#btn-deco{
+ 
+background-color: $primary;
+width: 35%;
+justify-content: center;
+align-items: center;
+&:hover{
+  background-color: $tertiary;
+  color: $primary;
+}
+}
 </style>
