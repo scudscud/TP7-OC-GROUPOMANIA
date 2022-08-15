@@ -65,6 +65,16 @@ exports.signIn = async (req, res) => {
 };
 
 
+// logout end point \\
+
+exports.logout = (req, res) => {
+  res.cookie("jwt", "", { session: false, maxAge: durationTokenLogin });
+  res.redirect("./");
+};
+
+
+
+
 // signin end point header jwt \\
 
 // exports.signIn = async (req, res) => {
@@ -79,12 +89,6 @@ exports.signIn = async (req, res) => {
 //   }
 // };
 
-// logout end point \\
-
-exports.logout = (req, res) => {
-  res.cookie("jwt", "", { session: false, maxAge: durationTokenLogin });
-  res.redirect("./");
-};
 
 
 

@@ -23,8 +23,9 @@
 <!-- 
         <div id="display-image">{{ picutername }}</div> -->
       </div>
-      <span class="lastname">lastname{{ lastname }}</span
-      ><span class="firstname">firstname{{ firstname }}</span>
+      <!-- <span class="lastname">lastname{{ lastname }}</span
+      ><span class="firstname">firstname{{ firstname }}</span> -->
+      <span class="fullname">{{fullname}}</span>
     </v-card-text>
 
     <v-card-text class="card-profil-biographie">
@@ -68,13 +69,26 @@ export default {
   data() {
     return {
       picutername: "",
-      modifbio: true,
+      modifbio: false,
       bio: "",
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
-      lastname: "",
-      firstname: "",
+      lastname: "test",
+      firstname: "test",
+   
     };
   },
+  computed:{
+     fullname: {
+    
+      get() {
+        return this.firstname + ' ' + this.lastname
+      },
+      set(newValue) {
+        [this.firstname, this.lastname] = newValue.split(' ')
+      }
+    }
+  },
+  
 
   methods: {
     deletebio() {
@@ -94,7 +108,7 @@ export default {
 <style lang="scss">
 .lab-pic {
   display: flex;
-//   width: 50%;
+  width: 100%;
 }
 
 .lab-pic-custom {
@@ -176,6 +190,13 @@ div.v-card__text.card-profil-name {
   font-size: 1.8rem;
   padding-top: 4%;
 //   padding-left: 1%;
+}
+
+.fullname{
+    padding-top: 1%;
+  padding-left: 1%;
+  font-size: 1.8rem;
+  padding-top: 4%;
 }
 .firstname {
   padding-top: 1%;
