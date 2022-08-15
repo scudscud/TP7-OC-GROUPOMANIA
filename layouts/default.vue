@@ -29,10 +29,22 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn id="temp-menu"
+      <v-btn id="temp-menu" alt="menu"
       @click.stop="drawer = !drawer"
-        >MENU <v-icon>mdi-menu</v-icon> </v-btn
-      >
+        ><v-icon>mdi-menu</v-icon> </v-btn>
+
+             <router-link id="btn-post-router" to="/"> 
+      <v-btn id="btn-post-nav" alt="menu">
+        <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
+        </v-btn>  
+        </router-link>
+    
+        <router-link id="btn-post-router-plus" to="/post"> 
+      <v-btn id="btn-post-nav" alt="menu">
+        <v-icon>mdi-newspaper-plus </v-icon>
+        </v-btn>  
+        </router-link>
+
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-btn icon @click.stop="miniVariant = !miniVariant"> 
         <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
@@ -45,10 +57,15 @@
       />
       <v-spacer />
 
-      <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user"
-        ><img class="avatar" src="../logo/avatar1.png" />
-        <span class="username">username</span></v-btn
-      >
+      <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
+
+        <img class="avatar" src="../logo/avatar1.png" />
+
+        <!-- <span class="username" alt="menu-user">Mon compte</span>
+         -->
+        
+        
+        </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
       </v-btn> -->
@@ -141,7 +158,7 @@ export default {
       ],
     
       // icon: "../logo/logo.png",
-      title: "Groupomania the social network",
+      title: "Groupomania le réseau",
     };
   },
 };
@@ -184,13 +201,12 @@ html {
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-}
-
-#temp-user:hover {
+  &:hover{
   background-color: $secondary;
   border: solid $tertiary;
   color: black;
   border-radius: 20%;
+}
 }
 
 #temp-menu {
@@ -200,14 +216,41 @@ html {
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-}
-
-#temp-menu:hover {
+  &:hover{
   background-color: $secondary;
   border: solid $tertiary;
   color: black;
   border-radius: 20%;
+  }
 }
+
+#btn-post-nav{
+background-color: $tertiary;
+  height: 35px;
+  width: auto;
+  border: solid $secondary;
+  color: $secondary;
+  border-radius: 30%;
+  &:hover{
+  background-color: $secondary;
+  border: solid $tertiary;
+  color:$tertiary;
+  border-radius: 20%;
+  }
+}
+
+// #btn-post-router{
+// text-decoration: none;
+// color:$secondary;
+// font-weight: bold;
+// }
+
+#btn-post-router{
+margin-left: 0.5%;
+margin-right: 0.5%;
+}
+
+
 
 #temp-title {
   font-family: Lato, sans-serif;

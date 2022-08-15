@@ -8,7 +8,8 @@
       <!-- <div class="picture"> -->
         <div class="block-picture">
           <label class="lab-pic" for="avatar">
-            <img class="form-avatar-dl" src="../logo/avatar1.png" /><v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
+            <img class="form-avatar-dl" src="../logo/avatar1.png" />
+            <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
             </label>
         <!-- </div> -->
         <input

@@ -4,86 +4,161 @@
 <!-- <div ></div> -->
 <v-card id="card-post"  >
  
-      <v-card-text class="card-autor">
-          <em>username le 'date'</em>
-          
+      <v-card-text id="card-autor">
+                <img class="picture-user" src="../logo/avatar1.png" />
+                <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
         alt="Vuetify.js">
-      <v-card-text class="blockquote" >
-        &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
-         <!-- <v-card-action  class="card-att">
-      <button class="btn-att"><v-icon class="img-att"  >mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></button>
-      <button class="btn-att" ><v-icon  class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button>
-      <button   class="btn-att"><v-icon class="img-att" > mdi-account-group </v-icon><p class="text-att">Devenir amis</p></button>
-      </v-card-action>  -->
-        </v-card-text>
+     
+         <v-card-text >
+      <form method="post" @submit.prevent>
+        <label for="biographie"><h2>Votre commentaire</h2></label>
+        <textarea
+          v-model="bio"
+          name="biographie"
+          class="card-create-comment"
+          type="textarea"
+          placeholder="Ecrivez ici votre commentaire"
+          maxlength="300"
+        ></textarea>
+
+        <div class="btn-bio">
+          <button id="btn-bio-send" type="submit">Enregistrer</button>
+          <button id="btn-bio-delete" @click="deletebio">Annuler</button>
+          <!-- <button
+            id="btn-bio-close"
+            @click="deletebio(), (modifbio = !modifbio)"
+          >
+            Fermer
+          </button> -->
+        </div>
+      </form>
+    </v-card-text>
     </v-card>
  
 
 </template>
 <script>
-// const axios = require('axios')
-// const instance = axios.create({baseURL :' http://localhost:5000 '});
-// asyncData({ $axios}) {
 
-// const post = await $axios.$get(' http://localhost:5000/api/post')
-// return {post}
-
-// }
-// let post = (await $axios.get(' http://localhost:5000/api/post')).post
 
 export default{
 
   data(){
     return {
-      posts:[]
-
+      picutername: "",
+      modifbio: false,
+      bio: "",
+      biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      lastname: "test",
+      firstname: "test",
     }
     },
-async fetch(test){
-      this.posts = await fetch ('http://localhost:5000/api/post')
-      .then( res=> {
-      return res.json()}
-      ).then(response => response.post
-      )
-      .catch(err=>err.message)
+ methods: {
+    deletebio() {
+      console.log(this.bio);
+      this.bio = "";
+    },
+ },
+     computed:{
+      date(){
+let today = new Date();
+let dd = today.getDate();
+
+let mm = today.getMonth()+1; 
+let yyyy = today.getFullYear();
+if(dd<10) 
+{
+    dd='0'+dd;
+} 
+if(mm<10) 
+{
+    mm='0'+mm;
+} 
+// today = mm+'-'+dd+'-'+yyyy;
+// today = mm+'/'+dd+'/'+yyyy;
+// today = dd+'-'+mm+'-'+yyyy;
+today = dd+'/'+mm+'/'+yyyy;
+ return today
+      },
+
+    hour(){ 
+    const d = new Date();
+    let hours = d.getHours()+":" + d.getMinutes();
+    return hours
+    },
+
+
+     fullname: {
+      get() {
+        return this.firstname + ' ' + this.lastname
+      },
+      set(newValue) {
+        [this.firstname, this.lastname] = newValue.split(' ')
+      }
     }
-//  Async instance(post){
-//   this.posts = await instance.get(/api/post)
-//   .then(res=> res.json().Table)
-//   .catch(err=>err.message)
+  },
+
 }
-    // console.log(user);
-    // this.user = await $axios.$get('api/user')
-    // .then(res=> {return res.json()})
-    // .then( response => response.Table)
-    // .catch(console.error())
+
 </script>
 
 <style lang="scss">
+
 #card-post{
 align-items: center;
 justify-content: center;
 background-color: $tertiary;
 border: solid;
 border-color: $secondary;
-// overflow: ellipsis; 
-// display: flex;
-// flex-direction: row;
-// width: auto;
-// max-height:auto;
-// margin-top: 1%;
-// margin-left: 3%;
-// overflow:hidden;
 };
+.poster-info{
+flex-direction: row;
+width: auto;
+height: 20px;
+}
+.picture-user{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+}
+.fullname{
+  margin-left: 1%;
+  padding-top: 1.5%;
+font-weight: bold;
+}
+.date-now{
+    padding-top: 1.5%;
+  margin-left: 0.5%;
+  font-style: italic;
+}
 
-.card-autor{
+.hour-now{
+    padding-top: 1.5%;
+  margin-left: 0.5%;
+   font-style: italic;
+}
+
+.hour-à{
+    padding-top: 1.5%;
+  margin-left: 0.5%;
+ 
+}
+.post-date{
+    padding-top: 1.5%;
+  margin-left: 0.5%;
+  
+}
+#card-autor{
 display: flex;
 flex-direction: row;
 width: 100%;
-padding-top: 2%;
+padding-top: 0.5%;
 };
 
 .card-img{
@@ -102,53 +177,59 @@ overflow: hidden;
 text-overflow: ellipsis;
 };
 
-// .card-att{
-// display: flex;
-// width: 100%;
-// margin-top: 2%;
-// padding-right: 2%;
-// justify-content: space-between;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow:  ellipsis;
+.card-create-comment {
+  width: 100%;
+  color: $secondary;
+  border: solid 2px $tertiary;
+  padding: 1%;
+  &:focus {
+    outline: none;
+  }
+}
+.btn-bio {
+  display: flex;
+  flex-direction: row;
+}
+#btn-bio-delete {
+  border: solid 2px $secondary;
+  border-radius: 30%;
+  margin-right: auto;
+  margin-top: 1%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 
-// }
-// button.btn-att{
-// // display: flex;
-// width: auto;
-// justify-content: center;
-// align-items: center;
-// padding-top: 2%;
-// cursor: pointer;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow:  ellipsis;
-// }
+#btn-bio-send {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 
-// p.text-att{
-// width:30%;
-// flex-wrap: nowrap;
-// justify-content: center;
-// align-items: center;
-// margin-bottom: 0px;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-// }
-
-// .img-att{
-// display: flex;
-// align-items: center;
-// justify-content: center;
-// padding-right: 5%; 
-// //   white-space: nowrap;
-// //   overflow: hidden;
-// //   text-overflow: ellipsis;
-// }
-
-
-
-
+#btn-bio-close {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  //   margin-left: 80%;
+  flex-grow: 80%;
+  flex-shrink: 100%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 
 </style>
 
