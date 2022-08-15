@@ -30,6 +30,7 @@
                 </label>
                 <v-spacer />
                 <input
+                  style="text-transform:lowercase"
                   v-model="lastname"
                   class="form-input"
                   type="text"
@@ -44,6 +45,7 @@
                 </label>
                 <v-spacer />
                 <input
+                  style="text-transform:lowercase"
                   v-model="firstname"
                   class="form-input"
                   type="text"
@@ -57,6 +59,7 @@
                 </label>
                 <v-spacer />
                 <input
+                  style="text-transform:lowercase"
                   v-model="email"
                   class="form-input"
                   type="text"
@@ -123,9 +126,9 @@
 
                 <div class="check-box">
                   <label for="condition">
-                    <p @click.stop="termofuse = true" class="titleh2-check">
+                    <span @click.stop="termofuse = true" class="titleh2-check">
                       Veuillez accepter nos condition d'utilisation
-                    </p>
+                    </span>
                   </label>
                   <input
                     v-model="check"
@@ -265,7 +268,7 @@ export default {
           this.successreg = "Compte creer avec succée, Bienvenue";
 
           setTimeout(() => {
-            window.location.href = "./index";
+            window.location.href = "./";
           }, 3000);
         })
         .catch((error) => {

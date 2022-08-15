@@ -6,7 +6,7 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="!miniVariant"
+      :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
@@ -29,13 +29,15 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn id="temp-menu" @click.stop="miniVariant = !miniVariant"
-        >MENU</v-btn
+      <v-btn id="temp-menu"
+      @click.stop="drawer = !drawer"
+        >MENU <v-icon>mdi-menu</v-icon> </v-btn
       >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <!-- <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon> -->
-      </v-btn>
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
+      <!-- <v-btn icon @click.stop="miniVariant = !miniVariant"> 
+        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+      </v-btn> -->
+
       <v-spacer />
       <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title
         v-text="title"
@@ -45,7 +47,7 @@
 
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user"
         ><img class="avatar" src="../logo/avatar1.png" />
-        <p class="username">username</p></v-btn
+        <span class="username">username</span></v-btn
       >
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
@@ -89,10 +91,13 @@ export default {
   name: "DefaultLayout",
   data() {
     return {
-      show: true,
-      clipped: false,
+      right: true,
       drawer: false,
+      miniVariant:false,
+      rightDrawer: false,
+      clipped: false,
       fixed: false,
+      show: false,
       itemsuser: [
         {
           icon: "mdi-chart-bubble",
@@ -105,7 +110,7 @@ export default {
         {
           icon: "mdi-account",
           title: "mon profil",
-          to: "/post",
+          to: "/profiluser",
         },
         {
           icon: " mdi-account-group  ",
@@ -134,9 +139,7 @@ export default {
           to: "/post",
         },
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
+    
       // icon: "../logo/logo.png",
       title: "Groupomania the social network",
     };
@@ -165,7 +168,7 @@ html {
   padding-left: 1%;
 }
 
-p.username {
+.username {
   display: flex;
   justify-content: center;
   align-items: center;

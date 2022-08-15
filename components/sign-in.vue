@@ -10,15 +10,15 @@
         class="logo py-4 d-flex justify-center align-center"
       >
         <h2 class="h2-sign-in">
-          <button class="btn-login">
+          <button class="btn-login"    @click.stop="$emit('close-modale')">
             connexion
           </button>
         </h2>
         <v-card-text class="sign-up-link">
-          <p class="span-instruction">Vous n'avez pas encore de compte ?</p>
-          <p class="span-sign-up" @click.stop="showSignUp = true">
+          <span class="span-instruction">Vous n'avez pas encore de compte ?</span>
+          <span class="span-sign-up" @click.stop="showSignUp = true">
             Créer un compte
-          </p>
+          </span>
         </v-card-text>
       </v-card>
       <v-card id="body-index">
@@ -188,14 +188,14 @@ h2.h2-sign-in {
   padding-bottom: 0;
 }
 
-p.span-instruction {
+.span-instruction {
   display: flex;
   color: $primary;
   margin-right: 1%;
   margin-bottom: 0;
 }
 
-p.span-sign-up {
+.span-sign-up {
   text-decoration: underline;
   cursor: pointer;
   margin-bottom: 0;
