@@ -248,17 +248,21 @@ background-color: $tertiary;
   }
 }
 
-// #btn-post-router{
-// text-decoration: none;
-// color:$secondary;
-// font-weight: bold;
-// }
-
 #btn-post-router{
+text-decoration: none;
+color:$secondary;
+font-weight: bold;
 margin-left: 0.5%;
 margin-right: 0.5%;
 }
 
+#btn-post-router-plus{
+  text-decoration: none;
+color:$secondary;
+font-weight: bold;
+
+margin-right: 0.5%;
+}
 
 
 #temp-title {

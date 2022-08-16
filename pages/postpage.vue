@@ -8,7 +8,7 @@
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
                 <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p>
                   <button id="btn-send-post" type="submit">Envoyer votre post</button> 
-                      <button id="btn-delete-post"  @click="deletebio()" > retour Trend </button>
+                     <router-link to="/" id="back-book"> <button id="btn-delete-post"  @click="deletebio()" > retour Trend </button></router-link>
 
         </v-card-text>
         <div class="picture-create-post">
@@ -40,7 +40,7 @@
         ></textarea>
 
         <div class="btn-bio">
-          <button id="btn-bio-send" type="submit">Enregistrer votre commentaire</button>
+          <button id="btn-bio-send" type="submit">Enregistrer le commentaire</button>
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
           <!-- <button
             id="btn-bio-close"
@@ -197,8 +197,35 @@ height: 20px;
 //   margin-left: 0.5%;
   
 // }
+#back-book{
+  align-items:center;
+  justify-content: center;
+  text-decoration: none;
+color:$secondary;
+   border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+} 
+
+#btn-delete-post{
+  width: 100%;
+  margin-top: 1%;
+  margin-right: 1%;
+  padding-top: 15%;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: $secondary;
+}
 
 #btn-send-post{
+  color:$secondary;
    border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
@@ -210,20 +237,6 @@ height: 20px;
     color: $tertiary;
   }
 }
-#btn-delete-post{
-   border: solid 2px $secondary;
-  margin-top: 1%;
-  margin-right: 1%;
-  border-radius: 30%;
-  padding-left: 5px;
-  padding-right: 5px;
-  &:hover {
-    background-color: $secondary;
-    color: $tertiary;
-  }
-}
-
-
 
 .picture-create-post{
 border-top: solid 2px $secondary;
@@ -288,6 +301,7 @@ h2.comment-title{
   justify-content: center;
   padding-top: 1%;
   padding-bottom: 1%;
+  color: $secondary;
 
 }
 
@@ -343,6 +357,7 @@ h2.comment-title{
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
+  color: $secondary;
   &:hover {
     background-color: $secondary;
     color: $tertiary;
@@ -356,6 +371,7 @@ h2.comment-title{
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+  color: $secondary;
   &:hover {
     background-color: $secondary;
     color: $tertiary;
