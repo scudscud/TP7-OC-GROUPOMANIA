@@ -18,6 +18,24 @@
 
 </template>
 <script>
+// //---------------------------------option a dev read URL --------------------------------\\
+
+//   //       <!-- <router-link   to="/postpage"> 
+//   //    <button  @click="log" v-if="log != `http://localhost:3000/postpage`" class="btn-post-router-plus"><v-icon id="icon">mdi-newspaper-plus </v-icon> </button>
+//   //    <button  v-else  class="btn-hover"> <v-icon id="icon">mdi-newspaper-plus </v-icon></button>
+//   //  </router-link>  -->
+
+
+//     log(){
+//       let base =this.$el.baseURI
+//    let   page = base.split('/')[3]
+//  console.log(page);
+//      return page
+   
+//     }
+
+
+// ===============================================================================================
 
 // <!-- //------------------------option modale create post ---------------------------------------\\ -->
 // <!--     
@@ -33,6 +51,10 @@
 //         <v-icon id="icon">mdi-newspaper-plus </v-icon>
 //         </button>  
 //         </router-link> -->
+
+//     toggleClass(event){
+//        this.hoverbtn = !this.hoverbtn;
+//     },
 // <!-- //================================================================================================\\ -->
 
 // .btn-hover{

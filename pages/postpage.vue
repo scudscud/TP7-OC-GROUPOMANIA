@@ -1,4 +1,4 @@
-<!-- const axios = require('axios') -->
+<!-- const axios = require('axios') -->on-btn-delete
 
 <template>
 <!-- <div ></div> -->
@@ -7,8 +7,8 @@
       <v-card-text id="card-autor">
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
                 <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p>
-                  <button id="btn-send-post" type="submit">Envoyer votre post</button> 
-                     <router-link to="/" id="back-book"> <button id="btn-delete-post"  @click="deletebio()" > retour Trend </button></router-link>
+                  <button id="btn-send-post" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
+                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
 
         </v-card-text>
         <div class="picture-create-post">
@@ -198,31 +198,57 @@ height: 20px;
   
 // }
 #back-book{
-  align-items:center;
-  justify-content: center;
+  display: flex;
+
+  // align-items:center;
+  // justify-content: center;
   text-decoration: none;
 color:$secondary;
    border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-top: 0%;
+  padding-left: 1%;
+  padding-right: 1%;
   &:hover {
     background-color: $secondary;
-    color: $tertiary;
+   &#back-book>#btn-back{
+    color:$tertiary;
+    &#btn-back>#div-btn-back>#icon-btn-delete{
+      color:$tertiary;
+    }
+   }
   }
 } 
-
-#btn-delete-post{
+#div-btn-back{
+  display: flex;
   width: 100%;
-  margin-top: 1%;
-  margin-right: 1%;
-  padding-top: 15%;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: $secondary;
+  justify-content: center;
+  align-items: center;
 }
+#btn-back{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#span-back{
+  padding-left: 10%;
+}
+
+// #btn-delete-post{
+//   width: 100%;
+//   margin-top: 10%;
+//   margin-right: 1%;
+//   padding-top: 10%;
+//   padding-left: 5px;
+//   padding-right: 5px;
+//   color: $secondary;
+//   :hover{
+//     background-color: $secondary;
+//     color: $tertiary;
+//   }
+// }
 
 #btn-send-post{
   color:$secondary;
@@ -230,13 +256,30 @@ color:$secondary;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 1%;
+  padding-right: 1%;
   &:hover {
     background-color: $secondary;
     color: $tertiary;
+    &#btn-send-post>#div-btn-send>#icon-btn-send{
+        color:$tertiary;
+    }
   }
 }
+
+#div-btn-send{
+  display: flex;
+ justify-content: center;
+ align-items: center;
+ 
+}
+#icon-btn-send{
+  padding-right: 7%;
+}
+
+
+
+
 
 .picture-create-post{
 border-top: solid 2px $secondary;

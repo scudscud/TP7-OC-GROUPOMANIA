@@ -1,12 +1,14 @@
 <template>
 
  <v-card id="card-post" >
-      <v-card-text class="card-autor">
-          <em>username le 'date'</em>
+       <v-card-text id="card-autor">
+                <img class="picture-user" src="../logo/avatar1.png" />
+                <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
         alt="Vuetify.js">
+   
       <v-card-text class="blockquote" >
         &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia quis impedit magni alias quo quae, numquam eaqrepellendus minus similique soluta nulla pariatur cumque neque enim explicabo officia impedit? Dignissimos ipsa asperiores cum.&#8221;
       </v-card-text>
@@ -20,17 +22,52 @@
 
 </template>
 <script>
-// export default{
-// async fetch() {
+export default{
+  data(){
+    return {
+       lastname: "test",
+      firstname: "test",
+    }
+  },
+    computed:{
+      date(){
+let today = new Date();
+let dd = today.getDate();
+
+let mm = today.getMonth()+1; 
+let yyyy = today.getFullYear();
+if(dd<10) 
+{
+    dd='0'+dd;
+} 
+if(mm<10) 
+{
+    mm='0'+mm;
+} 
+// today = mm+'-'+dd+'-'+yyyy;
+// today = mm+'/'+dd+'/'+yyyy;
+// today = dd+'-'+mm+'-'+yyyy;
+today = dd+'/'+mm+'/'+yyyy;
+ return today
+      },
+
+    hour(){ 
+    const d = new Date();
+    let hours = d.getHours()+":" + d.getMinutes();
+    return hours
+    },
 
 
-
-
-
-
-// }
-// }
-
+     fullname: {
+      get() {
+        return this.firstname + ' ' + this.lastname
+      },
+      set(newValue) {
+        [this.firstname, this.lastname] = newValue.split(' ')
+      }
+    }
+  },
+}
 
 
 

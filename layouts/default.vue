@@ -35,22 +35,26 @@
         ><v-icon>mdi-menu</v-icon> </v-btn>
 
              <router-link id="btn-post-router" to="/"> 
-      <v-btn id="btn-post-nav" alt="menu">
+      <v-btn  id="btn-post-nav" alt="menu">
         <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
         </v-btn>  
         </router-link>
     
-        <router-link  class="btn-post-router-plus" to="/postpage"> 
-      <v-btn id="btn-post-nav" alt="menu"  >
+        <router-link  class="btn-post-router-plus"  to="/postpage"> 
+      <v-btn id="btn-post-nav"  alt="menu"  >
         <v-icon>mdi-newspaper-plus </v-icon>
         </v-btn>  
         </router-link>
 
-<!--     
-      <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
-        <v-icon>mdi-newspaper-plus </v-icon>
-        </v-btn>  
-       -->
+
+
+
+         <!-- <router-link     to="/postpage"> 
+       <button :class="hoverbtn ? 'btn-hover' : 'btn-post-router-plus' "  @click=" toggleClass" alt="menu" >
+        <v-icon id="icon">mdi-newspaper-plus </v-icon>
+        </button>  
+         </router-link>  -->
+
 
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-btn icon @click.stop="miniVariant = !miniVariant"> 
@@ -114,17 +118,12 @@ import Post from "../components/post.vue";
 export default {
   components: { SignIn, Post },
   name: "DefaultLayout",
+
+  methods:{
+
+  },
+
   computed :{
-    styleClick(){
-   if (this.showbtn) {
-       return {
-        background: 'red',
-        
-       };
-    } else {
-      return '';
-    }
-  }
 
   },
 
@@ -139,6 +138,7 @@ export default {
       show: false,
       showpost: false,
       showbtn:true,
+      hoverbtn:false,
       itemsuser: [
         {
           icon: "mdi-chart-bubble",

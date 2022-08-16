@@ -54,6 +54,11 @@ const userSchema = mongoose.Schema(
     //   maxlength: 50,
     //   trim: true,
     // },
+    role:{
+        type:String,
+
+
+    },
     photo: {
       type: String,
       default: "./upload/profil/random-user.png",
