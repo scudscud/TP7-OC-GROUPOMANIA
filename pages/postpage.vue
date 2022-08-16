@@ -5,8 +5,8 @@
 <v-card id="card-post"  >
  
       <v-card-text id="card-autor">
-                <img class="picture-user" src="../logo/avatar1.png" />
-                <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
+                <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
+                <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p>
                   <button id="btn-send-post" type="submit">Envoyer votre post</button> 
                       <button id="btn-delete-post"  @click="deletebio()" > retour Trend </button>
 
@@ -138,24 +138,41 @@ background-color: $tertiary;
 border: solid;
 border-color: $secondary;
 };
+
+#card-autor{
+display: flex;
+flex-direction: row;
+width: 100%;
+padding-top: 0.5%;
+};
+
 .poster-info{
 flex-direction: row;
 width: auto;
 height: 20px;
 }
 .picture-user{
+  margin-top: 1.5%;
   display: flex;
   width: 50px;
   height: 50px;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
-  border-radius: 50%;
+  border-radius: 50%; 
 }
 .fullname{
   margin-left: 1%;
-  padding-top: 1.5%;
-font-weight: bold;
+  margin-right: auto;
+  // padding-right: auto;
+  padding-top: 2.5%;
+  font-weight: bold;
+}
+
+.post-date-full{
+  display: flex;
+  width: 100%;
+  padding-top: 1.5% ;
 }
 .date-now{
     padding-top: 1.5%;
@@ -206,12 +223,7 @@ font-weight: bold;
   }
 }
 
-#card-autor{
-display: flex;
-flex-direction: row;
-width: 100%;
-padding-top: 0.5%;
-};
+
 
 .picture-create-post{
 border-top: solid 2px $secondary;
