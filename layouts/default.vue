@@ -2,6 +2,7 @@
   <v-app dark>
     <div>
       <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
+      <post id="modal-post" v-show="showpost" @close-modale="showpost = false"/>
     </div>
 
     <v-navigation-drawer
@@ -39,11 +40,17 @@
         </v-btn>  
         </router-link>
     
-        <router-link id="btn-post-router-plus" to="/post"> 
+        <router-link id="btn-post-router-plus" to="/postpage"> 
       <v-btn id="btn-post-nav" alt="menu">
         <v-icon>mdi-newspaper-plus </v-icon>
         </v-btn>  
         </router-link>
+
+<!--     
+      <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
+        <v-icon>mdi-newspaper-plus </v-icon>
+        </v-btn>  
+       -->
 
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-btn icon @click.stop="miniVariant = !miniVariant"> 
@@ -103,8 +110,9 @@
 <script>
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
+import Post from "../components/post.vue";
 export default {
-  components: { SignIn },
+  components: { SignIn, Post },
   name: "DefaultLayout",
   data() {
     return {
@@ -115,6 +123,7 @@ export default {
       clipped: false,
       fixed: false,
       show: false,
+      showpost: false,
       itemsuser: [
         {
           icon: "mdi-chart-bubble",

@@ -7,14 +7,29 @@
       <v-card-text id="card-autor">
                 <img class="picture-user" src="../logo/avatar1.png" />
                 <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
+                  <button id="btn-send-post" type="submit">Envoyer votre post</button> 
+                      <button id="btn-delete-post"  @click="deletebio()" > retour Trend </button>
+
         </v-card-text>
-      <img class="card-img mb-5"
+        <div class="picture-create-post">
+          <h3 id="card-create-picture">Votre photo</h3>
+      <img  id="card-img"
         src="/v.png"
         alt="Vuetify.js">
-     
-         <v-card-text >
+          <div class="btn-picture">
+          <button id="btn-picture-send" type="submit">Enregistrer votre photo</button>
+          <button id="btn-picture-delete">Annuler</button>
+          <!-- <button
+            id="btn-bio-close"
+            @click="deletebio(), (modifbio = !modifbio)"
+          >
+            Fermer
+          </button> -->
+        </div>
+     </div>
+         <v-card-text id="card-comment" >
       <form method="post" @submit.prevent>
-        <label for="biographie"><h2>Votre commentaire</h2></label>
+        <label for="biographie"><h2 class="comment-title">Votre commentaire</h2></label>
         <textarea
           v-model="bio"
           name="biographie"
@@ -25,7 +40,7 @@
         ></textarea>
 
         <div class="btn-bio">
-          <button id="btn-bio-send" type="submit">Enregistrer</button>
+          <button id="btn-bio-send" type="submit">Enregistrer votre commentaire</button>
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
           <!-- <button
             id="btn-bio-close"
@@ -65,7 +80,6 @@ export default{
       date(){
 let today = new Date();
 let dd = today.getDate();
-
 let mm = today.getMonth()+1; 
 let yyyy = today.getFullYear();
 if(dd<10) 
@@ -85,11 +99,22 @@ today = dd+'/'+mm+'/'+yyyy;
 
     hour(){ 
     const d = new Date();
-    let hours = d.getHours()+":" + d.getMinutes();
+
+    let hh =  d.getHours();
+    let mi = d.getMinutes();
+
+    if(hh<10)
+    {
+      hh='0'+hh;
+    }
+    if(mi <10)
+{
+     mi='0'+mi;
+    }
+    let hours = hh+":" + mi;
+
     return hours
     },
-
-
      fullname: {
       get() {
         return this.firstname + ' ' + this.lastname
@@ -142,6 +167,7 @@ font-weight: bold;
     padding-top: 1.5%;
   margin-left: 0.5%;
    font-style: italic;
+   margin-right: auto;
 }
 
 .hour-à{
@@ -154,6 +180,32 @@ font-weight: bold;
   margin-left: 0.5%;
   
 }
+
+#btn-send-post{
+   border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+#btn-delete-post{
+   border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
 #card-autor{
 display: flex;
 flex-direction: row;
@@ -161,11 +213,36 @@ width: 100%;
 padding-top: 0.5%;
 };
 
-.card-img{
+.picture-create-post{
+border-top: solid 2px $secondary;
+border-bottom: solid 2px $secondary;
+border-radius: 10%;
+margin-bottom: 1%;
+padding: 1.5%;
+
+
+}
+
+#card-create-picture{
+  display: flex;
+  // margin-left: 1.5%;
+  color: $secondary;
+  padding-top: 1%;
+  
+  justify-content: center;
+  // border-top:solid 2px $secondary;
+  // border-radius: 30%;
+
+  }
+
+#card-img{
 display: flex;
 justify-content: center;
 align-items: center;
 width: 100%;
+// border-top: solid 2px $secondary;
+// border-bottom: solid 2px $secondary;
+// border-radius: 10%;
 max-height: 200px;
 padding: 1%;
 };
@@ -186,6 +263,22 @@ text-overflow: ellipsis;
     outline: none;
   }
 }
+
+#card-comment{
+border-top: solid 2px $secondary;
+border-bottom: solid 2px $secondary;
+border-radius: 10%;
+margin-bottom: 1%;
+}
+
+h2.comment-title{
+  display: flex;
+  justify-content: center;
+  padding-top: 1%;
+  padding-bottom: 1%;
+
+}
+
 .btn-bio {
   display: flex;
   flex-direction: row;
@@ -222,6 +315,32 @@ text-overflow: ellipsis;
   //   margin-left: 80%;
   flex-grow: 80%;
   flex-shrink: 100%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+#btn-picture-delete {
+  border: solid 2px $secondary;
+  border-radius: 30%;
+  margin-right: auto;
+  margin-top: 1%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+#btn-picture-send {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
