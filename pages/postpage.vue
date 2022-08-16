@@ -169,34 +169,34 @@ height: 20px;
   font-weight: bold;
 }
 
-.post-date-full{
-  display: flex;
-  width: 100%;
-  padding-top: 1.5% ;
-}
-.date-now{
-    padding-top: 1.5%;
-  margin-left: 0.5%;
-  font-style: italic;
-}
+// .post-date-full{
+//   display: flex;
+//   width: 100%;
+//   padding-top: 1.5% ;
+// }
+// .date-now{
+//     padding-top: 1.5%;
+//   margin-left: 0.5%;
+//   font-style: italic;
+// }
 
-.hour-now{
-    padding-top: 1.5%;
-  margin-left: 0.5%;
-   font-style: italic;
-   margin-right: auto;
-}
+// .hour-now{
+//     padding-top: 1.5%;
+//   margin-left: 0.5%;
+//    font-style: italic;
+//    margin-right: auto;
+// }
 
-.hour-à{
-    padding-top: 1.5%;
-  margin-left: 0.5%;
+// .hour-à{
+//     padding-top: 1.5%;
+//   margin-left: 0.5%;
  
-}
-.post-date{
-    padding-top: 1.5%;
-  margin-left: 0.5%;
+// }
+// .post-date{
+//     padding-top: 1.5%;
+//   margin-left: 0.5%;
   
-}
+// }
 
 #btn-send-post{
    border: solid 2px $secondary;
