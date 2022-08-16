@@ -178,6 +178,7 @@ img.form-avatar-dl {
   font-style: italic;
   color: $primary;
 }
+
 div.v-card__text.card-profil-name {
   padding-top: 1%;
   display: flex;

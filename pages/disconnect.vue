@@ -6,7 +6,7 @@
   <p>si tel est votre choix ...</p>
     <p>à bientôt ☺️ </p>
 <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
-<v-btn id="btn-deco" type=text href="./">Deconnexion</v-btn>
+<v-btn id="btn-deco" type=text href="./"><span>Deconnexion</span></v-btn>
 </v-card>
 </v-col>
 </template>
@@ -49,7 +49,12 @@ z-index: 1000;
   padding-bottom: 1%;
   padding-top: 1%;
   background-color: $secondary;
-  width: 30%;
+  max-width: 300px;
+  min-width: 300px;
+  width: 300px;
+  max-height: 200px;
+  min-height: 200px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,10 +66,11 @@ display: flex;
 
 }
 
+
 #btn-deco{
  
 background-color: $primary;
-width: 35%;
+width: 100%;
 justify-content: center;
 align-items: center;
 &:hover{

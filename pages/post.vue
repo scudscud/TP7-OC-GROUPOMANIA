@@ -1,7 +1,5 @@
-<!-- const axios = require('axios') -->
-
 <template>
-<!-- <div ></div> -->
+
 <v-card id="card-post-comp"  >
  
       <v-card-text id="card-autor">
@@ -236,6 +234,3 @@ text-overflow: ellipsis;
 }
 
 </style>
-
-
-

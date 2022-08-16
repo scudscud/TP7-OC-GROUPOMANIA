@@ -1,17 +1,16 @@
-
-
 <template>
-<!-- <div ></div> -->
-<v-card id="card-post"  >
-   <v-card-text class="card-profil-title"
-      ><h1 class="card-profil-title-h1">Publier</h1></v-card-text
-    >
- 
+ <div class="overlay">
+    <v-card id="card-post-modal"  >
+     <v-card-text class="card-profil-title"
+      ><h1 class="card-profil-title-h1">Publier</h1></v-card-text>
+    
       <v-card-text id="card-autor">
+       
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
+                <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname">{{fullname}}</p>
-                  <button id="btn-send-post" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
-                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
+                  <button id="btn-send-post" @click="$emit('close-modale-post')" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
+                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post')" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
 
         </v-card-text>
         <div class="picture-create-post">
@@ -20,8 +19,9 @@
         src="/v.png"
         alt="Vuetify.js">
           <div class="btn-picture">
-          <button id="btn-picture-send" type="submit"><span class="span-btn-post">Enregistrer votre photo</span></button>
-          <button id="btn-picture-delete"><span class="span-btn-post">Annuler</span></button>
+
+          <button id="btn-picture-send" type="submit">Enregistrer votre photo</button>
+          <button id="btn-picture-delete">Annuler</button>
           <!-- <button
             id="btn-bio-close"
             @click="deletebio(), (modifbio = !modifbio)"
@@ -43,8 +43,8 @@
         ></textarea>
 
         <div class="btn-bio">
-          <button id="btn-comment-send" type="submit"><span class="span-btn-post">Enregistrer le commentaire</span></button>
-          <button id="btn-comment-delete" @click="deletebio"><span class="span-btn-post">Annuler</span></button>
+          <button id="btn-comment-send" type="submit">Enregistrer le commentaire</button>
+          <button id="btn-comment-delete" @click="deletebio">Annuler</button>
           <!-- <button
             id="btn-bio-close"
             @click="deletebio(), (modifbio = !modifbio)"
@@ -56,7 +56,7 @@
     </v-card-text>
     </v-card>
  
-
+</div>
 </template>
 <script>
 
@@ -133,21 +133,31 @@ today = dd+'/'+mm+'/'+yyyy;
 </script>
 
 <style lang="scss">
-
-#card-post{
-align-items: center;
-justify-content: center;
-background-color: $tertiary;
-border: solid;
-border-color: $secondary;
-};
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  top: -160px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: opacity 0.4s;
+  z-index: 10;
+}
 
 .card-profil-title {
 // border-radius: 5%;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
 }
+
 .card-profil-title-h1 {
+  
   padding-top: 2%;
   padding-bottom: 1%;
   font-size: 2.5rem;
@@ -155,11 +165,31 @@ border-color: $secondary;
   font-style: italic;
   color: $primary;
 }
+// #h1-post{
+// display: flex;
+// border-top-left-radius: 20%;
+// border-top-right-radius: 5%;
+//   background-color: $secondary;
+//   border-bottom: solid 5px $primary;
+//   color:$primary;
+// }
+
+#card-post-modal{
+  width: 75%;
+align-items: center;
+justify-content: center;
+background-color: $tertiary;
+border: solid;
+border-color: $secondary;
+border-radius: 1%
+};
+
 #card-autor{
 display: flex;
 flex-direction: row;
 width: 100%;
 padding-top: 0.5%;
+
 };
 
 .poster-info{
@@ -215,7 +245,7 @@ height: 20px;
 // }
 #back-book{
   display: flex;
-
+height: 40px;
   // align-items:center;
   // justify-content: center;
   text-decoration: none;
@@ -238,11 +268,9 @@ color:$secondary;
    }
   }
 } 
-
 #icon-btn-delete{
   padding-left: 5%;
 }
-
 #div-btn-back{
   display: flex;
   width: 100%;
@@ -276,6 +304,7 @@ color:$secondary;
 #btn-send-post{
   color:$secondary;
    border: solid 2px $secondary;
+   height: 40px;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
@@ -295,11 +324,12 @@ color:$secondary;
   display: flex;
  justify-content: center;
  align-items: center;
+ 
 }
-
 #icon-btn-send{
   padding-right: 7%;
 }
+
 
 .picture-create-post{
 border-top: solid 2px $secondary;
@@ -314,9 +344,11 @@ padding: 1.5%;
   // margin-left: 1.5%;
   color: $secondary;
   padding-top: 1%;
+  
   justify-content: center;
   // border-top:solid 2px $secondary;
   // border-radius: 30%;
+
   }
 
 #card-img{
@@ -330,6 +362,13 @@ width: 100%;
 max-height: 200px;
 padding: 1%;
 };
+
+// .blockquote{
+// margin-top: 10px;
+// margin-right: 20px;
+// overflow: hidden;
+// text-overflow: ellipsis;
+// };
 
 .card-create-comment {
   width: 100%;
@@ -363,7 +402,6 @@ h2.comment-title{
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
-  padding-bottom: 4px;
   color: $secondary;
   &:hover {
      border-radius: 20%;
@@ -379,7 +417,6 @@ h2.comment-title{
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
-  padding-bottom: 5px;
   color: $secondary;
   &:hover {
      border-radius: 20%;
@@ -395,7 +432,6 @@ h2.comment-title{
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
-  padding-bottom: 5px;
   color: $secondary;
   &:hover {
      border-radius: 20%;
@@ -411,7 +447,6 @@ h2.comment-title{
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
-  padding-bottom: 5px;
   color: $secondary;
   &:hover {
      border-radius: 20%;
@@ -420,11 +455,4 @@ h2.comment-title{
   }
 }
 
-.span-btn-post{
-  padding-bottom: 5%;
-}
-
 </style>
-
-
-

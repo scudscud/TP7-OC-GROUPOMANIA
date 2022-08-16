@@ -1,9 +1,12 @@
 <template>
 
+
  <v-card id="card-post" >
-       <v-card-text id="card-autor">
-                <img class="picture-user" src="../logo/avatar1.png" />
-                <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
+       <v-card-text id="card-autor-book">
+                <div class="name-date-book"><img class="picture-user" src="../logo/avatar1.png" />
+                <span class="fullname">{{fullname}}</span></div><p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span></p>
+                 <button id="btn-picture-send" type="submit" @click="showmodify = !showmodify">Enregistrer votre photo</button>
+          <button id="btn-picture-delete">Annuler</button>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
@@ -22,9 +25,12 @@
 
 </template>
 <script>
+// import Modify from "../components/modifypostcomponent.vue";
 export default{
+    // components: { Modify },
   data(){
     return {
+      // showmodify:false,
        lastname: "test",
       firstname: "test",
     }
@@ -53,7 +59,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
     hour(){ 
     const d = new Date();
-    let hours = d.getHours()+":" + d.getMinutes();
+    let hours = d.getHours()+"h" + d.getMinutes();
     return hours
     },
 
@@ -95,10 +101,10 @@ border-color: $secondary;
 overflow: ellipsis; 
 };
 
-.card-autor{
-  border-radius: 20%;
+#card-autor-book{
+border-radius: 20%;
 display: flex;
-flex-direction: row;
+flex-direction: column;
 width: 100%;
 padding-top: 2%;
 };
@@ -113,6 +119,16 @@ padding: 1%;
 border-top: solid 2px $secondary;
 border-bottom: solid 2px $secondary;
 border-radius: 2%;
+}
+.name-date-book{
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 2%;
+
+}
+p.full-date{
+  display: flex;
+  margin-bottom: 0;
 }
 
 div.v-card__text.blockquote{

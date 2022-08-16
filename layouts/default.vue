@@ -2,7 +2,8 @@
   <v-app dark>
     <div>
       <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
-      <post id="modal-post" v-show="showpost" @close-modale="showpost = false"/>
+      <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false"/>
+      <!-- <modify id="modal-modify" v-show="showmodify" @close-modale-modify="showmodify = false"/> -->
     </div>
 
     <v-navigation-drawer
@@ -46,10 +47,12 @@
         </v-btn>  
         </router-link>
 
+  <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
+        <v-icon>mdi-newspaper-plus </v-icon>
+        </v-btn> 
 
-
-
-         <!-- <router-link     to="/postpage"> 
+<!-- 
+         <router-link     to="/postpage"> 
        <button :class="hoverbtn ? 'btn-hover' : 'btn-post-router-plus' "  @click=" toggleClass" alt="menu" >
         <v-icon id="icon">mdi-newspaper-plus </v-icon>
         </button>  
@@ -114,7 +117,8 @@
 <script>
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
-import Post from "../components/post.vue";
+import Post from "../components/postcomponent.vue";
+// import Modify from "../components/modifypostcomponent.vue";
 export default {
   components: { SignIn, Post },
   name: "DefaultLayout",
@@ -137,6 +141,7 @@ export default {
       fixed: false,
       show: false,
       showpost: false,
+      showmodify: true,
       showbtn:true,
       hoverbtn:false,
       itemsuser: [
