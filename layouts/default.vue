@@ -40,8 +40,8 @@
         </v-btn>  
         </router-link>
     
-        <router-link id="btn-post-router-plus" to="/postpage"> 
-      <v-btn id="btn-post-nav" alt="menu">
+        <router-link  class="btn-post-router-plus" to="/postpage"> 
+      <v-btn id="btn-post-nav" alt="menu"  >
         <v-icon>mdi-newspaper-plus </v-icon>
         </v-btn>  
         </router-link>
@@ -114,6 +114,20 @@ import Post from "../components/post.vue";
 export default {
   components: { SignIn, Post },
   name: "DefaultLayout",
+  computed :{
+    styleClick(){
+   if (this.showbtn) {
+       return {
+        background: 'red',
+        
+       };
+    } else {
+      return '';
+    }
+  }
+
+  },
+
   data() {
     return {
       right: true,
@@ -124,6 +138,7 @@ export default {
       fixed: false,
       show: false,
       showpost: false,
+      showbtn:true,
       itemsuser: [
         {
           icon: "mdi-chart-bubble",
@@ -260,7 +275,6 @@ margin-right: 0.5%;
   text-decoration: none;
 color:$secondary;
 font-weight: bold;
-
 margin-right: 0.5%;
 }
 
