@@ -1,16 +1,14 @@
-
 <template>
-<!-- <div ></div> -->
-<v-card id="card-post"  >
-   <v-card-text class="card-profil-title"
-      ><h1 class="card-profil-title-h1">Publier</h1></v-card-text
-    >
+<div class="overlay-modify">
+    <v-card id="card-post-modify"  >
+         <v-card-text class="card-profil-title-modify"
+      ><h1 class="card-modify-title-h1">Modifier</h1></v-card-text>
  
       <v-card-text id="card-autor">
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
                 <p class="fullname">{{fullname}}</p>
                   <button id="btn-send-post" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
-                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
+                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-modify')" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
 
         </v-card-text>
         <div class="picture-create-post">
@@ -43,7 +41,7 @@
 
         <div class="btn-bio">
           <button id="btn-comment-send" type="submit"><span class="span-btn-post">Enregistrer le commentaire</span></button>
-          <button id="btn-comment-delete" @click="deletebio"><span class="span-btn-post">Annuler</span></button>
+          <button id="btn-comment-delete" @click="deletebio() "><span class="span-btn-post">Annuler</span></button>
           <!-- <button
             id="btn-bio-close"
             @click="deletebio(), (modifbio = !modifbio)"
@@ -53,9 +51,9 @@
         </div>
       </form>
     </v-card-text>
-    </v-card>
+  </v-card>
  
-
+</div>
 </template>
 <script>
 
@@ -133,20 +131,39 @@ today = dd+'/'+mm+'/'+yyyy;
 
 <style lang="scss">
 
-#card-post{
+.overlay-modify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  top: -160px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: opacity 0.4s;
+  z-index: 10;
+}
+
+#card-post-modify{
+  width: 75vw;
 align-items: center;
 justify-content: center;
 background-color: $tertiary;
-border: solid;
+border: solid 5px;
 border-color: $secondary;
+border-radius: 1%;
 };
 
-.card-profil-title {
+.card-profil-title-modify {
 // border-radius: 5%;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
 }
-.card-profil-title-h1 {
+.card-modify-title-h1 {
   padding-top: 2%;
   padding-bottom: 1%;
   font-size: 2.5rem;
@@ -424,6 +441,3 @@ h2.comment-title{
 }
 
 </style>
-
-
-

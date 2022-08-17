@@ -1,12 +1,24 @@
 <template>
 
 
+
  <v-card id="card-post" >
+  <div>
+      <Deletepost id="modal-delete" v-show="showdelete" @close-modale-delete="showdelete = false"/>
+  
+  <modify id="modal-modify" v-show="showmodify" @close-modale-modify="showmodify = false"/>
+
+</div>
        <v-card-text id="card-autor-book">
+              <div class="user-book-main">
                 <div class="name-date-book"><img class="picture-user" src="../logo/avatar1.png" />
-                <span class="fullname">{{fullname}}</span></div><p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span></p>
-                 <button id="btn-picture-send" type="submit" @click="showmodify = !showmodify">Enregistrer votre photo</button>
-          <button id="btn-picture-delete">Annuler</button>
+                <span class="fullname-book">{{fullname}}</span></div><p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
+                <!-- <span class="hour-à"></span> -->
+                <span class="hour-now"> à {{hour}}</span></p>
+                </div>
+                <div class="btn-book-main">
+                 <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify">Modifier</button>
+          <button id="btn-post-delete" @click="showmdelete = !showdelete" >Supprimer</button></div>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
@@ -25,12 +37,16 @@
 
 </template>
 <script>
-// import Modify from "../components/modifypostcomponent.vue";
+import Modify from "../components/modifypost.vue";
+// import DeleteCom from "../components/deletepost.vue";
+import Deletepost from "../components/deletepost.vue";
 export default{
-    // components: { Modify },
+    components: { Modify, Deletepost },
   data(){
     return {
-      // showmodify:false,
+  
+      showmodify:false,
+      showdelete:true,
        lastname: "test",
       firstname: "test",
     }
@@ -56,14 +72,11 @@ if(mm<10)
 today = dd+'/'+mm+'/'+yyyy;
  return today
       },
-
     hour(){ 
     const d = new Date();
     let hours = d.getHours()+"h" + d.getMinutes();
     return hours
     },
-
-
      fullname: {
       get() {
         return this.firstname + ' ' + this.lastname
@@ -104,11 +117,61 @@ overflow: ellipsis;
 #card-autor-book{
 border-radius: 20%;
 display: flex;
-flex-direction: column;
+flex-direction: row;
+justify-content: space-between;
 width: 100%;
 padding-top: 2%;
 };
 
+.btn-book-main{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+height: 80px;
+width: 100px;
+padding-top: 2%;
+
+}
+
+#btn-post-modify{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+  &:hover {
+     border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+#btn-post-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   height: 30px;
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+  &:hover {
+     border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
 .card-img{
 display: flex;
 justify-content: center;
@@ -124,8 +187,13 @@ border-radius: 2%;
   display: flex;
   flex-direction: row;
   padding-bottom: 2%;
-
 }
+
+.fullname-book{
+  padding-top: 10%;
+  padding-left: 3%;
+}
+
 p.full-date{
   display: flex;
   margin-bottom: 0;

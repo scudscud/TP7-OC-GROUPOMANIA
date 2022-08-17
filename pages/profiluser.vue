@@ -270,8 +270,8 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   //   margin-left: 80%;
-  flex-grow: 80%;
-  flex-shrink: 100%;
+  // flex-grow: 80%;
+  // flex-shrink: 100%;
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;

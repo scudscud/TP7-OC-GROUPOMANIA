@@ -3,7 +3,6 @@
     <div>
       <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
       <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false"/>
-      <!-- <modify id="modal-modify" v-show="showmodify" @close-modale-modify="showmodify = false"/> -->
     </div>
 
     <v-navigation-drawer
@@ -118,9 +117,9 @@
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
 import Post from "../components/postcomponent.vue";
-// import Modify from "../components/modifypostcomponent.vue";
+
 export default {
-  components: { SignIn, Post },
+  components: { SignIn, Post},
   name: "DefaultLayout",
 
   methods:{
@@ -141,7 +140,6 @@ export default {
       fixed: false,
       show: false,
       showpost: false,
-      showmodify: true,
       showbtn:true,
       hoverbtn:false,
       itemsuser: [
