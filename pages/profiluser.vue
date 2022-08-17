@@ -223,6 +223,7 @@ p.card-profil-biographie-p {
   padding-left: 1%;
   padding-bottom: 2%;
   border: 2px solid $primary;
+  cursor: default;
 }
 
 .btn-bio {

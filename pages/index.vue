@@ -10,9 +10,16 @@
        <v-card-text id="card-autor-book">
               <div class="user-book-main">
                 <div class="name-date-book"><img class="picture-user" src="../logo/avatar1.png" />
-                <span class="fullname-book">{{fullname}}</span></div><p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
-                <!-- <span class="hour-à"></span> -->
-                <span class="hour-now"> à {{hour}}</span></p>
+                <span class="fullname-book">{{fullname}}</span></div>
+
+                <!-- <p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
+                <span class="hour-à"></span>
+                <span class="hour-now"> à {{hour}}</span></p> -->
+
+                <p class="full-date">posté le : {{date}} à {{hour}}</p>
+              
+              
+
                 </div>
                 <div class="btn-book-main">
                  <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify">Modifier</button>
@@ -201,15 +208,19 @@ div.v-card__text.blockquote{
 // margin-top: 10px;
 // margin-right: 20px;
 // overflow: "...";
+padding-bottom: 5%;
 text-align: center;
 padding-right: 2%;
 };
 
 #card-att{
 justify-content: center;
+border-top: solid 2px $secondary;
+border-radius: 10%;
 background-color: $tertiary;
 width: 100%;
 height: 20%;
+padding-top: 0;
 padding-bottom: 2%;
 padding-left: 3%;
 };

@@ -176,6 +176,10 @@ today = dd+'/'+mm+'/'+yyyy;
 
 #card-post-modal{
   width: 75%;
+  margin-top: 55px;
+  max-width: 950px;
+  min-width: 350px;
+  // height: 650px;
 align-items: center;
 justify-content: center;
 background-color: $tertiary;

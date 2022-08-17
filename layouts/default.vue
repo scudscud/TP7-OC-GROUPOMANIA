@@ -180,7 +180,7 @@ export default {
         {
           icon: "mdi-newspaper-plus ",
           title: "creer votre post",
-          to: "/post",
+          to: "/postpage",
         },
       ],
     
