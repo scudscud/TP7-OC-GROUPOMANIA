@@ -33,11 +33,11 @@
       <h2>Ma bio</h2>
       <p class="card-profil-biographie-p">{{ biographieP }}</p>
       <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
-        modifier ma bio
+       <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio
       </button>
     </v-card-text>
 
-    <v-card-text v-show="modifbio">
+    <v-card-text class="deploy-modidify" v-show="modifbio">
       <form method="post" @submit.prevent>
         <label for="biographie"><h2>Biographie :</h2></label>
         <textarea
@@ -61,6 +61,24 @@
         </div>
       </form>
     </v-card-text>
+     <v-card-text class="card-profil-friend">
+      <div class="card-profil-friend-t"><v-icon class="icon-friend">mdi-account-group</v-icon><h2 class="h2-friend">Mes amis</h2></div>
+      <p class="card-profil-friend-p">{{ friend }}</p>
+      <!-- <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
+       supprimer des Amis
+      </button> -->
+    </v-card-text>
+   
+     <v-card-text class="card-profil-post">
+       <div class="card-profil-friend-t"><v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon> <h2 class="h2-post">Mes publications</h2></div>
+      
+      <p class="card-profil-post-p">{{ publication}}</p>
+      <!-- <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
+        modifier ma bio
+      </button> -->
+    </v-card-text>
+
+
   </v-card>
 </template>
 
@@ -73,6 +91,8 @@ export default {
       modifbio: false,
       bio: "",
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      friend:"Aie c'est vide ",
+      publication:"Vous n'avez rien publier",
       lastname: "test",
       firstname: "test",
    
@@ -216,19 +236,26 @@ div.v-card__text.card-profil-name {
 
 .card-profil-biographie {
   border-bottom: solid 2px;
+  border-bottom: 2px solid $secondary;
+  border-top: 2px solid $secondary;
 }
+
 
 p.card-profil-biographie-p {
   margin: 0;
   padding-left: 1%;
   padding-bottom: 2%;
-  border: 2px solid $primary;
+  // border: 2px solid $secondary;
   cursor: default;
 }
 
 .btn-bio {
   display: flex;
   flex-direction: row;
+}
+
+.deploy-modidify{
+  border-bottom: 2px solid $primary;
 }
 
 .card-profil-textarea {
@@ -240,6 +267,7 @@ p.card-profil-biographie-p {
     outline: none;
   }
 }
+
 
 #btn-bio-delete {
   border: solid 2px $secondary;
@@ -291,6 +319,57 @@ p.card-profil-biographie-p {
   &:hover {
     background-color: $secondary;
     color: $tertiary;
+    &.btn-bio-mod>.pen-icon{
+      color:$tertiary;
+    }
   }
 }
+
+.pen-icon{
+  padding-bottom: 2%;
+}
+
+.card-profil-friend {
+border-bottom: 2px solid $secondary;
+}
+
+.card-profil-friend-t{
+  display: flex;
+  flex-direction:row ;
+}
+
+.icon-friend{
+  padding-right: 1%;
+}
+
+p.card-profil-friend-p {
+  margin: 0;
+  padding-left: 1%;
+  padding-bottom: 2%;
+  // border: 2px solid $primary;
+  cursor: default;
+}
+
+.card-profil-post {
+  border-bottom: solid 2px;
+    border-bottom: 2px solid  $secondary;
+}
+
+.card-profil-post-t{
+  display: flex;
+  flex-direction:row ;
+}
+
+.icon-post{
+  padding-right: 1%;
+}
+
+p.card-profil-post-p {
+  margin: 0;
+  padding-left: 1%;
+  padding-bottom: 2%;
+  // border: 2px solid $primary;
+  cursor: default;
+}
+
 </style>

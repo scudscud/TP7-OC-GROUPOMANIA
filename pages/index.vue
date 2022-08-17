@@ -22,8 +22,8 @@
 
                 </div>
                 <div class="btn-book-main">
-                 <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify">Modifier</button>
-                <button id="btn-post-delete" @click="showdel = !showdel" >Supprimer</button></div>
+                 <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify"><v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier</button>
+                <button id="btn-post-delete" @click="showdel = !showdel" ><v-icon  class="delete-icon-main"  size="20px" >mdi-delete-circle</v-icon>Supprimer</button></div>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
@@ -137,6 +137,10 @@ width: 100px;
 padding-top: 2%;
 
 }
+.pen-icon-main{
+padding-right: 5%;
+
+}
 
 #btn-post-modify{
   display: flex;
@@ -155,7 +159,14 @@ padding-top: 2%;
      border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
+    &#btn-post-modify>.pen-icon-main{
+       color: $tertiary;
+    }
   }
+}
+
+.delete-icon-main{
+  padding-right: 2%;
 }
 
 #btn-post-delete {
@@ -167,7 +178,7 @@ padding-top: 2%;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
-  padding-left: 5px;
+  padding-left: 2px;
   padding-right: 5px;
   // padding-bottom: 5px;
   color: $secondary;
@@ -175,6 +186,9 @@ padding-top: 2%;
      border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
+      &#btn-post-delete>.delete-icon-main{
+       color: $tertiary;
+    }
   }
 }
 .card-img{

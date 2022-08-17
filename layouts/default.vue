@@ -6,6 +6,7 @@
     </div>
 
     <v-navigation-drawer
+    class="drawer-left"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -88,7 +89,7 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+    <v-navigation-drawer class="drawer-right" v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item
           v-for="(item, v) in itemsuser"
@@ -143,23 +144,26 @@ export default {
       showbtn:true,
       hoverbtn:false,
       itemsuser: [
+         {
+          icon: "mdi-account",
+          title: "Mon profil",
+          to: "/profiluser",
+         
+        },
         {
           icon: "mdi-chart-bubble",
-          title: "mes publications",
-        },
-        {
-          icon: "mdi-thumb-up-outline ",
-          title: "mes likes",
-        },
-        {
-          icon: "mdi-account",
-          title: "mon profil",
+          title: "Mes publications",
           to: "/profiluser",
         },
+        // {
+        //   icon: "mdi-thumb-up-outline ",
+        //   title: "Mes likes",
+        //   to: "/profiluser",
+        // },
         {
           icon: " mdi-account-group  ",
-          title: "Amis",
-          to: "/pop",
+          title: "Mes amis",
+          to: "/profiluser",
         },
         {
           icon: " mdi-logout ",
@@ -173,15 +177,15 @@ export default {
           title: "le Groupo-book",
           to: "/",
         },
-        {
-          icon: " mdi-chat",
-          title: "le Groupo-chat",
-        },
-        {
+          {
           icon: "mdi-newspaper-plus ",
           title: "creer votre post",
           to: "/postpage",
         },
+        {
+          icon: " mdi-chat",
+          title: "le Groupo-chat",
+        },  
       ],
     
       // icon: "../logo/logo.png",
@@ -192,13 +196,26 @@ export default {
 </script>
 
 <style lang="scss">
+
 html {
   font-family: "Lato";
 }
 
+// .v-overlay__scrim{
+//  margin-top: 55px;
+// }
+
+
+.drawer-left{
+  margin-top: 55px;
+}
+.drawer-right{
+margin-top: 55px;
+}
 .v-toolbar__content {
   background-color: $primary;
 }
+
 
 .avatar {
   display: flex;
