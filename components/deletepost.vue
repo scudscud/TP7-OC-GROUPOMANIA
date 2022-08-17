@@ -1,15 +1,20 @@
 <template>
+<div class="overlay-delete">
+<v-col class=" d-flex  justify-center align-center">
 
-<v-col class="overlay d-flex  justify-center align-center">
-<v-card class="popup">
+<v-card class="popup-del-com ">
+    <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" />
+    <span>La team GROUPOMANIA </span>
+    </p>
   <p>Vous-êtes sur de vouloir supprimer ce post ?</p>
    <p>cette action est irreversible </p>
-   <button  id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></button>
+   <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
 <v-btn @click="$emit('close-modale-delete')"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
-<!-- <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p> -->
+
 </v-card>
 </v-col>
+</div>
 </template>
 
 
@@ -40,7 +45,7 @@ return{
 </script>
 
 <style lang="scss">
- .overlay {
+ .overlay-delete {
 
   width: 100%;
   top: 0px;
@@ -54,6 +59,28 @@ background-color: rgba(0, 0 ,0, 0.7);
 transition: opacity 0.4s;
 z-index: 1000;
  };
+
+ .popup-del-com {
+  padding-bottom: 1%;
+  padding-top: 1%;
+  background-color: $secondary;
+  margin-top: 250px;
+  // max-width: 300px;
+  // min-width: 300px;
+  width: 320px;
+  // max-height: 200px;
+  // min-height: 200px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ }
+
+.logo-disconnect-delete{
+display: flex;
+flex-direction: row;
+}
 
 .popup{
   padding-bottom: 1%;

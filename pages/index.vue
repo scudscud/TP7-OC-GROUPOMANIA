@@ -1,14 +1,12 @@
 <template>
 
 
-
  <v-card id="card-post" >
-  <div>
-      <Deletepost id="modal-delete" v-show="showdelete" @close-modale-delete="showdelete = false"/>
   
-  <modify id="modal-modify" v-show="showmodify" @close-modale-modify="showmodify = false"/>
+ 
+  <modify  v-show="showmodify" @close-modale-modify="showmodify = false"/>
 
-</div>
+      <deletepost v-show="showdel" @close-modale-delete="showdel = false"/>
        <v-card-text id="card-autor-book">
               <div class="user-book-main">
                 <div class="name-date-book"><img class="picture-user" src="../logo/avatar1.png" />
@@ -18,7 +16,7 @@
                 </div>
                 <div class="btn-book-main">
                  <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify">Modifier</button>
-          <button id="btn-post-delete" @click="showmdelete = !showdelete" >Supprimer</button></div>
+                <button id="btn-post-delete" @click="showdel = !showdel" >Supprimer</button></div>
         </v-card-text>
       <img class="card-img mb-5"
         src="/v.png"
@@ -44,9 +42,9 @@ export default{
     components: { Modify, Deletepost },
   data(){
     return {
-  
+       showdelete:false,
       showmodify:false,
-      showdelete:true,
+      showdel:false,
        lastname: "test",
       firstname: "test",
     }
