@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <div>
-      <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
+     
       <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false"/>
     </div>
 
@@ -141,7 +141,7 @@ export default {
       rightDrawer: false,
       clipped: false,
       fixed: false,
-      show: true,
+    
       showpost: false,
       showbtn:true,
       hoverbtn:false,
@@ -196,12 +196,16 @@ export default {
   },
   mounted(){
 
-    // axios.get(`http://localhost:5000/user/}`)
-    // .then((data) => {
+    axios.get(`http://localhost:5000/api/user/}`)
+    .then((data) => {
 
-    //   console.log(data);
+      console.log(data);
 
-    // })
+    }).catch((error)=>{
+      console.log(
+     error.response.data
+      );
+    })
   
   },
 

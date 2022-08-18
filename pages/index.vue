@@ -1,9 +1,10 @@
 <template>
   <v-card id="card-post">
+     <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
     <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
     <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
 
-    <v-card-text id="card-autor-book" >
+    <v-card-text id="card-autor-book" v-for="post in posts" >
       <div class="user-book-main">
         <div class="name-date-book">
           <img class="picture-user" src="post" />
@@ -64,6 +65,7 @@ export default {
   components: { Modify, Deletepost },
   data() {
     return {
+      show: true,
       showdelete: false,
       showmodify: false,
       showdel: false,
@@ -116,9 +118,9 @@ export default {
     getPosts() {
       axios
         .get("http://localhost:5000/api/post")
-        .then((posts) => {
-          console.log(posts);
-          this.posts = posts.data.allPosts;
+        .then((docs) => {
+          console.log(docs.data);
+          this.posts = post.data;
           this.updateLike();
         })
         .catch((err) => console.log(err.message));
@@ -126,17 +128,31 @@ export default {
   },
    mounted(){
 
+  axios.get(`http://localhost:5000/api/user/}`)
+    .then((post) => {
+
+      console.log(post.data);
+     console.log(post.data);
+          this.posts = post.data;
+    }).catch((error)=>{
+      console.log(
+       error.response.data
+      );
+    })
+  
     
-    axios.get(`http://localhost:5000/jwtid/`)
+    axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
 
-      console.log(res);
+      console.log(res.data);
 
-    }).catch()
+    }).catch((error)=>{
+      console.log(error.message);
+    })
 
    axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        console.log(docs);
+        console.log(docs.data);
         // let inputFile = document.querySelector('#picture')
         // let fileName = document.querySelector('#file-name')
         // inputFile.addEventListener('change', () => {
@@ -146,7 +162,14 @@ export default {
       .catch();
 
 
+   axios.get(`http://localhost:5000/me`)
+    .then((res) => {
 
+      // console.log(res.cookies.jwt);
+
+    }).catch((error)=>{
+       error
+    })
 
 
 

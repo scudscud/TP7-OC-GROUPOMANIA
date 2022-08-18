@@ -20,7 +20,7 @@ exports.requireAuth = (req,res,next)=>{
     })
    }else{
     console.log('access denied invalid token ');
-    res.status(401).json('erreur')
+    // res.status(401).json('erreur')
    }
 };
 

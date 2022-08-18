@@ -122,23 +122,25 @@ export default {
     //     return false
     //  }
 
-      axios
+     await axios
         .post("http://localhost:5000/api/user/login", {
           email: this.email,
           password: this.psw,
           badge: this.badge,
         })
         .then((user) => {
-       console.log(user);
+      //  console.log(Cookie);
           const userId = user.data.user
           window.prompt("entrer la clé reçu par mail (n'importe lequel)")
         // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
+          
           this.show = false;
           setTimeout(() => {
             this.$emit('close-modale', true)
+          
           }, 1000);
-        return userId
+         this.userid = userId
         })
         .catch((error) => {
           this.infomsg = error.response.data.errors;
@@ -147,6 +149,35 @@ export default {
           }, 3000);
         })
           
+    await  axios.get(`http://localhost:5000/api/user/${this.userid}`
+    // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
+    )
+    .then((res) => {
+
+      console.log(res.data);
+
+    }).catch((error)=>{
+      console.log(
+     error.response.data
+      );
+    })
+    await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+
+      console.log(res.cookies.jwt);
+
+    }).catch()
+
+     axios.get(`http://localhost:5000/me`)
+    .then((res) => {
+
+      console.log(res.cookies.jwt);
+
+    }).catch((error)=>{
+       error.response.data
+    })
+
+
       
     },
   },
@@ -161,6 +192,7 @@ export default {
       successreg: "",
       infomsg: "",
       formfull: "",
+      userid:"",
     };
   },
 };

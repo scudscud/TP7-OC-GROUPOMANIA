@@ -24,8 +24,8 @@ export default {
   },
   data () {
     return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+      pageNotFound: '404 je ne suis pas la ',
+      otherError: 'si le probleme persiste contatez un administrateur GROUPOMANIA'
     }
   },
   head () {

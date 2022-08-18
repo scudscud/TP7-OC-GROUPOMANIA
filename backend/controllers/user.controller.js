@@ -4,7 +4,8 @@ const ObjectID = require("mongoose").Types.ObjectId;
 // all user end point \\
 
 exports.getAllUsers = async (req, res) => {
-  const users = await UserModel.find().select("-password");
+  // const badge =  await UserModel.find().select("-badge");
+  const users = await UserModel.find().select("-password").select('-badge');
   console.log(users);
   res.status(200).json(users);
 };
@@ -16,9 +17,10 @@ exports.userInfo = async (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
 
   UserModel.findById(req.params.id, (err, docs) => {
+  
     if (!err) res.send(docs);
     else console.log("utilisateur inconnu: " + err);
-  }).select("-password");
+  }).select("-password").select('-badge');
 };
 
 // update user end point \\
