@@ -196,7 +196,10 @@ export default {
         { message: "le mot de passe doit contenir : 1 chiffre,",regex: /[0-9]+/,},
         { message: "1 miniscule,", regex: /[a-z]+/ },
         { message: "1 majuscule,", regex: /[A-Z]+/ },
+        { message: "1 caractere speciale", regex: /[!@#$%^&]+/ },
         { message: "8 caracteres minimun", regex: /.{8,}/ },
+    
+
       ],
 
       // testpsw:true,
@@ -216,6 +219,16 @@ export default {
     };
   },
   computed: {
+       mailValidation(){
+      let mail =  new RegExp('[a-z]+\.[a-z]@groupomania.fr')
+      let testMail = mail.test(this.email)
+    if(testMail = true){
+      return true
+     }else{
+      return false
+     }
+    },
+
     passwordValidation() {
       let errors = [];
       for (let condition of this.rules) {
@@ -253,9 +266,13 @@ export default {
     async loginInfo() {
       if (this.psw != this.pswcom) {
         this.infomsg = "Veuillez vérifier votre mot de passe";
-        return false;
+        return false
       }
-
+     if(mailValidation = false){
+       this.infomsg = "il y a une erreur, Réessayer";
+        return false
+     }
+      
       await axios
         .post("http://localhost:5000/api/user/register", {
           firstname: this.firstname,

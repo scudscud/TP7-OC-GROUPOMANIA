@@ -139,7 +139,7 @@ export default {
       rightDrawer: false,
       clipped: false,
       fixed: false,
-      show: false,
+      show: true,
       showpost: false,
       showbtn:true,
       hoverbtn:false,
@@ -206,12 +206,12 @@ html {
 // }
 
 
-.drawer-left{
-  margin-top: 55px;
-}
-.drawer-right{
-margin-top: 55px;
-}
+// .drawer-left{
+//   margin-top: 55px;
+// }
+// .drawer-right{
+// margin-top: 55px;
+// }
 .v-toolbar__content {
   background-color: $primary;
 }

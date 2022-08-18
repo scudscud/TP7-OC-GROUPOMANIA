@@ -7,10 +7,12 @@ const image = require("../middleware/picture.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
-router.put('/:id',authUser, postController.updatePost);
+router.put('/:id',  checkUser, postController.updatePost);
 router.delete('/:id',authUser, postController.deletePost);
 router.patch('/like-post/:id',authUser, postController.likePost);
 router.patch('/unlike-post/:id',authUser, postController.unLikePost);
+
+
 
 // router post + multer errors \\
 

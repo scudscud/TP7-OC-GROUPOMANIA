@@ -1,6 +1,6 @@
 <template>
   <div class="overlay">
-    <div class="instruction-term" justify="center" align="center">
+    <div class="instruction-term" >
       <h2 class="title-term">Bienvenue sur le reseau social de groupomania</h2>
 
       <p>
@@ -70,10 +70,11 @@
 }
 
 .instruction-term {
+  margin-top: 100px;
   width: 60%;
-  height: 75%;
+  height: 60%;
   border: solid 2px;
-  border-radius: 10%;
+  border-radius: 5%;
   padding: 2%;
   background: $secondary;
   color: $tertiary;

@@ -34,9 +34,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //jwt check user id \\
-app.get(".*", checkUser,(req,res)=>{res.send(req.user)});
+// app.get("/*", checkUser,(req,res)=>{res.send(req.user)}); // TODO 
 app.get("/jwtid", requireAuth, (req,res)=>{res.send(req.user)});
-app.get('/me',authUser,(req,res)=>{res.send(req.user)});
+// app.get('/me',authUser,(req,res)=>{res.send(req.user)});
 
 // routes\\
 app.use("/api/user", userRoutes);

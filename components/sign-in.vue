@@ -112,6 +112,8 @@ export default {
           badge: this.badge,
         })
         .then(() => {
+          window.prompt("entrer la clé reçu par mail (n'importe lequel)")
+        // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
           this.show = false;
           setTimeout(() => {
