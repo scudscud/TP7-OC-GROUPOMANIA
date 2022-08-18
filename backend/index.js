@@ -4,9 +4,10 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
+const { checkUser, requireAuth , authUser } = require("./middleware/auth.middleware");
 require("./config/db");
 require("dotenv").config({ path: ".env" });
-const { checkUser, requireAuth , authUser } = require("./middleware/auth.middleware");
+
 const path = require("path")
 // const multer = require('multer');
 
@@ -27,16 +28,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // parser \\
-
+app.use(cookieParser());
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 
 //jwt check user id \\
-// app.get("/*", checkUser,(req,res)=>{res.send(req.user)}); // TODO 
-app.get("/jwtid", requireAuth, (req,res)=>{res.send(req.user)});
-// app.get('/me',authUser,(req,res)=>{res.send(req.user)});
+app.get('*', checkUser,
+// (req,res)=>{res.send(req.user)}
+); // TODO 
+app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user_id)});
+app.get('/me',authUser,(req,res)=>{res.send(req.user)});
 
 // routes\\
 app.use("/api/user", userRoutes);

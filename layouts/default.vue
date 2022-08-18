@@ -115,6 +115,7 @@
 </template>
 
 <script>
+import axios from "axios";
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
 import Post from "../components/postcomponent.vue";
@@ -130,6 +131,7 @@ export default {
   computed :{
 
   },
+ 
 
   data() {
     return {
@@ -192,9 +194,24 @@ export default {
       title: "Groupomania le réseau",
     };
   },
-};
-</script>
+  mounted(){
 
+    // axios.get(`http://localhost:5000/user/}`)
+    // .then((data) => {
+
+    //   console.log(data);
+
+    // })
+  
+  },
+
+}
+
+
+
+
+
+</script>
 <style lang="scss">
 
 html {

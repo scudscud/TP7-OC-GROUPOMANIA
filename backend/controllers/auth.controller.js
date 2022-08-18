@@ -57,7 +57,7 @@ exports.signIn = async (req, res) => {
       maxAge: durationTokenLogin,
       httpOnly: true,
     });
-    res.status(200).json({ user: user._id });
+    res.status(200).json({ user: user._id , token});
   } catch (err) {
     const errors = signInErrors(err);
     res.status(401).json({ errors });

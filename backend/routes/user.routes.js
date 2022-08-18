@@ -7,6 +7,7 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
 const uploadController = require("../controllers/upload.controller");
+const { checkUser, authUser } = require("../middleware/auth.middleware");
 // 
 
 //auth\\
@@ -20,7 +21,7 @@ router.get("/logout", authController.logout);
 
 //user  \\
 
-router.get("/", userController.getAllUsers);
+router.get("/",authUser,userController.getAllUsers);
 router.get("/:id", userController.userInfo);
 router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.userDelete);

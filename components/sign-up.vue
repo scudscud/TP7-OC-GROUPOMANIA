@@ -216,16 +216,17 @@ export default {
       pswcom: "",
       badge: "",
       check: "",
+      mailVali:false
     };
   },
   computed: {
        mailValidation(){
+        // ====== si bug doublebackslash new regexp consum one bs =======\\
       let mail =  new RegExp('[a-z]+\.[a-z]@groupomania.fr')
       let testMail = mail.test(this.email)
     if(testMail = true){
-      return true
-     }else{
-      return false
+      this.mailValid = true
+
      }
     },
 
@@ -268,7 +269,7 @@ export default {
         this.infomsg = "Veuillez vérifier votre mot de passe";
         return false
       }
-     if(mailValidation = false){
+     if(this.mailValid = false){
        this.infomsg = "il y a une erreur, Réessayer";
         return false
      }
@@ -282,8 +283,9 @@ export default {
           password: this.psw,
         })
         .then(() => {
+        
           this.successreg = "Compte creer avec succée, Bienvenue";
-
+          window.prompt("entrer la clé reçu par mail ( n'importe quel touche)")
           setTimeout(() => {
             window.location.href = "./";
           }, 3000);

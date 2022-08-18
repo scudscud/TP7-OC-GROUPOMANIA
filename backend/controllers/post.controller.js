@@ -4,6 +4,7 @@ const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
 // read post end point \\
+
 exports.readPost = (req, res) => {
   postModel
     .find((err, docs) => {

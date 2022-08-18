@@ -92,6 +92,17 @@ export default {
   name: "IndexPage",
   components: { SignUp },
   computed: {
+    //     mailValidation(){
+    //     // ====== si bug doublebackslash new regexp consum one bs =======\\
+    //   let mail =  new RegExp('[a-z]+\.[a-z]@groupomania.fr')
+    //   let testMail = mail.test(this.email)
+    // if(testMail = true){
+    //   return true
+    //  }else{
+    //   return false
+    //  }
+    // },
+
     validatedForm() {
       if (this.badge != "" && this.email != "" && this.psw != "") {
         this.formfull = "";
@@ -105,13 +116,21 @@ export default {
 
   methods: {
     async verifyUser() {
+
+    //      if(mailValidation = false){
+    //    this.infomsg = "il y a une erreur, Réessayer";
+    //     return false
+    //  }
+
       axios
         .post("http://localhost:5000/api/user/login", {
           email: this.email,
           password: this.psw,
           badge: this.badge,
         })
-        .then(() => {
+        .then((user) => {
+       console.log(user);
+          const userId = user.data.user
           window.prompt("entrer la clé reçu par mail (n'importe lequel)")
         // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
@@ -119,13 +138,16 @@ export default {
           setTimeout(() => {
             this.$emit('close-modale', true)
           }, 1000);
+        return userId
         })
         .catch((error) => {
           this.infomsg = error.response.data.errors;
           setTimeout(() => {
             this.infomsg = "";
           }, 3000);
-        });
+        })
+          
+      
     },
   },
 
