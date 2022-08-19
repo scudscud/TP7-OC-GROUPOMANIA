@@ -11,7 +11,7 @@
                 <p class="fullname">{{fullname}}</p>
                  <div class="header-btn">
                   <button id="btn-send-post" @click="$emit('close-modale-post')" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
-                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post')" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
+                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
                       </div>
       </v-card-text>
 
@@ -101,6 +101,13 @@ export default{
     }
     },
  methods: {
+
+  sendPost(){
+
+
+
+
+  },
 
   picPreview(e) {
       const file = e.target.files[0];
