@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user.model');
+const ObjectID = require("mongoose").Types.ObjectId;
 
 const durationTokenLogout = 1
 
@@ -13,7 +14,7 @@ exports.requireAuth = (req,res,next)=>{
             res.status(401).send('token not found');
         }else{
             req.user = decodedToken.id;
-            console.log(decodedToken.id);
+            console.log("mmid"+decodedToken.id);
             res.status(200).json(decodedToken.id)
         
        next()
@@ -46,9 +47,14 @@ exports.authUser = (req, res ,next) =>{
 // =====================ROUTE checkuser======useless===================== \\\
 
 exports.checkUser = ( req,res,next)=>{
-    const token = req.headers['Set-Cookie']
+    const auth = req.headers.cookie
+    const token = auth && auth.split('=')[1]
+
+    console.log(token);
+
 // const token = req.params.jwt;
 if(token){
+  
     jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
    if (err){
    
@@ -58,7 +64,7 @@ if(token){
     }else{
         console.log(decodedToken);
   let user = await UserModel.findById(decodedToken.id);
-  console.log(user)
+  console.log("test"+user)
    res.locals.user = user;
   next();
     }

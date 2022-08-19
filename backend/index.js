@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session")
 const cookieParser = require("cookie-parser");
+const ObjectID = require("mongoose").Types.ObjectId;
 const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
@@ -52,10 +53,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //jwt check user id \\
 app.get('*', checkUser,
-// (req,res)=>{res.send(req.user)}
+// (req,res)=>{
+  
+//   console.log(res.body);
+//   res.send(req.user)}
 ); // TODO 
-app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user_id)});
+
+app.get('/jwtid', requireAuth, (req,res)=>{
+  // console.log(res);
+  
+  res.status(200).send(res.locals.user_id)});
 app.get('/me',authUser,(req,res)=>{res.status(200).send(res.locals.user_id)});
+
+
+
 
 // routes\\
 app.use("/api/user", userRoutes);

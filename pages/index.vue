@@ -160,7 +160,7 @@ export default {
     axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
 
-      console.log(res.data);
+      console.log("front"+res.data);
 
     }).catch((error)=>{
       console.log(error);

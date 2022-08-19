@@ -6,7 +6,7 @@ const ObjectID = require("mongoose").Types.ObjectId;
 exports.getAllUsers = async (req, res) => {
   // const badge =  await UserModel.find().select("-badge");
   const users = await UserModel.find().select("-password").select('-badge');
-  console.log(users);
+  // console.log(users);
   res.status(200).json(users);
 };
 
