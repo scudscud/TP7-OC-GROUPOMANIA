@@ -9,9 +9,10 @@
       <v-card-text id="card-autor">
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
                 <p class="fullname">{{fullname}}</p>
+                <div class="header-btn">
                   <button id="btn-send-post" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
-
+                    </div>
         </v-card-text>
         <div class="picture-create-post">
           <h3 id="card-create-picture">Votre photo</h3>
@@ -176,6 +177,17 @@ height: 20px;
   border: solid 2px $secondary;
   border-radius: 50%; 
 }
+
+.header-btn{
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+width: 120px;
+padding-left: 1%;
+padding-right: 1%;
+
+}
 .fullname{
   margin-left: 1%;
   margin-right: auto;
@@ -214,10 +226,10 @@ height: 20px;
 // }
 #back-book{
   display: flex;
-
-  // align-items:center;
-  // justify-content: center;
+  align-items:center;
+  justify-content: center;
   text-decoration: none;
+  width: 85px;
 color:$secondary;
    border: solid 2px $secondary;
   margin-top: 1%;
@@ -239,16 +251,19 @@ color:$secondary;
 } 
 
 #icon-btn-delete{
-  padding-left: 5%;
+  padding-left: 10%;
 }
 
 #div-btn-back{
   display: flex;
-  width: 100%;
+  // width: 100%;
+  padding-left: 1%;
   justify-content: center;
   align-items: center;
 }
 #btn-back{
+  display: flex;
+  width: auto;
   padding-left: 0;
   padding-right: 0;
 }
@@ -273,6 +288,10 @@ color:$secondary;
 // }
 
 #btn-send-post{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85px;
   color:$secondary;
    border: solid 2px $secondary;
   margin-top: 1%;

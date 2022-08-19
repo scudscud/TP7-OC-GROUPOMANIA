@@ -5,13 +5,14 @@
       ><h1 class="card-profil-title-h1">Publier</h1></v-card-text>
     
       <v-card-text id="card-autor">
-       
+
                 <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname">{{fullname}}</p>
+                 <div class="header-btn">
                   <button id="btn-send-post" @click="$emit('close-modale-post')" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post')" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
-
+                      </div>
         </v-card-text>
         <div class="picture-create-post">
           <h3 id="card-create-picture">Votre photo</h3>
