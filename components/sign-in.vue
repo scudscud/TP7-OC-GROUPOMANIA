@@ -156,19 +156,19 @@ export default {
           }, 3000);
         });
 
-      await axios
-        .get(
-          `http://localhost:5000/api/user/${this.userid}`,
+      // await axios
+      //   .get(
+      //     `http://localhost:5000/api/user/${this.userid}`,
        
-          // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
-        )
-        .then((res, req) => {
+      //     // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
+      //   )
+      //   .then((res, req) => {
      
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      //     console.log(res.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
       // await axios
       //   .get(`http://localhost:5000/jwtid`,
  

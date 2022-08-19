@@ -7,10 +7,10 @@ const image = require("../middleware/picture.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
-router.put('/:id',  checkUser, postController.updatePost);
-router.delete('/:id',checkUser, postController.deletePost);
-router.patch('/like-post/:id',checkUser, postController.likePost);
-router.patch('/unlike-post/:id',checkUser, postController.unLikePost);
+router.put('/:id', postController.updatePost);
+router.delete('/:id', postController.deletePost);
+router.patch('/like-post/:id', postController.likePost);
+router.patch('/unlike-post/:id', postController.unLikePost);
 
 
 

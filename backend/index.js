@@ -38,7 +38,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //jwt check user id \\
-app.get('*', checkUser,// (req,res)=>{//   res.send(res.locals.user_id)}
+app.get('*', checkUser
+// ,(req,res)=>{ console.log(res.locals.user._id);res.send(res.locals.user._id)}
 ); // TODO 
 app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user._id)});
 

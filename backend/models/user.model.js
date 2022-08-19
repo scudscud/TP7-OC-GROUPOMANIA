@@ -73,9 +73,6 @@ const userSchema = mongoose.Schema(
     following: {
       type: [String],
     },
-    following: {
-      type: [String],
-    },
   },
   {
     timestamps: true,

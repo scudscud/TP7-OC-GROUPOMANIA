@@ -61,6 +61,7 @@ import axios from "axios";
 import Modify from "../components/modifypost.vue";
 // import DeleteCom from "../components/deletepost.vue";
 import Deletepost from "../components/deletepost.vue";
+import { doc } from "prettier";
 export default {
   components: { Modify, Deletepost },
   data() {
@@ -72,6 +73,13 @@ export default {
       lastname: "test",
       firstname: "test",
       post:[],
+      userjwtid:"",
+      userid:'',
+      firstname:'',
+      lastname:'',
+      pictureprofil:'',
+
+
     };
   },
   computed: {
@@ -114,6 +122,8 @@ export default {
         .then((docs) => {
 
         console.log(docs);
+      this.userId
+    
 
 
         }
@@ -125,50 +135,45 @@ export default {
       axios
         .get("http://localhost:5000/api/post")
         .then((docs) => {
-          console.log(docs.data);
+          // console.log(docs.data);
           this.posts = post.data;
           this.updateLike();
         })
         .catch((err) => console.log(err));
     },
   },
-   mounted(){
+  async mounted(){
   axios.defaults.withCredentials = true;
-  axios.get(`http://localhost:5000/api/user/`)
-    .then((docs) => {
-     console.log(docs.data);
-      const userAll = docs.data
+
+       
+   await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+      console.log(res.data);
+     this.userjwtid = res.data
+    this.show = false
+    }).catch((error)=>{
+      console.log(error);
+    })
    
+
+   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+        console.log(docs.data)
+          this.userid = docs.data._id
+          this.firstname = docs.data.firstname
+        this.lastname = docs.data.lastname
+        this.pictureprofil = docs.data.pictureprofil
     }).catch((error)=>{
       console.log(
        error
       );
     })
-  
-  
-  //  axios.get(`http://localhost:5000/me`)
-  //   .then((res) => {
-
-  //     console.log(res);
-
-  //   }).catch((error)=>{
-  //      error
-  //   })
-
-
-    
-    axios.get(`http://localhost:5000/jwtid`)
-    .then((res) => {
-
-      console.log("front"+res.data);
-
-    }).catch((error)=>{
-      console.log(error);
-    })
-
    axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        console.log(docs.data);
+       
+
+
+
         // let inputFile = document.querySelector('#picture')
         // let fileName = document.querySelector('#file-name')
         // inputFile.addEventListener('change', () => {

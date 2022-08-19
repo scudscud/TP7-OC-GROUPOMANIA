@@ -13,12 +13,15 @@ exports.getAllUsers = async (req, res) => {
 // user info end point \\
 
 exports.userInfo = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+
+  console.log(req.params);
+  if (!ObjectID.isValid(req.params.id)) return res.status(400).send("utilsateur inconnu :" + req.params.id);
 
   UserModel.findById(req.params.id, (err, docs) => {
   
     if (!err) res.send(docs);
+
+
     else console.log("utilisateur inconnu: " + err);
   }).select("-password").select('-badge');
 };
