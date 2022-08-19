@@ -36,38 +36,11 @@ app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const sessionOption ={
-//   secret: 'wow very secret',
-//   cookie: {
-//     maxAge: 600000,
-//     secure: false},
-// saveUninitialized: false,
-//   resave: false,
-//   unset: 'destroy'
-
-
-// }
-
-// app.use(session(sessionOption))
-
 
 //jwt check user id \\
-app.get('*', checkUser,
-// (req,res)=>{
-
-//   res.send(res.locals.user_id)}
+app.get('*', checkUser,// (req,res)=>{//   res.send(res.locals.user_id)}
 ); // TODO 
-
-app.get('/jwtid', requireAuth, (req,res)=>{
- 
-  res.status(200).send(res.locals.user._id)});
-
-
-
-
-// app.get('/me',authUser,(req,res)=>{res.status(200).send(res.locals.user_id)});
-
-
+app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user._id)});
 
 
 // routes\\
@@ -82,5 +55,21 @@ app.listen(process.env.PORT, (port) =>
   console.log(`listening on port ${process.env.PORT}`)
 );
 
-// ===============ROUTE checkuser===============================================================================\\
+// ===============ROUTE checkuser==ME=============================================================================\\
 
+// app.get('/me',authUser,(req,res)=>{res.status(200).send(res.locals.user_id)});
+
+
+//======================test session=========================================================\\
+
+// const sessionOption ={
+//   secret: 'wow very secret',
+//   cookie: {
+//     maxAge: 600000,
+//     secure: false},
+// saveUninitialized: false,
+//   resave: false,
+//   unset: 'destroy'
+// }
+
+// app.use(session(sessionOption))

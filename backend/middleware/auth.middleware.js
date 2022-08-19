@@ -16,7 +16,7 @@ exports.requireAuth = (req,res,next)=>{
             res.status(401).send('token not found');
         }else{
             req.user = decodedToken.id;
-            console.log("mmid"+req.user);
+            // console.log("mid"+req.user);
             // res.status(200).json(decodedToken.id)      
        next()
         }
@@ -52,7 +52,6 @@ if(token){
     res.locals.user = null;
     next();
 }
-
 };
 
 
