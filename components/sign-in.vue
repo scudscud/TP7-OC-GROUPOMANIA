@@ -10,12 +10,14 @@
         class="logo py-4 d-flex justify-center align-center"
       >
         <h2 class="h2-sign-in">
-          <button class="btn-login"    @click.stop="$emit('close-modale')">
+          <button class="btn-login" @click.stop="$emit('close-modale')">
             connexion
           </button>
         </h2>
         <v-card-text class="sign-up-link">
-          <span class="span-instruction">Vous n'avez pas encore de compte ?</span>
+          <span class="span-instruction"
+            >Vous n'avez pas encore de compte ?</span
+          >
           <span class="span-sign-up" @click.stop="showSignUp = true">
             Créer un compte
           </span>
@@ -68,7 +70,6 @@
                 <div class="errormsg">{{ infomsg }}</div>
                 <div class="successmsg">{{ successreg }}</div>
                 <button
-                
                   class="btn-valid"
                   @click="verifyUser"
                   :disabled="validatedForm"
@@ -87,8 +88,12 @@
 
 <script>
 import axios from "axios";
+
+import VueCookie from "vue-cookie";
 import SignUp from "./sign-up.vue";
+
 export default {
+
   name: "IndexPage",
   components: { SignUp },
   computed: {
@@ -115,70 +120,77 @@ export default {
   },
 
   methods: {
+     
     async verifyUser() {
+       axios.defaults.withCredentials = true;
+      // axios.defaults.withCredentials = true;
+      //      if(mailValidation = false){
+      //    this.infomsg = "il y a une erreur, Réessayer";
+      //     return false
+      //  }
 
-    //      if(mailValidation = false){
-    //    this.infomsg = "il y a une erreur, Réessayer";
-    //     return false
-    //  }
-
-     await axios
+      await axios
         .post("http://localhost:5000/api/user/login", {
           email: this.email,
           password: this.psw,
           badge: this.badge,
         })
         .then((user) => {
-      //  console.log(Cookie);
-          const userId = user.data.user
-          window.prompt("entrer la clé reçu par mail (n'importe lequel)")
-        // => *TODO capcha ou systeme de mail comfirmation register <= \\
+          //  console.log(Cookie);
+          //  this.$cookie.set('token',res.data.token);
+          const userId = user.data.user;
+          window.prompt("entrer la clé reçu par mail (n'importe lequel)");
+          // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
-          
+
           this.show = false;
           setTimeout(() => {
-            this.$emit('close-modale', true)
-          
+            this.$emit("close-modale", true);
           }, 1000);
-         this.userid = userId
+          this.userid = userId;
         })
         .catch((error) => {
           this.infomsg = error.response.data.errors;
           setTimeout(() => {
             this.infomsg = "";
           }, 3000);
+        });
+
+      await axios
+        .get(
+          `http://localhost:5000/api/user/${this.userid}`,
+       
+          // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
+        )
+        .then((res, req) => {
+     
+          console.log(res.data);
         })
-          
-    await  axios.get(`http://localhost:5000/api/user/${this.userid}`
-    // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
-    )
-    .then((res) => {
+        .catch((error) => {
+          console.log(error);
+        });
+      // await axios
+      //   .get(`http://localhost:5000/jwtid`,
+ 
+      //       )
+      //   .then((res) => {
+      //     //   console.log(res.headers["Set-Cookie"]);
+      //     // console.log(req);
+      //     console.log(res);
+      //   })
+      //   .catch((err)=>{
 
-      console.log(res.data);
+      //     console.log(err);
+      //   });
 
-    }).catch((error)=>{
-      console.log(
-     error.response.data
-      );
-    })
-    await axios.get(`http://localhost:5000/jwtid`)
-    .then((res) => {
+      //  axios.get(`http://localhost:5000/me`)
+      // .then((res) => {
+      //        console.log(res.headers["Set-Cookie"]);
+      //   console.log(res.cookies.jwt);
 
-      console.log(res.cookies.jwt);
-
-    }).catch()
-
-     axios.get(`http://localhost:5000/me`)
-    .then((res) => {
-
-      console.log(res.cookies.jwt);
-
-    }).catch((error)=>{
-       error.response.data
-    })
-
-
-      
+      // }).catch((error)=>{
+      //    error
+      // })
     },
   },
 
@@ -192,7 +204,7 @@ export default {
       successreg: "",
       infomsg: "",
       formfull: "",
-      userid:"",
+      userid: "",
     };
   },
 };

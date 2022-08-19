@@ -196,16 +196,16 @@ export default {
   },
   mounted(){
 
-    axios.get(`http://localhost:5000/api/user/}`)
-    .then((data) => {
+    // axios.get(`http://localhost:5000/api/user}`)
+    // .then((data) => {
 
-      console.log(data);
+    //   console.log(data);
 
-    }).catch((error)=>{
-      console.log(
-     error.response.data
-      );
-    })
+    // }).catch((error)=>{
+    //   console.log(
+    //  error
+    //   );
+    // })
   
   },
 

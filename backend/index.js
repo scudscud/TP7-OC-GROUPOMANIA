@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const session = require("express-session")
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
@@ -11,17 +12,18 @@ require("dotenv").config({ path: ".env" });
 const path = require("path")
 // const multer = require('multer');
 
-
 const app = express();
+
 
 // Cors parametre \\
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
-  Credentials: true,
+  credentials: true,
+  // allowedHeaders: ["set-cookie", "Content-type"],
   allowedHeaders: ["sessionId", "Content-type"],
-  // exposeHeaders: ["sessionId"],
-  exposeHeaders:["*"] ,
+  exposeHeaders: ["sessionId"],
+  // exposeHeaders:["set-cookie"] ,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
 };
@@ -33,13 +35,27 @@ app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// const sessionOption ={
+//   secret: 'wow very secret',
+//   cookie: {
+//     maxAge: 600000,
+//     secure: false},
+// saveUninitialized: false,
+//   resave: false,
+//   unset: 'destroy'
+
+
+// }
+
+// app.use(session(sessionOption))
+
 
 //jwt check user id \\
 app.get('*', checkUser,
 // (req,res)=>{res.send(req.user)}
 ); // TODO 
 app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user_id)});
-app.get('/me',authUser,(req,res)=>{res.send(req.user)});
+app.get('/me',authUser,(req,res)=>{res.status(200).send(res.locals.user_id)});
 
 // routes\\
 app.use("/api/user", userRoutes);

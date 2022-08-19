@@ -53,14 +53,16 @@ exports.signIn = async (req, res) => {
     const user = await UserModel.login(email, badge, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, {
+      // SameSite : lax,
       session: false,
       maxAge: durationTokenLogin,
+      secure:false,
       httpOnly: true,
     });
     res.status(200).json({ user: user._id , token});
   } catch (err) {
     const errors = signInErrors(err);
-    res.status(401).json({ errors });
+    res.status(401).send({ errors });
   }
 };
 

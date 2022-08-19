@@ -4,7 +4,7 @@
     <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
     <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
 
-    <v-card-text id="card-autor-book" v-for="post in posts" >
+    <v-card-text id="card-autor-book">
       <div class="user-book-main">
         <div class="name-date-book">
           <img class="picture-user" src="post" />
@@ -111,7 +111,13 @@ export default {
     getUsers() {
       axios
         .get("http://localhost:5000/api/user")
-        .then()
+        .then((docs) => {
+
+        console.log(docs);
+
+
+        }
+        )
         .catch((err) => console.log(err));
     },
 
@@ -123,23 +129,33 @@ export default {
           this.posts = post.data;
           this.updateLike();
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log(err));
     },
   },
    mounted(){
-
-  axios.get(`http://localhost:5000/api/user/}`)
-    .then((post) => {
-
-      console.log(post.data);
-     console.log(post.data);
-          this.posts = post.data;
+  axios.defaults.withCredentials = true;
+  axios.get(`http://localhost:5000/api/user/`)
+    .then((docs) => {
+     console.log(docs.data);
+      const userAll = docs.data
+   
     }).catch((error)=>{
       console.log(
-       error.response.data
+       error
       );
     })
   
+  
+  //  axios.get(`http://localhost:5000/me`)
+  //   .then((res) => {
+
+  //     console.log(res);
+
+  //   }).catch((error)=>{
+  //      error
+  //   })
+
+
     
     axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
@@ -147,7 +163,7 @@ export default {
       console.log(res.data);
 
     }).catch((error)=>{
-      console.log(error.message);
+      console.log(error);
     })
 
    axios.get("http://localhost:5000/api/post")
@@ -159,17 +175,9 @@ export default {
         //   fileName.textContent = inputFile.files[0].name
         // })
       })
-      .catch();
-
-
-   axios.get(`http://localhost:5000/me`)
-    .then((res) => {
-
-      // console.log(res.cookies.jwt);
-
-    }).catch((error)=>{
-       error
-    })
+      .catch((err)=>{
+        console.log(err);
+      });
 
 
 

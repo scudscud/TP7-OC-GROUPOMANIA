@@ -4,11 +4,12 @@ const UserModel = require('../models/user.model');
 const durationTokenLogout = 1
 
 exports.requireAuth = (req,res,next)=>{
+
     const token = req.cookies.jwt;
    if (token){
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken)=>{
         if(err){
-            // console.log('no token');
+            console.log('no token');
             res.status(401).send('token not found');
         }else{
             req.user = decodedToken.id;
@@ -45,7 +46,8 @@ exports.authUser = (req, res ,next) =>{
 // =====================ROUTE checkuser======useless===================== \\\
 
 exports.checkUser = ( req,res,next)=>{
-const token = req.params.jwt;
+    const token = req.headers['Set-Cookie']
+// const token = req.params.jwt;
 if(token){
     jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
    if (err){
@@ -57,7 +59,7 @@ if(token){
         console.log(decodedToken);
   let user = await UserModel.findById(decodedToken.id);
   console.log(user)
-  res.locals.user = user;
+   res.locals.user = user;
   next();
     }
     })
