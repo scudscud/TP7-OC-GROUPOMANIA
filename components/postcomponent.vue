@@ -32,7 +32,7 @@
               </label>
 
           <div class="preview-pic-size"> 
-            <img v-if="url" :src="url" id="pic-size"/>
+            <img id="pic-size" v-if="url" :src="url" />
             <p v-else id="pic-size"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
           </div>
         
@@ -102,12 +102,17 @@ export default{
     },
  methods: {
 
-  sendPost(){
-
-
+  createPost(){
+ const img = document.getElementById('picture')
+      if (img.files[0]) {
+        if (img.files[0].name.includes('"')) {
+          alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
+        }}
 
 
   },
+
+
 
   picPreview(e) {
       const file = e.target.files[0];
@@ -171,9 +176,9 @@ today = dd+'/'+mm+'/'+yyyy;
   },
 
   async mounted(){
-  axios.defaults.withCredentials = true;
+   axios.defaults.withCredentials = true;
 
-  await axios.get(`http://localhost:5000/jwtid`)
+   await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
       console.log(res.data);
     this.userjwtid = res.data
@@ -184,7 +189,7 @@ today = dd+'/'+mm+'/'+yyyy;
       console.log(error);
     })
 
-  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
@@ -195,7 +200,7 @@ today = dd+'/'+mm+'/'+yyyy;
       console.log(error);
     })
 
-  await axios.get("http://localhost:5000/api/post")
+   await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         console.log(docs);
              this.posterfirstname = docs.data.firstname
@@ -286,11 +291,14 @@ flex-direction: row;
 width: auto;
 height: 20px;
 }
+
 .block-header{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: auto;
+  height: auto;
 
 }
 
@@ -312,6 +320,7 @@ height: 20px;
   border: solid 2px $secondary;
   padding-right: 1%;
   padding-left: 1%;
+
   &:hover {
   border-radius: 0%;
 
@@ -325,15 +334,18 @@ height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  max-height:350px ;
   max-width: 65vw;
   padding-top: 2%;
-  padding-bottom: 1%;
+  padding-bottom: 2%;
 }
 
 #pic-size{
- object-fit: cover;
-  max-width: 100%;
-  max-height: 100%;
+  display: flex;
+  object-fit: cover;
+// overflow: hidden;
+  max-height:300px ;
+ max-width: 65vw;
 }
 
 
