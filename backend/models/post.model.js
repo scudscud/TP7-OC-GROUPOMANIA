@@ -5,6 +5,18 @@ const PostSchema = new mongoose.Schema(
             type : String,
             required: true
         },
+        posterfirstname : {
+            type : String, 
+            required: true,
+        },
+        posterlastname : {
+            type : String, 
+            required: true,
+        },
+        posterpicture : {
+            type : String, 
+            required: true,
+        },
         message: {
             type: String,
             trim: true,
@@ -19,6 +31,9 @@ const PostSchema = new mongoose.Schema(
         likers: {
             type: [String],
             required: true,
+        },
+        date : {
+            type: String
         },
         comments: {
             type: [

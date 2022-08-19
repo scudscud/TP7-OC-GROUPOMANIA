@@ -1,10 +1,13 @@
 <template>
-  <v-card id="card-post">
-     <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
+
+ <div>
+
+  <div id="card-post"  v-for="(post,index) in posts" :key="post.id"  >
     <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
     <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
 
-    <v-card-text id="card-autor-book">
+    
+    <div id="card-autor-book"  >
       <div class="user-book-main">
         <div class="name-date-book">
           <img class="picture-user" src="post" />
@@ -31,16 +34,16 @@
           >Supprimer
         </button>
       </div>
-    </v-card-text>
+    </div>
     <img class="card-img mb-5" src="/v.png" alt="Vuetify.js" />
 
-    <v-card-text class="blockquote">
+    <div class="blockquote">
       &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
       quis impedit magni alias quo quae, numquam eaqrepellendus minus similique
       soluta nulla pariatur cumque neque enim explicabo officia impedit?
       Dignissimos ipsa asperiores cum.&#8221;
-    </v-card-text>
-    <v-card-actions class="btn-card" id="card-att">
+    </div>
+    <div class="btn-card" id="card-att">
       <v-btn id="btn-att"
         ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
         <p class="text-att">Like</p></v-btn
@@ -53,31 +56,38 @@
         ><v-icon class="img-att"> mdi-account-group </v-icon>
         <p class="text-att">Devenir&nbspamis</p></v-btn
       >
-    </v-card-actions>
-  </v-card>
+    </div>
+
+   </div>
+</div>
 </template>
 <script>
 import axios from "axios";
 import Modify from "../components/modifypost.vue";
 // import DeleteCom from "../components/deletepost.vue";
 import Deletepost from "../components/deletepost.vue";
-import { doc } from "prettier";
+// import { doc } from "prettier";
 export default {
   components: { Modify, Deletepost },
   data() {
     return {
-      show: true,
+      
+      log:false,
       showdelete: false,
       showmodify: false,
       showdel: false,
-      lastname: "test",
-      firstname: "test",
-      post:[],
+      lastname: "",
+      firstname: "",
+      posts:[],
       userjwtid:"",
       userid:'',
-      firstname:'',
-      lastname:'',
+      lastname: "",
+      firstname: "",
       pictureprofil:'',
+      posterId : '',
+      posterfirstname : '',
+      posterlastname: '',
+      userlike:'',
 
 
     };
@@ -108,10 +118,10 @@ export default {
     },
     fullname: {
       get() {
-        return this.firstname + " " + this.lastname;
+        return this.posterfirstname + " " + this.posterlastname;
       },
       set(newValue) {
-        [this.firstname, this.lastname] = newValue.split(" ");
+        [this.posterfirstname, this.posterlastname] = newValue.split(" ");
       },
     },
   },
@@ -120,9 +130,9 @@ export default {
       axios
         .get("http://localhost:5000/api/user")
         .then((docs) => {
-
+          this.posts = docs.data.allPosts
         console.log(docs);
-      this.userId
+      
     
 
 
@@ -149,38 +159,44 @@ export default {
    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
       console.log(res.data);
-     this.userjwtid = res.data
+    this.userjwtid = res.data
     this.show = false
+    this.log = true
     // TODO => Insert loader \\ 
     }).catch((error)=>{
       console.log(error);
     })
-   
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-        console.log(docs.data)
-          this.userid = docs.data._id
-          this.firstname = docs.data.firstname
+        this.userid = docs.data._id
+        this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
-        this.pictureprofil = docs.data.pictureprofil
+        this.posterpictureprofil = docs.data.pictureprofil
+          console.log(this.firstname)
     }).catch((error)=>{
       console.log(
        error
       );
     })
-   axios.get("http://localhost:5000/api/post")
+
+  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-       
-
-
-
+        console.log(docs);
+             this.posterfirstname = docs.data.firstname
+          this.posterlastname = docs.data.lastname
+          this.posterpicture = docs.data.picture
+          this.userlike = docs.data.likes;
+      //  this.posts = docs
+      //  console.log(docs.data[0].posterId);
         // let inputFile = document.querySelector('#picture')
         // let fileName = document.querySelector('#file-name')
         // inputFile.addEventListener('change', () => {
         //   fileName.textContent = inputFile.files[0].name
         // })
       })
+     
+    
       .catch((err)=>{
         console.log(err);
       });

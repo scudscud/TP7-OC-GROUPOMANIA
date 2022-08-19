@@ -6,7 +6,7 @@ export default ({
 // export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - test',
+    titleTemplate: 'groupamania',
     title: 'Groupomania',
     htmlAttrs: {
       lang: 'fr',
@@ -77,6 +77,10 @@ export default ({
         }
       }
     }
+  },
+  loading: {
+    color: 'green',
+    height: '5px'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

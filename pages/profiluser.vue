@@ -16,7 +16,7 @@
           id="avatar"
           class="form-avatar-profil"
           type="file"
-          value="test"
+          value=""
           name="avatar"
           placeholder="votre photo/avatar"
           @change="getImage"

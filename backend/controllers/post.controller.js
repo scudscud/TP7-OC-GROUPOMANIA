@@ -19,16 +19,26 @@ exports.readPost = (req, res) => {
 
 exports.createPost = async (req, res) => {
   console.log(req.user);
+  const date = new Date(Date.now())
+  const days = date.toLocaleDateString()
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const finalDate = `${days} à ${hours}:${minutes}`
+
   const newPost = new PostModel({
     posterId: req.body.posterId,
+    posterfirstname : req.body.posterfirstname,
+    posterlastname : req.body.posterfastname,
+    posterpicture : req.body.posterpicture,
     message: req.body.message,
     picture:
       req.file != null
         ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        : "",
+        : "http://localhost:5000/images/default/del-pic.jpg",
     video: req.body.video,
     likers: [],
     comments: [],
+    date : finalDate,
   });
   try {
     post = await newPost.save();

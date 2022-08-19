@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <div>
-     
+         <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
       <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false"/>
     </div>
 
@@ -135,6 +135,7 @@ export default {
 
   data() {
     return {
+      show: true,
       right: true,
       drawer: false,
       miniVariant:false,
@@ -196,6 +197,14 @@ export default {
   },
   mounted(){
 
+   axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+    this.show = false
+    // this.log = true
+    // TODO => Insert loader \\ 
+    }).catch((error)=>{
+      console.log(error);
+    })
     // axios.get(`http://localhost:5000/api/user}`)
     // .then((data) => {
 

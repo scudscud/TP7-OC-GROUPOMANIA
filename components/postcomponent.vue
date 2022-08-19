@@ -1,38 +1,51 @@
 <template>
- <div class="overlay">
-    <v-card id="card-post-modal"  >
-     <v-card-text class="card-profil-title"
-      ><h1 class="card-profil-title-h1">Publier</h1></v-card-text>
+<div class="overlay">
+  <v-card id="card-post-modal"  >
+     <v-card-text class="card-profil-title">
+      <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
     
       <v-card-text id="card-autor">
 
-                <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
+                <img class="picture-user" src="this.userpicpro" alt="photo de profil"/>
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname">{{fullname}}</p>
                  <div class="header-btn">
                   <button id="btn-send-post" @click="$emit('close-modale-post')" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post')" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
                       </div>
-        </v-card-text>
-        <div class="picture-create-post">
-          <h3 id="card-create-picture">Votre photo</h3>
-      <img  id="card-img"
-        src="/v.png"
-        alt="Vuetify.js">
-          <div class="btn-picture">
+      </v-card-text>
 
-          <button id="btn-picture-send" type="submit">Enregistrer votre photo</button>
-          <button id="btn-picture-delete">Annuler</button>
-          <!-- <button
-            id="btn-bio-close"
-            @click="deletebio(), (modifbio = !modifbio)"
-          >
-            Fermer
-          </button> -->
+
+
+        <div class="pic-create-post">
+          <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
+              <label class="lab-pic-btn" for="picpost">
+                <v-icon class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
+                <input
+                id="picpost"
+                class="form-avatar-profil"
+                type="file"
+                value=""
+                name="picpost"
+                placeholder="votre photo/avatar"
+                @change="picPreview"/>
+              </label>
+
+          <div class="preview-pic-size"> 
+            <img v-if="url" :src="url" id="pic-size"/>
+            <p v-else id="pic-size"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
+          </div>
+        
+          </div>
+          <!-- <button id="btn-picture-send" type="submit">Enregistrer votre photo</button> -->
+          <button id="btn-del-create-pic" @click="delPicPreview">Annuler</button>
+          
+        
         </div>
-     </div>
-         <v-card-text id="card-comment" >
-      <form method="post" @submit.prevent>
+
+
+    <v-card-text id="card-comment" >
+        <form method="post" @submit.prevent>
         <label for="biographie"><h2 class="comment-title">Votre commentaire</h2></label>
         <textarea
           v-model="bio"
@@ -55,33 +68,62 @@
         </div>
       </form>
     </v-card-text>
-    </v-card>
- 
+  </v-card>
 </div>
 </template>
 <script>
-
-
+import axios from "axios";
 export default{
 
   data(){
     return {
+      log:false,
+      lastname: "",
+      firstname: "",
+      posts:[],
+      userjwtid:"",
+      userid:'',
+      lastname: "",
+      firstname: "",
+      userpicpro:'',
+      posterId : '',
+      posterfirstname : '',
+      posterlastname: '',
+      userlike:'',
+      picturepost:'',
+      url: null,
       picutername: "",
       modifbio: false,
       bio: "",
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
-      lastname: "test",
-      firstname: "test",
+      lastname: "",
+      firstname: "",
     }
     },
  methods: {
+
+  picPreview(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+    },
+    delPicPreview(){
+      this.url = null  
+    },
+
+  getImageCreate() {
+      let name = picpost.value;
+      let namereg = name.replace(/^.*\\/, "");
+      this.picuterpost = namereg;
+    },
+
     deletebio() {
       console.log(this.bio);
       this.bio = "";
     },
- },
-     computed:{
-      date(){
+
+},
+computed:{
+date(){
 let today = new Date();
 let dd = today.getDate();
 let mm = today.getMonth()+1; 
@@ -100,23 +142,15 @@ if(mm<10)
 today = dd+'/'+mm+'/'+yyyy;
  return today
       },
-
     hour(){ 
     const d = new Date();
-
     let hh =  d.getHours();
     let mi = d.getMinutes();
-
     if(hh<10)
-    {
-      hh='0'+hh;
-    }
+    {hh='0'+hh;}
     if(mi <10)
-{
-     mi='0'+mi;
-    }
+    {mi='0'+mi;}
     let hours = hh+":" + mi;
-
     return hours
     },
      fullname: {
@@ -129,6 +163,49 @@ today = dd+'/'+mm+'/'+yyyy;
     }
   },
 
+  async mounted(){
+  axios.defaults.withCredentials = true;
+
+  await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+      console.log(res.data);
+    this.userjwtid = res.data
+    this.show = false
+    this.log = true
+    // TODO => Insert loader \\ 
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+        this.userid = docs.data._id
+        this.firstname = docs.data.firstname
+        this.lastname = docs.data.lastname
+        this.userpicpro = docs.data.photo
+          console.log(docs.data.photo)
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+  await axios.get("http://localhost:5000/api/post")
+      .then((docs) => {
+        console.log(docs);
+             this.posterfirstname = docs.data.firstname
+          this.posterlastname = docs.data.lastname
+          this.posterpicture = docs.data.picture
+          this.userlike = docs.data.likes;
+      //  this.posts = docs
+      //  console.log(docs.data[0].posterId);
+        // let inputFile = document.querySelector('#picture')
+        // let fileName = document.querySelector('#file-name')
+        // inputFile.addEventListener('change', () => {
+        //   fileName.textContent = inputFile.files[0].name
+        // })
+      }).catch((err)=>{console.log(err);});
+
+
+  },
 }
 
 </script>
@@ -202,6 +279,82 @@ flex-direction: row;
 width: auto;
 height: 20px;
 }
+.block-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.lab-pic-icon {
+  padding-right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.lab-pic-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 190px;
+  width: 190px;
+  background-color:$tertiary;
+  border-radius: 10%;
+  border: solid 2px $secondary;
+  padding-right: 1%;
+  padding-left: 1%;
+  &:hover {
+  border-radius: 0%;
+
+  background-color: $secondary;
+  color:$tertiary;
+    cursor: pointer;
+  }
+}
+
+.preview-pic-size{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 65vw;
+  padding-top: 2%;
+  padding-bottom: 1%;
+}
+
+#pic-size{
+ object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+#btn-del-create-pic{
+border: solid 2px $secondary;
+  border-radius: 30%;
+  margin-top: 1%;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 4px;
+  color: $secondary;
+  &:hover {
+     border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+
+}
+
+.form-avatar-profil {
+  padding-top: 2%;
+  display: none;
+  visibility: none;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .picture-user{
   margin-top: 1.5%;
   display: flex;
@@ -336,10 +489,14 @@ color:$secondary;
 }
 
 
-.picture-create-post{
+.pic-create-post{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 border-top: solid 2px $secondary;
 border-bottom: solid 2px $secondary;
-border-radius: 10%;
+border-radius: 5%;
 margin-bottom: 1%;
 padding: 1.5%;
 }
@@ -349,7 +506,7 @@ padding: 1.5%;
   // margin-left: 1.5%;
   color: $secondary;
   padding-top: 1%;
-  
+  padding-bottom: 1%;
   justify-content: center;
   // border-top:solid 2px $secondary;
   // border-radius: 30%;
