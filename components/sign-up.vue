@@ -216,7 +216,7 @@ export default {
       pswcom: "",
       badge: "",
       check: "",
-      mailVali:false
+      mailValid:false
     };
   },
   computed: {

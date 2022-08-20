@@ -10,8 +10,8 @@
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname">{{fullname}}</p>
                  <div class="header-btn">
-                  <button id="btn-send-post" @click="$emit('close-modale-post')" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
-                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletebio(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
+                  <button id="btn-send-post" :disabled="!createPic"  @click="$emit('close-modale-post'),createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
+                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
                       </div>
       </v-card-text>
 
@@ -19,9 +19,10 @@
 
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label class="lab-pic-btn" for="picpost">
+              <label class="lab-pic-btn" for="picpost" >
                 <v-icon class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
                 <input
+                
                 id="picpost"
                 class="form-avatar-profil"
                 type="file"
@@ -32,13 +33,13 @@
               </label>
 
           <div class="preview-pic-size"> 
-            <img id="pic-size" v-if="url" :src="url" />
-            <p v-else id="pic-size"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
+            <img id="pic-size"  v-if="url" :src="url" >
+            <p v-else  id="pic-size" > c'est vide .... vous n'avez rien à partager ?  😪 </p>
           </div>
         
           </div>
-          <!-- <button id="btn-picture-send" type="submit">Enregistrer votre photo</button> -->
-          <button id="btn-del-create-pic" @click="delPicPreview">Annuler</button>
+          <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
+          <button id="btn-del-create-pic" @click="delPicPreview(),textValid()" >Annuler</button>
           
         
         </div>
@@ -46,25 +47,24 @@
 
     <v-card-text id="card-comment" >
         <form method="post" @submit.prevent>
-        <label for="biographie"><h2 class="comment-title">Votre commentaire</h2></label>
+        <label for="messagetext" ><h2 class="comment-title">Votre commentaire</h2></label>
         <textarea
-          v-model="bio"
-          name="biographie"
+          
+          id="messagetext"
+          v-model="message"
+          name="messagetext"
           class="card-create-comment"
           type="textarea"
           placeholder="Ecrivez ici votre commentaire"
           maxlength="300"
+         
         ></textarea>
 
         <div class="btn-bio">
-          <button id="btn-comment-send" type="submit">Enregistrer le commentaire</button>
-          <button id="btn-comment-delete" @click="deletebio">Annuler</button>
-          <!-- <button
-            id="btn-bio-close"
-            @click="deletebio(), (modifbio = !modifbio)"
-          >
-            Fermer
-          </button> -->
+          <button  v-if="!createText"    @click="textValid" id="btn-comment-send" >Enregistrer le commentaire</button>
+          <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button>
+          <button id="btn-comment-delete" @click="deletemess(),textValid(),delPicPreview()">Annuler</button>
+     
         </div>
       </form>
     </v-card-text>
@@ -73,53 +73,115 @@
 </template>
 <script>
 import axios from "axios";
+import { multerErrors } from "../backend/utils/errors.utils";
 export default{
 
   data(){
     return {
       log:false,
-      lastname: "",
-      firstname: "",
+      lastname: '',
+      firstname: '',
       posts:[],
-      userjwtid:"",
+      userjwtid:'',
       userid:'',
-      lastname: "",
-      firstname: "",
+      lastname: '',
+      firstname: '',
       userpicpro:'',
       posterId : '',
       posterfirstname : '',
       posterlastname: '',
       userlike:'',
       picturepost:'',
-      url: null,
-      picutername: "",
+      url: '',
+      picutername: '',
       modifbio: false,
-      bio: "",
-      biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
-      lastname: "",
-      firstname: "",
+      message: '',
+      createPic: false,
+      createText:false,
+      photoup:'',
+      urltest:'',
+      // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      // lastname: "",
+      // firstname: "",
     }
     },
  methods: {
+  textValid(){
+    if(this.message !=''){
+      this.createPic = true
+      this.createText = true
+
+  
+    
+    
+    }else{this.createPic = false
+    this.createText = false
+    }
+  
+  },
+  // createValidation(){
+  //   if(this.url != null ){
+  //   console.log(this.url);
+  //   // this.createValid = false
+  //        return true
+      
+  // }else{
+  //     // this.createValid = true
+  //   return false
+  // }
+  // },
+
 
   createPost(){
- const img = document.getElementById('picture')
-      if (img.files[0]) {
-        if (img.files[0].name.includes('"')) {
+
+
+        if (this.url.includes('"')) {
           alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
-        }}
+        }
+              else {
+          let formData = new FormData()
+          formData.append('posterId', this.userid)
+          formData.append('posterfirstname', this.firstname)
+          formData.append('posterlastname', this.lastname)
+          formData.append('userpicpro', this.userpicpro)
+          formData.append('message', this.message)
+          formData.append('file',this.url)
 
-
+          axios.post(`http://localhost:5000/api/post`,formData)
+          .then(() => {
+            window.location.reload()
+          })
+          .catch((error)=>{
+          multerErrors
+          })
+          }
   },
 
+      //   else{
+      //     let formData = new FormData()
+      //   formData.append('posterId', this.connectedUserId)
+      //   formData.append('posterFirstname', this.posterFirstname)
+      //   formData.append('posterLastname', this.posterLastname)
+      //   formData.append('posterProfil', this.posterProfil)
+      //   formData.append('message', this.message)
+      //   axios.post(`http://localhost:5000/api/post`, formData)
+      //   .then(() => {
+      //     window.location.reload()
+      //   })
+      //   .catch()
+      //     }
+      // }
 
+  
 
   picPreview(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
+      this.createPic = true
     },
     delPicPreview(){
-      this.url = null  
+      this.url = null
+      this.createPic = false
     },
 
   getImageCreate() {
@@ -128,9 +190,10 @@ export default{
       this.picuterpost = namereg;
     },
 
-    deletebio() {
-      console.log(this.bio);
-      this.bio = "";
+    deletemess() {
+      console.log(this.message);
+      this.message = "";
+      this.createPic = false
     },
 
 },
@@ -203,7 +266,7 @@ today = dd+'/'+mm+'/'+yyyy;
    await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         console.log(docs);
-             this.posterfirstname = docs.data.firstname
+          this.posterfirstname = docs.data.firstname
           this.posterlastname = docs.data.lastname
           this.posterpicture = docs.data.picture
           this.userlike = docs.data.likes;
@@ -266,7 +329,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
 #card-post-modal{
   width: 75%;
-  margin-top: 55px;
+  margin-top: 100px;
   max-width: 950px;
   min-width: 350px;
   // height: 650px;
@@ -422,9 +485,9 @@ border: solid 2px $secondary;
 // }
 #back-book{
   display: flex;
-height: 40px;
-  // align-items:center;
-  // justify-content: center;
+  height: 40px;
+  align-items:center;
+  justify-content: center;
   text-decoration: none;
 color:$secondary;
    border: solid 2px $secondary;
@@ -482,6 +545,7 @@ color:$secondary;
   color:$secondary;
    border: solid 2px $secondary;
    height: 40px;
+   width:85px ;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
@@ -496,6 +560,21 @@ color:$secondary;
     }
   }
 }
+
+#btn-send-post:disabled{
+
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-radius: 30%;
+  margin-top: 20px;
+  border: solid 2px $secondary;
+  background: #ccc;
+  &:hover {
+    background: #ccc;
+    color: red;
+  }
+}
+
 
 #div-btn-send{
   display: flex;
@@ -607,6 +686,20 @@ h2.comment-title{
 }
 
 #btn-comment-send {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: $secondary;
+  &:hover {
+     border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+#btn-comment-send-icon {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
