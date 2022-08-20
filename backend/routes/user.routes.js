@@ -2,7 +2,7 @@ const express = require("express");
 // const jwt = require('jwt')
 const image = require("../middleware/photo.user.middleware");
 const { multerErrors } = require("../utils/errors.utils");
-
+const multerUser = require('../middleware/picture.post.middleware')
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
@@ -31,8 +31,9 @@ router.patch("/unfollow/:id", userController.unfollow);
 // router upload picture profil + multer error\\
 
 router.post(
-  "/upload",
+  "/upload", 
   (req, res, next) => {
+ 
     image(req, res, function (err) {
       if (err) {
         console.log(err.message);

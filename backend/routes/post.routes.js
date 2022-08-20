@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const { checkUser, requireAuth , authUser } = require("../middleware/auth.middleware");
+
 const postController = require('../controllers/post.controller');
 
 const image = require("../middleware/picture.post.middleware");
@@ -16,18 +17,22 @@ router.patch('/unlike-post/:id', postController.unLikePost);
 
 // router post + multer errors \\
 
-router.post('/', checkUser, (req, res, next) => {
+router.post('/',
+(req, res, next) => {
+    // console.log(image);
     image(req, res, function (err) {
+      // console.log(req);
       if (err) {
         console.log(err.message);
         const errors = multerErrors(err);
         res.status(400).json({ errors });
       } else {
-        console.log(req.user);
+        // console.log(req);
         next();
       }
     });
-  },postController.createPost);
+  }
+  ,postController.createPost);
 
 
 // gestion des commentaire\\

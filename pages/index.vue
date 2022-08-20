@@ -1,12 +1,7 @@
 <template>
 
- <div>
-
-  <div id="card-post"  v-for="(post,index) in posts" :key="post.id"  >
-    <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
-    <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
-
-    
+<div>                         
+  <div>                                          
     <div id="card-autor-book"  >
       <div class="user-book-main">
         <div class="name-date-book">
@@ -14,52 +9,46 @@
           <span class="fullname-book">{{ fullname }}</span>
         </div>
 
-        <!-- <p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
+                  <!-- <p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
                 <span class="hour-à"></span>
                 <span class="hour-now"> à {{hour}}</span></p> -->
 
-        <p class="full-date">posté le : {{ date }} à {{ hour }}</p>
+              <!-- <p class="full-date">posté le : {{ date }} à {{ hour }}</p> -->
       </div>
-      <div class="btn-book-main">
-        <button
-          id="btn-post-modify"
-          type="submit"
-          @click="showmodify = !showmodify"
-        >
-          <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon
-          >Modifier
-        </button>
-        <button id="btn-post-delete" @click="showdel = !showdel">
-          <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon
-          >Supprimer
-        </button>
+          <div class="btn-book-main">
+                  <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+                  <button id="btn-post-delete" @click="showdel = !showdel"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+          </div>
+              </div>
+          <img class="card-img mb-5" src="/v.png" alt="Vuetify.js" />
+
+              <div class="blockquote">
+                &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
+                quis impedit magni alias quo quae, numquam eaqrepellendus minus similique
+                soluta nulla pariatur cumque neque enim explicabo officia impedit?
+                Dignissimos ipsa asperiores cum.&#8221;
+              </div>
+              <div class="btn-card" id="card-att">
+                <v-btn id="btn-att"
+                  ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
+                  <p class="text-att">Like</p></v-btn
+                >
+                <v-btn id="btn-att"
+                  ><v-icon class="img-att"> mdi-message-outline</v-icon>
+                  <p class="text-att">Commenter</p></v-btn
+                >
+                <v-btn id="btn-att"
+                  ><v-icon class="img-att"> mdi-account-group </v-icon>
+                  <p class="text-att">Devenir&nbspamis</p></v-btn
+                >
+              </div>
+  
+
       </div>
-    </div>
-    <img class="card-img mb-5" src="/v.png" alt="Vuetify.js" />
-
-    <div class="blockquote">
-      &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-      quis impedit magni alias quo quae, numquam eaqrepellendus minus similique
-      soluta nulla pariatur cumque neque enim explicabo officia impedit?
-      Dignissimos ipsa asperiores cum.&#8221;
-    </div>
-    <div class="btn-card" id="card-att">
-      <v-btn id="btn-att"
-        ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-        <p class="text-att">Like</p></v-btn
-      >
-      <v-btn id="btn-att"
-        ><v-icon class="img-att"> mdi-message-outline</v-icon>
-        <p class="text-att">Commenter</p></v-btn
-      >
-      <v-btn id="btn-att"
-        ><v-icon class="img-att"> mdi-account-group </v-icon>
-        <p class="text-att">Devenir&nbspamis</p></v-btn
-      >
-    </div>
-
-   </div>
+      <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
+      <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
+
 </template>
 <script>
 import axios from "axios";
@@ -76,46 +65,50 @@ export default {
       showdelete: false,
       showmodify: false,
       showdel: false,
-      lastname: "",
-      firstname: "",
-      posts:[],
+      
       userjwtid:"",
       userid:'',
       lastname: "",
       firstname: "",
-      pictureprofil:'',
+      userpicture:'',
+
+      posts:[],
       posterId : '',
       posterfirstname : '',
       posterlastname: '',
-      userlike:'',
+      posterpic:'',
+      image:'',
+      userlike:[],
+      date:'',
+      message:'',
 
 
     };
   },
   computed: {
-    date() {
-      let today = new Date();
-      let dd = today.getDate();
+    // date() {
+    //   let today = new Date();
+    //   let dd = today.getDate();
 
-      let mm = today.getMonth() + 1;
-      let yyyy = today.getFullYear();
-      if (dd < 10) {
-        dd = "0" + dd;
-      }
-      if (mm < 10) {
-        mm = "0" + mm;
-      }
-      // today = mm+'-'+dd+'-'+yyyy;
-      // today = mm+'/'+dd+'/'+yyyy;
-      // today = dd+'-'+mm+'-'+yyyy;
-      today = dd + "/" + mm + "/" + yyyy;
-      return today;
-    },
-    hour() {
-      const d = new Date();
-      let hours = d.getHours() + "h" + d.getMinutes();
-      return hours;
-    },
+    //   let mm = today.getMonth() + 1;
+    //   let yyyy = today.getFullYear();
+    //   if (dd < 10) {
+    //     dd = "0" + dd;
+    //   }
+    //   if (mm < 10) {
+    //     mm = "0" + mm;
+    //   }
+    //   // today = mm+'-'+dd+'-'+yyyy;
+    //   // today = mm+'/'+dd+'/'+yyyy;
+    //   // today = dd+'-'+mm+'-'+yyyy;
+    //   today = dd + "/" + mm + "/" + yyyy;
+    //   return today;
+    // },
+    // hour() {
+    //   const d = new Date();
+    //   let hours = d.getHours() + "h" + d.getMinutes();
+    //   return hours;
+    // },
     fullname: {
       get() {
         return this.posterfirstname + " " + this.posterlastname;
@@ -172,8 +165,8 @@ export default {
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
-        this.posterpictureprofil = docs.data.pictureprofil
-          console.log(this.firstname)
+        this.userpicture = docs.data.pictureprofil
+        console.log(this.firstname)
     }).catch((error)=>{
       console.log(
        error
@@ -183,10 +176,16 @@ export default {
   await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         console.log(docs);
-             this.posterfirstname = docs.data.firstname
+      console.log(this.posts);
+          this.posts = docs.data.isArray
+          this.posterfirstname = docs.data.firstname
           this.posterlastname = docs.data.lastname
-          this.posterpicture = docs.data.picture
-          this.userlike = docs.data.likes;
+          this.posterpic = docs.data.pictureprofil
+          this.message = docs.data.message
+          this.image = docs.data.picture
+          this.userlike = docs.data.likers
+          this.date = docs.data.date
+            
       //  this.posts = docs
       //  console.log(docs.data[0].posterId);
         // let inputFile = document.querySelector('#picture')
@@ -256,6 +255,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+.test{
+  width: 500px;
+  height: 500px;
+  background-color: #fff;
+}
+
+
+
+
+
+
+
+
 #card-post {
   align-items: center;
   justify-content: center;

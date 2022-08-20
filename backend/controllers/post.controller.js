@@ -18,8 +18,10 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-  console.log(req
-    );
+  // console.log(req.body.picture
+  //   );
+    // console.log(req.body);
+    // console.log(req.file.filename);
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -33,8 +35,8 @@ exports.createPost = async (req, res) => {
     posterpicture : req.body.posterpicture,
     message: req.body.message,
     picture:
-      req.file != null
-        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      req.body.picture != null
+        ? `${req.protocol}://${req.get("host")}/images/${req.body.picture}`
         : "",
     video: req.body.video,
     likers: [],
@@ -43,11 +45,13 @@ exports.createPost = async (req, res) => {
   });
   try {
     post = await newPost.save();
+    console.log(post);
     return res.status(201).json(post);
   } catch (err) {
     return res.status(400).send(err.message);
   }
 };
+
 
 // update post end point \\
 exports.updatePost = (req, res) => {
