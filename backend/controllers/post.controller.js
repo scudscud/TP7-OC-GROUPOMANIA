@@ -18,7 +18,8 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-  console.log(req.user);
+  console.log(req
+    );
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -28,13 +29,13 @@ exports.createPost = async (req, res) => {
   const newPost = new PostModel({
     posterId: req.body.posterId,
     posterfirstname : req.body.posterfirstname,
-    posterlastname : req.body.posterfastname,
+    posterlastname : req.body.posterlastname,
     posterpicture : req.body.posterpicture,
     message: req.body.message,
     picture:
       req.file != null
         ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        : "http://localhost:5000/images/default/del-pic.jpg",
+        : "",
     video: req.body.video,
     likers: [],
     comments: [],

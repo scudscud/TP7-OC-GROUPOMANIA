@@ -110,31 +110,12 @@ export default{
     if(this.message !=''){
       this.createPic = true
       this.createText = true
-
-  
-    
-    
     }else{this.createPic = false
     this.createText = false
     }
-  
   },
-  // createValidation(){
-  //   if(this.url != null ){
-  //   console.log(this.url);
-  //   // this.createValid = false
-  //        return true
-      
-  // }else{
-  //     // this.createValid = true
-  //   return false
-  // }
-  // },
-
 
   createPost(){
-
-
         if (this.url.includes('"')) {
           alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
         }
@@ -143,7 +124,7 @@ export default{
           formData.append('posterId', this.userid)
           formData.append('posterfirstname', this.firstname)
           formData.append('posterlastname', this.lastname)
-          formData.append('userpicpro', this.userpicpro)
+          formData.append('posterpicture', this.userpicpro)
           formData.append('message', this.message)
           formData.append('file',this.url)
 
@@ -152,7 +133,9 @@ export default{
             window.location.reload()
           })
           .catch((error)=>{
-          multerErrors
+         
+            console.log(error.message);
+            console.log(multerErrors.message);
           })
           }
   },
@@ -177,7 +160,11 @@ export default{
   picPreview(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
+     if (this.url.includes(' `` ')) {
+          alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
+        }else{
       this.createPic = true
+      }
     },
     delPicPreview(){
       this.url = null
