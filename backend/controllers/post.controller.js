@@ -35,7 +35,7 @@ exports.createPost = async (req, res) => {
     message: req.body.message,
     picture:
       req.file != null
-        ? `${req.protocol}://${req.get("host")}/${_dirname}/images/${req.file.filename}`
+        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
         : "",
     video: req.body.video,
     likers: [],

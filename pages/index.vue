@@ -14,9 +14,9 @@
           </div>
             <span class="full-date"> {{post.date}}</span>
       </div>
-          <div class="btn-book-main" v-if="(post.posterId =! userid) &&  (post.posterId = userid)">
+          <div class="btn-book-main" v-if="(post.posterId = userid) &&  (post.posterId = userid)">
               <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-              <button id="btn-post-delete" @click="showdel = !showdel"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+              <button id="btn-post-delete" @click="deletePost(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
           </div>
     </div>
         <div class="image-card">
@@ -81,6 +81,7 @@ export default {
       userlike:[],
       date:'',
       message:'',
+      comdelpost:false,
 
 
     };
@@ -143,6 +144,40 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+      async  deletePost(postId) {
+          // console.log(postId);
+       this.showdel = true
+   
+       if(this.comdelpost = true){
+        axios.delete(`http://localhost:5000/api/post/${postId}`)
+      .then((deletedPost) => {
+
+        // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
+        //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+        //   });
+          
+          this.getPosts()
+        })
+        .catch((err) => console.log(err))
+      }
+    },
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   },
   async mounted(){
   axios.defaults.withCredentials = true;

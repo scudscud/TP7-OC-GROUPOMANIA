@@ -10,7 +10,7 @@
    <p>cette action est irreversible </p>
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
-<v-btn @click="$emit('close-modale-delete')"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+<v-btn @click="$emit('close-modale-delete'),!comdelpost"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
 
 </v-card>
 </v-col>
@@ -19,7 +19,7 @@
 
 
 <script>
-
+import axios from "axios";
 export default {
   name: 'IndexPage',
 
@@ -34,8 +34,37 @@ return{
   methods:{
     test(){
       console.log($emit);
-    }
- 
+    },
+        deletePost(postId) {
+          console.log(postId);
+      
+        axios.delete(`http://localhost:5000/api/post/${postId}`)
+      .then((deletedPost) => {
+        deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
+          axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+          });
+          this.getPosts()
+        })
+        .catch((err) => console.log(err))
+      
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   }
 
