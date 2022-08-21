@@ -3,41 +3,33 @@
   <v-card id="card-post-modal"  >
      <v-card-text class="card-profil-title">
       <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
-      <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent>
+      <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor">
                 <img class="picture-user" src="this.userpicpro" alt="photo de profil"/>
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname">{{fullname}}</p>
                  <div class="header-btn">
-                  <button id="btn-send-post" action="/upload" method="post" enctype=" multipart/form-data"  @click="$emit('close-modale-post'),createPost(),testPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 
+                  <button   id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="$emit('close-modale-post'),createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
+                     <div >{{vide}}</div>
                       </div>
         </v-card-text>
-
-  
-
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label class="lab-pic-btn" for="picpost" >
-                <v-icon class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
-                <input
-                
-                id="picpost"
-                class="form-avatar-profil"
-                type="file"
-                value=""
-                name="picpost"
-                placeholder="votre photo/avatar"
-                @change="picPreview"/>
+              <label class="lab-pic-btn" for="picpost"  >
+                <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
+                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
+                      @change="picPreview" 
+                      />
               </label>
 
-          <div class="preview-pic-size"> 
-            <img id="pic-size"  v-if="url" :src="url" >
-            <p v-else  id="pic-size" > c'est vide .... vous n'avez rien à partager ?  😪 </p>
+          <div class="preview-pic-size"  @change="postValid()" > 
+            <img id="pic-size"  v-if="url" :src="url" @change="postValid()" >
+            <p v-else  id="pic-size"  @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
           </div>
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
-          <button id="btn-del-create-pic" @click="delPicPreview(),textValid(),testValidPic()" >Annuler</button>
+          <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext"><h2 class="comment-title">Votre commentaire</h2></label>
@@ -49,23 +41,16 @@
           type="text"
           placeholder="Ecrivez ici votre commentaire"
           maxlength="300"
-         
+          @mousemove="postValid(),textValid()"
+          @mouseleave="postValid(),textValid()"
+          @mouseenter="postValid(),textValid()"
+          @change="postValid(),textValid()"
         />
-        <!-- <input
-          id="messagetext"
-          v-model="message"
-          name="messagetext"
-          class="card-create-comment"
-          type="text"
-          placeholder="Ecrivez ici votre commentaire"
-          maxlength="300"
-         
-        /> -->
-
+        <!-- <input id="messagetext" v-model="message" name="messagetext" class="card-create-comment" type="text" placeholder="Ecrivez ici votre commentaire" maxlength="300" /> -->
         <div class="btn-bio">
-          <button  v-if="!createText"    @click="textValid" id="btn-comment-send" >Enregistrer le commentaire</button>
+          <button  v-if="!createText"  @change="postValid()"  id="btn-comment-send" >Enregistrer le commentaire</button>
           <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button>
-          <button id="btn-comment-delete" @click.stop="deletemess(),textValid(),testValidPic()">Annuler</button>
+          <button id="btn-comment-delete" @click.stop="deletemess(),textValid()">Annuler</button>
         </div>
        </v-card-text>
     </form>
@@ -73,111 +58,55 @@
 </div>
 </template>
 <script>
-import { file } from "@babel/types";
 import axios from "axios";
 import { multerErrors } from "../backend/utils/errors.utils";
 export default{
-
-  data(){
-    return {
-      log:false,
-      vide:'',
-      lastname: '',
-      firstname: '',
-      posts:[],
-      userjwtid:'',
-      userid:'',
-      lastname: '',
-      firstname: '',
-      userpicpro:'',
-      posterId : '',
-      posterfirstname : '',
-      posterlastname: '',
-      userlike:'',
-      // picturepost:'',
-      url: '',
-      picutername: '',
-      modifbio: false,
-      message: '',
-      createPic: false,
-      createText:false,
-      photoup:'',
-      file:[],
-      // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
-      // lastname: "",
-      // firstname: "",
-    }
-    },
- methods: {
- 
-  testPost(){
-    if((this.url = null ) && (this.message='')){
-      this.vide = "c'est vide il n'y a rien n'as poster"
-      return false
-    }else{
-      this.vide = "envoi en cour "
-    }
-
+  methods: {
+  postValid(){
+   if(this.message != '' || this.url != null){
+    console.log(this.url);
+    console.log(this.message);
+    console.log(this.validPost);
+    this.validPost = true
+    return true
+   } else {
+    this.validPost = false
+    return false
+   }
   },
   textValid(){
     if(this.message !=''){
-      this.createPic = true
       this.createText = true
-    }else{this.createPic = false
+    }else{
     this.createText = false
     }
   },
-  testValidPic(){
-    if(this.message !=''){
+  picValid(){
+    if(this.url != null){
       this.createPic = true
-      this.createText = true
-    }else{this.createPic = false
-    this.createText = false
+    }else{
+      this.createPic=false
     }
   },
-
     deletemess() {
-       this.message = "";
-       this.createText = false 
+      this.message = "";
+      this.createText = false
     },
-
     delPicPreview(){
       this.url = null
       this.createPic = false
     },
- picPreview(e) {
-          //  console.log(e);
-        
+    
+    picPreview(e){
       const pic = e.target.files[0];
-      
-   
       this.file = pic
       this.url = URL.createObjectURL(pic);
-    
-
-
-     if (this.url.includes(' `` ')) {
-          alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
-        }else{
-      this.createPic = true
-      }
+      this.validPost = !this.validPost
     },
 
-  // getImageCreate() {
-  //     let name = picpost.value;
-  //     let namereg = name.replace(/^.*\\/, "");
-  //     this.picuterpost = namereg;
-  //   },
-
-  
-
-  
   createPost(){
-    const img = document.getElementById('picpost')
-    console.log(img.files[0]);
-    console.log(this.file);
-        if (this.url.includes('"')) {
-          alert('Nom de fichier incorrect, supprimer les accents ou caractères spéciaux')
+        if (this.message != '' && this.url != null) {
+       
         }
               else {
           let formData = new FormData()
@@ -192,7 +121,6 @@ export default{
             // window.location.reload()
           })
           .catch((error)=>{
-         
             console.log(error.message);
             console.log(multerErrors.message);
           })
@@ -213,13 +141,53 @@ export default{
       //   .catch()
       //     }
       // }
-
-  
-
- 
-    
+  // testPost(){
+  //   if (this.url = null){
+  //     if(this.message = ''){
+  //       this.vide= "c'est vide"
+  //       return false 
+  //     }else{
+  //         this.vide= "c'est vide"
+  //          return true
+  //     }
+  //   }else{
+  //       this.vide= "c'est vide"
+  //   }
+  // },
 
 },
+
+  data(){
+    return {
+      log:false,
+      vide:'',
+      lastname: '',
+      firstname: '',
+      posts:[],
+      userjwtid:'',
+      userid:'',
+      lastname: '',
+      firstname: '',
+      userpicpro:'',
+      posterId : '',
+      posterfirstname : '',
+      posterlastname: '',
+      userlike:'',
+      picutername: '',
+      modifbio: false,
+      message: '',
+      url: '',
+      validPost:false,
+      createPic: false,
+      createText:false,
+      photoup:'',
+      file:[],
+      // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      // lastname: "",
+      // firstname: "",
+    }
+    },
+
 computed:{
 date(){
 let today = new Date();

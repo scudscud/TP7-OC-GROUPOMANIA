@@ -17,19 +17,8 @@ router.patch('/unlike-post/:id', postController.unLikePost);
 
 // router post + multer errors \\
 
-router.post('/',
-(req, res, next) => {
-    // console.log(image);
-    image(req, res, function (err) {
-      // console.log(req);
-      if (err) {
-        console.log(err.message);
-        const errors = multerErrors(err);
-        res.status(400).json({ errors });
-      } else {
-        // console.log(req);
-        next();
-      }
+router.post('/',(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
+} else {next();}
     });
   }
   ,postController.createPost);

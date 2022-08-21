@@ -2,16 +2,10 @@ const express = require("express");
 // const jwt = require('jwt')
 const image = require("../middleware/photo.user.middleware");
 const { multerErrors } = require("../utils/errors.utils");
-const multerUser = require('../middleware/picture.post.middleware')
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
 const uploadController = require("../controllers/upload.controller");
-const { checkUser, authUser } = require("../middleware/auth.middleware");
-// 
-
-//auth\\
-
 
 
 // router.get('/me', authenticateToken, (req,res,next) => res.send(req.user))
@@ -32,16 +26,8 @@ router.patch("/unfollow/:id", userController.unfollow);
 
 router.post(
   "/upload", 
-  (req, res, next) => {
- 
-    image(req, res, function (err) {
-      if (err) {
-        console.log(err.message);
-        const errors = multerErrors(err);
-        res.status(400).json({ errors });
-      } else {
-        next();
-      }
+  (req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
+  } else {next();}
     });
   }
   ,uploadController.uploadProfil);

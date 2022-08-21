@@ -11,26 +11,16 @@ function fileFilter(req, file, cb) {
   }
 }
 
-  const storage = multer.diskStorage({
-
-    destination : (req,res,cb)=> {
-      // console.log(req);
-      cb(null,`../client/public/uploads/profil/`)
-    },
+  const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`../client/public/uploads/profil/`)},
     filename: function (req, file, cb) { 
        // id du user pour le name \\
        const name = req.body.name + ".jpg"
-
         cb(null,name);
       },
   })
 
   const  maxSize = 50000000;
-
-const upload = multer({
-    storage ,
-    limits : { fileSize : maxSize},
-    fileFilter : fileFilter,})
+   const upload = multer({storage ,limits : { fileSize : maxSize},fileFilter : fileFilter,})
 
 module.exports = upload.single('file');
  
