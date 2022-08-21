@@ -1,32 +1,30 @@
 <template>
 
-<div>                         
-  <div>                                          
-    <div id="card-autor-book"  >
+<div>     
+              
+  <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
+   <div class="border-card">                                       
+    <div id="card-autor-book" >
       <div class="user-book-main">
         <div class="name-date-book">
-          <img class="picture-user" src="post" />
-          <span class="fullname-book">{{ fullname }}</span>
+            <img class="picture-user" :src='post.posterpicture' />
+            <!-- <span class="fullname-book">{{post.posterlastname}}</span>
+            <span class="fullname-book">{{post.posterfirstname}}</span> -->
+            <span class="fullname">{{post.posterfullname}}</span>
+          </div>
+            <span class="full-date"> {{post.date}}</span>
+      </div>
+          <div class="btn-book-main" v-if="(post.posterId =! userid) &&  (post.posterId = userid)">
+              <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+              <button id="btn-post-delete" @click="showdel = !showdel"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+          </div>
+    </div>
+        <div class="image-card">
+          <img class="card-img " :src="post.picture" alt="" />
         </div>
 
-                  <!-- <p class="full-date"><span class="post-date"> posté le :</span><span class="date-now">{{date}}</span>
-                <span class="hour-à"></span>
-                <span class="hour-now"> à {{hour}}</span></p> -->
-
-              <!-- <p class="full-date">posté le : {{ date }} à {{ hour }}</p> -->
-      </div>
-          <div class="btn-book-main">
-                  <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-                  <button id="btn-post-delete" @click="showdel = !showdel"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
-          </div>
-              </div>
-          <img class="card-img mb-5" src="/v.png" alt="Vuetify.js" />
-
-              <div class="blockquote">
-                &#8220;Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-                quis impedit magni alias quo quae, numquam eaqrepellendus minus similique
-                soluta nulla pariatur cumque neque enim explicabo officia impedit?
-                Dignissimos ipsa asperiores cum.&#8221;
+              <div class="message-main">
+                {{post.message}}
               </div>
               <div class="btn-card" id="card-att">
                 <v-btn id="btn-att"
@@ -43,8 +41,8 @@
                 >
               </div>
   
-
-      </div>
+   </div>       
+  </v-card>
       <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
       <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
@@ -73,7 +71,9 @@ export default {
       userpicture:'',
 
       posts:[],
+      post:[],
       posterId : '',
+      // fullname:'',
       posterfirstname : '',
       posterlastname: '',
       posterpic:'',
@@ -109,37 +109,36 @@ export default {
     //   let hours = d.getHours() + "h" + d.getMinutes();
     //   return hours;
     // },
-    fullname: {
-      get() {
-        return this.posterfirstname + " " + this.posterlastname;
-      },
-      set(newValue) {
-        [this.posterfirstname, this.posterlastname] = newValue.split(" ");
-      },
-    },
+    // fullname: {
+    //   get(full) {
+    //     // console.log(fullname);
+    //     // [post.posterfirstname + " " + post.posterlastname] = test
+    //     return post.posterfirstname + " " + post.posterlastname;
+    //   },
+    //   set(name) {
+       
+    //     [post.posterfirstname, post.posterlastname] = name.split(" ");
+        
+    //   },
+    // },
   },
   methods: {
     getUsers() {
       axios
         .get("http://localhost:5000/api/user")
         .then((docs) => {
-          this.posts = docs.data.allPosts
-        console.log(docs);
-      
-    
-
-
+          // this.posts = docs.data.allPosts
+        // console.log(docs);
         }
         )
         .catch((err) => console.log(err));
     },
-
     getPosts() {
       axios
         .get("http://localhost:5000/api/post")
         .then((docs) => {
           // console.log(docs.data);
-          this.posts = post.data;
+          // this.posts = post.data;
           this.updateLike();
         })
         .catch((err) => console.log(err));
@@ -148,12 +147,11 @@ export default {
   async mounted(){
   axios.defaults.withCredentials = true;
 
-       
    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
-      console.log(res.data);
+      console.log(this.userjwtid);
     this.userjwtid = res.data
-    this.show = false
+    this.show = true
     this.log = true
     // TODO => Insert loader \\ 
     }).catch((error)=>{
@@ -162,29 +160,45 @@ export default {
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
+      console.log(docs);
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.userpicture = docs.data.pictureprofil
-        console.log(this.firstname)
+        // console.log(this.firstname)
     }).catch((error)=>{
       console.log(
        error
       );
     })
-
-  await axios.get("http://localhost:5000/api/post")
+ await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        console.log(docs);
-      console.log(this.posts);
-          this.posts = docs.data.isArray
-          this.posterfirstname = docs.data.firstname
-          this.posterlastname = docs.data.lastname
-          this.posterpic = docs.data.pictureprofil
-          this.message = docs.data.message
-          this.image = docs.data.picture
-          this.userlike = docs.data.likers
-          this.date = docs.data.date
+         this.posts = docs.data
+         this.posts.forEach((i,e,u)=> {
+          console.log(i.picture);
+          console.log(e);
+          console.log(u);
+          this.posterpic = i.picture
+         });
+
+
+
+        // console.log(this.posts[1]);
+        // // console.log(this.image);
+    
+     
+         
+              // console.log(post.posterId);
+
+          // this.posterId = docs.data.posterId
+          // this.posterfirstname = docs.data.firstname
+          // this.posterlastname = docs.data.lastname
+          // this.fullname = docs.data.fullname
+          // this.posterpic = docs.data.pictureprofil
+          // this.message = docs.data.message
+          // this.image = docs.data.picture
+          // this.userlike = docs.data.likers
+          // this.date = docs.data.date
             
       //  this.posts = docs
       //  console.log(docs.data[0].posterId);
@@ -194,24 +208,9 @@ export default {
         //   fileName.textContent = inputFile.files[0].name
         // })
       })
-     
-    
       .catch((err)=>{
         console.log(err);
       });
-
-
-
-
-
-
-
-
-
-
-
-
-  
   },
 
   // mounted(){
@@ -262,32 +261,33 @@ export default {
   background-color: #fff;
 }
 
-
-
-
-
-
-
-
-#card-post {
+.card-post {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  background-color: $tertiary;
-  border-radius: 5%;
-  border: 5px solid;
-  border-color: $secondary;
-  overflow: ellipsis;
+  padding: 1%;
+  margin-bottom: 2%;
+  // background-color: red;
+}
+.border-card{
+ width: 100%;
+border: 5px solid $secondary;
 }
 
 #card-autor-book {
-  border-radius: 20%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  padding-top: 2%;
+  background-color: $tertiary;
+  padding: 1%;
+  // margin-bottom: 1%;
+  // padding-top: 2%;
+  
 }
+
+
 
 .btn-book-main {
   display: flex;
@@ -295,7 +295,8 @@ export default {
   justify-content: space-between;
   height: 80px;
   width: 100px;
-  padding-top: 2%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
 }
 .pen-icon-main {
   padding-right: 5%;
@@ -350,17 +351,39 @@ export default {
     }
   }
 }
+
+.image-card{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-top: solid 2px $secondary;
+  border-bottom: solid 2px $secondary;
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  justify-content: center;
+  align-items:center;
+  
+}
 .card-img {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 200px;
+  display: flex;
+  object-fit: cover;
+// overflow: hidden;
+  max-height:300px ;
+ max-width: 500px;
   padding: 1%;
-  border-top: solid 2px $secondary;
-  border-bottom: solid 2px $secondary;
+  border: solid 2px $secondary;
+  // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
+
+.message-main {
+  padding: 1%;
+  text-align: center;
+}
+
 .name-date-book {
   display: flex;
   flex-direction: row;
@@ -371,25 +394,30 @@ export default {
   padding-top: 10%;
   padding-left: 3%;
 }
+.fullname {
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  padding-top: 5%;
+  padding-left: 3%;
+  padding-right: 2%;
+  margin: 0;
+}
 
 p.full-date {
   display: flex;
+  flex-direction: row;
+  width: auto;
+  margin-left: 1%;
   margin-bottom: 0;
-}
-
-div.v-card__text.blockquote {
-  // margin-top: 10px;
-  // margin-right: 20px;
-  // overflow: "...";
-  padding-bottom: 5%;
-  text-align: center;
-  padding-right: 2%;
 }
 
 #card-att {
   justify-content: center;
   border-top: solid 2px $secondary;
-  border-radius: 10%;
+  // border-bottom: solid 2px $secondary;
+  border-top-left-radius: 5%;
+  border-top-right-radius: 5%;
   background-color: $tertiary;
   width: 100%;
   height: 20%;

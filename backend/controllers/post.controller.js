@@ -24,17 +24,18 @@ exports.createPost = async (req, res) => {
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
-  const finalDate = `${days} à ${hours}:${minutes}`
+  const finalDate = `posté le ${days} à ${hours}:${minutes}`
 
   const newPost = new PostModel({
     posterId: req.body.posterId,
     posterfirstname : req.body.posterfirstname,
     posterlastname : req.body.posterlastname,
+    posterfullname : req.body.posterfullname,
     posterpicture : req.body.posterpicture,
     message: req.body.message,
     picture:
-      req.body.picture != null
-        ? `${req.protocol}://${req.get("host")}/images/${req.body.picture}`
+      req.file != null
+        ? `${req.protocol}://${req.get("host")}/${_dirname}/images/${req.file.filename}`
         : "",
     video: req.body.video,
     likers: [],

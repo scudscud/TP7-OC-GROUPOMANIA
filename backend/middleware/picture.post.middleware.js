@@ -10,7 +10,7 @@ function fileFilter(req, file, cb) {
   }
 }
 
-  const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`../client/public/uploads/posts/`)},
+  const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`images`)},
     filename: function (req, file, cb) { 
       // id du post pour le name photo \\
        const name = req.body.posterId+ Date.now() + ".jpg"

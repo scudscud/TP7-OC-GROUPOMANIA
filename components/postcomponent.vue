@@ -4,10 +4,10 @@
      <v-card-text class="card-profil-title">
       <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
-        <v-card-text id="card-autor">
-                <img class="picture-user" src="this.userpicpro" alt="photo de profil"/>
+        <v-card-text id="card-autor-test">
+                <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/>
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
-                <p class="fullname">{{fullname}}</p>
+                <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
                   <button   id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="$emit('close-modale-post'),createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
@@ -104,10 +104,13 @@ export default{
 
   createPost(){
     if(this.message != '' || this.url != ''){
+        const full= document.querySelector('.fullname').textContent;
+      console.log(full);
       let formData = new FormData()
           formData.append('posterId', this.userid)
           formData.append('posterfirstname', this.firstname)
           formData.append('posterlastname', this.lastname)
+          formData.append('posterfullname', full)
           formData.append('posterpicture', this.userpicpro)
           formData.append('message', this.message)
           formData.append('file', this.file)
@@ -221,6 +224,7 @@ today = dd+'/'+mm+'/'+yyyy;
         return this.firstname + ' ' + this.lastname
       },
       set(newValue) {
+        
         [this.firstname, this.lastname] = newValue.split(' ')
       }
     }
@@ -231,7 +235,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
     this.userjwtid = res.data
     this.show = false
     this.log = true
@@ -330,11 +334,13 @@ border-color: $secondary;
 border-radius: 1%
 };
 
-#card-autor{
+#card-autor-test{
 display: flex;
 flex-direction: row;
+justify-content: center;
+align-items: center;
 width: 100%;
-padding-top: 0.5%;
+padding-top: 2%;
 
 };
 
@@ -372,10 +378,8 @@ height: 20px;
   border: solid 2px $secondary;
   padding-right: 1%;
   padding-left: 1%;
-
   &:hover {
   border-radius: 0%;
-
   background-color: $secondary;
   color:$tertiary;
     cursor: pointer;
@@ -418,7 +422,7 @@ border: solid 2px $secondary;
 }
 
 .form-avatar-profil {
-  padding-top: 2%;
+  padding-top: 3%;
   display: none;
   visibility: none;
   &:hover {
@@ -426,8 +430,8 @@ border: solid 2px $secondary;
   }
 }
 
-.picture-user{
-  margin-top: 1.5%;
+.picture-user-create{
+  // margin-top: 5%;
   display: flex;
   width: 50px;
   height: 50px;
@@ -436,11 +440,12 @@ border: solid 2px $secondary;
   border: solid 2px $secondary;
   border-radius: 50%; 
 }
-.fullname{
+.fullname-create{
   margin-left: 1%;
   margin-right: auto;
+  margin-bottom: 0.5%;
   // padding-right: auto;
-  padding-top: 2.5%;
+  // padding-top: 2.5%;
   font-weight: bold;
 }
 
@@ -535,7 +540,7 @@ color:$secondary;
    border: solid 2px $secondary;
    height: 40px;
    width:85px ;
-  margin-top: 1%;
+  // margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
   padding-left: 1%;
@@ -555,7 +560,7 @@ color:$secondary;
   padding-right: 1rem;
   padding-left: 1rem;
   border-radius: 30%;
-  margin-top: 20px;
+  // margin-top: 20px;
   border: solid 2px $secondary;
   background: #ccc;
   &:hover {

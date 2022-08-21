@@ -23,6 +23,13 @@ const userSchema = mongoose.Schema(
       maxlength: 50,
       trim: true,
     },
+    fullname: {
+      type: String,
+      required: true,
+      minlenth: 3,
+      maxlength: 50,
+    
+    },
     email: {
       type: String,
       required: true,

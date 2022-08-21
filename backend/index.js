@@ -19,11 +19,12 @@ const app = express();
 // Cors parametre \\
 
 const corsOptions = {
+  // origin: ["*"],
   origin: process.env.CLIENT_URL,
   credentials: true,
   // allowedHeaders: ["set-cookie", "Content-type"],
-  allowedHeaders: ["sessionId", "Content-type"],
-  exposeHeaders: ["sessionId"],
+  allowedHeaders: ["*", "Content-type"],
+  exposeHeaders: ["*"],
   // exposeHeaders:["set-cookie"] ,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
