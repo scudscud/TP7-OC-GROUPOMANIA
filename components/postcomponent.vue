@@ -64,9 +64,7 @@ export default{
   methods: {
   postValid(){
    if(this.message != '' || this.url != ''){
-    console.log(this.url);
-    console.log(this.message);
-    console.log(this.validPost);
+
     this.validPost = true
     return true
    } else {
@@ -105,11 +103,8 @@ export default{
     },
 
   createPost(){
-        if (this.message != '' && this.url != null) {
-       
-        }
-              else {
-          let formData = new FormData()
+    if(this.message != '' || this.url != ''){
+      let formData = new FormData()
           formData.append('posterId', this.userid)
           formData.append('posterfirstname', this.firstname)
           formData.append('posterlastname', this.lastname)
@@ -123,7 +118,9 @@ export default{
           .catch((error)=>{
             console.log(error.message);
             console.log(multerErrors.message);
-          })
+          }) 
+    }else{
+             this.vide="aie c'est vide"
           }
   },
 

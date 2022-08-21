@@ -18,7 +18,8 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-
+   console.log(req.body);
+   console.log(req.file);
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
