@@ -63,7 +63,7 @@ import { multerErrors } from "../backend/utils/errors.utils";
 export default{
   methods: {
   postValid(){
-   if(this.message != '' || this.url != null){
+   if(this.message != '' || this.url != ''){
     console.log(this.url);
     console.log(this.message);
     console.log(this.validPost);
@@ -93,7 +93,7 @@ export default{
       this.createText = false
     },
     delPicPreview(){
-      this.url = null
+      this.url = ''
       this.createPic = false
     },
     
