@@ -10,7 +10,7 @@
    <p>cette action est irreversible </p>
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
-<v-btn @click="$emit('close-modale-delete'),!comdelpost"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+<v-btn @click="!comdelpost,$emit('close-modale-delete')"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
 
 </v-card>
 </v-col>

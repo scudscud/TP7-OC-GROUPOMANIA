@@ -9,7 +9,8 @@
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
-                  <button   id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="$emit('close-modale-post'),createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
+                   <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
+                  <button v-else id="btn-send-post-posted" ><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Poster!!</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-post'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
                      <div >{{vide}}</div>
                       </div>
@@ -18,17 +19,19 @@
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
               <label class="lab-pic-btn" for="picpost"  >
                 <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
+               
                 <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
                       @change="picPreview" 
                       />
               </label>
-
+                         
           <div class="preview-pic-size"  @change="postValid()" > 
             <img id="pic-size"  v-if="url" :src="url" @change="postValid()" >
             <p v-else  id="pic-size"  @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
           </div>
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
+          <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
           <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
         </div>
       <v-card-text id="card-comment" >
@@ -63,7 +66,7 @@ import { multerErrors } from "../backend/utils/errors.utils";
 export default{
   methods: {
   postValid(){
-   if(this.message != '' || this.url != ''){
+   if(this.message !='' || this.url !=''){
 
     this.validPost = true
     return true
@@ -73,9 +76,11 @@ export default{
    }
   },
   textValid(){
-    if(this.message !=''){
+    if(this.message !='' ){
       this.createText = true
-    }else{
+    }
+    else{
+
     this.createText = false
     }
   },
@@ -96,8 +101,16 @@ export default{
     },
     
     picPreview(e){
+      // console.log(e);
+      // console.log(this.url);
+      // console.log(this.file.value);
+      e.target.value[0].split(" ")
       const pic = e.target.files[0];
+      
       this.file = pic
+
+
+
       this.url = URL.createObjectURL(pic);
       this.validPost = !this.validPost
     },
@@ -116,44 +129,33 @@ export default{
           formData.append('file', this.file)
           axios.post(`http://localhost:5000/api/post`,formData)
           .then(() => {
-            // window.location.reload()
+            this.posted= true
+            setInterval(() => {
+            window.location.reload()
+            
+            }, 2500);
+             
+             
+          
           })
-          .catch((error)=>{
-            console.log(error.message);
-            console.log(multerErrors.message);
+          .catch((errors,test)=>{
+             test = this.delPicPreview()
+           console.log(this.maxsize);
+            this.maxsize = errors.response.data.errors.maxsize
+            this.format = errors.response.data.errors.format
+            test
+           setTimeout(() => {
+             this.maxsize = ''
+            this.format =''
+           }, 3000);
+            console.log(errors.response.data.errors.maxsize);
+            console.log(errors.response.data.errors.format);
+      
           }) 
     }else{
              this.vide="aie c'est vide"
           }
   },
-
-      //   else{
-      //     let formData = new FormData()
-      //   formData.append('posterId', this.connectedUserId)
-      //   formData.append('posterFirstname', this.posterFirstname)
-      //   formData.append('posterLastname', this.posterLastname)
-      //   formData.append('posterProfil', this.posterProfil)
-      //   formData.append('message', this.message)
-      //   axios.post(`http://localhost:5000/api/post`, formData)
-      //   .then(() => {
-      //     window.location.reload()
-      //   })
-      //   .catch()
-      //     }
-      // }
-  // testPost(){
-  //   if (this.url = null){
-  //     if(this.message = ''){
-  //       this.vide= "c'est vide"
-  //       return false 
-  //     }else{
-  //         this.vide= "c'est vide"
-  //          return true
-  //     }
-  //   }else{
-  //       this.vide= "c'est vide"
-  //   }
-  // },
 
 },
 
@@ -182,7 +184,10 @@ export default{
       createText:false,
       photoup:'',
       file:[],
-      // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      maxsize:'',
+      format:'',
+      posted: false,
+       // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       // lastname: "",
       // firstname: "",
     }
@@ -521,6 +526,12 @@ color:$secondary;
   padding-right: 10%;
 }
 
+.error-style-span{
+ color:$primary;
+ text-decoration: underline;
+
+
+}
 // #btn-delete-post{
 //   width: 100%;
 //   margin-top: 10%;
@@ -540,6 +551,26 @@ color:$secondary;
    border: solid 2px $secondary;
    height: 40px;
    width:85px ;
+  // margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 1%;
+  padding-right: 1%;
+  &:hover {
+    border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+    &#btn-send-post>#div-btn-send>#icon-btn-send{
+        color:$tertiary;
+    }
+  }
+}
+#btn-send-post-posted{
+  color:$secondary;
+   border: solid 2px green;
+   background-color: rgb(38, 145, 49);
+   height: 40px;
+   width:100px ;
   // margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;

@@ -81,7 +81,7 @@ export default {
       userlike:[],
       date:'',
       message:'',
-      comdelpost:false,
+      comdelpost:"",
 
 
     };
@@ -148,7 +148,7 @@ export default {
       async  deletePost(postId) {
           // console.log(postId);
        this.showdel = true
-   
+       await this.comdelpost;
        if(this.comdelpost = true){
         axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((deletedPost) => {
