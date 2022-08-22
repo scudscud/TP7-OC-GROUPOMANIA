@@ -117,7 +117,7 @@ export default{
 
   createPost(){
     if(this.message != '' || this.url != ''){
-        const full= document.querySelector('.fullname').textContent;
+        const full= document.querySelector('.fullname-create').textContent;
       console.log(full);
       let formData = new FormData()
           formData.append('posterId', this.userid)
@@ -131,12 +131,8 @@ export default{
           .then(() => {
             this.posted= true
             setInterval(() => {
-            window.location.reload()
-            
-            }, 2500);
-             
-             
-          
+            window.location.reload()            
+            }, 2500);         
           })
           .catch((errors,test)=>{
              test = this.delPicPreview()
@@ -148,15 +144,13 @@ export default{
              this.maxsize = ''
             this.format =''
            }, 3000);
-            console.log(errors.response.data.errors.maxsize);
-            console.log(errors.response.data.errors.format);
-      
+            // console.log(errors.response.data.errors.maxsize);
+            // console.log(errors.response.data.errors.format);    
           }) 
     }else{
              this.vide="aie c'est vide"
           }
   },
-
 },
 
   data(){
