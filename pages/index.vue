@@ -13,10 +13,18 @@
             <span class="fullname">{{post.posterfullname}}</span>
           </div>
             <span class="full-date"> {{post.date}}</span>
+           
       </div>
-          <div class="btn-book-main" v-if="(post.posterId = userid) &&  (post.posterId = userid)">
+       <span class="postId"> {{post._id}}</span>
+       <span class="postId"> {{post.id}}</span>
+       <span class="postId"> {{index}}</span>
+          <div class="btn-book-main" v-if="(post.posterId === userid)">
+          <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
               <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-              <button id="btn-post-delete" @click="deletePost(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+                
+                  <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
+              <button id="btn-post-delete" @click="showdel =!showdel,test(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+             
           </div>
     </div>
         <div class="image-card">
@@ -40,11 +48,11 @@
                   <p class="text-att">Devenir&nbspamis</p></v-btn
                 >
               </div>
-  
+ 
    </div>       
   </v-card>
-      <modify v-show="showmodify" @close-modale-modify="showmodify = false" />
-      <deletepost v-show="showdel" @close-modale-delete="showdel = false" />
+   <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
+       <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 
 </template>
@@ -55,10 +63,19 @@ import Modify from "../components/modifypost.vue";
 import Deletepost from "../components/deletepost.vue";
 // import { doc } from "prettier";
 export default {
-  components: { Modify, Deletepost },
+  
+  components: { 
+  Modify,
+ Deletepost 
+
+  },
+  props:{
+    keytest : ['post._id']
+  },
   data() {
     return {
-      
+    //  keyPost : '',
+    //  keytest :'',
       log:false,
       showdelete: false,
       showmodify: false,
@@ -123,7 +140,35 @@ export default {
     //   },
     // },
   },
+  events: {
+    // deletedPost: function (postId) {
+    //     this.post._id = postId;
+    // return true;
+    // }
+    // deletedPost: 'test'
+},
   methods: {
+    //  test: function (postId) {
+    //     this.post._id = postId
+    //        axios.delete(`http://localhost:5000/api/post/${postId}`)
+    //     return true;
+    // },
+    test(post){
+        const parse= JSON.stringify(post);
+        localStorage.setItem('categories', parse);
+      
+
+
+//   this.$on('deletedPost', function (postId) {
+//     axios.delete(`http://localhost:5000/api/post/${postId}`)
+// })
+},
+  
+    
+    //    test(postId){
+    //   console.log(postId);
+    //   this.showdel = true
+    // },
     getUsers() {
       axios
         .get("http://localhost:5000/api/user")
@@ -147,9 +192,9 @@ export default {
 
       async  deletePost(postId) {
           // console.log(postId);
-       this.showdel = true
-       await this.comdelpost;
-       if(this.comdelpost = true){
+      //  this.showdel = true
+      //  await this.comdelpost;
+      //  if(this.comdelpost = true){
         axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((deletedPost) => {
 
@@ -157,34 +202,21 @@ export default {
         //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
           
-          this.getPosts()
+          // this.getPosts()
         })
         .catch((err) => console.log(err))
-      }
+      // }
     },
     
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   },
+  
   async mounted(){
   axios.defaults.withCredentials = true;
+        // console.log($refs.deletepost.$el)
 
    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
-      console.log(this.userjwtid);
+      // console.log(this.userjwtid);
     this.userjwtid = res.data
     this.show = true
     this.log = true
@@ -195,7 +227,7 @@ export default {
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-      console.log(docs);
+      // console.log(docs);
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
@@ -209,20 +241,15 @@ export default {
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
          this.posts = docs.data
-         this.posts.forEach((i,e,u)=> {
-          console.log(i.picture);
-          console.log(e);
-          console.log(u);
-          this.posterpic = i.picture
-         });
-
-
-
+        //  this.posts.forEach((i,e,u)=> {
+        //   // console.log(i.picture);
+        //   // console.log(e);
+        //   console.log(u[e]._id);
+        //   this.posterpic = i.picture
+        //  });
         // console.log(this.posts[1]);
         // // console.log(this.image);
     
-     
-         
               // console.log(post.posterId);
 
           // this.posterId = docs.data.posterId
@@ -248,44 +275,11 @@ export default {
       });
   },
 
-  // mounted(){
-    // axios.get(`http://localhost:5000/jwtid`)
-    // .then((data) => {
-
-    //   console.log(data);
-  //     // this.connectedUserId = user.data.data._id 
-  //   //   axios.get(`http://localhost:5000/api/user/${user.data.data._id}`)
-  //   //     .then((result) => {
-  //   //       this.posterFirstname = result.data.firstname
-  //   //       this.posterLastname = result.data.lastname
-  //   //       this.posterProfil = result.data.picture
-  //   //       this.userLikedPosts = result.data.likes;
-  //   //     })
-  //   //     .catch()
-  //   //   this.logged = true;
-  //   //   axios.get("http://localhost:5000/api/post/")
-  //   //   .then((res) => {
-  //   //     this.posts = res.data.allPosts
-  //   //     let inputFile = document.querySelector('#picture')
-  //   //     let fileName = document.querySelector('#file-name')
-  //   //     inputFile.addEventListener('change', () => {
-  //   //       fileName.textContent = inputFile.files[0].name
-  //   //     })
-  //   //   })
-  //   //   .catch();
-  //   // })
-  //   // .catch((err) => {
-  //   //   document.cookie = "jwt=;max-age=0";
-  //   //   this.logged = false;
-  //   //   const posts = document.querySelector('#p-not-connected')
 
 
-
-  //   });
-  // },
+}
 
 
-};
 </script>
 
 <style lang="scss">

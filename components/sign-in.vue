@@ -89,7 +89,6 @@
 <script>
 import axios from "axios";
 
-import VueCookie from "vue-cookie";
 import SignUp from "./sign-up.vue";
 
 export default {

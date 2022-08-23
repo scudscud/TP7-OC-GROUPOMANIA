@@ -10,7 +10,9 @@
    <p>cette action est irreversible </p>
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
-<v-btn @click="!comdelpost,$emit('close-modale-delete')"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+  
+<v-btn v-if="!deleteconfirm" @click="deletedPost"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+<v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn>
 
 </v-card>
 </v-col>
@@ -20,57 +22,62 @@
 
 <script>
 import axios from "axios";
+
+// import { KeyObject } from "crypto";
+
 export default {
   name: 'IndexPage',
 
   data(){
 return{
-
+deleteconfirm: false ,
 
 
 
 }
   },
   methods:{
-    test(){
-      console.log($emit);
-    },
-        deletePost(postId) {
-          console.log(postId);
-      
-        axios.delete(`http://localhost:5000/api/post/${postId}`)
+        deletedPost() {
+              if(localStorage.getItem('categories')) {
+      try {
+        this.postId = JSON.parse(localStorage.getItem('categories'))
+      } catch(e) {
+        localStorage.removeItem('categories')
+      }
+    }
+        axios.delete(`http://localhost:5000/api/post/${this.postId}`)
       .then((deletedPost) => {
-        deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-          axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
-          });
-          this.getPosts()
+        // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
+        //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+        //   });
+        //   this.getPosts()
+        }).then(()=>{
+          this.deleteconfirm = true
+             setTimeout(() => {
+            this.$emit('close-modale-delete')
+            window.location.reload()            
+            }, 2500); 
+          
+    
         })
         .catch((err) => console.log(err))
       
-    },
+        }
 
 
+  },
+   mounted(){
+      // const test = this.$el.attributes.keypost 
+      console.log(this.$el.attributes)
+      console.log(this.$el.attributes[1])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  }
-
-
-
+      console.log(this.$parent)
+      // console.log(this.$dispatch('deletedPost', this));
+      // console.log(keyPost);
+     
+  },
 }
+
 </script>
 
 <style lang="scss">
