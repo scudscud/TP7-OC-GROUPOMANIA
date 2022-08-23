@@ -185,7 +185,7 @@ export default {
         .then((docs) => {
           // console.log(docs.data);
           // this.posts = post.data;
-          this.updateLike();
+          // this.updateLike();
         })
         .catch((err) => console.log(err));
     },

@@ -8,7 +8,7 @@
     </p>
   <p>Vous-êtes sur de vouloir supprimer ce post ?</p>
    <p>cette action est irreversible </p>
-   <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete')" ><span >non j'ai changer d'avis</span></v-btn>
+   <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
   
 <v-btn v-if="!deleteconfirm" @click="deletedPost"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
@@ -37,36 +37,38 @@ deleteconfirm: false ,
 }
   },
   methods:{
-        deletedPost() {
-              if(localStorage.getItem('categories')) {
+    delDeletePost(){
+      localStorage.removeItem('categories')
+    },
+
+      
+    deletedPost() {
+      if(localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
       } catch(e) {
         localStorage.removeItem('categories')
       }
     }
-        axios.delete(`http://localhost:5000/api/post/${this.postId}`)
+      axios.delete(`http://localhost:5000/api/post/${this.postId}`)
       .then((deletedPost) => {
         // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
         //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
         //   this.getPosts()
         }).then(()=>{
+           localStorage.removeItem('categories')
           this.deleteconfirm = true
              setTimeout(() => {
             this.$emit('close-modale-delete')
             window.location.reload()            
             }, 2500); 
-          
-    
         })
-        .catch((err) => console.log(err))
-      
+        .catch((err) => console.log(err)) 
         }
-
-
   },
-   mounted(){
+
+  mounted(){
       // const test = this.$el.attributes.keypost 
       console.log(this.$el.attributes)
       console.log(this.$el.attributes[1])
@@ -74,7 +76,6 @@ deleteconfirm: false ,
       console.log(this.$parent)
       // console.log(this.$dispatch('deletedPost', this));
       // console.log(keyPost);
-     
   },
 }
 
