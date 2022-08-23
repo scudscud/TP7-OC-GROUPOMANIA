@@ -15,9 +15,9 @@
             <span class="full-date"> {{post.date}}</span>
            
       </div>
-       <span class="postId"> {{post._id}}</span>
+       <!-- <span class="postId"> {{post._id}}</span>
        <span class="postId"> {{post.id}}</span>
-       <span class="postId"> {{index}}</span>
+       <span class="postId"> {{index}}</span> -->
           <div class="btn-book-main" v-if="(post.posterId === userid)">
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
               <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
@@ -27,11 +27,12 @@
              
           </div>
     </div>
-        <div class="image-card">
-          <img class="card-img " :src="post.picture" alt="" />
+        <div v-if='post.picture !="" '  class="image-card">
+          <img class="card-img " :src="post.picture" alt="photo" />
+          
         </div>
 
-              <div class="message-main">
+              <div v-if="post.message != ''" class="message-main">
                 {{post.message}}
               </div>
               <div class="btn-card" id="card-att">
@@ -52,7 +53,7 @@
    </div>       
   </v-card>
    <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
-       <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" />
+       <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 
 </template>
@@ -70,12 +71,11 @@ export default {
 
   },
   props:{
-    keytest : ['post._id']
+    // keytest : ['post._id']
   },
   data() {
     return {
-    //  keyPost : '',
-    //  keytest :'',
+ 
       log:false,
       showdelete: false,
       showmodify: false,
@@ -104,71 +104,17 @@ export default {
     };
   },
   computed: {
-    // date() {
-    //   let today = new Date();
-    //   let dd = today.getDate();
-
-    //   let mm = today.getMonth() + 1;
-    //   let yyyy = today.getFullYear();
-    //   if (dd < 10) {
-    //     dd = "0" + dd;
-    //   }
-    //   if (mm < 10) {
-    //     mm = "0" + mm;
-    //   }
-    //   // today = mm+'-'+dd+'-'+yyyy;
-    //   // today = mm+'/'+dd+'/'+yyyy;
-    //   // today = dd+'-'+mm+'-'+yyyy;
-    //   today = dd + "/" + mm + "/" + yyyy;
-    //   return today;
-    // },
-    // hour() {
-    //   const d = new Date();
-    //   let hours = d.getHours() + "h" + d.getMinutes();
-    //   return hours;
-    // },
-    // fullname: {
-    //   get(full) {
-    //     // console.log(fullname);
-    //     // [post.posterfirstname + " " + post.posterlastname] = test
-    //     return post.posterfirstname + " " + post.posterlastname;
-    //   },
-    //   set(name) {
-       
-    //     [post.posterfirstname, post.posterlastname] = name.split(" ");
-        
-    //   },
-    // },
+ 
   },
   events: {
-    // deletedPost: function (postId) {
-    //     this.post._id = postId;
-    // return true;
-    // }
-    // deletedPost: 'test'
 },
   methods: {
-    //  test: function (postId) {
-    //     this.post._id = postId
-    //        axios.delete(`http://localhost:5000/api/post/${postId}`)
-    //     return true;
-    // },
     test(post){
         const parse= JSON.stringify(post);
         localStorage.setItem('categories', parse);
       
-
-
-//   this.$on('deletedPost', function (postId) {
-//     axios.delete(`http://localhost:5000/api/post/${postId}`)
-// })
 },
   
-    
-    //    test(postId){
-    //   console.log(postId);
-    //   this.showdel = true
-    // },
     getUsers() {
       axios
         .get("http://localhost:5000/api/user")
@@ -311,8 +257,11 @@ border: 5px solid $secondary;
   width: 100%;
   background-color: $tertiary;
   padding: 1%;
+  border-bottom: solid 2px $secondary;
   // margin-bottom: 1%;
   // padding-top: 2%;
+  // border-bottom-left-radius: -5%;
+  // border-bottom-right-radius: -5%;
   
 }
 
@@ -385,7 +334,8 @@ border: 5px solid $secondary;
   display: flex;
   width: 100%;
   height: 100%;
-  border-top: solid 2px $secondary;
+  padding: 1%  1% ;
+  // border-top: solid 2px $secondary;
   border-bottom: solid 2px $secondary;
   border-bottom-left-radius: 5%;
   border-bottom-right-radius: 5%;
@@ -402,7 +352,7 @@ border: 5px solid $secondary;
 // overflow: hidden;
   max-height:300px ;
  max-width: 500px;
-  padding: 1%;
+  // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;

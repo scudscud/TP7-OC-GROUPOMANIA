@@ -570,14 +570,14 @@ color:$secondary;
   border-radius: 30%;
   padding-left: 1%;
   padding-right: 1%;
-  &:hover {
-    border-radius: 20%;
-    background-color: $secondary;
-    color: $tertiary;
-    &#btn-send-post>#div-btn-send>#icon-btn-send{
-        color:$tertiary;
-    }
-  }
+  // &:hover {
+  //   border-radius: 20%;
+  //   background-color: $secondary;
+  //   color: $tertiary;
+  //   &#btn-send-post>#div-btn-send>#icon-btn-send{
+  //       color:$tertiary;
+  //   }
+  // }
 }
 
 #btn-send-post:disabled{

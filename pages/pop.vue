@@ -68,4 +68,80 @@
 //   }
 //   }
 
+
+// <<============================ FORMAT date ======================================================================>>
+//------------------------------------------format date---------------------------------------------------------\\
+   // date() {
+    //   let today = new Date();
+    //   let dd = today.getDate();
+
+    //   let mm = today.getMonth() + 1;
+    //   let yyyy = today.getFullYear();
+    //   if (dd < 10) {
+    //     dd = "0" + dd;
+    //   }
+    //   if (mm < 10) {
+    //     mm = "0" + mm;
+    //   }
+    //   // today = mm+'-'+dd+'-'+yyyy;
+    //   // today = mm+'/'+dd+'/'+yyyy;
+    //   // today = dd+'-'+mm+'-'+yyyy;
+    //   today = dd + "/" + mm + "/" + yyyy;
+    //   return today;
+    // },
+    // hour() {
+    //   const d = new Date();
+    //   let hours = d.getHours() + "h" + d.getMinutes();
+    //   return hours;
+    // },
+    // fullname: {
+    //   get(full) {
+    //     // console.log(fullname);
+    //     // [post.posterfirstname + " " + post.posterlastname] = test
+    //     return post.posterfirstname + " " + post.posterlastname;
+    //   },
+    //   set(name) {
+       
+    //     [post.posterfirstname, post.posterlastname] = name.split(" ");
+        
+    //   },
+    // },
+   // date() {
+    //   let today = new Date();
+    //   let dd = today.getDate();
+
+    //   let mm = today.getMonth() + 1;
+    //   let yyyy = today.getFullYear();
+    //   if (dd < 10) {
+    //     dd = "0" + dd;
+    //   }
+    //   if (mm < 10) {
+    //     mm = "0" + mm;
+    //   }
+    //   // today = mm+'-'+dd+'-'+yyyy;
+    //   // today = mm+'/'+dd+'/'+yyyy;
+    //   // today = dd+'-'+mm+'-'+yyyy;
+    //   today = dd + "/" + mm + "/" + yyyy;
+    //   return today;
+    // },
+    // hour() {
+    //   const d = new Date();
+    //   let hours = d.getHours() + "h" + d.getMinutes();
+    //   return hours;
+    // },
+    // fullname: {
+    //   get(full) {
+    //     // console.log(fullname);
+    //     // [post.posterfirstname + " " + post.posterlastname] = test
+    //     return post.posterfirstname + " " + post.posterlastname;
+    //   },
+    //   set(name) {
+       
+    //     [post.posterfirstname, post.posterlastname] = name.split(" ");
+        
+    //   },
+    // },
+    //--------------------------------------------------------------------------------------\\
+//====================================end format date ========================================================>>
+
 </script>

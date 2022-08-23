@@ -69,13 +69,7 @@ deleteconfirm: false ,
   },
 
   mounted(){
-      // const test = this.$el.attributes.keypost 
-      console.log(this.$el.attributes)
-      console.log(this.$el.attributes[1])
 
-      console.log(this.$parent)
-      // console.log(this.$dispatch('deletedPost', this));
-      // console.log(keyPost);
   },
 }
 
