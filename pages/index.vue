@@ -1,6 +1,6 @@
 <template>
 
-<div>     
+<div v-if="this.posts[0] != undefined">     
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card">                                       
@@ -23,7 +23,7 @@
               <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
                 
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
-              <button id="btn-post-delete" @click="showdel =!showdel,test(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+              <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
              
           </div>
     </div>
@@ -50,6 +50,35 @@
                 >
               </div>
  
+   </div>       
+  </v-card>
+   <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
+       <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
+</div>
+<div v-else>     
+              
+  <v-card  class="card-post"  >    
+   <div class="border-card">                                       
+    <div id="card-autor-book-first" >
+    
+        <!-- <div class="name-date-book">
+            <img class="picture-user"/>
+          <p class="fullname">c'est vous</p>
+            
+          </div> -->
+          
+          <span class="firstpost" >le {{date}} à {{hour}} {{fullname}} va renter dans un zone inexplorée</span>
+    </div>
+        <div class="image-card">
+          <img class="card-img "  src="../client/public/uploads/posts/pexels-gabriela-palai-590029.jpg" alt="photo" />
+        </div>
+              <div  class="message-main">
+                <p>vous serez le 1 er à fouler cette terre inconnu</p>
+                <p class="history">Ceci restera gravé dans la pierre </p>
+                <p class="history">Ceci restera écrit dans les livres d'histoire</p>
+                <!-- <p class="history">Ceci restera ecrit sur un disque dur</p> -->
+                <p>Ceci restera stocké dans le cloud</p>
+              </div>
    </div>       
   </v-card>
    <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
@@ -96,20 +125,68 @@ export default {
       posterpic:'',
       image:'',
       userlike:[],
-      date:'',
+      // date:'',
       message:'',
       comdelpost:"",
+      // today:'',
 
 
     };
   },
   computed: {
+            date(){
+let today = new Date();
+let dd = today.getDate();
+let mm = today.getMonth()+1; 
+let yyyy = today.getFullYear();
+if(dd<10) 
+{
+    dd='0'+dd;
+} 
+if(mm<10) 
+{
+    mm='0'+mm;
+} 
+// today = mm+'-'+dd+'-'+yyyy;
+// today = mm+'/'+dd+'/'+yyyy;
+// today = dd+'-'+mm+'-'+yyyy;
+today = dd+'/'+mm+'/'+yyyy;
+ return today
+      },
+
+    hour(){ 
+    const d = new Date();
+
+    let hh =  d.getHours();
+    let mi = d.getMinutes();
+
+    if(hh<10)
+    {
+      hh='0'+hh;
+    }
+    if(mi <10)
+{
+     mi='0'+mi;
+    }
+    let hours = hh+":" + mi;
+
+    return hours
+    },
+    fullname: {
+      get() {
+        return this.firstname + ' ' + this.lastname
+      },
+      set(newValue) {
+        [this.firstname, this.lastname] = newValue.split(' ')
+      }
+    }
  
   },
   events: {
 },
   methods: {
-    test(post){
+    
+    postIdDel(post){
         const parse= JSON.stringify(post);
         localStorage.setItem('categories', parse);
       
@@ -187,38 +264,18 @@ export default {
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
          this.posts = docs.data
-        //  this.posts.forEach((i,e,u)=> {
-        //   // console.log(i.picture);
-        //   // console.log(e);
-        //   console.log(u[e]._id);
-        //   this.posterpic = i.picture
-        //  });
-        // console.log(this.posts[1]);
-        // // console.log(this.image);
-    
-              // console.log(post.posterId);
-
-          // this.posterId = docs.data.posterId
-          // this.posterfirstname = docs.data.firstname
-          // this.posterlastname = docs.data.lastname
-          // this.fullname = docs.data.fullname
-          // this.posterpic = docs.data.pictureprofil
-          // this.message = docs.data.message
-          // this.image = docs.data.picture
-          // this.userlike = docs.data.likers
-          // this.date = docs.data.date
-            
-      //  this.posts = docs
-      //  console.log(docs.data[0].posterId);
-        // let inputFile = document.querySelector('#picture')
-        // let fileName = document.querySelector('#file-name')
-        // inputFile.addEventListener('change', () => {
-        //   fileName.textContent = inputFile.files[0].name
-        // })
+         console.log(docs.data[0]);
+         console.log(this.posts[0]);
       })
       .catch((err)=>{
         console.log(err);
       });
+   
+  
+
+
+
+
   },
 
 
@@ -257,6 +314,26 @@ border: 5px solid $secondary;
   width: 100%;
   background-color: $tertiary;
   padding: 1%;
+  border-bottom: solid 2px $secondary;
+  // margin-bottom: 1%;
+  // padding-top: 2%;
+  // border-bottom-left-radius: -5%;
+  // border-bottom-right-radius: -5%;
+  
+}
+
+.history{
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+#card-autor-book-first {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  background-color: $tertiary;
+  padding: 1% ;
   border-bottom: solid 2px $secondary;
   // margin-bottom: 1%;
   // padding-top: 2%;
@@ -357,6 +434,20 @@ border: 5px solid $secondary;
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
+.card-img-default {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  object-fit: cover;
+// overflow: hidden;
+  max-height:300px ;
+ max-width: 500px;
+  // padding: 1%;
+  border: solid 2px $secondary;
+  // border-bottom: solid 2px $secondary;
+  border-radius: 2%;
+}
 
 .message-main {
   padding: 1%;
@@ -386,6 +477,15 @@ border: 5px solid $secondary;
 p.full-date {
   display: flex;
   flex-direction: row;
+  width: auto;
+  margin-left: 1%;
+  margin-bottom: 0;
+}
+p.firstpost {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: auto;
   margin-left: 1%;
   margin-bottom: 0;

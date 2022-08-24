@@ -80,44 +80,44 @@ export default{
     },
  },
      computed:{
-      date(){
-let today = new Date();
-let dd = today.getDate();
-let mm = today.getMonth()+1; 
-let yyyy = today.getFullYear();
-if(dd<10) 
-{
-    dd='0'+dd;
-} 
-if(mm<10) 
-{
-    mm='0'+mm;
-} 
-// today = mm+'-'+dd+'-'+yyyy;
-// today = mm+'/'+dd+'/'+yyyy;
-// today = dd+'-'+mm+'-'+yyyy;
-today = dd+'/'+mm+'/'+yyyy;
- return today
-      },
+//       date(){
+// let today = new Date();
+// let dd = today.getDate();
+// let mm = today.getMonth()+1; 
+// let yyyy = today.getFullYear();
+// if(dd<10) 
+// {
+//     dd='0'+dd;
+// } 
+// if(mm<10) 
+// {
+//     mm='0'+mm;
+// } 
+// // today = mm+'-'+dd+'-'+yyyy;
+// // today = mm+'/'+dd+'/'+yyyy;
+// // today = dd+'-'+mm+'-'+yyyy;
+// today = dd+'/'+mm+'/'+yyyy;
+//  return today
+//       },
 
-    hour(){ 
-    const d = new Date();
+//     hour(){ 
+//     const d = new Date();
 
-    let hh =  d.getHours();
-    let mi = d.getMinutes();
+//     let hh =  d.getHours();
+//     let mi = d.getMinutes();
 
-    if(hh<10)
-    {
-      hh='0'+hh;
-    }
-    if(mi <10)
-{
-     mi='0'+mi;
-    }
-    let hours = hh+":" + mi;
+//     if(hh<10)
+//     {
+//       hh='0'+hh;
+//     }
+//     if(mi <10)
+// {
+//      mi='0'+mi;
+//     }
+//     let hours = hh+":" + mi;
 
-    return hours
-    },
+//     return hours
+//     },
      fullname: {
       get() {
         return this.firstname + ' ' + this.lastname
