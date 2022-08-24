@@ -2,6 +2,8 @@ const postModel = require("../models/post.model");
 const PostModel = require("../models/post.model");
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
+const fs = require('fs');
+let path = require('path');
 
 // read post end point \\
 
@@ -74,11 +76,32 @@ exports.updatePost = (req, res) => {
 exports.deletePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    PostModel.findById(req.params.id)
+    .then((post)=>{
+      let delimg = post.picture.split('images/')[1]
+       fs.unlink(`images/${delimg}`,()=> {
+        PostModel.findByIdAndRemove(req.params.id, (err, docs)=> {
+      if(!err){
+        res.status(200).json(docs);
+      }else{
+        res.status(400).send(err);
+      }
+        })
+      })
+    }).catch((err)=>{err})
+    // console.log(delimg);
+    // console.log(post.picture);
+    // console.log(post);
 
-  PostModel.findByIdAndRemove(req.params.id, (err, docs) => {
-    if (!err) res.send(docs);
-    else console.log("delete error : " + err);
-  });
+  // PostModel.findByIdAndRemove(req.params.id ,(err, docs) => {
+  //   // console.log(req);
+  //   // console.log(res);
+  //   if (!err) {
+     
+  //     res.send(docs)
+  //   }
+  //   else console.log("delete error : " + err)
+  // });
 };
 
 // like post end point \\
