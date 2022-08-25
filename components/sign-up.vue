@@ -166,8 +166,7 @@
                 <button
                   class="btn"
                   id="link-sign"
-                  @click="$emit('close-modal')"
-                >
+                  @click="$emit('close-modal')">
                   retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon>
                 </button>
               </button>

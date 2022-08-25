@@ -127,6 +127,7 @@ export default{
           formData.append('posterpicture', this.userpicpro)
           formData.append('message', this.message)
           formData.append('file', this.file)
+          formData.append('role',this.role)
           axios.post(`http://localhost:5000/api/post`,formData)
           .then(() => {
             this.posted= true
@@ -181,6 +182,7 @@ export default{
       maxsize:'',
       format:'',
       posted: false,
+      role:'',
        // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       // lastname: "",
       // firstname: "",
@@ -245,6 +247,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
+      this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname

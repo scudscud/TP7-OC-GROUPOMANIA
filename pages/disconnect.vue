@@ -1,14 +1,19 @@
 <template>
 
 <v-col class="overlay d-flex  justify-center align-center">
-<v-card class="popup">
-  <p> 😭 Vous-êtes sur de vouloir partir ?  😭 </p>
-  <p>si tel est votre choix ...</p>
-    <p>à bientôt ☺️ </p>
-<p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
-<v-btn id="btn-deco" @click="logOut" type=text href="./"><span>Deconnexion</span></v-btn>
-</v-card>
+  <v-card class="popup"  v-if="deleteconfirm = deleteconfirm">
+    <p> 😭 Vous-êtes sur de vouloir partir ?  😭 </p>
+    <p>si tel est votre choix ...</p>   
+    <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
+    <v-btn id="btn-deco" @click.prevent="logOut" type=text ><span>Deconnexion</span></v-btn>
+  </v-card>
+  <v-card class="popup" v-else>
+    <p >à bientôt ☺️ </p>
+    <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
+    <v-btn id="btn-deco-ok" type=text ><span id="btn-deco-ok-span">Deconnecté</span><v-icon class="img-att">mdi-thumb-up-outline</v-icon></v-btn>
+  </v-card>
 </v-col>
+
 </template>
 
 
@@ -16,9 +21,18 @@
 import axios from "axios";
 export default {
   name: 'IndexPage',
+  data(){
+    return{
+     deleteconfirm : true
+    }
+  },
 methods:{
   logOut(){
     axios.get('http://localhost:5000/api/user/logout')
+          this.deleteconfirm = false
+          setTimeout(() => {
+          window.location.href = "./";        
+            }, 2500); 
   },
 }
 
@@ -43,16 +57,17 @@ transition: opacity 0.4s;
 z-index: 1000;
  };
 
-.popup{
-  padding-bottom: 1%;
+div.popup{
+  padding-bottom: 0;
   padding-top: 1%;
   background-color: $secondary;
   max-width: 300px;
   min-width: 300px;
   width: 300px;
+  height: fit-content;
   max-height: 200px;
-  min-height: 200px;
-  height: 200px;
+  // min-height: 200px;
+  // height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,4 +91,20 @@ align-items: center;
   color: $primary;
 }
 }
+
+#btn-deco-ok{
+padding-right: 5%;
+background-color:rgb(30, 145, 17);
+width: 100%;
+justify-content: center;
+align-items: center;
+color: black;
+font-weight: bolder;
+}
+
+#btn-deco-ok-span{
+  display: flex;
+  padding-right: 5%;
+}
+
 </style>

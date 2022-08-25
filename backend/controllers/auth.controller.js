@@ -5,7 +5,9 @@ const { signUpErrors, signInErrors } = require("../utils/errors.utils");
 
 // valid token jwt duration \\
 
-const durationTokenLogin = 1 * 24 * 60 * 60 * 1000;
+const durationTokenLogin24 = 1 * 24 * 60 * 60 * 1000;
+const durationTokenLogin12 = 1 * 12 * 60 * 60 * 1000;
+const durationTokenLogout = 1;
 
 // create token end point \\
 
@@ -53,9 +55,9 @@ exports.signIn = async (req, res) => {
     const user = await UserModel.login(email, badge, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, {
-      // SameSite : lax,
+      // SameSite : None,
       session: false,
-      maxAge: durationTokenLogin,
+      maxAge: durationTokenLogin12,
       secure:false,
       httpOnly: true,
     });
@@ -70,7 +72,11 @@ exports.signIn = async (req, res) => {
 // logout end point \\
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "", { session: false, maxAge: durationTokenLogin });
+// console.log(req.cookies)
+// console.log(res.cookie)
+
+  res.cookie("jwt",'', { maxAge: durationTokenLogout })
+  
   res.redirect("./");
 };
 

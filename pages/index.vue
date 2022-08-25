@@ -1,10 +1,13 @@
 <template>
 
 <div v-if="this.posts[0] != undefined">     
+
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
-   <div class="border-card">                                       
-    <div id="card-autor-book" v-if="(post.posterId === userid || post.role != undefined)">
+   <div class="border-card"> 
+                                     
+                                    
+    <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole !== ''" >
       <div class="user-book-main">
         <div class="name-date-book">
             <img class="picture-user" :src='post.posterpicture' />
@@ -24,26 +27,18 @@
                 
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
-             
           </div>
-
     </div>
-    <div id="card-autor-book-none" v-else>
+      <div id="card-autor-book-none" v-else>
       <div class="user-book-main-none">
-       
             <img class="picture-user-none" :src='post.posterpicture' />
             <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
-    
-            <!-- <span class="full-date"> {{post.date}}</span> -->
-           
       </div>
+    </div>    
 
-    </div>
         <div v-if='post.picture !="" '  class="image-card">
           <img class="card-img " :src="post.picture" alt="photo" />
-          
         </div>
-
               <div v-if="post.message != ''" class="message-main">
                 {{post.message}}
               </div>
@@ -61,11 +56,10 @@
                   <p class="text-att">Devenir&nbspamis</p></v-btn
                 >
               </div>
- 
-   </div>       
+    </div>       
   </v-card>
-   <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
-       <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
+    <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
+    <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 <div v-else>     
               
@@ -101,9 +95,9 @@
 <script>
 import axios from "axios";
 import Modify from "../components/modifypost.vue";
-// import DeleteCom from "../components/deletepost.vue";
 import Deletepost from "../components/deletepost.vue";
-// import { doc } from "prettier";
+
+
 export default {
   
   components: { 
@@ -127,7 +121,7 @@ export default {
       lastname: "",
       firstname: "",
       userpicture:'',
-      role:'',
+      // role:'',
 
       posts:[],
       post:[],
@@ -264,13 +258,14 @@ today = dd+'/'+mm+'/'+yyyy;
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-      console.log(docs.data.role);
-      this.user.role = docs.data.role
+  
+        this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.userpicture = docs.data.pictureprofil
-        // console.log(this.firstname)
+            console.log(this.role);
+   
     }).catch((error)=>{
       console.log(
        error
@@ -279,8 +274,9 @@ today = dd+'/'+mm+'/'+yyyy;
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
          this.posts = docs.data
-         console.log(docs.data[0]);
-         console.log(this.posts[0]);
+         console.log(this.posts);
+        //  console.log(docs.data[0]);
+        //  console.log(this.posts[0]);
       })
       .catch((err)=>{
         console.log(err);
@@ -491,6 +487,7 @@ border: 5px solid $secondary;
 // overflow: hidden;
   max-height:300px ;
  max-width: 500px;
+ min-width: 300px;
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;

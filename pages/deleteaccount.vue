@@ -35,7 +35,7 @@ methods:{
   delAccount(){
     axios.delete(`http://localhost:5000/api/user/${this.userid}`)
    .then(()=>{
-           localStorage.removeItem('categories')
+        
           this.deleteconfirm = true
              setTimeout(() => {
             this.deleteconfirm = true
