@@ -4,7 +4,7 @@
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card">                                       
-    <div id="card-autor-book" v-if="(post.posterId === userid)">
+    <div id="card-autor-book" v-if="(post.posterId === userid || post.role != undefined)">
       <div class="user-book-main">
         <div class="name-date-book">
             <img class="picture-user" :src='post.posterpicture' />
@@ -127,6 +127,7 @@ export default {
       lastname: "",
       firstname: "",
       userpicture:'',
+      role:'',
 
       posts:[],
       post:[],
@@ -264,6 +265,7 @@ today = dd+'/'+mm+'/'+yyyy;
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
       console.log(docs.data.role);
+      this.user.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
