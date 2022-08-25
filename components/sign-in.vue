@@ -145,6 +145,7 @@ export default {
           this.show = false;
           setTimeout(() => {
             this.$emit("close-modale", true);
+               window.location.reload()  
           }, 1000);
           this.userid = userId;
         })

@@ -173,6 +173,11 @@ export default {
           title: "Deconnexion",
           to: "/disconnect",
         },
+        {
+          icon: " mdi-logout ",
+          title: "Suprimer mon compte",
+          to: "/deleteaccount",
+        },
       ],
       items: [
         {

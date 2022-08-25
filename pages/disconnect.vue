@@ -6,7 +6,7 @@
   <p>si tel est votre choix ...</p>
     <p>à bientôt ☺️ </p>
 <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
-<v-btn id="btn-deco" type=text href="./"><span>Deconnexion</span></v-btn>
+<v-btn id="btn-deco" @click="logOut" type=text href="./"><span>Deconnexion</span></v-btn>
 </v-card>
 </v-col>
 </template>
@@ -15,14 +15,12 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'IndexPage'
-
-
-
-
-
-
-
+  name: 'IndexPage',
+methods:{
+  logOut(){
+    axios.get('http://localhost:5000/api/user/logout')
+  },
+}
 
 }
 </script>

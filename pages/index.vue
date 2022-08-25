@@ -4,7 +4,7 @@
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card">                                       
-    <div id="card-autor-book" >
+    <div id="card-autor-book" v-if="(post.posterId === userid)">
       <div class="user-book-main">
         <div class="name-date-book">
             <img class="picture-user" :src='post.posterpicture' />
@@ -18,7 +18,7 @@
        <!-- <span class="postId"> {{post._id}}</span>
        <span class="postId"> {{post.id}}</span>
        <span class="postId"> {{index}}</span> -->
-          <div class="btn-book-main" v-if="(post.posterId === userid)">
+          <div class="btn-book-main" >
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
               <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
                 
@@ -26,6 +26,18 @@
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
              
           </div>
+
+    </div>
+    <div id="card-autor-book-none" v-else>
+      <div class="user-book-main-none">
+       
+            <img class="picture-user-none" :src='post.posterpicture' />
+            <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
+    
+            <!-- <span class="full-date"> {{post.date}}</span> -->
+           
+      </div>
+
     </div>
         <div v-if='post.picture !="" '  class="image-card">
           <img class="card-img " :src="post.picture" alt="photo" />
@@ -196,6 +208,7 @@ today = dd+'/'+mm+'/'+yyyy;
       axios
         .get("http://localhost:5000/api/user")
         .then((docs) => {
+        
           // this.posts = docs.data.allPosts
         // console.log(docs);
         }
@@ -250,7 +263,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-      // console.log(docs);
+      console.log(docs.data.role);
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
@@ -321,6 +334,26 @@ border: 5px solid $secondary;
   // border-bottom-right-radius: -5%;
   
 }
+.btn-book-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80px;
+  width: 100px;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+.picture-user{
+  margin-top: 1.5%;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+}
+
 
 .history{
   font-style: italic;
@@ -341,18 +374,45 @@ border: 5px solid $secondary;
   // border-bottom-right-radius: -5%;
   
 }
-
-
-
-.btn-book-main {
+#card-autor-book-none {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80px;
-  width: 100px;
-  padding-top: 0.5%;
-  padding-bottom: 0.5%;
+  width: 100%;
+  background-color: $tertiary;
+  padding: 1%;
+  border-bottom: solid 2px $secondary;
+  // margin-bottom: 1%;
+  // padding-top: 2%;
+  // border-bottom-left-radius: -5%;
+  // border-bottom-right-radius: -5%;
+  
 }
+.user-book-main-none{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.fullname-none {
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  // padding-top: 2%;
+  padding-left: 3%;
+  padding-right: 2%;
+  margin: 0;
+}
+.picture-user-none{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+}
+
 .pen-icon-main {
   padding-right: 5%;
 }
