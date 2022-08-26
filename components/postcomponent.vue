@@ -37,7 +37,7 @@
       <v-card-text id="card-comment" >
         <label for="messagetext"><h2 class="comment-title">Votre commentaire</h2></label>
         <textarea
-          id="messagetext"
+          id="messagetext-post"
           v-model="message"
           name="messagetext"
           class="card-create-comment"
@@ -652,8 +652,8 @@ padding: 1%;
 // text-overflow: ellipsis;
 // };
 
-#messagetext {
-  max-width: 100%;
+#messagetext-post {
+  width: 100%;
   color: $secondary;
   word-break: break-word;
   border: solid 2px $secondary;

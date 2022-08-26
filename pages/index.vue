@@ -1,6 +1,6 @@
-<template>
+<template >
 
-<div v-if="this.posts[0] != undefined">     
+<div v-if="this.posts[0] != undefined" >     
 
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
@@ -23,7 +23,7 @@
        <span class="postId"> {{index}}</span> -->
           <div class="btn-book-main" >
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
-              <button id="btn-post-modify" type="submit" @click="showmodify = !showmodify" > <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+              <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
                 
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
@@ -58,7 +58,7 @@
               </div>
     </div>       
   </v-card>
-    <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
+   <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="showmodify = false" />
     <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 <div v-else>     
@@ -93,14 +93,20 @@
 <script>
 import axios from "axios";
 // import Modify from "../components/modifypost.vue";
+// const modify = () => import("../components/modifypost.vue")
 import Deletepost from "../components/deletepost.vue";
 
 
 export default {
   
   components: { 
- modify: () => import(/* webpackPrefetch: false */"./components/modifypost.vue"),
- Deletepost 
+
+ modify: () => import(/* webpackPrefetch: true */"../components/modifypost.vue"),
+
+//  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
+//  Modify: () => import(  /* webpackChunkName:"modify"*/"../components/modifypost.vue"),
+ Deletepost ,
+//  Modify
 
   },
   props:{
@@ -108,7 +114,7 @@ export default {
   },
   data() {
     return {
- 
+      // loadme: null,
       log:false,
       showdelete: false,
       showmodify: false,
@@ -190,6 +196,7 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
+
     
     postIdDel(post){
         const parse= JSON.stringify(post);
@@ -262,7 +269,7 @@ today = dd+'/'+mm+'/'+yyyy;
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.userpicture = docs.data.pictureprofil
-            console.log(this.role);
+            // console.log(this.role);
    
     }).catch((error)=>{
       console.log(
@@ -272,7 +279,7 @@ today = dd+'/'+mm+'/'+yyyy;
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
          this.posts = docs.data
-         console.log(this.posts);
+        //  console.log(this.posts);
         //  console.log(docs.data[0]);
         //  console.log(this.posts[0]);
       })

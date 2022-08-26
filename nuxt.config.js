@@ -12,7 +12,9 @@ export default ({
       lang: 'fr',
   
     },
-  
+    router: {
+      prefetchLinks: false
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -38,10 +40,13 @@ export default ({
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
+  components: [{ path: '../components/modifypost.vue', prefetch: false}],
   components: true,
+  
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [

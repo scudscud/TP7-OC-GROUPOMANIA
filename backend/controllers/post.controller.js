@@ -73,6 +73,20 @@ exports.updatePost = (req, res) => {
   );
 };
 
+exports.onepost = (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  const updatedRecord = {
+    message: req.body.message,
+  };
+  PostModel.findById(req.params.id)
+   .then((post)=>{
+    res.status(200).json(post);
+   }).catch((err)=>{
+    res.status(401).json(err);
+   })
+};
+
 // delete post end point \\
 exports.deletePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
