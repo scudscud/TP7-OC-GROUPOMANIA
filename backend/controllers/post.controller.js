@@ -59,8 +59,18 @@ exports.createPost = async (req, res) => {
 exports.updatePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    const date = new Date(Date.now())
+    const days = date.toLocaleDateString()
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const finalDate = `modifié le ${days} à ${hours}:${minutes}`
   const updatedRecord = {
     message: req.body.message,
+    picture:
+      req.file != null
+        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        : "",
+        date : finalDate,
   };
   PostModel.findByIdAndUpdate(
     req.params.id,

@@ -9,7 +9,7 @@
                 <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
-                   <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
+                   <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="updatePost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
                   <button v-else id="btn-send-post-posted" ><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Poster!!</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-modify'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
                      <div >{{vide}}</div>
@@ -18,7 +18,7 @@
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
               <label class="lab-pic-btn" for="picmod"  >
-                <v-icon   class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span v-if="postValid()">Modifier la photo</span>
+                <v-icon   class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span v-if="picValid">Modifier la photo</span>
                 <span v-else>Ajouter une photo</span>
                
                 <input id="picmod" class="form-avatar-profil" type="file" value="" name="picmod" placeholder="votre photo/avatar"
@@ -29,13 +29,13 @@
           <div class="preview-pic-size" @change="postValid()" > 
             <img id="pic-size" v-if="url == ''" :src="oldpic" @change="postValid()" >
             <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" >
-             <div  id="pic-size"  v-if="!postValid()"   @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
+             <div  id="pic-size"  v-if="!picValid"   @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
           </div>
          
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
           <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" v-if="postValid()" @click="delPicPreview(),postValid()" >Supprimer</button>
+          <button id="btn-del-create-pic" v-if="picValid" @click="delPicPreview(),postValid()" >Supprimer</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext-modify"><h2 class="comment-title">Votre commentaire</h2></label>
@@ -92,8 +92,10 @@ export default{
   picValid(){
     if(this.url !== null || this.oldpic !== ''){
       this.createPic = true
+      return true
     }else{
       this.createPic=false
+      return false
     }
   },
     deletemess() {
@@ -107,39 +109,32 @@ export default{
     },
     
     picPreview(e){
-      // console.log(e);
-      // console.log(this.url);
-      // console.log(this.file.value);
       e.target.value[0].split(" ")
       const pic = e.target.files[0];
-      
       this.file = pic
-
-
-
       this.url = URL.createObjectURL(pic);
       this.validPost = !this.validPost
     },
 
-  createPost(){
-    if(this.message != '' || this.url != ''){
+  updatePost(){
+    if(this.message !== '' || this.url !== '' || this.oldpic !==''){
         const full= document.querySelector('.fullname-create').textContent;
       console.log(full);
       let formData = new FormData()
-          formData.append('posterId', this.userid)
-          formData.append('posterfirstname', this.firstname)
-          formData.append('posterlastname', this.lastname)
-          formData.append('posterfullname', full)
-          formData.append('posterpicture', this.userpicpro)
+          // formData.append('posterId', this.userid)
+          // formData.append('posterfirstname', this.firstname)
+          // formData.append('posterlastname', this.lastname)
+          // formData.append('posterfullname', full)
+          // formData.append('posterpicture', this.userpicpro)
           formData.append('message', this.message)
           formData.append('file', this.file)
-          formData.append('role',this.role)
-          axios.post(`http://localhost:5000/api/post`,formData)
+          // formData.append('role',this.role)
+          axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
           .then(() => {
-            this.posted= true
-            setInterval(() => {
-            window.location.reload()            
-            }, 2500);         
+            // this.posted= true
+            // setInterval(() => {
+            // window.location.reload()            
+            // }, 2500);         
           })
           .catch((errors,test)=>{
              test = this.delPicPreview()
@@ -272,12 +267,12 @@ if(localStorage.getItem('categories')) {
         this.postId = JSON.parse(localStorage.getItem('categories'))
          axios.get(`http://localhost:5000/api/post/${this.postId}`)
         .then((docs)=>{
-              console.log(docs);
+              console.log(docs.data._id);
+              this.message = docs.data.message
               this.post = docs.data
               this.oldpic = docs.data.picture
-              // this.url = docs.data.picture
-              console.log(this.oldpic);
-              console.log(this.url);
+              this.id = docs.data._id
+            
         }).then(()=>{
            localStorage.removeItem('categories')
 
