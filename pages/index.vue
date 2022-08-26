@@ -87,21 +87,19 @@
               </div>
    </div>       
   </v-card>
-   <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" />
-       <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 
 </template>
 <script>
 import axios from "axios";
-import Modify from "../components/modifypost.vue";
+// import Modify from "../components/modifypost.vue";
 import Deletepost from "../components/deletepost.vue";
 
 
 export default {
   
   components: { 
-  Modify,
+ modify: () => import(/* webpackPrefetch: false */"./components/modifypost.vue"),
  Deletepost 
 
   },
