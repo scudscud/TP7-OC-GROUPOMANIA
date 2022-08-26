@@ -1,6 +1,6 @@
 <template>
 <div class="overlay">
-  <v-card id="card-post-modal" >
+  <v-card id="card-mod-modal" >
      <v-card-text class="card-profil-title"   >
       <h1 class="card-profil-title-h1">Modifier</h1></v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
@@ -353,7 +353,7 @@ if(localStorage.getItem('categories')) {
 //   color:$primary;
 // }
 
-#card-post-modal{
+#card-mod-modal{
   width: 75%;
   margin-top: 100px;
   max-width: 950px;
