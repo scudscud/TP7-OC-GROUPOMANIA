@@ -18,7 +18,8 @@
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
               <label class="lab-pic-btn" for="picmod"  >
-                <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Modifier la photo</span>
+                <v-icon   class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span v-if="postValid()">Modifier la photo</span>
+                <span v-else>Ajouter une photo</span>
                
                 <input id="picmod" class="form-avatar-profil" type="file" value="" name="picmod" placeholder="votre photo/avatar"
                       @change="picPreview" 
@@ -34,7 +35,7 @@
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
           <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Supprimer</button>
+          <button id="btn-del-create-pic" v-if="postValid()" @click="delPicPreview(),postValid()" >Supprimer</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext-modify"><h2 class="comment-title">Votre commentaire</h2></label>
