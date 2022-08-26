@@ -25,16 +25,16 @@
                       />
               </label>
                           
-          <div class="preview-pic-size"  @change="postValid()" > 
-            <!-- <img class="card-img " :src="post.picture" alt="photo" /> -->
-            <img id="pic-size" v-if="url === null" :src="oldpic" @change="postValid()" >
-            <img id="pic-size"  v-else-if="url !=null" :src="url" @change="postValid()" >
-            <p v-else  id="pic-size"  @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
+          <div class="preview-pic-size" @change="postValid()" > 
+            <img id="pic-size" v-if="url == ''" :src="oldpic" @change="postValid()" >
+            <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" >
+             <div  id="pic-size"  v-if="!postValid()"   @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
           </div>
+         
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
           <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
+          <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Supprimer</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext-modify"><h2 class="comment-title">Votre commentaire</h2></label>
@@ -70,7 +70,7 @@ import axios from "axios";
 export default{
   methods: {
   postValid(){
-   if(this.message !='' || this.url !=''){
+   if(this.message !=='' || this.url !='' || this.oldpic !=''){
 
     this.validPost = true
     return true
@@ -89,7 +89,7 @@ export default{
     }
   },
   picValid(){
-    if(this.url != null){
+    if(this.url !== null || this.oldpic !== ''){
       this.createPic = true
     }else{
       this.createPic=false
@@ -100,6 +100,7 @@ export default{
       this.createText = false
     },
     delPicPreview(){
+      this.oldpic = ''
       this.url = ''
       this.createPic = false
     },
