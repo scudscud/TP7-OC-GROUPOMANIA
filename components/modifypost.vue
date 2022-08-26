@@ -1,8 +1,8 @@
 <template>
 <div class="overlay">
-  <v-card id="card-post-modal"  >
-     <v-card-text class="card-profil-title">
-      <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
+  <v-card id="card-post-modal" >
+     <v-card-text class="card-profil-title"   >
+      <h1 class="card-profil-title-h1">Modifier</h1></v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
                 <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/>
@@ -17,16 +17,18 @@
         </v-card-text>
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label class="lab-pic-btn" for="picpost"  >
-                <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
+              <label class="lab-pic-btn" for="picmod"  >
+                <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Modifier la photo</span>
                
-                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
+                <input id="picmod" class="form-avatar-profil" type="file" value="" name="picmod" placeholder="votre photo/avatar"
                       @change="picPreview" 
                       />
               </label>
-                         
+                          
           <div class="preview-pic-size"  @change="postValid()" > 
-            <img id="pic-size"  v-if="url" :src="url" @change="postValid()" >
+            <!-- <img class="card-img " :src="post.picture" alt="photo" /> -->
+            <img id="pic-size" v-if="url === null" :src="oldpic" @change="postValid()" >
+            <img id="pic-size"  v-else-if="url !=null" :src="url" @change="postValid()" >
             <p v-else  id="pic-size"  @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
           </div>
           </div>
@@ -162,11 +164,11 @@ export default{
       vide:'',
       lastname: '',
       firstname: '',
-      posts:[],
+      post:[],
       userjwtid:'',
       userid:'',
-      lastname: '',
-      firstname: '',
+  
+   
       userpicpro:'',
       posterId : '',
       posterfirstname : '',
@@ -176,6 +178,7 @@ export default{
       modifbio: false,
       message: '',
       url: '',
+      oldpic:'',
       validPost:false,
       createPic: false,
       createText:false,
@@ -184,7 +187,8 @@ export default{
       maxsize:'',
       format:'',
       posted: false,
-      role:'',
+
+      userpicture:'',
        // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       // lastname: "",
       // firstname: "",
@@ -233,10 +237,10 @@ today = dd+'/'+mm+'/'+yyyy;
     }
   },
 
- mounted(){
-   axios.defaults.withCredentials = true;
+ async mounted(){
+    axios.defaults.withCredentials = true;
 
-    axios.get(`http://localhost:5000/jwtid`)
+    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
       // console.log(res.data);
     this.userjwtid = res.data
@@ -247,18 +251,41 @@ today = dd+'/'+mm+'/'+yyyy;
       console.log(error);
     })
 
-  // axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-  //   .then((docs) => {
-  //     console.log(docs.data);
-  //     this.role = docs.data.role
-  //       this.userid = docs.data._id
-  //       this.firstname = docs.data.firstname
-  //       this.lastname = docs.data.lastname
-  //       this.userpicpro = docs.data.photo
-  //         // console.log(docs.data.photo)
-  //   }).catch((error)=>{
-  //     console.log(error);
-  //   })
+  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+      console.log(docs.data);
+      this.role = docs.data.role
+        this.userid = docs.data._id
+        this.firstname = docs.data.firstname
+        this.lastname = docs.data.lastname
+        this.userpicpro = docs.data.photo
+          // console.log(docs.data.photo)
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+
+if(localStorage.getItem('categories')) {
+      try {
+        this.postId = JSON.parse(localStorage.getItem('categories'))
+         axios.get(`http://localhost:5000/api/post/${this.postId}`)
+        .then((docs)=>{
+              console.log(docs);
+              this.post = docs.data
+              this.oldpic = docs.data.picture
+              // this.url = docs.data.picture
+              console.log(this.oldpic);
+              console.log(this.url);
+        }).then(()=>{
+           localStorage.removeItem('categories')
+
+        })
+
+      } catch(e) {
+        localStorage.removeItem('categories')
+      }
+    }
+
 
   //  await axios.get("http://localhost:5000/api/post")
   //     .then((docs) => {

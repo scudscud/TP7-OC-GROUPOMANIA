@@ -8,7 +8,7 @@ const image = require("../middleware/picture.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
-router.get('/:id',postController.onepost);
+router.get('/:id',postController.onePost);
 router.put('/:id', postController.updatePost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);

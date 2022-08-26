@@ -23,7 +23,7 @@
        <span class="postId"> {{index}}</span> -->
           <div class="btn-book-main" >
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
-              <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+              <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
                 
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>

@@ -73,7 +73,7 @@ exports.updatePost = (req, res) => {
   );
 };
 
-exports.onepost = (req, res) => {
+exports.onePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   const updatedRecord = {
