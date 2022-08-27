@@ -125,11 +125,8 @@ export default{
         if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
         if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){
         axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
-           .then((doc)=> console.log(doc))
-
-
-
-        } 
+        //    .then((doc)=> console.log(doc))
+           } 
       let formData = new FormData()
           formData.append('posterId', this.userid)
           // formData.append('posterfirstname', this.firstname)
