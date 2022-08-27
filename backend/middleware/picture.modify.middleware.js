@@ -2,8 +2,9 @@ const multer = require('multer');
 
 
 function fileFilter(req, file, cb) {
-    // console.log(req);
-    console.log('tamere '+req.body.file);
+ 
+
+//  console.log(namepic);
   if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") { cb(null, true); }
   else {
     cb(null, false);
@@ -13,14 +14,14 @@ function fileFilter(req, file, cb) {
 
   const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`images`)},
     filename: function (req, file, cb) { 
-    
+      const namepic = req.body.oldname.split('images/')[1]
       // id du post pour le name photo \\
-       const name = test
-        cb(null,name);
+       
+        cb(null,namepic);
       },
   })
 
-  const  maxSize = 500000;
+  const  maxSize = 5000000;
 
 const upload = multer({
     storage: storage,

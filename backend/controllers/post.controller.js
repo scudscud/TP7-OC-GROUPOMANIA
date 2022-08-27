@@ -57,8 +57,8 @@ exports.createPost = async (req, res) => {
 
 // update post end point \\
 exports.updatePost = (req, res) => {
-  console.log(req.body)
-  console.log(req.file)
+  // console.log(req.body)
+  // console.log(req.file)
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
     const date = new Date(Date.now())
@@ -71,7 +71,7 @@ exports.updatePost = (req, res) => {
     message: req.body.message,
     picture:
       req.file != null
-        ? `${req.protocol}://${req.get("host")}/images/${req.body.filename}`
+        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
         : `${req.body.file}`,
         date : finalDate,
   };

@@ -115,17 +115,22 @@ export default{
       this.url = URL.createObjectURL(pic);
       this.createPic = false
       this.validPost = !this.validPost
+      console.log(this.file);
     },
 
   updatePost(){
     if(this.message !== '' || this.url !== '' ||this.url !== null || this.oldpic !==''){
         // const full= document.querySelector('.fullname-create').textContent;
 
-        // if(this.file == null || this.file === ''){
+        if(this.file == null || this.file == ''){
           this.file = this.oldpic
-          console.log(this.file);
-          console.log(this.oldpic);
-        // }
+          console.log(this.file)
+          console.log(this.oldpic) 
+          }else{
+        this.file 
+
+          }
+       
       let formData = new FormData()
           formData.append('posterId', this.userid)
           // formData.append('posterfirstname', this.firstname)
@@ -133,6 +138,7 @@ export default{
           // formData.append('posterfullname', full)
           // formData.append('posterpicture', this.userpicpro)
           // formData.append('posterpicture', this.userpicpro)
+          formData.append('oldname',this.oldpic)
           formData.append('message', this.message)
           formData.append('file', this.file)
           // formData.append('role',this.role)
@@ -156,6 +162,8 @@ export default{
             // console.log(errors.response.data.errors.maxsize);
             // console.log(errors.response.data.errors.format);    
           }) 
+                   
+
     }else{
              this.vide="aie c'est vide"
           }
@@ -274,12 +282,12 @@ if(localStorage.getItem('categories')) {
         this.postId = JSON.parse(localStorage.getItem('categories'))
          axios.get(`http://localhost:5000/api/post/${this.postId}`)
         .then((docs)=>{
-              // console.log(docs.data._id);
+              
               this.message = docs.data.message
               this.post = docs.data
               this.oldpic = docs.data.picture
               this.id = docs.data._id
-            
+            console.log(docs.data.oldpic);
         }).then(()=>{
            localStorage.removeItem('categories')
 

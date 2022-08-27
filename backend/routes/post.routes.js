@@ -12,7 +12,6 @@ router.get('/:id',postController.onePost);
 router.put('/:id',(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {
   
-  console.log(req);
   next();}
     });
   }, postController.updatePost);
