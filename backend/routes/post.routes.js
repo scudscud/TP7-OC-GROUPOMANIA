@@ -3,14 +3,17 @@ const router = express.Router();
 const { checkUser, requireAuth , authUser } = require("../middleware/auth.middleware");
 
 const postController = require('../controllers/post.controller');
-
+const modify = require('../middleware/picture.modify.middleware')
 const image = require("../middleware/picture.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
 router.get('/:id',postController.onePost);
-router.put('/:id',(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
-} else {next();}
+router.put('/:id',(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
+} else {
+  
+  console.log(req);
+  next();}
     });
   }, postController.updatePost);
 router.delete('/:id', postController.deletePost);

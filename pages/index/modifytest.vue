@@ -17,11 +17,11 @@
         </v-card-text>
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label class="lab-pic-btn" for="picmod"  >
+              <label class="lab-pic-btn" for="picmodtest"  >
                 <v-icon   class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span v-if="!createPic">Modifier la photo</span>
                 <span v-else>Ajouter une photo</span>
                
-                <input id="picmod" class="form-avatar-profil" type="file" value="" name="picmod" placeholder="votre photo/avatar"
+                <input id="picmodtest" class="form-avatar-profil" type="file" value="" name="picmodtest" placeholder="votre photo/avatar"
                       @change="picPreview" 
                       />
               </label>
@@ -123,12 +123,9 @@ export default{
 
         // if(this.file == null || this.file === ''){
           this.file = this.oldpic
-        //   console.log(this.file);
+          console.log(this.file);
+          console.log(this.oldpic);
         // }
-      
-         
-        
-
       let formData = new FormData()
           formData.append('posterId', this.userid)
           // formData.append('posterfirstname', this.firstname)

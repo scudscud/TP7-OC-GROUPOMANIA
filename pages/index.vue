@@ -94,14 +94,14 @@
 import axios from "axios";
 // import Modify from "../components/modifypost.vue";
 // const modify = () => import("../components/modifypost.vue")
-import Deletepost from "../components/deletepost.vue";
+import Deletepost from "./index/deletetest.vue";
 
 
 export default {
   
   components: { 
 
- modify: () => import(/* webpackPrefetch: true */"../components/modifypost.vue"),
+ modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
 
 //  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
 //  Modify: () => import(  /* webpackChunkName:"modify"*/"../components/modifypost.vue"),
