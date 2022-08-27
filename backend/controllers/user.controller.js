@@ -57,7 +57,7 @@ exports.userDelete = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   try {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     await UserModel.deleteOne({ _id: req.params.id }).exec();
     res.status(200).json({ message: "utilisateur supprimer." });
   } catch (err) {

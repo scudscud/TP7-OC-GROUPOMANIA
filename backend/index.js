@@ -6,7 +6,7 @@ const ObjectID = require("mongoose").Types.ObjectId;
 const cors = require("cors");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
-const { checkUser, requireAuth , authUser } = require("./middleware/auth.middleware");
+const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 require("./config/db");
 require("dotenv").config({ path: ".env" });
 
@@ -43,6 +43,7 @@ app.get('*', checkUser
 // ,(req,res)=>{ console.log(res.locals.user._id);res.send(res.locals.user._id)}
 ); // TODO 
 app.get('/jwtid', requireAuth, (req,res)=>{res.status(200).send(res.locals.user._id)});
+
 
 
 // routes\\

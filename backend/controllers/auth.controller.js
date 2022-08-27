@@ -28,14 +28,14 @@ exports.signUp = async (req, res, next) => {
     email: email,
     badge: badge,
   }).count();
-console.log(find);
+// console.log(find);
   if (find != 1) {
     return res.status(401).json({
       error:
         "echec veuillez réessayer, si le probleme persiste contacter un administrateur",
     });
   }
-console.log(req.body);
+// console.log(req.body);
   const user = new UserModel({lastname: lastname,firstname: firstname,email: email,badge: badge,password: password });
   user.save()
   .then((docs)=>{
@@ -67,6 +67,11 @@ exports.signIn = async (req, res) => {
     res.status(401).send({ errors });
   }
 };
+
+
+
+
+
 
 
 // logout end point \\

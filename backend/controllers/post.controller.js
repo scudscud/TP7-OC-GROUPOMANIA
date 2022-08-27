@@ -20,7 +20,7 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-   console.log(req.body.role);
+   console.log(req.user);
   //  console.log(req.file);
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
@@ -57,40 +57,46 @@ exports.createPost = async (req, res) => {
 
 // update post end point \\
 exports.updatePost = (req, res) => {
-  // console.log(req.body)
-  // console.log(req.file)
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    const date = new Date(Date.now())
-    const days = date.toLocaleDateString()
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const finalDate = `modifié le ${days} à ${hours}:${minutes}`
-  const updatedRecord = {
-    // posterId: req.body.posterId,
-    message: req.body.message,
-    picture:
-      req.file != null
-        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        : `${req.body.file}`,
-        date : finalDate,
-  };
-  PostModel.findByIdAndUpdate(
-    req.params.id,
-    { $set: updatedRecord },
-    { new: true },
-    (err, docs) => {
-      if (!err) res.send(docs);
-      else console.log("petit probleme : " + err);
-    }
-  );
+
+  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("utilsateur inconnu :" + req.params.id);}
+
+  PostModel.findById(req.params.id)
+  .then((post) => {
+    const postedBy = post.posterId
+    const connectedUser = req.user
+    console.log( post.posterId);
+    console.log( req.user);
+    if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
+      res.cookie('jwt','', { session:false, maxAge: 1 }) 
+      res.status(400).json('nocookie')
+}else{
+  const date = new Date(Date.now())
+  const days = date.toLocaleDateString()
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const finalDate = `modifié le ${days} à ${hours}:${minutes}`
+const updatedRecord = {
+  // posterId: req.body.posterId,
+  message: req.body.message,
+  picture:
+    req.file != null
+      ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      : `${req.body.file}`,
+      date : finalDate,
+}
+PostModel.findByIdAndUpdate(req.params.id,
+  { $set: updatedRecord },
+  { new: true },
+  (err, docs) => {
+    if (!err) res.send(docs);
+    else console.log("petit probleme : " + err)});
+  }
+})
 };
 
-exports.onePost = (req, res) => {
+exports.getOnePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-
-  
   PostModel.findById(req.params.id)
    .then((post)=>{
     res.status(200).json(post);
@@ -104,42 +110,55 @@ exports.deletePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
     PostModel.findById(req.params.id)
+
+    PostModel.findById(req.params.id)
     .then((post)=>{
+      const postedBy = post.posterId
+      const connectedUser = req.user
+      console.log( post.posterId);
+      console.log( req.user);
+      if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
+        res.cookie('jwt','', { session:false, maxAge: 1 }) 
+        res.status(400).json('nocookie')
+  }else{
       let delimg = post.picture.split('images/')[1]
-       fs.unlink(`images/${delimg}`,()=> {
+      fs.unlink(`images/${delimg}`,()=> {
         PostModel.findByIdAndRemove(req.params.id, (err, docs)=> {
       if(!err){
         res.status(200).json(docs);
       }else{
-        res.status(400).send(err);
-      }
+        res.status(400).send(err);}
         })
-      })
+      })}
     }).catch((err)=>{err})
 }; 
 
 // delete picture end point \\
 
-exports.onePicture = (req, res) => {
-  console.log(req.params.id);
-  // if (!ObjectID.isValid(req.params.id))
-  //   return res.status(400).send("post inconnu :" + req.params.id);
+exports.deleteOnePicture = (req, res) => {
     PostModel.findById(req.params.id)
     .then((post)=>{
-      
+      const postedBy = post.posterId
+      const connectedUser = req.user
+      console.log( post.posterId);
+      console.log( req.user);
+      if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
+        res.cookie('jwt','', { session:false, maxAge: 1 }) 
+        res.status(400).json('nocookie')
+  }else{
+
       let delimg = post.picture.split('images/')[1]
       console.log(delimg);
     
-       fs.unlink(`images/${delimg}`, (err) => {
+        fs.unlink(`images/${delimg}`, (err) => {
         if (err) {
             console.log("failed to delete local image:"+err);
         } else {
             console.log('successfully deleted local image');                                
         }
-});
-
+        });}  
     }).catch((err)=>{err})
-};
+  };
  
 
 

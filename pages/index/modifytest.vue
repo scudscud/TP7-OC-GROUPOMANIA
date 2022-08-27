@@ -283,7 +283,7 @@ if(localStorage.getItem('categories')) {
               this.post = docs.data
               this.oldpic = docs.data.picture
               this.id = docs.data._id
-            console.log(docs.data.picture);
+            console.log(docs.data);
         }).then(()=>{
            localStorage.removeItem('categories')
 
