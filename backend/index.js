@@ -16,10 +16,10 @@ const path = require("path")
 const app = express();
 
 
-// Cors parametre \\
+// Cors parametre \\ 
 
 const corsOptions = {
-  // origin: ["*"],
+  Origin: '*' ,
   origin: process.env.CLIENT_URL,
   credentials: true,
   // allowedHeaders: ["set-cookie", "Content-type"],

@@ -116,20 +116,22 @@ exports.deletePost = (req, res) => {
         })
       })
     }).catch((err)=>{err})
-    // console.log(delimg);
-    // console.log(post.picture);
-    // console.log(post);
+}; 
 
-  // PostModel.findByIdAndRemove(req.params.id ,(err, docs) => {
-  //   // console.log(req);
-  //   // console.log(res);
-  //   if (!err) {
-     
-  //     res.send(docs)
-  //   }
-  //   else console.log("delete error : " + err)
-  // });
+// delete picture end point \\
+
+exports.onePicture = (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    PostModel.findById(req.params.id)
+    .then((post)=>{
+      // console.log(post);
+      let delimg = post.picture.split('images/')[1]
+       fs.unlink(`images/${delimg}`)
+    }).catch((err)=>{err})
 };
+ 
+
 
 // like post end point \\
 exports.likePost = (req, res) => {

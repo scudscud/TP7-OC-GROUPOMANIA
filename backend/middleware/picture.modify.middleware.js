@@ -2,7 +2,7 @@ const multer = require('multer');
 
 
 function fileFilter(req, file, cb) {
- 
+//  console.log(req);
 
 //  console.log(namepic);
   if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") { cb(null, true); }
@@ -14,12 +14,17 @@ function fileFilter(req, file, cb) {
 
   const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`images`)},
     filename: function (req, file, cb) { 
-      const namepic = req.body.oldname.split('images/')[1]
-      // id du post pour le name photo \\
-       
+      if(req.body.oldname == ''){
+         
+       namepic = req.body.posterId+ Date.now() + ".jpg"
+
+      } else {
+      namepic = req.body.oldname.split('images/')[1]}
+      // id du post pour le name photo \\ 
+        
         cb(null,namepic);
       },
-  })
+  })       
 
   const  maxSize = 5000000;
 

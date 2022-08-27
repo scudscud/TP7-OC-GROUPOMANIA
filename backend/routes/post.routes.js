@@ -9,20 +9,14 @@ const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
 router.get('/:id',postController.onePost);
-router.put('/:id',(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
-} else {
-  
-  next();}
-    });
-  }, postController.updatePost);
+router.put('/:id',(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });} else {next();}});}, postController.updatePost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unLikePost);
 
+// router manage picture post + multer errors \\
 
-
-// router post + multer errors \\
-
+router.delete('/picture/:id',postController.onePicture)
 router.post('/',(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}
     });

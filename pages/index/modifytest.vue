@@ -115,22 +115,21 @@ export default{
       this.url = URL.createObjectURL(pic);
       this.createPic = false
       this.validPost = !this.validPost
-      console.log(this.file);
+    //   console.log(this.file);
     },
 
-  updatePost(){
+ async updatePost(){
     if(this.message !== '' || this.url !== '' ||this.url !== null || this.oldpic !==''){
         // const full= document.querySelector('.fullname-create').textContent;
+              console.log(this.oldpic) 
+        if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
+        if(this.oldpic ==''){
+        axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
+           .then((doc)=> console.log(doc))
 
-        if(this.file == null || this.file == ''){
-          this.file = this.oldpic
-          console.log(this.file)
-          console.log(this.oldpic) 
-          }else{
-        this.file 
 
-          }
-       
+
+        } 
       let formData = new FormData()
           formData.append('posterId', this.userid)
           // formData.append('posterfirstname', this.firstname)
@@ -142,7 +141,7 @@ export default{
           formData.append('message', this.message)
           formData.append('file', this.file)
           // formData.append('role',this.role)
-          axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
+        await axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
           .then(() => {
             // this.posted= true
             // setInterval(() => {
@@ -287,7 +286,7 @@ if(localStorage.getItem('categories')) {
               this.post = docs.data
               this.oldpic = docs.data.picture
               this.id = docs.data._id
-            console.log(docs.data.oldpic);
+            console.log(docs.data.picture);
         }).then(()=>{
            localStorage.removeItem('categories')
 
