@@ -123,7 +123,7 @@ export default{
         // const full= document.querySelector('.fullname-create').textContent;
               console.log(this.oldpic) 
         if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
-        if(this.oldpic ==''){
+        if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){
         axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
            .then((doc)=> console.log(doc))
 

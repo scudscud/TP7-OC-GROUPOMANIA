@@ -121,13 +121,23 @@ exports.deletePost = (req, res) => {
 // delete picture end point \\
 
 exports.onePicture = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  console.log(req.params.id);
+  // if (!ObjectID.isValid(req.params.id))
+  //   return res.status(400).send("post inconnu :" + req.params.id);
     PostModel.findById(req.params.id)
     .then((post)=>{
-      // console.log(post);
+      
       let delimg = post.picture.split('images/')[1]
-       fs.unlink(`images/${delimg}`)
+      console.log(delimg);
+    
+       fs.unlink(`images/${delimg}`, (err) => {
+        if (err) {
+            console.log("failed to delete local image:"+err);
+        } else {
+            console.log('successfully deleted local image');                                
+        }
+});
+
     }).catch((err)=>{err})
 };
  
