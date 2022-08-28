@@ -3,8 +3,9 @@
 <v-col class="overlay d-flex  justify-center align-center">
   <v-card class="popup"  v-if="deleteconfirm = deleteconfirm">
     <p> 😭 Vous-êtes sur de vouloir partir ?  😭 </p>
+  <nuxt-link class="cancel-disco-btn" to="./" ><v-btn id="btn-notdisco-comfirm" @click="" >non j'ai changer d'avis</v-btn></nuxt-link>
     <p>si tel est votre choix ...</p>   
-    <p class="logo-disconnect"><img class="logo-white" src="../logo/logo.png" />La team GROUPOMANIA </p>
+    <p class="logo-disconnect"><img class="logo-white-disco" src="../logo/logo.png" />La team GROUPOMANIA </p>
     <v-btn id="btn-deco" @click.prevent="logOut" type=text ><span>Deconnexion</span></v-btn>
   </v-card>
   <v-card class="popup" v-else>
@@ -87,6 +88,8 @@ width: 100%;
 justify-content: center;
 align-items: center;
 &:hover{
+  font-style: italic;
+  font-weight: bold;
   background-color: $tertiary;
   color: $primary;
 }
@@ -106,5 +109,46 @@ font-weight: bolder;
   display: flex;
   padding-right: 5%;
 }
+.logo-white-disco{
+display: flex;
+flex-direction: row;
+width: 30px;
+padding-right: 2%;
+text-decoration: none;
+color: $secondary,
+}
+
+#btn-notdisco-comfirm{
+background-color: $secondary;
+width: 100%;
+justify-content: center;
+align-items: center;
+color: green;
+margin-bottom: 1%;
+&:hover{
+  // text-shadow: 15px 10px 2px;
+  background-color: green;
+  color: white;
+  font-style: italic;
+  font-weight: bold;
+}
+}
+
+a.cancel-disco-btn{
+  // display: flex;
+  height: 100%;
+  width: 100%;
+text-decoration: none;
+color: green;
+text-shadow: 2px;
+// &:hover{
+//   color:white;
+// }
+
+
+}
+
+
+
 
 </style>

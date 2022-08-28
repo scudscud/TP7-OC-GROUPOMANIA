@@ -174,7 +174,7 @@ export default {
           to: "/disconnect",
         },
         {
-          icon: " mdi-logout ",
+          icon: "mdi-delete-circle",
           title: "Suprimer mon compte",
           to: "/deleteaccount",
         },

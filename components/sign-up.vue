@@ -34,7 +34,7 @@
                   v-model="lastname"
                   class="form-input"
                   type="text"
-                  value=""
+                 
                   name="nom"
                   placeholder="nom"
                   required
@@ -95,7 +95,7 @@
                   class="form-input"
                   type="password"
                   placeholder="Votre mot de passe"
-                  value=""
+                 
                   required
                 />
                 <div class="rules">
@@ -118,7 +118,7 @@
                   class="form-input"
                   type="password"
                   placeholder="Comfirmer votre mot de passe"
-                  value=""
+                  
                   required
                 />
 
