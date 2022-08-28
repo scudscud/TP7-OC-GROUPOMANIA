@@ -8,7 +8,8 @@
       <!-- <div class="picture"> -->
         <div class="block-picture">
           <label class="lab-pic" for="avatar">
-            <img class="form-avatar-dl" src="../logo/avatar1.png" />
+            <!-- <img v-if="test" class="form-avatar-dl" :src="" /> -->
+            <!-- <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div> -->
             <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
             </label>
         <!-- </div> -->

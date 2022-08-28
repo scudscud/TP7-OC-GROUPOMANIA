@@ -285,6 +285,7 @@ html {
   border-radius: 50%;
   font-size: 1.7rem;
   padding-left: 1%;
+  padding-bottom: 2%;
 }
 
 .username {

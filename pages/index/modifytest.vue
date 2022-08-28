@@ -5,8 +5,9 @@
       <h1 class="card-profil-title-h1">Modifier</h1></v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
-                <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/>
-                <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
+                <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
+                <img v-if="post.posterpicture =''" class="picture-user-create" :src='post.posterpicture' />
+            <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
                    <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="updatePost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
@@ -67,6 +68,12 @@ import axios from "axios";
 
 export default{
   methods: {
+    getcolor(){
+   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    let randomColor = Math.floor(Math.random()*16777215).toString(16)
+    document.getElementById('avatar-empty-modify').style.backgroundColor = '#' + randomColor
+  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+},
   postValid(){
    if(this.message !=='' || this.url !='' || this.oldpic !=''){
 
@@ -173,7 +180,7 @@ export default{
       userjwtid:'',
       userid:'',
   
-   
+      avatarpicempty:'',
       userpicpro:'',
       posterId : '',
       posterfirstname : '',
@@ -291,6 +298,7 @@ if(localStorage.getItem('categories')) {
       }
     }
 
+  this.getcolor()
 
   //  await axios.get("http://localhost:5000/api/post")
   //     .then((docs) => {
@@ -484,6 +492,18 @@ border: solid 2px $secondary;
   // padding-right: auto;
   // padding-top: 2.5%;
   font-weight: bold;
+}
+
+#avatar-empty-modify{
+  // margin-top: 5%;
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
 }
 
 // .post-date-full{

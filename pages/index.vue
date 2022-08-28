@@ -10,7 +10,8 @@
     <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole !== ''" >
       <div class="user-book-main">
         <div class="name-date-book">
-            <img class="picture-user" :src='post.posterpicture' />
+            <img v-if="post.posterpicture =''" class="picture-user" :src='post.posterpicture' />
+            <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
             <!-- <span class="fullname-book">{{post.posterlastname}}</span>
             <span class="fullname-book">{{post.posterfirstname}}</span> -->
             <span class="fullname-main">{{post.posterfullname}}</span>
@@ -31,7 +32,8 @@
     </div>
       <div id="card-autor-book-none" v-else>
       <div class="user-book-main-none">
-            <img class="picture-user-none" :src='post.posterpicture' />
+            <img v-if="post.posterpicture =''" class="picture-user-none" :src='post.posterpicture' />
+            <div v-else id="avatar-empty-book-book">{{avatarpicempty}}</div>
             <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
       </div>
     </div>    
@@ -49,11 +51,6 @@
                 <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"
                   ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                   <p class="text-att">Like</p></v-btn >
-
-
-
-
-
                 <v-btn id="btn-att"
                   ><v-icon class="img-att"> mdi-message-outline</v-icon>
                   <p class="text-att">Commenter</p></v-btn
@@ -122,6 +119,7 @@ export default {
   },
   asyncData() {
     return {
+      avatarpicempty:'',
       // loadme: null,
       log:false,
       showdelete: false,
@@ -259,7 +257,7 @@ today = dd+'/'+mm+'/'+yyyy;
       //  if(this.comdelpost = true){
        await axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((post) => {
-      console.log('tamere')
+   
         // post.data.deletedPost.likers.forEach(userIdLikeToDelete => {
         //   console.log('ok');
         //   // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
@@ -270,7 +268,13 @@ today = dd+'/'+mm+'/'+yyyy;
         .catch((err) => console.log(err))
       // }
     },
-    
+    getcolor(){
+   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    let randomColor = Math.floor(Math.random()*16777215).toString(16)
+  //   document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+}
+  
   },
   
   async mounted(){
@@ -306,6 +310,7 @@ today = dd+'/'+mm+'/'+yyyy;
     })
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
+        console.log(docs.data);
          this.posts = docs.data
       })
       .catch((err)=>{
@@ -313,7 +318,7 @@ today = dd+'/'+mm+'/'+yyyy;
       });
    
   
-
+  this.getcolor()
 
 
 
@@ -382,6 +387,30 @@ border: 5px solid $secondary;
   border-radius: 50%; 
 }
 
+#avatar-empty-book{
+  // margin-top: 5%;
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+}
+
+#avatar-empty-book-book{
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+
+
+}
 
 .history{
   font-style: italic;

@@ -5,8 +5,9 @@
       <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
-                <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/>
-                <!-- <p class="fullname">{{fullname}} à posté le {{date}} à {{hour}}</p> -->
+                <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
+                <img v-if="urlpic" class="picture-user-create" alt="photo de profil" :src="urlpic" />
+                  <div v-else id="avatar-empty-post">{{avatarpicempty}}</div>
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
                    <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="createPost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
@@ -157,10 +158,18 @@ export default{
              this.vide="aie c'est vide"
           }
   },
+  getcolor(){
+   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    let randomColor = Math.floor(Math.random()*16777215).toString(16);
+   document.getElementById('avatar-empty-post').style.backgroundColor = '#' + randomColor}
+  
 },
 
   data(){
     return {
+     
+      avatarpicempty:'',
+      urlpic:'',
       log:false,
       vide:'',
       lastname: '',
@@ -252,6 +261,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
+     
       this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
@@ -279,6 +289,7 @@ today = dd+'/'+mm+'/'+yyyy;
   //       // })
   //     }).catch((err)=>{console.log(err);});
 
+  this.getcolor()
 
   },
 }
@@ -447,10 +458,21 @@ border: solid 2px $secondary;
   border: solid 2px $secondary;
   border-radius: 50%; 
 }
-.fullname-create{
+#avatar-empty-post{
+  // margin-top: 5%;
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+}
+p.fullname-create{
   margin-left: 1%;
   margin-right: auto;
-  margin-bottom: 0.5%;
+  margin-bottom: 0%;
   // padding-right: auto;
   // padding-top: 2.5%;
   font-weight: bold;

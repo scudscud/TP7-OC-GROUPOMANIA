@@ -20,7 +20,7 @@ const PostSchema = new mongoose.Schema(
         },
         posterpicture : {
             type : String, 
-            required: true,
+            // required: true,
         },
         posterrole : {
                type : String  
