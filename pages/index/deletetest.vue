@@ -31,7 +31,9 @@ export default {
   data(){
 return{
 deleteconfirm: false ,
-
+// userid:'',
+// userjwtid:'',
+// postId:'',
 
 
 }
@@ -41,37 +43,62 @@ deleteconfirm: false ,
       localStorage.removeItem('categories')
     },
 
-      
-    deletedPost() {
+
+deletedPost() {
       if(localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
-      } catch(e) {
+      }catch(e) {
         localStorage.removeItem('categories')
       }
     }
-      axios.delete(`http://localhost:5000/api/post/${this.postId}`)
+       axios.get(`http://localhost:5000/jwtid`)
+      .then((res) => {this.userjwtid = res.data
+     axios.delete(`http://localhost:5000/api/post/${this.postId}`,{id : this.userjwtid})
       .then((deletedPost) => {
+
         // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-        //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+          // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
         //   this.getPosts()
         }).then(()=>{
            localStorage.removeItem('categories')
           this.deleteconfirm = true
-             setTimeout(() => {
-            this.$emit('close-modale-delete')
-            window.location.reload()            
-            }, 2500); 
+            //  setTimeout(() => {
+            // this.$emit('close-modale-delete')
+            // window.location.reload()            
+            // }, 2500); 
         })
         .catch((err) => console.log(err)) 
-        }
+          }).catch((err) => console.log(err)) 
   },
 
-  mounted(){
+ async mounted(){
+     axios.defaults.withCredentials = true;
+   await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+  
+    this.userjwtid = res.data
+    console.log(res.data);
 
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+   
+        this.userid = docs.data._id
+     console.log(this.userid);
+  
+    }).catch((error)=>{
+      console.log(
+       error
+      );
+    })
   },
-}
+}}
+
 
 </script>
 

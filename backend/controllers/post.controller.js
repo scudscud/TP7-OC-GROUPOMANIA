@@ -58,7 +58,7 @@ exports.createPost = async (req, res) => {
 // update post end point \\
 exports.updatePost = (req, res) => {
 
-  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("utilsateur inconnu :" + req.params.id);}
+  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
 
   PostModel.findById(req.params.id)
   .then((post) => {
@@ -66,7 +66,7 @@ exports.updatePost = (req, res) => {
     const connectedUser = req.user
     console.log( post.posterId);
     console.log( req.user);
-    if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
+    if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
       res.cookie('jwt','', { session:false, maxAge: 1 }) 
       res.status(400).json('nocookie')
 }else{
@@ -110,26 +110,26 @@ exports.deletePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
     PostModel.findById(req.params.id)
-
-    PostModel.findById(req.params.id)
     .then((post)=>{
-      const postedBy = post.posterId
-      const connectedUser = req.user
-      console.log( post.posterId);
-      console.log( req.user);
-      if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
-        res.cookie('jwt','', { session:false, maxAge: 1 }) 
-        res.status(400).json('nocookie')
-  }else{
+      // const postedBy = post.posterId
+      // const connectedUser = id
+     
+
+  //     if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
+  //       res.cookie('jwt','', { session:false, maxAge: 1 }) 
+  //       res.status(400).json('nocookie')
+  // }else{
       let delimg = post.picture.split('images/')[1]
       fs.unlink(`images/${delimg}`,()=> {
         PostModel.findByIdAndRemove(req.params.id, (err, docs)=> {
+          console.log(req);
       if(!err){
         res.status(200).json(docs);
       }else{
         res.status(400).send(err);}
         })
-      })}
+      })
+    // }
     }).catch((err)=>{err})
 }; 
 
@@ -142,7 +142,7 @@ exports.deleteOnePicture = (req, res) => {
       const connectedUser = req.user
       console.log( post.posterId);
       console.log( req.user);
-      if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
+      if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('nocookie')
   }else{
@@ -165,10 +165,13 @@ exports.deleteOnePicture = (req, res) => {
 // like post end point \\
 exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    return res.status(400).send("post iconnu:" + req.params.id);
 
   try {
+      console.log(req.params.id),
+      console.log(req.body.id),
     PostModel.findByIdAndUpdate(
+    
       req.params.id,
       {
         $addToSet: {
@@ -184,7 +187,7 @@ exports.likePost = (req, res) => {
     UserModel.findByIdAndUpdate(
       req.body.id,
       {
-        $addToSet: { likes: req.params.id },
+        $addToSet: { likes: req.params.id},
       },
       { new: true },
       (err, docs) => {

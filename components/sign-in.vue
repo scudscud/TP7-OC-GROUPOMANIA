@@ -68,7 +68,7 @@
                 />
                 <v-spacer />
                 <div class="errormsg">{{ infomsg }}</div>
-                <div class="successmsg">{{ successreg }}</div>
+                <div v-if="!successreg" class="successmsg">{{ successreg }}</div>
                 <button
                   class="btn-valid"
                   @click="verifyUser"

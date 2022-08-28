@@ -22,7 +22,7 @@
 
 <script>
 import axios from "axios";
-
+  axios.defaults.withCredentials = true;
 // import { KeyObject } from "crypto";
 
 export default {
@@ -31,6 +31,8 @@ export default {
   data(){
 return{
 deleteconfirm: false ,
+userid:'',
+userjwtid:'',
 
 
 
@@ -42,7 +44,25 @@ deleteconfirm: false ,
     },
 
       
-    deletedPost() {
+    async deletedPost() {
+       await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+  
+    this.userjwtid = res.data
+    console.log(userjwtid);
+
+    }).catch((error)=>{
+      console.log(error);
+    })
+  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+    console.log(docs.data._id);
+        this.userid = docs.data._id
+    }).catch((error)=>{
+      console.log(
+       error
+      );
+    })
       if(localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
@@ -50,25 +70,27 @@ deleteconfirm: false ,
         localStorage.removeItem('categories')
       }
     }
-      axios.delete(`http://localhost:5000/api/post/${this.postId}`)
-      .then((deletedPost) => {
-        // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-        //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
-        //   });
-        //   this.getPosts()
-        }).then(()=>{
-           localStorage.removeItem('categories')
-          this.deleteconfirm = true
-             setTimeout(() => {
-            this.$emit('close-modale-delete')
-            window.location.reload()            
-            }, 2500); 
-        })
-        .catch((err) => console.log(err)) 
+      // await axios.delete(`http://localhost:5000/api/post/${this.postId}`,{ id: this.userid})
+      // .then((deletedPost) => {
+      //   console.log(deletedPost);
+      //   // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
+      //   //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+      //   //   });
+      //   //   this.getPosts()
+      //   }).then(()=>{
+      //      localStorage.removeItem('categories')
+      //     this.deleteconfirm = true
+      //        setTimeout(() => {
+      //       this.$emit('close-modale-delete')
+      //       window.location.reload()            
+      //       }, 2500); 
+      //   })
+      //   .catch((err) => console.log(err)) 
         }
   },
 
-  mounted(){
+async mounted(){
+  
 
   },
 }

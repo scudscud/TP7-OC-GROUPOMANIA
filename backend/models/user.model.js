@@ -54,12 +54,9 @@ const userSchema = mongoose.Schema(
       maxlength: 50,
       trim: true,
     },
-    // comfirmPassword: {
-    //   type: String,
-    //   minlength: 6,
-    //   maxlength: 50,
-    //   trim: true,
-    // },
+    likes: {
+      type : [String]
+    },
     role:{
         type:String,
 

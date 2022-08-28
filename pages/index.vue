@@ -13,7 +13,7 @@
             <img class="picture-user" :src='post.posterpicture' />
             <!-- <span class="fullname-book">{{post.posterlastname}}</span>
             <span class="fullname-book">{{post.posterfirstname}}</span> -->
-            <span class="fullname">{{post.posterfullname}}</span>
+            <span class="fullname">{{post.posterfullname}}{{post.likers}}</span>
           </div>
             <span class="full-date"> {{post.date}}</span>
            
@@ -43,10 +43,17 @@
                 {{post.message}}
               </div>
               <div class="btn-card" id="card-att">
-                <v-btn id="btn-att"
+                <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit"
                   ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                  <p class="text-att">Like</p></v-btn
-                >
+                  <p class="text-att">Like</p></v-btn >
+                <v-btn v-else id="btn-att-like" @click="likePost(post._id)" type="submit"
+                  ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
+                  <p class="text-att">Like</p></v-btn >
+
+
+
+
+
                 <v-btn id="btn-att"
                   ><v-icon class="img-att"> mdi-message-outline</v-icon>
                   <p class="text-att">Commenter</p></v-btn
@@ -59,7 +66,7 @@
     </div>       
   </v-card>
    <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="showmodify = false" />
-    <deletepost ref="post_id"  :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
+    <deletepost v-if="showdel" :id="this.userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
 </div>
 <div v-else>     
               
@@ -94,7 +101,7 @@
 import axios from "axios";
 // import Modify from "../components/modifypost.vue";
 // const modify = () => import("../components/modifypost.vue")
-import Deletepost from "./index/deletetest.vue";
+// import Deletepost from "./index/deletetest.vue";
 
 
 export default {
@@ -102,10 +109,11 @@ export default {
   components: { 
 
  modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
-
+//  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
 //  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
 //  Modify: () => import(  /* webpackChunkName:"modify"*/"../components/modifypost.vue"),
- Deletepost ,
+ deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
+//  Deletepost ,
 //  Modify
 
   },
@@ -119,6 +127,7 @@ export default {
       showdelete: false,
       showmodify: false,
       showdel: false,
+      like: false,
       
       userjwtid:"",
       userid:'',
@@ -126,7 +135,7 @@ export default {
       firstname: "",
       userpicture:'',
       // role:'',
-
+      liker : [],
       posts:[],
       post:[],
       posterId : '',
@@ -196,8 +205,16 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
+   likePost(postId){
+  let postID = postId
+   axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
+     .then(()=>{
+      this.like = true
+     }).catch((err)=>{console.log(err);})
+   },
 
-    
+
+
     postIdDel(post){
         const parse= JSON.stringify(post);
         localStorage.setItem('categories', parse);
@@ -269,6 +286,7 @@ today = dd+'/'+mm+'/'+yyyy;
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.userpicture = docs.data.pictureprofil
+        console.log(docs.data);
             // console.log(this.role);
    
     }).catch((error)=>{
@@ -279,9 +297,6 @@ today = dd+'/'+mm+'/'+yyyy;
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
          this.posts = docs.data
-        //  console.log(this.posts);
-        //  console.log(docs.data[0]);
-        //  console.log(this.posts[0]);
       })
       .catch((err)=>{
         console.log(err);
@@ -584,6 +599,41 @@ p.firstpost {
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
+}
+#btn-att-unlike {
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: $secondary;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover{
+  background-color: $tertiary;
+  color: $secondary;
+  translate: 3px;
+  border: solid 1px $secondary;
+  }
+}
+
+
+#btn-att-like {
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: rgb(27, 108, 17);
+  color: $secondary;
+  font-style: italic;
+  font-weight: bold;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover {
+  background-color: rgb(27, 108, 17);
+  color: $secondary;
+  translate: 3px;
+  border: solid 1px $secondary;
+
+  }
 }
 
 .img-att {
