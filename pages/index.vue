@@ -1,6 +1,6 @@
 <template >
 
-<div v-if="this.posts[0] != undefined" >     
+<div v-if="this.posts[0] != undefined" @change="refresh">     
 
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
@@ -13,7 +13,7 @@
             <img class="picture-user" :src='post.posterpicture' />
             <!-- <span class="fullname-book">{{post.posterlastname}}</span>
             <span class="fullname-book">{{post.posterfirstname}}</span> -->
-            <span class="fullname">{{post.posterfullname}}</span>
+            <span class="fullname-main">{{post.posterfullname}}</span>
           </div>
             <span class="full-date"> {{post.date}}</span>
            
@@ -46,7 +46,7 @@
                 <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit"
                   ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                   <p class="text-att">Like</p></v-btn >
-                <v-btn v-else id="btn-att-like" @click="likePost(post._id)" type="submit"
+                <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"
                   ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                   <p class="text-att">Like</p></v-btn >
 
@@ -120,7 +120,7 @@ export default {
   props:{
     // keytest : ['post._id']
   },
-  data() {
+  asyncData() {
     return {
       // loadme: null,
       log:false,
@@ -205,6 +205,10 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
+    refresh(){
+    this.$nuxt.refresh()
+    } ,
+
    likePost(postId){
   let postID = postId
    axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
@@ -213,7 +217,12 @@ today = dd+'/'+mm+'/'+yyyy;
      }).catch((err)=>{console.log(err);})
    },
 
-
+   unLikePost(postId){
+    axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
+     .then(()=>{
+      this.like = false
+     }).catch((err)=>{console.log(err);})
+   },
 
     postIdDel(post){
         const parse= JSON.stringify(post);
@@ -539,11 +548,11 @@ border: 5px solid $secondary;
   padding-bottom: 2%;
 }
 
-.fullname-book {
+.fullname-book{
   padding-top: 10%;
   padding-left: 3%;
 }
-.fullname {
+.fullname-main {
   display: flex;
   flex-direction: row;
   height: 20px;

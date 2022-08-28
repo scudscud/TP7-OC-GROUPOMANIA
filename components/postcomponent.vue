@@ -134,7 +134,10 @@ export default{
           .then(() => {
             this.posted= true
             setInterval(() => {
-            window.location.reload()            
+              let me = this
+              me.$emit('close-modale-post')
+              me.$forceUpdate
+            // window.location.reload()            
             }, 2500);         
           })
           .catch((errors,test)=>{
