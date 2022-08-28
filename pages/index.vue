@@ -13,7 +13,7 @@
             <img class="picture-user" :src='post.posterpicture' />
             <!-- <span class="fullname-book">{{post.posterlastname}}</span>
             <span class="fullname-book">{{post.posterfirstname}}</span> -->
-            <span class="fullname">{{post.posterfullname}}{{post.likers}}</span>
+            <span class="fullname">{{post.posterfullname}}</span>
           </div>
             <span class="full-date"> {{post.date}}</span>
            

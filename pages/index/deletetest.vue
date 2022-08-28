@@ -44,7 +44,7 @@ deleteconfirm: false ,
     },
 
 
-deletedPost() {
+ deletedPost() {
       if(localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
@@ -52,16 +52,16 @@ deletedPost() {
         localStorage.removeItem('categories')
       }
     }
-       axios.get(`http://localhost:5000/jwtid`)
-      .then((res) => {this.userjwtid = res.data
-     axios.delete(`http://localhost:5000/api/post/${this.postId}`,{id : this.userjwtid})
-      .then((deletedPost) => {
+  
+     axios.delete(`http://localhost:5000/api/post/${this.postId}`,  this.userjwtid)
+      // .then((deletedPost) => {
 
         // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
           // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
         //   this.getPosts()
-        }).then(()=>{
+        // })
+        .then(()=>{
            localStorage.removeItem('categories')
           this.deleteconfirm = true
             //  setTimeout(() => {
@@ -70,9 +70,9 @@ deletedPost() {
             // }, 2500); 
         })
         .catch((err) => console.log(err)) 
-          }).catch((err) => console.log(err)) 
+          
   },
-
+ },
  async mounted(){
      axios.defaults.withCredentials = true;
    await axios.get(`http://localhost:5000/jwtid`)
@@ -97,7 +97,8 @@ deletedPost() {
       );
     })
   },
-}}
+
+}
 
 
 </script>

@@ -17,13 +17,15 @@
         </v-card-text>
         <div class="pic-create-post">
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label class="lab-pic-btn" for="picpost"  >
+              <label v-if="!url" class="lab-pic-btn" for="picpost"  >
                 <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
-               
                 <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
-                      @change="picPreview" 
-                      />
-              </label>
+                      @change="picPreview"/></label>
+              <label v-else class="lab-pic-btn" for="picpost"  >
+                <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Modifier une photo</span>
+                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
+                      @change="picPreview"/></label>
+
                          
           <div class="preview-pic-size"  @change="postValid()" > 
             <img id="pic-size"  v-if="url" :src="url" @change="postValid()" >
@@ -32,7 +34,7 @@
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
           <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
+          <button v-if="url" id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext"><h2 class="comment-title">Votre commentaire</h2></label>
@@ -85,7 +87,7 @@ export default{
     }
   },
   picValid(){
-    if(this.url != null){
+    if(this.url !== null || this.url !== ''){
       this.createPic = true
     }else{
       this.createPic=false

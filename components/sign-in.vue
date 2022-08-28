@@ -37,7 +37,6 @@
                   class="form-input"
                   type="text"
                   placeholder="Votre Email"
-                  value="@groupomania.fr"
                   name="email"
                   required
                 />
