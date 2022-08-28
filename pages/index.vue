@@ -252,16 +252,17 @@ today = dd+'/'+mm+'/'+yyyy;
         .catch((err) => console.log(err));
     },
 
-      async  deletePost(postId) {
+      async deletePost(postId) {
           // console.log(postId);
       //  this.showdel = true
       //  await this.comdelpost;
       //  if(this.comdelpost = true){
-        axios.delete(`http://localhost:5000/api/post/${postId}`)
-      .then((deletedPost) => {
-
-        // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-        //   axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
+       await axios.delete(`http://localhost:5000/api/post/${postId}`)
+      .then((post) => {
+      console.log('tamere')
+        // post.data.deletedPost.likers.forEach(userIdLikeToDelete => {
+        //   console.log('ok');
+        //   // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
           
           // this.getPosts()

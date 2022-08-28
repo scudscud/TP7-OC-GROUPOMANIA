@@ -54,13 +54,14 @@ deleteconfirm: false ,
     }
   
      axios.delete(`http://localhost:5000/api/post/${this.postId}`,  this.userjwtid)
-      // .then((deletedPost) => {
-
-        // deletedPost.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-          // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
-        //   });
+      .then((Post) => {
+                 console.log(Post.data.likers);
+                 Post.data.likers.forEach(userDeleteLike=> {
+                  console.log(userDeleteLike);
+          axios.patch(`http://localhost:5000/api/post/unlike-post/${this.postId}`,{ id: userDeleteLike})
+          });
         //   this.getPosts()
-        // })
+        })
         .then(()=>{
            localStorage.removeItem('categories')
           this.deleteconfirm = true

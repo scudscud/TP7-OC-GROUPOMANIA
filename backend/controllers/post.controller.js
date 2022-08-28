@@ -122,7 +122,7 @@ exports.deletePost = (req, res) => {
       let delimg = post.picture.split('images/')[1]
       fs.unlink(`images/${delimg}`,()=> {
         PostModel.findByIdAndRemove(req.params.id, (err, docs)=> {
-          console.log(req);
+          // console.log(req);
       if(!err){
         res.status(200).json(docs);
       }else{
