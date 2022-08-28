@@ -111,6 +111,7 @@ exports.deletePost = (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
     PostModel.findById(req.params.id)
     .then((post)=>{
+      console.log(req);
       // const postedBy = post.posterId
       // const connectedUser = id
      

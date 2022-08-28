@@ -52,12 +52,13 @@ deleteconfirm: false ,
         localStorage.removeItem('categories')
       }
     }
-  
-     axios.delete(`http://localhost:5000/api/post/${this.postId}`,  this.userjwtid)
+   let data = this.userid
+   
+     axios.delete(`http://localhost:5000/api/post/${this.postId}`,{body : {
+      idpost : data} } )
       .then((Post) => {
-                 console.log(Post.data.likers);
-                 Post.data.likers.forEach(userDeleteLike=> {
-                  console.log(userDeleteLike);
+           
+          Post.data.likers.forEach(userDeleteLike=> {
           axios.patch(`http://localhost:5000/api/post/unlike-post/${this.postId}`,{ id: userDeleteLike})
           });
         //   this.getPosts()

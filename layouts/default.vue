@@ -73,12 +73,10 @@
 
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
 
-        <img class="avatar" src="../logo/avatar1.png" />
+        <img v-if="urlpic" class="avatar" :src="urlpic" />
+        <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
 
-        <!-- <span class="username" alt="menu-user">Mon compte</span>
-         -->
-        
-        
+     
         </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
@@ -125,16 +123,24 @@ export default {
   name: "DefaultLayout",
 
   methods:{
-
+    getcolor(){
+   this.avatarpicempty = this.name.split('')[0]
+    let randomColor = Math.floor(Math.random()*16777215).toString(16);
+   document.getElementById('avatar-empty').style.backgroundColor = '#' + randomColor}
   },
 
   computed :{
+ 
 
   },
  
 
   data() {
     return {
+      name:'',
+      avatarpicempty : '',
+      userjwtid:'',
+      urlpic:'',
       show: true,
       right: true,
       drawer: false,
@@ -200,27 +206,33 @@ export default {
       title: "Groupomania le réseau",
     };
   },
-  mounted(){
 
-   axios.get(`http://localhost:5000/jwtid`)
+  async mounted(){
+
+  await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
+      // console.log(res.data);
+      this.userjwtid = res.data
     this.show = false
     // this.log = true
     // TODO => Insert loader \\ 
-    }).catch((error)=>{
-      console.log(error);
-    })
-    // axios.get(`http://localhost:5000/api/user}`)
-    // .then((data) => {
-
-    //   console.log(data);
-
     // }).catch((error)=>{
-    //   console.log(
-    //  error
-    //   );
-    // })
-  
+    //   console.log(error);
+    })
+   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((data) => {
+      this.name = data.data.firstname
+       this.urlpic = data.data.photo
+      console.log(data.data.firstname);
+
+    }).catch((error)=>{
+      console.log(
+     error
+      )
+    })
+
+    this.getcolor()
+
   },
 
 }
@@ -261,6 +273,17 @@ html {
   border: solid 2px $secondary;
   border-radius: 50%;
   background-color: $tertiary;
+  padding-left: 1%;
+}
+#avatar-empty {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  font-size: 1.7rem;
   padding-left: 1%;
 }
 
