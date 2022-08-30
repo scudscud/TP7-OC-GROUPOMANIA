@@ -2,7 +2,7 @@
   <v-app dark>
     <div>
          <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
-      <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false"/>
+      <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false,refresh()"/>
     </div>
 
     <v-navigation-drawer
@@ -87,6 +87,7 @@
         <Nuxt />
       </v-container>
     </v-main>
+
     <v-navigation-drawer class="drawer-right" v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item
@@ -117,12 +118,16 @@ import axios from "axios";
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
 import Post from "../components/postcomponent.vue";
+import indexVue from "../pages/index.vue";
 
 export default {
   components: { SignIn, Post},
   name: "DefaultLayout",
 
   methods:{
+    refresh(){
+      this.proxy.forceUpdate();
+    } ,
     getcolor(){
    this.avatarpicempty = this.name.split('')[0]
     let randomColor = Math.floor(Math.random()*16777215).toString(16);

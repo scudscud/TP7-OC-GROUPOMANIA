@@ -71,6 +71,7 @@ import axios from "axios";
 
 
 export default{
+  name: "IndexPage",
   methods: {
     getcolor(){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()

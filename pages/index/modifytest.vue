@@ -67,6 +67,7 @@ import axios from "axios";
 
 
 export default{
+  name: "modify",
   methods: {
     getcolor(){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
@@ -144,10 +145,11 @@ export default{
           // formData.append('role',this.role)
         await axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
           .then(() => {
-            // this.posted= true
-            // setInterval(() => {
-            // window.location.reload()            
-            // }, 2500);         
+            this.posted= true
+            setInterval(() => {
+          
+          this.$emit('close-modale-modify')
+            }, 2500);         
           })
           .catch((errors,test)=>{
              test = this.delPicPreview()

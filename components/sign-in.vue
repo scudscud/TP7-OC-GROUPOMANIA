@@ -92,7 +92,7 @@ import SignUp from "./sign-up.vue";
 
 export default {
 
-  name: "IndexPage",
+  name: "SignInPage",
   components: { SignUp },
   computed: {
     //     mailValidation(){

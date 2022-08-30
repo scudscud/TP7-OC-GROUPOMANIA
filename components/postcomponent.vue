@@ -20,11 +20,11 @@
           <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
               <label v-if="!url" class="lab-pic-btn" for="picpost"  >
                 <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Ajouter une photo</span>
-                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
+                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo"
                       @change="picPreview"/></label>
               <label v-else class="lab-pic-btn" for="picpost"  >
                 <v-icon  class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span>Modifier une photo</span>
-                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo/avatar"
+                <input id="picpost" class="form-avatar-profil" type="file" value="" name="picpost" placeholder="votre photo"
                       @change="picPreview"/></label>
 
                          
@@ -67,6 +67,7 @@
 import axios from "axios";
 import { multerErrors } from "../backend/utils/errors.utils";
 export default{
+  name: "IndexPage",
   methods: {
   postValid(){
    if(this.message !='' || this.url !=''){
@@ -137,7 +138,7 @@ export default{
             setInterval(() => {
               let me = this
               me.$emit('close-modale-post')
-              me.$forceUpdate
+            
             // window.location.reload()            
             }, 2500);         
           })

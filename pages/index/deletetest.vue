@@ -7,11 +7,11 @@
     <span>La team GROUPOMANIA </span>
     </p>
   <p>Vous-êtes sur de vouloir supprimer ce post ?</p>
-   <p>cette action est irreversible </p>
+   <!-- <p>cette action est irreversible </p> -->
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
   
-<v-btn v-if="!deleteconfirm" @click="deletedPost"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+<v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
 <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn>
 
 </v-card>
@@ -26,7 +26,7 @@ import axios from "axios";
 // import { KeyObject } from "crypto";
 
 export default {
-  name: 'IndexPage',
+  name: 'Delete',
 
   data(){
 return{
@@ -44,18 +44,14 @@ deleteconfirm: false ,
     },
 
 
- deletedPost() {
+ deletedPost(id) {
       if(localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
-      }catch(e) {
-        localStorage.removeItem('categories')
-      }
-    }
+  
    let data = this.userid
    
-     axios.delete(`http://localhost:5000/api/post/${this.postId}`,{body : {
-      idpost : data} } )
+     axios.delete(`http://localhost:5000/api/post/${this.postId}`,{data : {id : id}}  )
       .then((Post) => {
            
           Post.data.likers.forEach(userDeleteLike=> {
@@ -72,7 +68,10 @@ deleteconfirm: false ,
             // }, 2500); 
         })
         .catch((err) => console.log(err)) 
-          
+      }catch(e) {
+        localStorage.removeItem('categories')
+      }
+    }
   },
  },
  async mounted(){

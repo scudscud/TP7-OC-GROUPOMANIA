@@ -21,7 +21,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'IndexPage',
+  name: 'Disconnect',
   data(){
     return{
      deleteconfirm : true

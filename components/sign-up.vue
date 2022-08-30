@@ -180,10 +180,10 @@
 
 <script>
 import axios from "axios";
-import TermOfUse from "./term-of-use.vue";
+import TermOfUse from "../components/term-of-use.vue";
 
 export default {
-  name: "test",
+  name: "IndexPage",
   components: { TermOfUse },
   // props:{
   //   psw:"",

@@ -4,31 +4,34 @@
       ><h1 class="card-profil-title-h1">Mon profil</h1></v-card-text
     >
 
-    <v-card-text class="card-profil-name">
-      <!-- <div class="picture"> -->
-        <div class="block-picture">
+    <v-card-text v-if="url ==''" class="card-profil-name">
+      <div   class="block-picture" >
           <label class="lab-pic" for="avatar">
-            <!-- <img v-if="test" class="form-avatar-dl" :src="" /> -->
-            <!-- <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div> -->
+             <div id="avatar-empty-profil">{{avatarpicempty}}</div> 
             <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-            </label>
-        <!-- </div> -->
-        <input
-          id="avatar"
-          class="form-avatar-profil"
-          type="file"
-          value=""
-          name="avatar"
-          placeholder="votre photo/avatar"
-          @change="getImage"
-        />
-<!-- 
-        <div id="display-image">{{ picutername }}</div> -->
+        <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" /></label>
       </div>
-      <!-- <span class="lastname">lastname{{ lastname }}</span
-      ><span class="firstname">firstname{{ firstname }}</span> -->
       <span class="fullname">{{fullname}}</span>
     </v-card-text>
+    <v-card-text v-else class="card-profil-name">
+      <div class="block-picture-url" >
+          <label class="lab-pic-del" for="avatar">
+            <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
+            <img  class="form-avatar-dl" :src="url" /> 
+        <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" />
+      </label>
+      <div class="block-btn-pic-profil">
+      <button id="btn-del-pic-profil" @click="delPicPreview" >Annuler</button>
+      <button id="btn-confirm-pic-profil" @click="delPicPreview" >Valider</button>
+    </div>
+      </div>
+      <span class="fullname-url">{{fullname}}</span>
+     
+    </v-card-text>
+
+  
+   
+
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
@@ -84,18 +87,22 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "IndexPage",
+  name: "Profil",
   data() {
     return {
+      url:'',
+      avatarpicempty:'',
       picutername: "",
       modifbio: false,
       bio: "",
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       friend:"Aie c'est vide ",
       publication:"Vous n'avez rien publier",
-      lastname: "test",
-      firstname: "test",
+      lastname: "",
+      firstname: "",
    
     };
   },
@@ -113,6 +120,24 @@ export default {
   
 
   methods: {
+    delPicPreview(){
+      this.url = ''
+    },
+
+    picPreview(e){
+      e.target.value[0].split(" ")
+      const pic = e.target.files[0];
+      this.file = pic
+      this.url = URL.createObjectURL(pic);
+      this.validPost = !this.validPost
+    },
+
+    getcolor(){
+   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    let randomColor = Math.floor(Math.random()*16777215).toString(16)
+    document.getElementById('avatar-empty-profil').style.backgroundColor = '#' + randomColor
+  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+},
     deletebio() {
       console.log(this.bio);
       this.bio = "";
@@ -124,6 +149,41 @@ export default {
       this.picutername = namereg;
     },
   },
+  async mounted(){
+  axios.defaults.withCredentials = true;
+        // console.log($refs.deletepost.$el)
+
+   await axios.get(`http://localhost:5000/jwtid`)
+    .then((res) => {
+      // console.log(this.userjwtid);
+    this.userjwtid = res.data
+    this.show = true
+    this.log = true
+    // TODO => Insert loader \\ 
+    }).catch((error)=>{
+      console.log(error);
+    })
+
+   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    .then((docs) => {
+  
+        this.role = docs.data.role
+        this.userid = docs.data._id
+        this.firstname = docs.data.firstname
+        this.lastname = docs.data.lastname
+        this.userpicture = docs.data.pictureprofil
+        console.log(docs.data);
+            // console.log(this.role);
+   
+    }).catch((error)=>{
+      console.log(
+       error
+      );
+    })
+   this.getcolor()
+
+  }
+  
 };
 </script>
 
@@ -131,6 +191,14 @@ export default {
 .lab-pic {
   display: flex;
   width: 100%;
+}
+.lab-pic-del {
+  display: flex;
+  justify-content: center;
+  // margin-right: 10%;
+  // width: 100%;
+  // width: 20%;
+  // flex-direction: column;
 }
 
 .lab-pic-custom {
@@ -158,6 +226,7 @@ export default {
   }
 }
 
+
 .card-profil-picture-user {
   display: flex;
   width: 120px;
@@ -178,6 +247,18 @@ img.form-avatar-dl {
   border: solid 2px $secondary;
   border-radius: 50%;
 }
+#avatar-empty-profil {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  font-size: 5rem;
+  padding-bottom: 5%;
+}
+
 
 .card {
   display: flex;
@@ -206,6 +287,97 @@ div.v-card__text.card-profil-name {
   justify-content: center;
   background-color: $tertiary;
 }
+
+.card-profil-name-url {
+  display: flex;
+  justify-content: center;
+  background-color: $tertiary;
+}
+
+.block-btn-pic-profil{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 175px;
+  margin-left: 30px;
+
+}
+
+button#btn-del-pic-profil{
+  display: flex;
+  // height: 20px;
+  justify-content: center;
+  align-items:center;
+  margin-left: 0%;
+  border: solid 2px $secondary;
+  border-radius: 30%;
+  color: $secondary;
+  &:hover {
+    border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+
+}
+button#btn-confirm-pic-profil{
+  display: flex;
+  // height: 20px;
+  justify-content: center;
+  align-items:center;
+  margin-left: 0%;
+  border: solid 2px $secondary;
+  border-radius: 30%;
+  color: $secondary;
+  &:hover {
+    border-radius: 20%;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+
+}
+.form-avatar-profil-url {
+  padding-top: 2%;
+  display: none;
+  visibility: none;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.lab-pic-custom-url {
+  position: relative;
+  top: 70px;
+  left: 140px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.fullname-url{
+  padding-top: 1%;
+  padding-left: 5%;
+  font-size: 1.8rem;
+  padding-top: 4%;
+}
+.block-picture-url{
+  padding-top: 10px;
+
+}
+
+
+
+
+
+
+
+
 
 .lastname {
   align-items: center;

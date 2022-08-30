@@ -10,14 +10,14 @@ const { multerErrors } = require("../utils/errors.utils");
 router.get('/', postController.readPost);
 router.get('/:id',postController.getOnePost);
 router.put('/:id',requireAuth,(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });} else {next();}});}, postController.updatePost);
-router.delete('/:id', postController.deletePost);
+router.delete('/:id',requireAuth, postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unLikePost);
 
 // router manage picture post + multer errors \\
 
-router.delete('/picture/:id',postController.deleteOnePicture)
-router.post('/',(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
+router.delete('/picture/:id',requireAuth,postController.deleteOnePicture)
+router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}
     });
   }

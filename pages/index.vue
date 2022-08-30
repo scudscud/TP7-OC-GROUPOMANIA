@@ -1,12 +1,11 @@
 <template >
+<div id="Book">
 
-<div v-if="this.posts[0] != undefined" @change="refresh">     
+<div v-if="this.posts[0] != undefined" >     
 
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card"> 
-                                     
-                                    
     <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole !== ''" >
       <div class="user-book-main">
         <div class="name-date-book">
@@ -25,9 +24,10 @@
           <div class="btn-book-main" >
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
               <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-                
+             
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+                <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,refresh()" />
           </div>
     </div>
       <div id="card-autor-book-none" v-else>
@@ -38,7 +38,7 @@
       </div>
     </div>    
 
-        <div v-if='post.picture !="" '  class="image-card">
+        <div v-if='post.picture !="" '  class="image-card"  >
           <img class="card-img " :src="post.picture" alt="photo" />
         </div>
               <div v-if="post.message != ''" class="message-main">
@@ -62,8 +62,8 @@
               </div>
     </div>       
   </v-card>
-   <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="showmodify = false" />
-    <deletepost v-if="showdel" :id="this.userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false" />
+  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="updateparent(posts),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
+ 
 </div>
 <div v-else>     
               
@@ -92,18 +92,26 @@
    </div>       
   </v-card>
 </div>
-
+</div>
 </template>
 <script>
+
 import axios from "axios";
 // import Modify from "../components/modifypost.vue";
 // const modify = () => import("../components/modifypost.vue")
 // import Deletepost from "./index/deletetest.vue";
+import { ref } from 'vue';
+const componentKey = ref(0);
+const forceRerender = () => {
+  componentKey.value += 1
+}
 
 
 export default {
+  name: "Book",
   
   components: { 
+ 
 
  modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
 //  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
@@ -119,6 +127,7 @@ export default {
   },
   asyncData() {
     return {
+      componentKey:0,
       avatarpicempty:'',
       // loadme: null,
       log:false,
@@ -203,8 +212,16 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
-    refresh(){
-    this.$nuxt.refresh()
+    updateparent(uppost) {
+       this.posts = uppost
+    },
+    forceRerender() {
+      this.componentKey += 1;
+    },
+
+   async refresh(){
+   
+   console.log('ok');
     } ,
 
    likePost(postId){
@@ -240,14 +257,14 @@ today = dd+'/'+mm+'/'+yyyy;
         .catch((err) => console.log(err));
     },
     getPosts() {
-      axios
-        .get("http://localhost:5000/api/post")
-        .then((docs) => {
-          // console.log(docs.data);
-          // this.posts = post.data;
-          // this.updateLike();
-        })
-        .catch((err) => console.log(err));
+      axios.get("http://localhost:5000/api/post")
+      .then((docs) => {
+        console.log(docs.data);
+         this.posts = docs.data
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
     },
 
       async deletePost(postId) {
@@ -271,7 +288,7 @@ today = dd+'/'+mm+'/'+yyyy;
     getcolor(){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
-  //   document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+    document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
 }
   
@@ -310,7 +327,7 @@ today = dd+'/'+mm+'/'+yyyy;
     })
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        console.log(docs.data);
+        // console.log(docs.data);
          this.posts = docs.data
       })
       .catch((err)=>{
