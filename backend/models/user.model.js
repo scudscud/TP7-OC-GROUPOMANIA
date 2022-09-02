@@ -59,12 +59,10 @@ const userSchema = mongoose.Schema(
     },
     role:{
         type:String,
-
-
     },
     photo: {
       type: String,
-      default: "./upload/profil/random-user.png",
+     
     },
     bio: {
       type: String,

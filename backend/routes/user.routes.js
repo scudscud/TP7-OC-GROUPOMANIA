@@ -17,7 +17,10 @@ router.get("/logout", authController.logout);
 
 router.get("/", userController.getAllUsers);
 router.get('/:id', userController.userInfo);
-router.put("/:id", userController.updateUser);
+router.put("/:id",(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
+} else {next();}
+  });
+}, userController.updateUser);
 router.delete("/:id", userController.userDelete);
 router.patch("/follow/:id", userController.follow);
 router.patch("/unfollow/:id", userController.unfollow);
@@ -25,7 +28,7 @@ router.patch("/unfollow/:id", userController.unfollow);
 // router upload picture profil + multer error\\
 
 router.post(
-  "/upload", 
+  "/:id", 
   (req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
   } else {next();}
     });

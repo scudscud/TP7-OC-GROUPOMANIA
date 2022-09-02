@@ -4,15 +4,25 @@
       ><h1 class="card-profil-title-h1">Mon profil</h1></v-card-text
     >
 
-    <v-card-text v-if="url ==''" class="card-profil-name">
+    <v-card-text v-if="url =='' && urlpic ==''" class="card-profil-name">
       <div   class="block-picture" >
           <label class="lab-pic" for="avatar">
-             <div id="avatar-empty-profil">{{avatarpicempty}}</div> 
+            <div  id="avatar-empty-profil">{{avatarpicempty}}</div> 
             <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
         <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" /></label>
       </div>
       <span class="fullname">{{fullname}}</span>
     </v-card-text>
+    <v-card-text v-else-if="url =='' " class="card-profil-name">
+      <div   class="block-picture" >
+          <label class="lab-pic" for="avatar">
+              <img  id="form-picture-profil" :src="urlpic" /> 
+            <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
+        <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" /></label>
+      </div>
+      <span class="fullname">{{fullname}}</span>
+    </v-card-text>
+
     <v-card-text v-else class="card-profil-name">
       <div class="block-picture-url" >
           <label class="lab-pic-del" for="avatar">
@@ -22,16 +32,15 @@
       </label>
       <div class="block-btn-pic-profil">
       <button id="btn-del-pic-profil" @click="delPicPreview" >Annuler</button>
-      <button id="btn-confirm-pic-profil" @click="delPicPreview" >Valider</button>
+      <button v-if="!posted" id="btn-confirm-pic-profil" action="/upload"  type="submit" method="post"
+       enctype="multipart/form-data" @click="profilUpdate" >Valider</button>
+      <button v-else id="btn-confirm-pic-profil-post" >Valider</button>
     </div>
       </div>
       <span class="fullname-url">{{fullname}}</span>
-     
     </v-card-text>
 
   
-   
-
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
@@ -94,6 +103,7 @@ export default {
   data() {
     return {
       url:'',
+      urlpic:'',
       avatarpicempty:'',
       picutername: "",
       modifbio: false,
@@ -103,6 +113,9 @@ export default {
       publication:"Vous n'avez rien publier",
       lastname: "",
       firstname: "",
+      photo:[],
+      userid:'',
+      posted:'',
    
     };
   },
@@ -127,16 +140,17 @@ export default {
     picPreview(e){
       e.target.value[0].split(" ")
       const pic = e.target.files[0];
-      this.file = pic
+      this.photo = pic
       this.url = URL.createObjectURL(pic);
       this.validPost = !this.validPost
     },
 
     getcolor(){
+      if(this.urlpic === ''  ){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
     document.getElementById('avatar-empty-profil').style.backgroundColor = '#' + randomColor
-  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+}
 },
     deletebio() {
       console.log(this.bio);
@@ -148,6 +162,41 @@ export default {
       let namereg = name.replace(/^.*\\/, "");
       this.picutername = namereg;
     },
+    
+   async profilUpdate(){
+    // photoName = this.fullname.split(' ')
+    // console.log(photoName);
+      let formData = new FormData()
+      formData.append('fullname', this.fullname)
+      formData.append('photo', this.photo)
+      formData.append('bio', this.bio)
+      console.log(this.photo);
+      // console.log(this.bio);
+      await axios.put(`http://localhost:5000/api/user/${this.userid}`,formData)
+      .then(() => {
+            this.posted= true
+            setTimeout(() => {
+           this.posted = false
+         
+            }, 3000);         
+          })
+      .catch((errors,test)=>{
+            //  test = this.delPicPreview()
+      
+            this.maxsize = errors.response.data.errors.maxsize
+            this.format = errors.response.data.errors.format
+            // test
+           setTimeout(() => {
+             this.maxsize = ''
+            this.format =''
+           }, 3000);
+            // console.log(errors.response.data.errors.maxsize);
+            // console.log(errors.response.data.errors.format);    
+          }) 
+    },
+
+
+
   },
   async mounted(){
   axios.defaults.withCredentials = true;
@@ -166,22 +215,24 @@ export default {
 
    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-  
+      console.log(docs.data.photo);
         this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
+        this.urlpic = docs.data.photo
         this.userpicture = docs.data.pictureprofil
-        console.log(docs.data);
-            // console.log(this.role);
+        console.log(this.urlpic);
+           
    
     }).catch((error)=>{
       console.log(
        error
       );
     })
-   this.getcolor()
-
+    
+    this.getcolor()
+  
   }
   
 };
@@ -257,6 +308,17 @@ img.form-avatar-dl {
   border-radius: 50%;
   font-size: 5rem;
   padding-bottom: 5%;
+}
+img#form-picture-profil {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  font-size: 5rem;
+  // padding-bottom: 5%;
 }
 
 
@@ -334,8 +396,24 @@ button#btn-confirm-pic-profil{
     background-color: $secondary;
     color: $tertiary;
   }
-
 }
+button#btn-confirm-pic-profil-post{
+  display: flex;
+  // height: 20px;
+  justify-content: center;
+  align-items:center;
+  margin-left: 0%;
+  border: solid 2px $secondary;
+  border-radius: 30%;
+  color: green;
+  &:hover {
+    border-radius: 20%;
+    background-color: $secondary;
+    color: green;
+  }
+}
+
+
 .form-avatar-profil-url {
   padding-top: 2%;
   display: none;

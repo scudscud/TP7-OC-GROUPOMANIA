@@ -31,13 +31,20 @@ exports.userInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    console.log(req);
+    const updatedData = {
+    
+        bio: req.body.bio,
+        photo:
+        req.file != null
+      ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`
+      : ``,
+      
+    }
 
   try {
-    await UserModel.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        bio: req.body.bio,
-      },
+    await UserModel.findByIdAndUpdate(req.params.id ,
+       { $set: updatedData },    
       { new: true, upsert: true, setDefaultsOnInsert: true }
     )
       .then((docs) => res.send(docs))

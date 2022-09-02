@@ -73,7 +73,7 @@
 
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
 
-        <img v-if="urlpic" class="avatar" :src="urlpic" />
+        <img v-if="urlpic !== ''" class="avatar" :src="urlpic" />
         <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
 
      
@@ -126,12 +126,14 @@ export default {
 
   methods:{
     refresh(){
-      this.proxy.forceUpdate();
+      // this.proxy.forceUpdate();
     } ,
     getcolor(){
+      if(this.urlpic === ''  ){
    this.avatarpicempty = this.name.split('')[0]
     let randomColor = Math.floor(Math.random()*16777215).toString(16);
    document.getElementById('avatar-empty').style.backgroundColor = '#' + randomColor}
+      }
   },
 
   computed :{
@@ -228,15 +230,14 @@ export default {
     .then((data) => {
       this.name = data.data.firstname
        this.urlpic = data.data.photo
-      console.log(data.data.firstname);
+       console.log(data.data.photo);
 
     }).catch((error)=>{
       console.log(
      error
       )
     })
-
-    this.getcolor()
+      this.getcolor()
 
   },
 

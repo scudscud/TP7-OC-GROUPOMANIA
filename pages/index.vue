@@ -6,10 +6,10 @@
               
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card"> 
-    <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole !== ''" >
+    <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == ''" >
       <div class="user-book-main">
         <div class="name-date-book">
-            <img v-if="post.posterpicture =''" class="picture-user" :src='post.posterpicture' />
+            <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
             <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
             <!-- <span class="fullname-book">{{post.posterlastname}}</span>
             <span class="fullname-book">{{post.posterfirstname}}</span> -->
@@ -286,10 +286,12 @@ today = dd+'/'+mm+'/'+yyyy;
       // }
     },
     getcolor(){
+      if(this.urlpic === ''  ){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
     document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+}
 }
   
   },
@@ -316,7 +318,7 @@ today = dd+'/'+mm+'/'+yyyy;
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
-        this.userpicture = docs.data.pictureprofil
+        this.urlpic  = docs.data.pictureprofil
         console.log(docs.data);
             // console.log(this.role);
    
@@ -327,7 +329,7 @@ today = dd+'/'+mm+'/'+yyyy;
     })
  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        // console.log(docs.data);
+        console.log(docs.data);
          this.posts = docs.data
       })
       .catch((err)=>{

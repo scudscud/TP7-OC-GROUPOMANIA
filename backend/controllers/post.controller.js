@@ -64,11 +64,11 @@ exports.updatePost = (req, res) => {
   .then((post) => {
     const postedBy = post.posterId
     const connectedUser = req.user
-    // console.log( post.posterId);
-    // console.log( req.user);
-    if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
-      res.cookie('jwt','', { session:false, maxAge: 1 }) 
-      res.status(400).json('nocookie')
+    console.log( "up"+post.posterId);
+    console.log("up"+ req.user);
+    if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
+      // res.cookie('jwt','', { session:false, maxAge: 1 }) 
+      res.status(400).json('delete')
 }else{
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
@@ -114,8 +114,9 @@ exports.deletePost = (req, res) => {
       // console.log(req.user);
       const postedBy = post.posterId
       const connectedUser = req.user
-      // const connectedUser = req.body.id
-      if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
+      console.log("del"+postedBy);
+      console.log( "del"+req.user);
+      if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('nocookie')
   }else{
@@ -140,11 +141,12 @@ exports.deleteOnePicture = (req, res) => {
     .then((post)=>{
       const postedBy = post.posterId
       const connectedUser = req.user
-      // console.log( post.posterId);
-      console.log( req.user);
-      if(connectedUser !== '62f8f745c348ae5b9f081062' || postedBy !== connectedUser){
-        res.cookie('jwt','', { session:false, maxAge: 1 }) 
-        res.status(400).json('nocookie')
+      console.log(post);
+      console.log("on"+postedBy);
+      console.log( "on"+req.user);
+      if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
+        // res.cookie('jwt','', { session:false, maxAge: 1 }) 
+        res.status(400).json('onepic')
   }else{
 
       let delimg = post.picture.split('images/')[1]

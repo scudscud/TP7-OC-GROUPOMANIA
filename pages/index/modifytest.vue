@@ -6,10 +6,11 @@
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
                 <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
-                <img v-if="post.posterpicture =''" class="picture-user-create" :src='post.posterpicture' />
+                <img v-if="urlpic !==''" class="picture-user-create" :src='urlpic' />
             <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
+
                    <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="updatePost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
                   <button v-else id="btn-send-post-posted" ><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Poster!!</span></div></button> 
                      <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-modify'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
@@ -27,7 +28,7 @@
           <div class="preview-pic-size" @change="postValid()" > 
             <img id="pic-size" v-if="url == ''" :src="oldpic" @change="postValid()" >
             <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" >
-             <div  id="pic-size"  v-if="url == '' && oldpic == ''"   @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
+             <div  id="pic-size"  v-if="url == '' && oldpic == ''" @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
           </div>
          
           </div>
@@ -70,10 +71,12 @@ export default{
   name: "modify",
   methods: {
     getcolor(){
+      if(this.urlpic === ''  ){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
     document.getElementById('avatar-empty-modify').style.backgroundColor = '#' + randomColor
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+      }
 },
   postValid(){
    if(this.message !=='' || this.url !='' || this.oldpic !=''){
@@ -183,7 +186,7 @@ export default{
       userid:'',
   
       avatarpicempty:'',
-      userpicpro:'',
+      urlpic:'',
       posterId : '',
       posterfirstname : '',
       posterlastname: '',
@@ -272,7 +275,7 @@ today = dd+'/'+mm+'/'+yyyy;
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
-        this.userpicpro = docs.data.photo
+        this.urlpic = docs.data.photo
           // console.log(docs.data.photo)
     }).catch((error)=>{
       console.log(error);
