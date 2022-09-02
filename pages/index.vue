@@ -32,7 +32,7 @@
     </div>
       <div id="card-autor-book-none" v-else>
       <div class="user-book-main-none">
-            <img v-if="post.posterpicture =''" class="picture-user-none" :src='post.posterpicture' />
+            <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
             <div v-else id="avatar-empty-book-book">{{avatarpicempty}}</div>
             <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
       </div>
