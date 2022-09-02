@@ -62,10 +62,10 @@ deleteconfirm: false ,
         .then(()=>{
            localStorage.removeItem('categories')
           this.deleteconfirm = true
-            //  setTimeout(() => {
-            // this.$emit('close-modale-delete')
-            // window.location.reload()            
-            // }, 2500); 
+            setTimeout(() => {
+            this.$emit('close-modale-delete')
+              
+            }, 2500); 
         })
         .catch((err) => console.log(err)) 
       }catch(e) {

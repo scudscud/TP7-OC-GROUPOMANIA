@@ -27,7 +27,7 @@
              
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
-                <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,refresh()" />
+                
           </div>
     </div>
       <div id="card-autor-book-none" v-else>
@@ -62,7 +62,8 @@
               </div>
     </div>       
   </v-card>
-  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="updateparent(posts),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
+  <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
+  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="getPosts(),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
  
 </div>
 <div v-else>     
@@ -228,14 +229,16 @@ today = dd+'/'+mm+'/'+yyyy;
   let postID = postId
    axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
      .then(()=>{
-      this.like = true
+      this.like = false
+      this.getPosts()
      }).catch((err)=>{console.log(err);})
    },
 
    unLikePost(postId){
     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
      .then(()=>{
-      this.like = false
+      this.like =  true
+      this.getPosts()
      }).catch((err)=>{console.log(err);})
    },
 
