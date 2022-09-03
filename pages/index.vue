@@ -13,60 +13,45 @@
 
 <div v-if="this.posts[0] != undefined" >     
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
-   <div class="border-card"> 
-    <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == ''" >
-      <div class="user-book-main">
-        <div class="name-date-book">
-          <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
-            <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
-            <span class="fullname-main">{{post.posterfullname}}</span>
-        </div>
-            <span class="full-date"> {{post.date}}</span>
-      </div>
-       <!-- <span class="postId"> {{post._id}}</span>
-       <span class="postId"> {{post.id}}</span>
-       <span class="postId"> {{index}}</span> -->
-          <div class="btn-book-main" >
-          <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
-              <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-                  <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
-              <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
-                
+    <div class="border-card"> 
+      <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == ''" >
+        <div class="user-book-main">
+          <div class="name-date-book">
+            <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture'/>
+              <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
+              <span class="fullname-main">{{post.posterfullname}}</span>
           </div>
-    </div>
-      <div id="card-autor-book-none" v-else>
-      <div class="user-book-main-none">
-            <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
-            <div v-else id="avatar-empty-book-book">{{avatarpicempty}}</div>
-            <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
-      </div>
-    </div>    
-
-        <div v-if='post.picture !="" '  class="image-card"  >
-          <img class="card-img " :src="post.picture" alt="photo" />
+              <span class="full-date"> {{post.date}}</span>
         </div>
-              <div v-if="post.message != ''" class="message-main">
-                {{post.message}}
-              </div>
-              <div class="btn-card" id="card-att">
-                <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit"
-                  ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                  <p class="text-att">Like</p></v-btn >
-                <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"
-                  ><v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                  <p class="text-att">Like</p></v-btn >
-                <v-btn id="btn-att"
-                  ><v-icon class="img-att"> mdi-message-outline</v-icon>
-                  <p class="text-att">Commenter</p></v-btn
-                >
-                <v-btn id="btn-att"
-                  ><v-icon class="img-att"> mdi-account-group </v-icon>
-                  <p class="text-att">Devenir&nbspamis</p></v-btn
-                >
-              </div>
+        <!-- <span class="postId"> {{post._id}}</span>
+        <span class="postId"> {{post.id}}</span>
+        <span class="postId"> {{index}}</span> -->
+            <div class="btn-book-main" >
+            <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
+                <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+                    <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
+                <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+            </div>
+      </div>
+        <div id="card-autor-book-none" v-else>
+        <div class="user-book-main-none">
+              <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
+              <div v-else id="avatar-empty-book-book">{{avatarpicempty}}</div>
+              <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
+        </div>
+      </div>    
+          <div v-if='post.picture !="" '  class="image-card"  >
+            <img class="card-img " :src="post.picture" alt="photo" />
+          </div>
+          <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
+          <div class="btn-card" id="card-att">
+              <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-btn >
+              <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-btn >
+              <v-btn id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn >
+              <v-btn id="btn-att"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn >
+          </div>
     </div>       
   </v-card>
-  
 </div>
 <div v-else>     
   <v-card  class="card-post"  >    
@@ -281,7 +266,8 @@ today = dd+'/'+mm+'/'+yyyy;
       if(this.urlpic === ''  ){
     this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
-    document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+  //   document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+   document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
   }
   } 
@@ -371,8 +357,8 @@ cursor: pointer;
 #avatar-empty-book-top{
   font-size: 1.8rem;
   display: flex;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
@@ -461,8 +447,6 @@ background-color: $tertiary;
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%; 
-
-
 }
 
 .history{
@@ -496,14 +480,16 @@ background-color: $tertiary;
   // padding-top: 2%;
   // border-bottom-left-radius: -5%;
   // border-bottom-right-radius: -5%;
-  
+
 }
+
 .user-book-main-none{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .fullname-none {
   display: flex;
   flex-direction: row;
@@ -513,6 +499,7 @@ background-color: $tertiary;
   padding-right: 2%;
   margin: 0;
 }
+
 .picture-user-none{
   display: flex;
   width: 50px;
@@ -588,8 +575,8 @@ background-color: $tertiary;
   border-bottom-right-radius: 5%;
   justify-content: center;
   align-items:center;
-  
 }
+
 .card-img {
   display: flex;
   justify-content: center;
@@ -605,6 +592,7 @@ background-color: $tertiary;
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
+
 .card-img-default {
   display: flex;
   justify-content: center;
@@ -635,6 +623,7 @@ background-color: $tertiary;
   padding-top: 10%;
   padding-left: 3%;
 }
+
 .fullname-main {
   display: flex;
   flex-direction: row;
@@ -692,6 +681,7 @@ p.firstpost {
   translate: 3px;
   border: solid 1px $secondary;
 }
+
 #btn-att-unlike {
   margin-top: 2%;
   margin-right: 3%;
@@ -708,7 +698,6 @@ p.firstpost {
   }
 }
 
-
 #btn-att-like {
   margin-top: 2%;
   margin-right: 3%;
@@ -724,7 +713,6 @@ p.firstpost {
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
-
   }
 }
 
