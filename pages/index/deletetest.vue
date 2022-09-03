@@ -6,7 +6,7 @@
     <p class="logo-disconnect-delete"><img class="logo-white" src="../../logo/logo.png" />
     <span>La team GROUPOMANIA </span>
     </p>
-  <p>Vous-êtes sur de vouloir supprimer ce post ?</p>
+  <p id="span-del-post">Vous-êtes sur de vouloir supprimer cette publication?</p>
    <!-- <p>cette action est irreversible </p> -->
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
@@ -130,7 +130,7 @@ z-index: 1000;
   width: 320px;
   // max-height: 200px;
   // min-height: 200px;
-  height: 320px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -156,6 +156,10 @@ flex-direction: row;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#span-del-post{
+  text-align: center;
 }
 
 .comfirm-span-delete{

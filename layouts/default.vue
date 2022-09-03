@@ -1,26 +1,12 @@
 <template>
   <v-app dark>
     <div>
-         <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
-      <post id="modal-post" v-show="showpost" @close-modale-post="showpost = false,refresh()"/>
+      <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
     </div>
 
-    <v-navigation-drawer
-    class="drawer-left"
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+    <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app >
       <v-list class="temp">
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact >
           <v-list-item-action>
             <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -31,52 +17,44 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn id="temp-menu" alt="menu"
-      @click.stop="drawer = !drawer"
-        ><v-icon>mdi-menu</v-icon> </v-btn>
+      <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer"><v-icon>mdi-menu</v-icon> </v-btn>
 
-             <router-link id="btn-post-router" to="/"> 
+      <router-link id="btn-post-router" to="/"> 
       <v-btn  id="btn-post-nav" alt="menu">
         <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
         </v-btn>  
         </router-link>
     
-        <router-link  class="btn-post-router-plus"  to="/postpage"> 
+        <!-- <router-link  class="btn-post-router-plus"  to="/postpage"> 
       <v-btn id="btn-post-nav"  alt="menu"  >
         <v-icon>mdi-newspaper-plus </v-icon>
         </v-btn>  
-        </router-link>
+        </router-link> -->
 
-  <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
+  <!-- <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
         <v-icon>mdi-newspaper-plus </v-icon>
+        </v-btn>  -->
+  <v-btn id="btn-post-nav" alt="menu">
+        <v-icon>mdi-chat </v-icon>
         </v-btn> 
 
 <!-- 
-         <router-link     to="/postpage"> 
+       <router-link     to="/postpage"> 
        <button :class="hoverbtn ? 'btn-hover' : 'btn-post-router-plus' "  @click=" toggleClass" alt="menu" >
         <v-icon id="icon">mdi-newspaper-plus </v-icon>
         </button>  
-         </router-link>  -->
-
-
+        </router-link>  -->
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-btn icon @click.stop="miniVariant = !miniVariant"> 
         <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn> -->
 
       <v-spacer />
-      <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title
-        v-text="title"
-        id="temp-title"
-      />
+      <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title v-text="title" id="temp-title"/>
       <v-spacer />
-
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
-
         <img v-if="urlpic !== ''" class="avatar" :src="urlpic" />
         <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
-
-     
         </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
@@ -90,18 +68,11 @@
 
     <v-navigation-drawer class="drawer-right" v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-item
-          v-for="(item, v) in itemsuser"
-          :key="v"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, v) in itemsuser" :key="v" :to="item.to" router exact >
           <v-list-item-action>
             <v-icon> {{ item.icon }}</v-icon>
-          </v-list-item-action>
-
-          <v-list-item-content>
+              </v-list-item-action>
+              <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
@@ -117,11 +88,15 @@
 import axios from "axios";
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
-import Post from "../components/postcomponent.vue";
+// import Post from "../components/postcomponent.vue";
 import indexVue from "../pages/index.vue";
 
 export default {
-  components: { SignIn, Post},
+  components: { SignIn,
+    indexVue,
+    // modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
+    //  Post
+    },
   name: "DefaultLayout",
 
   methods:{
@@ -138,7 +113,6 @@ export default {
 
   computed :{
  
-
   },
  
 
@@ -155,8 +129,7 @@ export default {
       rightDrawer: false,
       clipped: false,
       fixed: false,
-    
-      showpost: false,
+      // showpost: false,
       showbtn:true,
       hoverbtn:false,
       itemsuser: [
@@ -164,7 +137,6 @@ export default {
           icon: "mdi-account",
           title: "Mon profil",
           to: "/profiluser",
-         
         },
         {
           icon: "mdi-chart-bubble",
@@ -198,11 +170,11 @@ export default {
           title: "le Groupo-book",
           to: "/",
         },
-          {
-          icon: "mdi-newspaper-plus ",
-          title: "creer votre post",
-          to: "/postpage",
-        },
+        //   {
+        //   icon: "mdi-newspaper-plus ",
+        //   title: "creer votre post",
+        //   to: "/postpage",
+        // },
         {
           icon: " mdi-chat",
           title: "le Groupo-chat",
@@ -411,6 +383,7 @@ margin-right: 0.5%;
 
 .logo-white {
   display: flex;
+  margin-left: 10px;
   margin-right: 10px;
   height: 30px;
   width: 30px;

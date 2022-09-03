@@ -1,22 +1,27 @@
 <template >
+
 <div id="Book">
 
-<div v-if="this.posts[0] != undefined" >     
+  <div id="fix-top" @click="showpost = !showpost" >
+    <img v-if="urlpic !==''" class="picture-user-none-top" :src='urlpic'/>    
+      <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
+        <button class="new-top" @click="showpost = !showpost" ><span class="new-top-span" > Envie de partager, {{firstname}} ? </span></button>
+        <!-- <button @click="showpost = !showpost"  id="btn-post-top" alt="menu"> 
+        <v-icon >mdi-newspaper-plus </v-icon>
+        </button>   -->
+  </div>
 
-              
+<div v-if="this.posts[0] != undefined" >     
   <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
    <div class="border-card"> 
     <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == ''" >
       <div class="user-book-main">
         <div class="name-date-book">
-            <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
+          <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
             <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
-            <!-- <span class="fullname-book">{{post.posterlastname}}</span>
-            <span class="fullname-book">{{post.posterfirstname}}</span> -->
             <span class="fullname-main">{{post.posterfullname}}</span>
-          </div>
+        </div>
             <span class="full-date"> {{post.date}}</span>
-           
       </div>
        <!-- <span class="postId"> {{post._id}}</span>
        <span class="postId"> {{post.id}}</span>
@@ -24,7 +29,6 @@
           <div class="btn-book-main" >
           <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
               <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-             
                   <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
               <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
                 
@@ -62,22 +66,12 @@
               </div>
     </div>       
   </v-card>
-  <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
-  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="getPosts(),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
- 
+  
 </div>
 <div v-else>     
-              
   <v-card  class="card-post"  >    
    <div class="border-card">                                       
     <div id="card-autor-book-first" >
-    
-        <!-- <div class="name-date-book">
-            <img class="picture-user"/>
-          <p class="fullname">c'est vous</p>
-            
-          </div> -->
-          
           <span class="firstpost" >le {{date}} à {{hour}} {{fullname}} va renter dans un zone inexplorée</span>
     </div>
         <div class="image-card">
@@ -91,30 +85,31 @@
                 <p>Ceci restera stocké dans le cloud</p>
               </div>
    </div>       
+  
   </v-card>
 </div>
+<deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
+  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="getPosts(),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
+  <Postcreate  v-show="showpost" @close-modale-post="showpost = false,getPosts()"/>
 </div>
+
 </template>
 <script>
 
-import axios from "axios";
-// import Modify from "../components/modifypost.vue";
-// const modify = () => import("../components/modifypost.vue")
-// import Deletepost from "./index/deletetest.vue";
+import axios from "axios"
 import { ref } from 'vue';
 const componentKey = ref(0);
 const forceRerender = () => {
   componentKey.value += 1
 }
 
-
 export default {
   name: "Book",
   
   components: { 
  
-
- modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
+ Postcreate:() => import( /* webpackChunkName:"Postcreate"*/"./index/postcreate.vue"),
+ modify: () => import("./index/modifytest.vue"),
 //  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
 //  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
 //  Modify: () => import(  /* webpackChunkName:"modify"*/"../components/modifypost.vue"),
@@ -135,6 +130,7 @@ export default {
       showdelete: false,
       showmodify: false,
       showdel: false,
+      showpost:false,
       like: false,
       
       userjwtid:"",
@@ -150,7 +146,7 @@ export default {
       // fullname:'',
       posterfirstname : '',
       posterlastname: '',
-      posterpic:'',
+      urlpic:'',
       image:'',
       userlike:[],
       // date:'',
@@ -236,8 +232,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
    unLikePost(postId){
     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
-     .then(()=>{
-      this.like =  true
+    .then(()=>{ this.like =  true 
       this.getPosts()
      }).catch((err)=>{console.log(err);})
    },
@@ -261,49 +256,40 @@ today = dd+'/'+mm+'/'+yyyy;
     },
     getPosts() {
       axios.get("http://localhost:5000/api/post")
-      .then((docs) => {
-        console.log(docs.data);
-         this.posts = docs.data
-      })
-      .catch((err)=>{
-        console.log(err);
-      });
+      .then((docs) => { console.log(docs.data); this.posts = docs.data})
+      .catch((err)=>{console.log(err);});
     },
 
       async deletePost(postId) {
-          // console.log(postId);
+      // console.log(postId);
       //  this.showdel = true
       //  await this.comdelpost;
       //  if(this.comdelpost = true){
-       await axios.delete(`http://localhost:5000/api/post/${postId}`)
+      await axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((post) => {
-   
         // post.data.deletedPost.likers.forEach(userIdLikeToDelete => {
         //   console.log('ok');
         //   // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
         //   });
-          
           // this.getPosts()
         })
         .catch((err) => console.log(err))
       // }
     },
+
     getcolor(){
       if(this.urlpic === ''  ){
-   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
     document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
-}
-}
-  
+  }
+  } 
   },
   
   async mounted(){
   axios.defaults.withCredentials = true;
-        // console.log($refs.deletepost.$el)
-
-   await axios.get(`http://localhost:5000/jwtid`)
+    await axios.get(`http://localhost:5000/jwtid`)
     .then((res) => {
       // console.log(this.userjwtid);
     this.userjwtid = res.data
@@ -314,40 +300,27 @@ today = dd+'/'+mm+'/'+yyyy;
       console.log(error);
     })
 
-   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-  
         this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
-        this.urlpic  = docs.data.pictureprofil
+        this.urlpic  = docs.data.photo
         console.log(docs.data);
             // console.log(this.role);
-   
-    }).catch((error)=>{
-      console.log(
-       error
-      );
+    }).catch((error)=>{ console.log(error);
     })
- await axios.get("http://localhost:5000/api/post")
+  await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         console.log(docs.data);
-         this.posts = docs.data
+        this.posts = docs.data
       })
       .catch((err)=>{
         console.log(err);
       });
-   
-  
   this.getcolor()
-
-
-
   },
-
-
-
 }
 
 
@@ -355,11 +328,7 @@ today = dd+'/'+mm+'/'+yyyy;
 
 <style lang="scss">
 
-.test{
-  width: 500px;
-  height: 500px;
-  background-color: #fff;
-}
+
 
 .card-post {
   display: flex;
@@ -373,6 +342,68 @@ today = dd+'/'+mm+'/'+yyyy;
 .border-card{
  width: 100%;
 border: 5px solid $secondary;
+}
+
+#fix-top{
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 50px;
+ border: solid 2px $secondary;
+border-radius:  10px/5px;
+margin-bottom: 2%;
+background-color: $secondary;
+cursor: pointer;
+}
+.picture-user-none-top{
+  display: flex;
+  width: 40px;
+  height: 40px;
+  margin-right: 1%;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px ;
+  border-radius: 50%; 
+}
+
+#avatar-empty-book-top{
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%; 
+}
+
+.new-top{
+ padding-left: 1%;
+ border: solid 2px black;
+ border-radius: 30px / 30px;
+ height: 35px;
+}
+
+.new-top-span{
+color: black;
+}
+
+#btn-post-top{
+  // margin-left: 1%;
+background-color: $tertiary;
+  height: 35px;
+  width: auto;
+  border: solid $primary;
+  color: $secondary;
+  border-radius: 30% / 30%;
+  &:hover{
+  background-color: $primary;
+  border: solid $tertiary;
+  color:$tertiary;
+  border-radius: 20% / 20%;
+  }
 }
 
 #card-autor-book {
