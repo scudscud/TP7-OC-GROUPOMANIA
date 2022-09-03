@@ -17,8 +17,11 @@
       <div   class="block-picture" >
           <label class="lab-pic" for="avatar">
               <img  id="form-picture-profil" :src="urlpic" /> 
+
             <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
+               <button id="btn-del-pic-profil-bis" @click="profilUpdate" ><v-icon id='btn-del-pic-profil-icon' size="25px">mdi-camera-off</v-icon></button>
         <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" /></label>
+     
       </div>
       <span class="fullname">{{fullname}}</span>
     </v-card-text>
@@ -136,6 +139,25 @@ export default {
     delPicPreview(){
       this.url = ''
     },
+    // delPicUrl(){
+    //   axios.delete(`http://localhost:5000/api/user/photo/${this.userid}`)
+    //   .then((res)=>{
+    //     if(res.status = 201){
+    //       this.url = ''
+    //       this.urlpic = ''
+    //       window.location.reload()
+
+
+
+
+    //     }
+       
+        
+
+
+
+    //   })
+    // },
 
     picPreview(e){
       e.target.value[0].split(" ")
@@ -177,15 +199,12 @@ export default {
             this.posted= true
             setTimeout(() => {
            this.posted = false
-         
+           window.location.reload()
             }, 3000);         
           })
       .catch((errors,test)=>{
-            //  test = this.delPicPreview()
-      
             this.maxsize = errors.response.data.errors.maxsize
             this.format = errors.response.data.errors.format
-            // test
            setTimeout(() => {
              this.maxsize = ''
             this.format =''
@@ -222,9 +241,7 @@ export default {
         this.lastname = docs.data.lastname
         this.urlpic = docs.data.photo
         this.userpicture = docs.data.pictureprofil
-        console.log(this.urlpic);
-           
-   
+        console.log(this.urlpic);    
     }).catch((error)=>{
       console.log(
        error
@@ -239,9 +256,9 @@ export default {
 </script>
 
 <style lang="scss">
-.lab-pic {
+label.lab-pic {
   display: flex;
-  width: 100%;
+  // width: 130px;
 }
 .lab-pic-del {
   display: flex;
@@ -382,6 +399,52 @@ button#btn-del-pic-profil{
   }
 
 }
+button#btn-del-pic-profil-bis{
+  position: relative;
+  top: 80px;
+  left: -170px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+#btn-del-pic-profil-icon{
+  position: relative;
+  top: -2px;
+  left: -18px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor:pointer;
+
+}}
+
+.lab-pic-custom-url {
+  position: relative;
+  top: 70px;
+  left: 140px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor: pointer;
+  }
+}
 button#btn-confirm-pic-profil{
   display: flex;
   // height: 20px;
@@ -438,6 +501,7 @@ button#btn-confirm-pic-profil-post{
     cursor: pointer;
   }
 }
+
 .fullname-url{
   padding-top: 1%;
   padding-left: 5%;

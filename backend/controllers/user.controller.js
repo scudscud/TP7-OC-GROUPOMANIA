@@ -1,6 +1,6 @@
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
-
+const fs = require('fs');
 // all user end point \\
 
 exports.getAllUsers = async (req, res) => {
@@ -38,8 +38,7 @@ exports.updateUser = async (req, res) => {
         photo:
         req.file != null
       ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`
-      : ``,
-      
+      : ``, 
     }
 
   try {
@@ -57,6 +56,36 @@ exports.updateUser = async (req, res) => {
     return res.status(400).json({ message: err });
   }
 };
+
+
+// exports.deletePictureProfil= (req, res) => {
+//   // PostModel.findById(req.params.id)
+// //   .then((post)=>{
+// //     const postedBy = post.posterId
+// //     const connectedUser = req.user
+// //     // console.log(post);
+// //     // console.log("on"+postedBy);
+// //     // console.log( "on"+req.user);
+// //     if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
+// //       res.cookie('jwt','', { session:false, maxAge: 1 }) 
+// //       res.status(400).json('onepic')
+// // }else{
+//   // console.log(req)
+//     let delimg = req.params.id + ".jpg"
+//     console.log(delimg);
+  
+//       fs.unlink(`images/default/${delimg}`, (err) => {
+//       if (err) {
+//         res.status(401).send('failed to delete local image'+ err)
+//           console.log("failed to delete local image:"+err);
+//       } else {
+//         res.status(201).send('successfully deleted local image')
+//           console.log('successfully deleted local image');                                
+//       }
+//       });
+//     // }  
+//   // }).catch((err)=>{err})
+// };
 
 // user delete end point \\
 

@@ -93,7 +93,7 @@ import indexVue from "../pages/index.vue";
 
 export default {
   components: { SignIn,
-    indexVue,
+    // indexVue,
     // modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
     //  Post
     },

@@ -27,6 +27,8 @@ router.patch("/unfollow/:id", userController.unfollow);
 
 // router upload picture profil + multer error\\
 
+// router.delete('/photo/:id',userController.deletePictureProfil)
+
 router.post(
   "/:id", 
   (req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });

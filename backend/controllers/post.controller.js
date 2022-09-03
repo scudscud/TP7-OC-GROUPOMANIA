@@ -20,7 +20,7 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-   console.log(req.user);
+  //  console.log(req.user);
   //  console.log(req.file);
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
@@ -64,8 +64,8 @@ exports.updatePost = (req, res) => {
   .then((post) => {
     const postedBy = post.posterId
     const connectedUser = req.user
-    console.log( "up"+post.posterId);
-    console.log("up"+ req.user);
+    // console.log( "up"+post.posterId);
+    // console.log("up"+ req.user);
     if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
       // res.cookie('jwt','', { session:false, maxAge: 1 }) 
       res.status(400).json('delete')
@@ -114,8 +114,8 @@ exports.deletePost = (req, res) => {
       // console.log(req.user);
       const postedBy = post.posterId
       const connectedUser = req.user
-      console.log("del"+postedBy);
-      console.log( "del"+req.user);
+      // console.log("del"+postedBy);
+      // console.log( "del"+req.user);
       if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('nocookie')
@@ -141,16 +141,16 @@ exports.deleteOnePicture = (req, res) => {
     .then((post)=>{
       const postedBy = post.posterId
       const connectedUser = req.user
-      console.log(post);
-      console.log("on"+postedBy);
-      console.log( "on"+req.user);
+      // console.log(post);
+      // console.log("on"+postedBy);
+      // console.log( "on"+req.user);
       if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
-        // res.cookie('jwt','', { session:false, maxAge: 1 }) 
+        res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('onepic')
   }else{
 
       let delimg = post.picture.split('images/')[1]
-      console.log(delimg);
+      // console.log(delimg);
     
         fs.unlink(`images/${delimg}`, (err) => {
         if (err) {
@@ -170,8 +170,8 @@ exports.likePost = (req, res) => {
     return res.status(400).send("post iconnu:" + req.params.id);
 
   try {
-      console.log(req.params.id),
-      console.log(req.body.id),
+      // console.log(req.params.id),
+      // console.log(req.body.id),
     PostModel.findByIdAndUpdate(
     
       req.params.id,

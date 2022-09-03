@@ -5,7 +5,7 @@
   <div id="fix-top" @click="showpost = !showpost" >
     <img v-if="urlpic !==''" class="picture-user-none-top" :src='urlpic'/>    
       <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
-        <button class="new-top" @click="showpost = !showpost" ><span class="new-top-span" > Envie de partager, {{firstname}} ? </span></button>
+        <button class="new-top"  ><span class="new-top-span" > Envie de partager, {{firstname}} ? </span></button>
         <!-- <button @click="showpost = !showpost"  id="btn-post-top" alt="menu"> 
         <v-icon >mdi-newspaper-plus </v-icon>
         </button>   -->
@@ -361,7 +361,7 @@ cursor: pointer;
   height: 40px;
   justify-content: center;
   align-items: center;
-  border: solid 2px $secondary;
+  border: solid 2px $tertiary;
   border-radius: 50%; 
 }
 
