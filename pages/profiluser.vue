@@ -101,6 +101,7 @@
 <script>
 import axios from "axios";
 
+
 export default {
   name: "Profil",
   data() {
@@ -189,18 +190,36 @@ export default {
     // photoName = this.fullname.split(' ')
     // console.log(photoName);
       let formData = new FormData()
+      // formData.append('posterpicture', this.photo)
       formData.append('fullname', this.fullname)
       formData.append('photo', this.photo)
       formData.append('bio', this.bio)
-      console.log(this.photo);
+      console.log(this.photo.filename);
       // console.log(this.bio);
       await axios.put(`http://localhost:5000/api/user/${this.userid}`,formData)
-      .then(() => {
+      .then(()=>{
+       axios.get(`http://localhost:5000/api/post`)
+       .then((test)=>{
+        test.data.forEach(doc => {
+          if(doc.posterId === this.userid)
+          { const id = []
+             id.push(doc._id)
+            id.forEach(postid =>{
+                // console.log(postid);
+                // console.log(this.photo);
+                let formData = new FormData()
+                formData.append('picture', this.photo)
+                axios.put(`http://localhost:5000/api/post/photo/${postid}`,formData )
+            })
+          }   
+        });
+        })      
+      }).then(() => {
             this.posted= true
             setTimeout(() => {
            this.posted = false
            window.location.reload()
-            }, 3000);         
+            }, 1000);         
           })
       .catch((errors,test)=>{
             this.maxsize = errors.response.data.errors.maxsize
@@ -209,8 +228,8 @@ export default {
              this.maxsize = ''
             this.format =''
            }, 3000);
-            // console.log(errors.response.data.errors.maxsize);
-            // console.log(errors.response.data.errors.format);    
+            console.log(errors.response.data.errors.maxsize);
+            console.log(errors.response.data.errors.format);    
           }) 
     },
 

@@ -47,7 +47,7 @@ exports.createPost = async (req, res) => {
   });
   try {
     post = await newPost.save();
-    console.log(post);
+    // console.log(post);
     return res.status(201).json(post);
   } catch (err) {
     return res.status(400).send(err.message);
@@ -77,6 +77,7 @@ exports.updatePost = (req, res) => {
   const finalDate = `modifié le ${days} à ${hours}:${minutes}`
 const updatedRecord = {
   // posterId: req.body.posterId,
+  // posterpicture : req.body.photo,
   message: req.body.message,
   picture:
     req.file != null
@@ -93,6 +94,42 @@ PostModel.findByIdAndUpdate(req.params.id,
   }
 })
 };
+
+
+
+exports.updatePictureUserPost = async (req, res) => {
+//  console.log(req);
+  // if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
+
+//   PostModel.findById(req.params.id)
+//   .then((post) => {
+//     const postedBy = post.posterId
+//     const connectedUser = req.user
+//     // console.log( "up"+post.posterId);
+//     // console.log("up"+ req.user);
+//     if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
+//       // res.cookie('jwt','', { session:false, maxAge: 1 }) 
+//       res.status(400).json('delete')
+// }else{
+
+const updatedRecord = 
+{
+  posterpicture :   req.file != null
+  ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`
+  : ``, 
+}
+
+
+PostModel.findByIdAndUpdate(req.params.id,
+  { $set: updatedRecord },
+  { new: true },
+  (err, docs) => {
+    if (!err) res.send(docs);
+    else console.log("petit probleme : " + err)});
+
+  }
+// })
+// };
 
 exports.getOnePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))

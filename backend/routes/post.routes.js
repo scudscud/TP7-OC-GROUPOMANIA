@@ -5,6 +5,7 @@ const { requireAuth } = require("../middleware/auth.middleware");
 const postController = require('../controllers/post.controller');
 const modify = require('../middleware/picture.modify.middleware')
 const image = require("../middleware/picture.post.middleware");
+const photo = require("../middleware/photo.user.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
 
 router.get('/', postController.readPost);
@@ -23,6 +24,10 @@ router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) 
   }
   ,postController.createPost);
 
+router.put('/photo/:id',requireAuth,(req, res, next) => {photo(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
+} else {next();}
+    });
+  },postController.updatePictureUserPost )
 
 // gestion des commentaire\\
 

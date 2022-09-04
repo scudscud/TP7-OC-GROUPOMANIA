@@ -8,7 +8,7 @@ exports.requireAuth = (req,res,next)=>{
 // console.log(req);
     const auth = req.headers.cookie
     const token = auth && auth.split('=')[1]
-       console.log(req);
+    //    console.log(req);
    if (token){
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken)=>{
         if(err){

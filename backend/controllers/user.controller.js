@@ -6,7 +6,7 @@ const fs = require('fs');
 exports.getAllUsers = async (req, res) => {
   // const badge =  await UserModel.find().select("-badge");
   const users = await UserModel.find().select("-password").select('-badge');
-  // console.log(users);
+
   res.status(200).json(users);
 };
 
@@ -14,7 +14,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.userInfo = async (req, res) => {
 
-  console.log(req.params);
+
   if (!ObjectID.isValid(req.params.id)) return res.status(400).send("utilsateur inconnu :" + req.params.id);
 
   UserModel.findById(req.params.id, (err, docs) => {
@@ -31,7 +31,7 @@ exports.userInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    console.log(req);
+   
     const updatedData = {
     
         bio: req.body.bio,
@@ -58,34 +58,6 @@ exports.updateUser = async (req, res) => {
 };
 
 
-// exports.deletePictureProfil= (req, res) => {
-//   // PostModel.findById(req.params.id)
-// //   .then((post)=>{
-// //     const postedBy = post.posterId
-// //     const connectedUser = req.user
-// //     // console.log(post);
-// //     // console.log("on"+postedBy);
-// //     // console.log( "on"+req.user);
-// //     if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
-// //       res.cookie('jwt','', { session:false, maxAge: 1 }) 
-// //       res.status(400).json('onepic')
-// // }else{
-//   // console.log(req)
-//     let delimg = req.params.id + ".jpg"
-//     console.log(delimg);
-  
-//       fs.unlink(`images/default/${delimg}`, (err) => {
-//       if (err) {
-//         res.status(401).send('failed to delete local image'+ err)
-//           console.log("failed to delete local image:"+err);
-//       } else {
-//         res.status(201).send('successfully deleted local image')
-//           console.log('successfully deleted local image');                                
-//       }
-//       });
-//     // }  
-//   // }).catch((err)=>{err})
-// };
 
 // user delete end point \\
 
@@ -93,7 +65,7 @@ exports.userDelete = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   try {
-    // console.log(req.params.id);
+  
     await UserModel.deleteOne({ _id: req.params.id }).exec();
     res.status(200).json({ message: "utilisateur supprimer." });
   } catch (err) {

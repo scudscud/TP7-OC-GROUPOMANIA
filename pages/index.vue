@@ -45,10 +45,11 @@
           </div>
           <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
           <div class="btn-card" id="card-att">
-              <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-btn >
-              <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p></v-btn >
+              <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
+              <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"> <v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn >
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn >
+              
           </div>
     </div>       
   </v-card>
@@ -108,37 +109,35 @@ export default {
   },
   asyncData() {
     return {
-      componentKey:0,
+      // componentKey:0,
       avatarpicempty:'',
-      // loadme: null,
       log:false,
       showdelete: false,
       showmodify: false,
       showdel: false,
       showpost:false,
       like: false,
-      
       userjwtid:"",
       userid:'',
       lastname: "",
       firstname: "",
       userpicture:'',
-      // role:'',
       liker : [],
       posts:[],
-      post:[],
+      // post:[],
       posterId : '',
-      // fullname:'',
       posterfirstname : '',
       posterlastname: '',
       urlpic:'',
       image:'',
       userlike:[],
-      // date:'',
       message:'',
       comdelpost:"",
-      // today:'',
-
+      number:'',
+      // photo:'',
+      // userphoto:'',
+      // match:[],
+    
 
     };
   },
@@ -194,17 +193,23 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
-    updateparent(uppost) {
-       this.posts = uppost
-    },
-    forceRerender() {
-      this.componentKey += 1;
-    },
+    number(){
 
-   async refresh(){
+    
+
+  },
+       
+    // updateparent(uppost) {
+    //    this.posts = uppost
+    // },
+    // forceRerender() {
+    //   this.componentKey += 1;
+    // },
+
+  //  async refresh(){
    
-   console.log('ok');
-    } ,
+  //  console.log('ok');
+  //   } ,
 
    likePost(postId){
   let postID = postId
@@ -241,7 +246,13 @@ today = dd+'/'+mm+'/'+yyyy;
     },
     getPosts() {
       axios.get("http://localhost:5000/api/post")
-      .then((docs) => { console.log(docs.data); this.posts = docs.data})
+      .then((docs) => { console.log(docs.data); this.posts = docs.data
+      // this.posts.forEach(doc=>{
+      //     this.number = doc.likers.length
+      //     console.log(doc.likers.length);
+
+      //   })
+      })
       .catch((err)=>{console.log(err);});
     },
 
@@ -266,9 +277,9 @@ today = dd+'/'+mm+'/'+yyyy;
       if(this.urlpic === ''  ){
     this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
     let randomColor = Math.floor(Math.random()*16777215).toString(16)
-  //   document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+    // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
    document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
-  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+   document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
   }
   } 
   },
@@ -293,14 +304,19 @@ today = dd+'/'+mm+'/'+yyyy;
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.urlpic  = docs.data.photo
-        console.log(docs.data);
+        // console.log(docs.data);
             // console.log(this.role);
     }).catch((error)=>{ console.log(error);
     })
   await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
-        console.log(docs.data);
         this.posts = docs.data
+        // this.posts.forEach(doc=>{
+        //   this.number = doc.likers.length
+        //   console.log(doc.likers.length);
+
+        // })
+     
       })
       .catch((err)=>{
         console.log(err);
@@ -357,6 +373,7 @@ cursor: pointer;
 #avatar-empty-book-top{
   font-size: 1.8rem;
   display: flex;
+  margin-right: 1%;
   width: 40px;
   height: 40px;
   justify-content: center;
@@ -714,6 +731,23 @@ p.firstpost {
   translate: 3px;
   border: solid 1px $secondary;
   }
+}
+
+
+.buble-like{
+  background-color: $primary;
+  position: relative;
+  top: -15px;
+  left: 10px;
+  width: 30px;
+  height: 20px;
+  border: solid 2px $primary;
+  border-radius: 50%;
+}
+
+#number-like{
+color: aliceblue;
+
 }
 
 .img-att {
