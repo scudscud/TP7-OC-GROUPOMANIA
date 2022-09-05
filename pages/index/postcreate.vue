@@ -136,9 +136,11 @@
               .then(() => {
                 this.posted= true
                 setTimeout(() => {
-                  let me = this
-                  me.$emit('close-modale-post')
-                
+                let me = this
+                me.$emit('close-modale-post')
+                me.message = ''
+                me.url = ''
+                me.posted = false
                 // window.location.reload()            
                 }, 2500);         
               })

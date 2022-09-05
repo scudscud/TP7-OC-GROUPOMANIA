@@ -15,8 +15,6 @@ exports.readPost = (req, res) => {
     })
     .sort({ createdAt: -1 });
 };
-
-
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
@@ -57,11 +55,10 @@ exports.createPost = async (req, res) => {
 
 // update post end point \\
 exports.updatePost = (req, res) => {
-
   if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
-
   PostModel.findById(req.params.id)
   .then((post) => {
+    // console.log(req);
     const postedBy = post.posterId
     const connectedUser = req.user
     // console.log( "up"+post.posterId);
@@ -100,7 +97,6 @@ PostModel.findByIdAndUpdate(req.params.id,
 exports.updatePictureUserPost = async (req, res) => {
 //  console.log(req);
   // if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
-
 //   PostModel.findById(req.params.id)
 //   .then((post) => {
 //     const postedBy = post.posterId
@@ -111,22 +107,18 @@ exports.updatePictureUserPost = async (req, res) => {
 //       // res.cookie('jwt','', { session:false, maxAge: 1 }) 
 //       res.status(400).json('delete')
 // }else{
-
 const updatedRecord = 
 {
   posterpicture :   req.file != null
   ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`
   : ``, 
 }
-
-
 PostModel.findByIdAndUpdate(req.params.id,
   { $set: updatedRecord },
   { new: true },
   (err, docs) => {
     if (!err) res.send(docs);
     else console.log("petit probleme : " + err)});
-
   }
 // })
 // };
@@ -185,7 +177,7 @@ exports.deleteOnePicture = (req, res) => {
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('onepic')
   }else{
-
+        // console.log(req);
       let delimg = post.picture.split('images/')[1]
       // console.log(delimg);
     
@@ -198,6 +190,33 @@ exports.deleteOnePicture = (req, res) => {
         });}  
     }).catch((err)=>{err})
   };
+
+
+exports.deleteOldPicModidify = (req, res) => {
+    PostModel.findById(req.params.id)
+    .then((post)=>{
+     
+      // const postedBy = post.posterId
+      // const connectedUser = req.user
+      // if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
+      //   res.cookie('jwt','', { session:false, maxAge: 1 }) 
+      //   res.status(400).json('moddelpic')
+  // }else{
+        // console.log(req.body.id);
+       old = req.body.id
+      let delimg = old.split('images/')[1]
+      console.log(delimg);
+    
+        fs.unlink(`images/${delimg}`, (err) => {
+        if (err) {
+            console.log("failed to delete local image:"+err);
+        } else {
+            console.log('successfully deleted local image');                                
+        }
+        });
+      // }  
+    }).catch((err)=>{err})
+  };
  
 
 
@@ -205,12 +224,10 @@ exports.deleteOnePicture = (req, res) => {
 exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("post iconnu:" + req.params.id);
-
   try {
       // console.log(req.params.id),
       // console.log(req.body.id),
     PostModel.findByIdAndUpdate(
-    
       req.params.id,
       {
         $addToSet: {
@@ -243,7 +260,6 @@ exports.likePost = (req, res) => {
 exports.unLikePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-
   try {
     PostModel.findByIdAndUpdate(
       req.params.id,
@@ -278,7 +294,6 @@ exports.unLikePost = (req, res) => {
 exports.commentPost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-
   try {
     return PostModel.findByIdAndUpdate(
       req.params.id,
@@ -316,7 +331,6 @@ exports.editCommentPost = (req, res) => {
 
       if (!Comment) return res.status(404).send("Commentaire non trouver");
       Comment.text = req.body.text;
-
       return docs.save((err) => {
         if (!err) return res.status(200).send(docs);
         return res.status(500).send(err.message);

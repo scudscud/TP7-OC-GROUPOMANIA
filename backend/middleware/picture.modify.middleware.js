@@ -3,7 +3,6 @@ const multer = require('multer');
 
 function fileFilter(req, file, cb) {
 //  console.log(req);
-
 //  console.log(namepic);
   if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") { cb(null, true); }
   else {
@@ -11,17 +10,14 @@ function fileFilter(req, file, cb) {
     return cb(new Error('invalid format'));
   }
 }
-
   const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`images`)},
     filename: function (req, file, cb) { 
-      if(req.body.oldname == ''){
-         
-       namepic = req.body.posterId+ Date.now() + ".jpg"
-
-      } else {
-      namepic = req.body.oldname.split('images/')[1]}
+      // if(req.body.oldname == ''){      
+      //  namepic = req.body.posterId+ Date.now() + ".jpg"
+      // } else {
+      // namepic = req.body.oldname.split('images/')[1]}
       // id du post pour le name photo \\ 
-        
+        namepic = req.body.id +Date.now()+".jpg"
         cb(null,namepic);
       },
   })       

@@ -62,7 +62,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <Nuxt />
+        <Nuxt :key="componentKey" />
       </v-container>
     </v-main>
 
@@ -89,7 +89,7 @@ import axios from "axios";
 // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
 // import Post from "../components/postcomponent.vue";
-import indexVue from "../pages/index.vue";
+// import indexVue from "../pages/index.vue";
 
 export default {
   components: { SignIn,
@@ -100,6 +100,9 @@ export default {
   name: "DefaultLayout",
 
   methods:{
+    forceRerender() {
+      this.componentKey += 1;  
+    },
     refresh(){
       // this.proxy.forceUpdate();
     } ,
@@ -118,6 +121,7 @@ export default {
 
   data() {
     return {
+      componentKey: 0,
       name:'',
       avatarpicempty : '',
       userjwtid:'',

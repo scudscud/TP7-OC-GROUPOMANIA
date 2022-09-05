@@ -18,6 +18,7 @@ router.patch('/unlike-post/:id', postController.unLikePost);
 // router manage picture post + multer errors \\
 
 router.delete('/picture/:id',requireAuth,postController.deleteOnePicture)
+router.delete('/delete-old-pic-modify/:id',requireAuth,postController.deleteOldPicModidify)
 router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}
     });

@@ -7,7 +7,7 @@
         <v-card-text id="card-autor-test">
                 <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
                 <img v-if="urlpic !==''" class="picture-user-create" :src='urlpic' />
-            <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
+                <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
 
@@ -70,6 +70,18 @@ import axios from "axios";
 export default{
   name: "modify",
   methods: {
+    getPosts() {
+      axios.get("http://localhost:5000/api/post")
+      .then((docs) => { console.log(docs.data); this.posts = docs.data
+    
+      // this.posts.forEach(doc=>{
+      //     this.number = doc.likers.length
+      //     console.log(doc.likers.length);
+
+      //   })
+      })
+      .catch((err)=>{console.log(err);});
+    },
     getcolor(){
       if(this.urlpic === ''  ){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
@@ -126,33 +138,55 @@ export default{
     //   console.log(this.file);
     },
 
- async updatePost(){
+    deletePictureModify(){
+
+      axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
+      .then(()=>{
+
+        console.log('ok');
+      }).catch((err)=>{
+        console.log(err);
+      })
+
+
+
+    },
+
+
+ updatePost(){
     if(this.message !== '' || this.url !== '' ||this.url !== null || this.oldpic !==''){
-        // const full= document.querySelector('.fullname-create').textContent;
-              console.log(this.oldpic) 
-        if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
+              // console.log(this.oldpic) 
+        // if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
         if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){
         axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
+        .then(() => {
+           
+            this.posted = true
+             setTimeout(() => {
+            this.$emit('close-modale-modify')
+            }, 2500)        
+          })
         //    .then((doc)=> console.log(doc))
-           } 
-      let formData = new FormData()
-          formData.append('posterId', this.userid)
-          // formData.append('posterfirstname', this.firstname)
-          // formData.append('posterlastname', this.lastname)
-          // formData.append('posterfullname', full)
-          // formData.append('posterpicture', this.userpicpro)
-          // formData.append('posterpicture', this.userpicpro)
-          formData.append('oldname',this.oldpic)
-          formData.append('message', this.message)
-          formData.append('file', this.file)
-          // formData.append('role',this.role)
-        await axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
-          .then(() => {
-            this.posted= true
-            setInterval(() => {
+        } else {
+          // let formData = new FormData()
+          //   formData.append('oldname', this.oldpic)
           
+         
+      let formData = new FormData()
+          formData.append('posterId', this.userid),
+          formData.append('id',this.postId),
+          formData.append('oldname',this.oldpic),
+          formData.append('message', this.message),
+          formData.append('file', this.file),
+          // formData.append('role',this.role)
+        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
+
+          .then(() => {
+            axios.delete(`http://localhost:5000/api/post/delete-old-pic-modify/${this.id}`, {data : {id:this.oldpic}})
+            this.posted = true
+            setTimeout(() => {
           this.$emit('close-modale-modify')
-            }, 2500);         
+            }, 2500); 
           })
           .catch((errors,test)=>{
              test = this.delPicPreview()
@@ -163,11 +197,13 @@ export default{
            setTimeout(() => {
              this.maxsize = ''
             this.format =''
-           }, 3000);
+           }, 3000);   })
+ 
             // console.log(errors.response.data.errors.maxsize);
             // console.log(errors.response.data.errors.format);    
-          }) 
-                   
+          
+        } 
+   
 
     }else{
              this.vide="aie c'est vide"
@@ -304,23 +340,6 @@ if(localStorage.getItem('categories')) {
     }
 
   this.getcolor()
-
-  //  await axios.get("http://localhost:5000/api/post")
-  //     .then((docs) => {
-  //       console.log(docs);
-  //         this.posterfirstname = docs.data.firstname
-  //         this.posterlastname = docs.data.lastname
-  //         this.posterpicture = docs.data.picture
-  //         this.userlike = docs.data.likes;
-
-  //     //  this.posts = docs
-  //     //  console.log(docs.data[0].posterId);
-  //       // let inputFile = document.querySelector('#picture')
-  //       // let fileName = document.querySelector('#file-name')
-  //       // inputFile.addEventListener('change', () => {
-  //       //   fileName.textContent = inputFile.files[0].name
-  //       // })
-  //     }).catch((err)=>{console.log(err);});
 
 
   },

@@ -1,6 +1,6 @@
 <template >
 
-<div id="Book">
+<div id="Book" :key="componentKey">
 
   <div id="fix-top" @click="showpost = !showpost" >
     <img v-if="urlpic !==''" class="picture-user-none-top" :src='urlpic'/>    
@@ -40,12 +40,12 @@
               <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
         </div>
       </div>    
-          <div v-if='post.picture !="" '  class="image-card"  >
+          <div v-if='post.picture !="" '  class="image-card">
             <img class="card-img " :src="post.picture" alt="photo" />
           </div>
           <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
           <div class="btn-card" id="card-att">
-              <v-btn  v-if="post.likers != userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
+              <v-btn  v-if="post.likers !== userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
               <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"> <v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn >
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn >
@@ -75,7 +75,7 @@
   </v-card>
 </div>
 <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
-  <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="getPosts(),showmodify = false" :msg="post.message" :pic="post.picture"  :id="userid" :test1="posts" :idpost="post._id"/>
+  <modify v-if="showmodify" :key="componentKey" v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
   <Postcreate  v-show="showpost" @close-modale-post="showpost = false,getPosts()"/>
 </div>
 
@@ -94,7 +94,7 @@ export default {
   
   components: { 
  
- Postcreate:() => import( /* webpackChunkName:"Postcreate"*/"./index/postcreate.vue"),
+ Postcreate:() => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
  modify: () => import("./index/modifytest.vue"),
 //  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
 //  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
@@ -109,7 +109,7 @@ export default {
   },
   asyncData() {
     return {
-      // componentKey:0,
+      componentKey:0,
       avatarpicempty:'',
       log:false,
       showdelete: false,
@@ -124,7 +124,8 @@ export default {
       userpicture:'',
       liker : [],
       posts:[],
-      // post:[],
+      post:[],
+      postlikers:[],
       posterId : '',
       posterfirstname : '',
       posterlastname: '',
@@ -133,7 +134,7 @@ export default {
       userlike:[],
       message:'',
       comdelpost:"",
-      number:'',
+      // number:'',
       // photo:'',
       // userphoto:'',
       // match:[],
@@ -195,16 +196,19 @@ today = dd+'/'+mm+'/'+yyyy;
   methods: {
     number(){
 
-    
+    // this.$Nuxt
+    // vm.$Nuxt
+    this.$forceUpdate()
+    // vm.$forceUpdate()
 
   },
        
     // updateparent(uppost) {
-    //    this.posts = uppost
+    //    this.post = uppost
     // },
-    // forceRerender() {
-    //   this.componentKey += 1;
-    // },
+    forceRerender() {
+      this.componentKey += 1;
+    },
 
   //  async refresh(){
    
@@ -250,7 +254,7 @@ today = dd+'/'+mm+'/'+yyyy;
       // this.posts.forEach(doc=>{
       //     this.number = doc.likers.length
       //     console.log(doc.likers.length);
-
+  
       //   })
       })
       .catch((err)=>{console.log(err);});
