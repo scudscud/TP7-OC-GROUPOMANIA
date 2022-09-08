@@ -20,15 +20,10 @@ router.patch('/unlike-post/:id', postController.unLikePost);
 router.delete('/picture/:id',requireAuth,postController.deleteOnePicture)
 router.delete('/delete-old-pic-modify/:id',requireAuth,postController.deleteOldPicModidify)
 router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
-} else {next();}
-    });
-  }
-  ,postController.createPost);
+} else {next();} }); } ,postController.createPost);
 
 router.put('/photo/:id',requireAuth,(req, res, next) => {photo(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
-} else {next();}
-    });
-  },postController.updatePictureUserPost )
+} else {next();}});},postController.updatePictureUserPost )
 
 // gestion des commentaire\\
 

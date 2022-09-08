@@ -11,11 +11,8 @@ function fileFilter(req, file, cb) {
 }
   const storage = multer.diskStorage({destination : (req,res,cb)=> {cb(null,`images/default`)},
     filename: function (req, file, cb) { 
-     
-         
        // id du user pour le name \\
        const name = req.params.id + ".jpg"
-      
         cb(null,name);
       },
   })

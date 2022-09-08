@@ -45,11 +45,14 @@
           </div>
           <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
           <div class="btn-card" id="card-att">
-              <v-btn  v-if="post.likers !== userid"  id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
+        
+              <v-btn v-if="evenNumber" id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
               <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"> <v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
+          
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn >
+
               <v-btn id="btn-att"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn >
-              
+       
           </div>
     </div>       
   </v-card>
@@ -134,15 +137,21 @@ export default {
       userlike:[],
       message:'',
       comdelpost:"",
-      // number:'',
+      numberlike:[],
+      like:"",
       // photo:'',
       // userphoto:'',
       // match:[],
-    
+      // liked: "",
 
     };
   },
   computed: {
+    evenNumber(){
+      // console.log(evenNumber);
+      this.numberlike.filter(n => n.match(this.userid))
+    },
+    
             date(){
 let today = new Date();
 let dd = today.getDate();
@@ -194,21 +203,13 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
-    number(){
+    // idLike(){
+    //  if(this.posts.likers.filter(n => n === userid)) {
+    //       this.like = true
 
-    // this.$Nuxt
-    // vm.$Nuxt
-    this.$forceUpdate()
-    // vm.$forceUpdate()
 
-  },
-       
-    // updateparent(uppost) {
-    //    this.post = uppost
+    //  }
     // },
-    forceRerender() {
-      this.componentKey += 1;
-    },
 
   //  async refresh(){
    
@@ -219,6 +220,7 @@ today = dd+'/'+mm+'/'+yyyy;
   let postID = postId
    axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
      .then(()=>{
+      this.evenNumber
       this.like = false
       this.getPosts()
      }).catch((err)=>{console.log(err);})
@@ -227,6 +229,7 @@ today = dd+'/'+mm+'/'+yyyy;
    unLikePost(postId){
     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
     .then(()=>{ this.like =  true 
+      this.evenNumber
       this.getPosts()
      }).catch((err)=>{console.log(err);})
    },
@@ -250,7 +253,10 @@ today = dd+'/'+mm+'/'+yyyy;
     },
     getPosts() {
       axios.get("http://localhost:5000/api/post")
-      .then((docs) => { console.log(docs.data); this.posts = docs.data
+      .then((docs) => { 
+         this.posts = docs.data
+         console.log(this.posts);
+
       // this.posts.forEach(doc=>{
       //     this.number = doc.likers.length
       //     console.log(doc.likers.length);
@@ -267,11 +273,7 @@ today = dd+'/'+mm+'/'+yyyy;
       //  if(this.comdelpost = true){
       await axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((post) => {
-        // post.data.deletedPost.likers.forEach(userIdLikeToDelete => {
-        //   console.log('ok');
-        //   // axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{ id: userIdLikeToDelete })
-        //   });
-          // this.getPosts()
+      
         })
         .catch((err) => console.log(err))
       // }
@@ -308,6 +310,15 @@ today = dd+'/'+mm+'/'+yyyy;
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.urlpic  = docs.data.photo
+        this.liked = arraylike
+        console.log(this.liked);
+
+         let testlike = docs.data.likes 
+        const arraylike =
+        testlike.forEach(el => {
+          console.log(el);
+          
+        });
         // console.log(docs.data);
             // console.log(this.role);
     }).catch((error)=>{ console.log(error);
@@ -315,17 +326,19 @@ today = dd+'/'+mm+'/'+yyyy;
   await axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         this.posts = docs.data
-        // this.posts.forEach(doc=>{
-        //   this.number = doc.likers.length
-        //   console.log(doc.likers.length);
+        // console.log(this.posts.likers);
+        this.posts.forEach(doc=>{
+          this.numberlike = doc.likers
+          console.log( this.numberlike);
 
-        // })
+        })
      
       })
       .catch((err)=>{
         console.log(err);
       });
   this.getcolor()
+ this.evenNumber
   },
 }
 

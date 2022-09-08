@@ -34,7 +34,7 @@
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
           <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" v-if="url !== '' || oldpic !== ''" @click="delPicPreview(),postValid()" >Supprimer</button>
+          <button id="btn-del-create-pic" v-if="url !== '' || oldpic !== ''" @click="delPicPreview(),postValid(),deletePictureModify()" >Supprimer</button>
         </div>
       <v-card-text id="card-comment" >
         <label for="messagetext-modify"><h2 class="comment-title">Votre commentaire</h2></label>
@@ -158,16 +158,40 @@ export default{
               // console.log(this.oldpic) 
         // if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
         if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){
-        axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
-        .then(() => {
+        // axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
+         let formData = new FormData()
+          formData.append('posterId', this.userid),
+          formData.append('id',this.postId),
+          formData.append('oldname',this.oldpic),
+          formData.append('message', this.message),
+          formData.append('file', this.file),
+          // formData.append('role',this.role)
+        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
            
             this.posted = true
-             setTimeout(() => {
+             setTimeout(() => { 
             this.$emit('close-modale-modify')
             }, 2500)        
-          })
+          // })
         //    .then((doc)=> console.log(doc))
-        } else {
+
+        }else if (this.file == null || this.file == ''){
+          this.file = this.oldpic
+          let formData = new FormData()
+          formData.append('posterId', this.userid),
+          formData.append('id',this.postId),
+          formData.append('oldname',this.oldpic),
+          formData.append('message', this.message),
+          formData.append('file', this.file),
+          // formData.append('role',this.role)
+        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
+          .then(() => {
+            this.posted = true
+            setTimeout(() => {
+          this.$emit('close-modale-modify')
+            }, 2500); 
+          })
+        } else  {
           // let formData = new FormData()
           //   formData.append('oldname', this.oldpic)
           
@@ -180,7 +204,7 @@ export default{
           formData.append('file', this.file),
           // formData.append('role',this.role)
         axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
-
+     
           .then(() => {
             axios.delete(`http://localhost:5000/api/post/delete-old-pic-modify/${this.id}`, {data : {id:this.oldpic}})
             this.posted = true

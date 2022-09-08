@@ -177,7 +177,7 @@ exports.deleteOnePicture = (req, res) => {
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('onepic')
   }else{
-        // console.log(req);
+        console.log(post);
       let delimg = post.picture.split('images/')[1]
       // console.log(delimg);
     
