@@ -80,6 +80,7 @@
      <v-card-text class="card-profil-friend">
       <div class="card-profil-friend-t"><v-icon class="icon-friend">mdi-account-group</v-icon><h2 class="h2-friend">Mes amis</h2></div>
       <p class="card-profil-friend-p">{{ friend }}</p>
+      <p class="card-profil-friend-p">{{ follower}}</p>
       <!-- <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
        supprimer des Amis
       </button> -->
@@ -87,8 +88,10 @@
    
      <v-card-text class="card-profil-post">
        <div class="card-profil-friend-t"><v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon> <h2 class="h2-post">Mes publications</h2></div>
-      
-      <p class="card-profil-post-p">{{ publication}}</p>
+          <div v-if="pub[0] != undefined"><p class="card-profil-post-p" v-for=" p, index in pub">publication : {{ p}}</p></div>
+          <div class="card-profil-post-p" v-else >{{publication}}</div>
+   
+  
       <!-- <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
         modifier ma bio
       </button> -->
@@ -114,12 +117,18 @@ export default {
       bio: "",
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       friend:"Aie c'est vide ",
+      follower:"",
+
       publication:"Vous n'avez rien publier",
+      publications: [],
+      pub: [],
+
       lastname: "",
       firstname: "",
       photo:[],
       userid:'',
       posted:'',
+    
    
     };
   },
@@ -232,10 +241,8 @@ export default {
             console.log(errors.response.data.errors.format);    
           }) 
     },
-
-
-
   },
+
   async mounted(){
   axios.defaults.withCredentials = true;
         // console.log($refs.deletepost.$el)
@@ -260,12 +267,50 @@ export default {
         this.lastname = docs.data.lastname
         this.urlpic = docs.data.photo
         this.userpicture = docs.data.pictureprofil
-        console.log(this.urlpic);    
+        this.follower = docs.data.followers
+        // console.log(this.urlpic);    
     }).catch((error)=>{
       console.log(
        error
       );
     })
+
+
+  await  axios.get(`http://localhost:5000/api/post`)
+       .then((test)=>{
+        test.data.forEach(doc => {
+          if(doc.posterId === this.userid)
+          { const id = []
+             id.push(doc._id)
+            id.forEach(postid =>{
+                axios.get(`http://localhost:5000/api/post/${postid}`)
+                .then((doc)=>{
+                 
+
+                  this.pub.push(doc.data.date) 
+                  console.log(this.pub)
+                 
+           
+                  // doc.data.date.push.pub
+                  // let docs = doc.data.date
+                  // docs.forEach(pub=>{
+                  //   console.log(pub);
+
+
+
+                  // })
+                
+                  
+               
+             
+
+
+
+                })
+            })
+          }   
+        })
+        })      
     
     this.getcolor()
   
@@ -699,6 +744,8 @@ p.card-profil-friend-p {
 }
 
 p.card-profil-post-p {
+  display: flex;
+  flex-direction: row;
   margin: 0;
   padding-left: 1%;
   padding-bottom: 2%;

@@ -12,14 +12,14 @@
   </div>
 
 <div v-if="this.posts[0] != undefined" >     
-  <v-card  v-for="(post,index) in posts" :key="post.id"  class="card-post"  >    
+  <v-card  v-for="(post,index) in posts" :key="post.id" :index="index"  class="card-post"  >    
     <div class="border-card"> 
-      <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == ''" >
+      <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == undefined" >
         <div class="user-book-main">
           <div class="name-date-book">
             <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture'/>
               <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
-              <span class="fullname-main">{{post.posterfullname}}</span>
+              <span class="fullname-main">{{post.posterfullname}}{{post._id}}</span>
           </div>
               <span class="full-date"> {{post.date}}</span>
         </div>
@@ -37,7 +37,7 @@
         <div class="user-book-main-none">
               <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
               <div v-else id="avatar-empty-book-book">{{avatarpicempty}}</div>
-              <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
+              <span class="fullname-none">{{post.posterfullname}} à {{post.date}}{{post._id}}</span>
         </div>
       </div>    
           <div v-if='post.picture !="" '  class="image-card">
@@ -45,14 +45,18 @@
           </div>
           <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
           <div class="btn-card" id="card-att">
-        
-              <v-btn v-if="evenNumber" id="btn-att-unlike" @click="likePost(post._id)" type="submit" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
-              <v-btn v-else id="btn-att-like" @click="unLikePost(post._id)" type="submit"> <v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
-          
-              <v-btn id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></v-btn >
 
-              <v-btn id="btn-att"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></v-btn >
-       
+
+
+              <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'" @click="clickLike(post._id,index)" class="classlikebtn" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></button> 
+
+
+              <!-- <v-btn v-if="!like" class="classlikebtn" id="btn-att-unlike" @click="likePost(post._id,index),evenNumber(index)" type="submit" :idliker="userid" :idpost="post._id"  :index="index" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn >
+              <v-btn v-else class="classdislikebtn" id="btn-att-like" @click="unLikePost(post._id,index),evenNumber(index)" type="submit" :idliker="userid" :idpost="post._id"  :index="index" > <v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">DisLike</p><div class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></v-btn > -->
+
+              <button id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button >
+
+              <button v-if="post.posterId != userid"  id="btn-att" @click="addfollow(post.posterId)" type="submit"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Devenir&nbspamis</p></button >
           </div>
     </div>       
   </v-card>
@@ -61,7 +65,7 @@
   <v-card  class="card-post"  >    
    <div class="border-card">                                       
     <div id="card-autor-book-first" >
-          <span class="firstpost" >le {{date}} à {{hour}} {{fullname}} va renter dans un zone inexplorée</span>
+          <span class="firstpost" >le {{date}} à {{hour}} {{fullname}}  va renter dans un zone inexplorée</span>
     </div>
         <div class="image-card">
           <img class="card-img "  src="../client/public/uploads/posts/pexels-gabriela-palai-590029.jpg" alt="photo" />
@@ -139,6 +143,8 @@ export default {
       comdelpost:"",
       numberlike:[],
       like:"",
+      likeby:'',
+      userLikePostId: [],
       // photo:'',
       // userphoto:'',
       // match:[],
@@ -147,10 +153,7 @@ export default {
     };
   },
   computed: {
-    evenNumber(){
-      // console.log(evenNumber);
-      this.numberlike.filter(n => n.match(this.userid))
-    },
+ 
     
             date(){
 let today = new Date();
@@ -203,36 +206,94 @@ today = dd+'/'+mm+'/'+yyyy;
   events: {
 },
   methods: {
+
+
+    clickLike(postId, index ){
+     const likeBtn = document.querySelectorAll('.classlikebtn')
+     if(likeBtn[index].classList.contains('class-btn-att-unlike')){
+     axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
+     .then(()=>{
+        axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+        .then((user)=> {
+        this.userLikePostId = user.data.likes
+        }).catch((err)=>{console.log(err)})
+        likeBtn[index].classList.replace('class-btn-att-unlike','class-btn-att-like')
+     this.getPosts()
+      }).catch((err)=>{console.log(err)})
+   
+    }else{ 
+      axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
+      .then(()=>{
+        axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          .then((user)=> {
+        this.userLikePostId = user.data.likes
+       }).catch((err)=>{console.log(err)})
+       likeBtn[index].classList.replace('class-btn-att-like','class-btn-att-unlike')
+       this.getPosts()
+     }).catch((err)=>{console.log(err)})
+    
+
+    }
+    this.getPosts()
+    },
+       
+
+
+
+    evenNumber(index){
+  // let getUnlike = document.getElementById('btn-att-unlike')
+  // let getLike = document.getElementById('btn-att-like')
+  //  console.log(getUnlike);
+  //  console.log(getLike);
+      // console.log(evenNumber);
+    const classLike = document.querySelectorAll('.classlikebtn')
+    console.log( index);
+    let likeby = this.numberlike.filter(n => n === this.userid)
+
+   console.log(likeby);
+    if(likeby == undefined){
+    this.like = !this.like
+    }
+    else{
+    this.like = true
+    }
+    },
     // idLike(){
     //  if(this.posts.likers.filter(n => n === userid)) {
     //       this.like = true
-
-
     //  }
     // },
-
   //  async refresh(){
-   
   //  console.log('ok');
   //   } ,
 
-   likePost(postId){
-  let postID = postId
-   axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
-     .then(()=>{
-      this.evenNumber
-      this.like = false
+  likePost(postId,index){
+  // let postID = postId
+  // const classLike = document.querySelectorAll('.classlikebtn')
+  // console.log( classLike[index]);
+  // console.log(postId);
+  // console.log(index);
+  axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
+    .then(()=>{
       this.getPosts()
-     }).catch((err)=>{console.log(err);})
-   },
+    this.evenNumber()
+    
+    }).catch((err)=>{console.log(err);})
+  },
 
-   unLikePost(postId){
+  unLikePost(postId,index){ 
+    const classLike = document.querySelectorAll('.classdislikebtn')
+    // console.log(classLike[index]);
+    // console.log(postId); 
+    // console.log(index);                                                                 
     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
-    .then(()=>{ this.like =  true 
-      this.evenNumber
+    .then(()=>{ 
+      this.like = !this.like
       this.getPosts()
-     }).catch((err)=>{console.log(err);})
-   },
+      this.evenNumber()
+     
+    }).catch((err)=>{console.log(err);})
+  },
 
     postIdDel(post){
         const parse= JSON.stringify(post);
@@ -244,33 +305,20 @@ today = dd+'/'+mm+'/'+yyyy;
       axios
         .get("http://localhost:5000/api/user")
         .then((docs) => {
-        
-          // this.posts = docs.data.allPosts
-        // console.log(docs);
         }
         )
         .catch((err) => console.log(err));
     },
     getPosts() {
       axios.get("http://localhost:5000/api/post")
-      .then((docs) => { 
-         this.posts = docs.data
-         console.log(this.posts);
-
-      // this.posts.forEach(doc=>{
-      //     this.number = doc.likers.length
-      //     console.log(doc.likers.length);
-  
-      //   })
+      .then((docs) => {
+        this.posts = docs.data
+ 
       })
       .catch((err)=>{console.log(err);});
     },
 
       async deletePost(postId) {
-      // console.log(postId);
-      //  this.showdel = true
-      //  await this.comdelpost;
-      //  if(this.comdelpost = true){
       await axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((post) => {
       
@@ -287,8 +335,21 @@ today = dd+'/'+mm+'/'+yyyy;
    document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
    document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
   }
-  } 
+  } ,
+
+
+  addfollow(posterId){
+  axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
+  .catch((err)=>{err.message}) 
+},
+
+addUnFollow(posterId){
+  axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
+  .catch((err)=>{err.message}) 
+},
+
   },
+
   
   async mounted(){
   axios.defaults.withCredentials = true;
@@ -310,35 +371,29 @@ today = dd+'/'+mm+'/'+yyyy;
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.urlpic  = docs.data.photo
-        this.liked = arraylike
-        console.log(this.liked);
-
-         let testlike = docs.data.likes 
-        const arraylike =
-        testlike.forEach(el => {
-          console.log(el);
-          
-        });
-        // console.log(docs.data);
-            // console.log(this.role);
-    }).catch((error)=>{ console.log(error);
-    })
-  await axios.get("http://localhost:5000/api/post")
+        this.userLikePostId = docs.data.likes
+        console.log(this.userLikePostId);
+    }).then(()=>{
+      axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         this.posts = docs.data
-        // console.log(this.posts.likers);
-        this.posts.forEach(doc=>{
-          this.numberlike = doc.likers
-          console.log( this.numberlike);
-
-        })
-     
+   
       })
       .catch((err)=>{
         console.log(err);
       });
+
+    })
+    
+    
+    
+    
+    
+    .catch((error)=>{ console.log(error);
+    })
+ 
   this.getcolor()
- this.evenNumber
+
   },
 }
 
@@ -686,6 +741,9 @@ p.firstpost {
 }
 
 #card-att {
+  display: flex;
+  font-display: row;
+  flex-wrap: wrap;
   justify-content: center;
   border-top: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
@@ -700,6 +758,12 @@ p.firstpost {
 }
 
 #btn-att {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
   margin-top: 2%;
   margin-right: 3%;
   background-color: $secondary;
@@ -707,16 +771,53 @@ p.firstpost {
   width: auto;
   cursor: pointer;
   padding: 2%;
-}
-
-#btn-att:hover {
-  background-color: $tertiary;
+  &:hover{
+    background-color: $tertiary;
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
+  &#btn-att>.img-att:before {
+    color:red;
+  }
+
+  }
+  
 }
 
-#btn-att-unlike {
+// #btn-att:hover {
+//   background-color: $tertiary;
+//   color: $secondary;
+//   translate: 3px;
+//   border: solid 1px $secondary;
+//   &.img-att {
+//        color:$secondary;
+//   }
+// }
+
+
+// #btn-att-unlike {
+//   margin-top: 2%;
+//   margin-right: 3%;
+//   background-color: $secondary;
+//   color: $tertiary;
+//   width: auto;
+//   cursor: pointer;
+//   padding: 2%;
+//   &:hover{
+//   background-color: $tertiary;
+//   color: $secondary;
+//   translate: 3px;
+//   border: solid 1px $secondary;
+//   }
+// }
+
+button.class-btn-att-unlike {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
   margin-top: 2%;
   margin-right: 3%;
   background-color: $secondary;
@@ -732,7 +833,33 @@ p.firstpost {
   }
 }
 
-#btn-att-like {
+
+
+// #btn-att-like {
+//   margin-top: 2%;
+//   margin-right: 3%;
+//   background-color: rgb(27, 108, 17);
+//   color: $secondary;
+//   font-style: italic;
+//   font-weight: bold;
+//   width: auto;
+//   cursor: pointer;
+//   padding: 2%;
+//   &:hover {
+//   background-color: rgb(27, 108, 17);
+//   color: $secondary;
+//   translate: 3px;
+//   border: solid 1px $secondary;
+//   }
+// }
+
+button.class-btn-att-like {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
   margin-top: 2%;
   margin-right: 3%;
   background-color: rgb(27, 108, 17);
@@ -750,7 +877,6 @@ p.firstpost {
   }
 }
 
-
 .buble-like{
   background-color: $primary;
   position: relative;
@@ -763,7 +889,10 @@ p.firstpost {
 }
 
 #number-like{
-color: aliceblue;
+color: black;
+position: relative;
+top:-4px;
+
 
 }
 
@@ -773,7 +902,14 @@ color: aliceblue;
   justify-content: center;
   width: auto;
   padding-right: 10%;
+  &:before{
+    color: $tertiary;
+  
+  }   
 }
+
+
+
 
 p.text-att {
   width: auto;

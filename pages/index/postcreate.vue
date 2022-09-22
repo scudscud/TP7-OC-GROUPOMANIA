@@ -70,6 +70,7 @@
       name: "postcreate",
       methods: {
       postValid(){
+        // let regex = "^\s+$"
        if(this.message !='' || this.url !=''){
     
         this.validPost = true
@@ -80,7 +81,8 @@
        }
       },
       textValid(){
-        if(this.message !='' ){
+        // let regex = "^\s*$"
+        if(this.message !=''){
           this.createText = true
         }
         else{
@@ -101,6 +103,7 @@
         },
         delPicPreview(){
           this.url = ''
+          this.file = ''
           this.createPic = false
         },
         
@@ -688,6 +691,7 @@
       width: 100%;
       color: $secondary;
       word-break: break-word;
+      white-space: pre;
       border: solid 2px $secondary;
       padding: 1%;
       &:focus {

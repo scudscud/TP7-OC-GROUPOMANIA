@@ -177,7 +177,7 @@ exports.deleteOnePicture = (req, res) => {
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('onepic')
   }else{
-        console.log(post);
+        // console.log(post);
       let delimg = post.picture.split('images/')[1]
       // console.log(delimg);
     
@@ -247,7 +247,7 @@ exports.likePost = (req, res) => {
       },
       { new: true },
       (err, docs) => {
-        if (!err) res.send(docs);
+        if (!err) res.send('post liker');
         else return res.status(400).send(err.message);
       }
     );
