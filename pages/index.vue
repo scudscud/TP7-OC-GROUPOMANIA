@@ -777,7 +777,7 @@ p.firstpost {
   translate: 3px;
   border: solid 1px $secondary;
   &#btn-att>.img-att:before {
-    color:red;
+    color:$secondary;
   }
 
   }
@@ -830,7 +830,11 @@ button.class-btn-att-unlike {
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
+  &.class-btn-att-unlike>.img-att:before{
+    color:$secondary;
   }
+  }
+
 }
 
 
@@ -869,6 +873,9 @@ button.class-btn-att-like {
   width: auto;
   cursor: pointer;
   padding: 2%;
+  &.class-btn-att-like>.img-att:before{
+    color:$secondary;
+  }
   &:hover {
   background-color: rgb(27, 108, 17);
   color: $secondary;
@@ -889,7 +896,7 @@ button.class-btn-att-like {
 }
 
 #number-like{
-color: black;
+color: $secondary;
 position: relative;
 top:-4px;
 
