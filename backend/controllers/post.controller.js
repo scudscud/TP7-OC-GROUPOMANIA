@@ -24,7 +24,7 @@ exports.createPost = async (req, res) => {
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
-  const finalDate = `posté le ${days} à ${hours}:${minutes}`
+  const finalDate = `posté le ${days} à ${hours}h${minutes}`
 
   const newPost = new PostModel({
     posterId: req.body.posterId,
