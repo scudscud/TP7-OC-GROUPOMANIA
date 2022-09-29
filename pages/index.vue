@@ -14,7 +14,7 @@
 <div v-if="this.posts[0] != undefined" >     
   <v-card  v-for="(post,index) in posts" :key="post.id" :index="index"  class="card-post"  >    
     <div class="border-card"> 
-      <div id="card-autor-book" v-if="post.posterId === userid || post.posterrole == undefined" >
+      <div id="card-autor-book" v-if="post.posterId === userid " >
       
           <div class="name-date-book">
             <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture'/>
@@ -22,19 +22,27 @@
               <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
               <!-- <p class="full-date">{{post.date}}</p> -->
           </div>
-         
-              
-  
-        <!-- <span class="postId"> {{post._id}}</span>
-        <span class="postId"> {{post.id}}</span>
-        <span class="postId"> {{index}}</span> -->
             <div class="btn-book-main" >
-            <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
                 <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
-                    <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
                 <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
             </div>
       </div>
+
+      <div id="card-autor-book" v-else-if="role !== undefined" >
+      <div class="name-date-book">
+        <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture'/>
+          <div v-else id="avatar-empty-book">{{avatarpicemptyNone}}</div>
+          <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
+          <!-- <p class="full-date">{{post.date}}</p> -->
+      </div>
+        <div class="btn-book-main" >
+        <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
+            <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)"> <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier </button>
+                <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
+            <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
+        </div>
+  </div>
+
         <div id="card-autor-book-none" v-else>
         <div class="user-book-main-none">
               <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
@@ -52,9 +60,9 @@
 
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'" @click="clickLike(post._id,index)"   class="classlikebtn" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div  v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></button> 
 
-                <button v-if="post.posterId != userid && follow == false "  @click="addfollow(post.posterId)" type="submit" class="btn-att-follow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Follow</p></button >
-                <button v-else-if="post.posterId != userid && follow == true"   @click="addUnFollow(post.posterId)" type="submit" class="btn-att-unfollow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">UnFollow</p></button >
-              
+                <button v-if="post.posterId != userid" :class="userFollowingId.includes(post.posterId) ? 'btn-att-unfollow' : 'btn-att-follow'"  @click="clickFollow(post.posterId,index)" type="submit" class="classfollowbtn"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Follow</p></button >
+                <!-- <button v-else-if="post.posterId != userid && follow == true"   @click="clickFollow(post.posterId),clickFollow(index)" type="submit" class="btn-att-unfollow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">UnFollow</p></button >
+               -->
 
               <button id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button >
 
@@ -257,7 +265,6 @@ today = dd+'/'+mm+'/'+yyyy;
       axios.get("http://localhost:5000/api/post")
       .then((docs) => {
         this.posts = docs.data
- 
       })
       .catch((err)=>{console.log(err);});
     },
@@ -265,7 +272,6 @@ today = dd+'/'+mm+'/'+yyyy;
       async deletePost(postId) {
       await axios.delete(`http://localhost:5000/api/post/${postId}`)
       .then((post) => {
-      
         })
         .catch((err) => console.log(err))
       // }
@@ -274,8 +280,8 @@ today = dd+'/'+mm+'/'+yyyy;
     getcolor(){
       if(this.urlpic === ''  ){
     this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+    // this.avatarpicemptyNone = elt.posterlastname.split('')[0].toLocaleUpperCase();
 
- 
     // let randomColor = Math.floor(Math.random()*16777215).toString(16)
   //   // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
   // //  document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
@@ -284,11 +290,68 @@ today = dd+'/'+mm+'/'+yyyy;
   }
   } ,
 
+  // clickLike(postId, index ){
+  //    const likeBtn = document.querySelectorAll('.classlikebtn')
+  //    if(likeBtn[index].classList.contains('class-btn-att-unlike')){
+  //    axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
+  //    .then(()=>{
+  //       axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+  //       .then((user)=> {
+  //       this.userLikePostId = user.data.likes
+  //       }).catch((err)=>{console.log(err)})
+  //       likeBtn[index].classList.replace('class-btn-att-unlike','class-btn-att-like')
+  //    this.getPosts()
+  //     }).catch((err)=>{console.log(err)})
+   
+  //   }else{ 
+  //     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
+  //     .then(()=>{
+  //       axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+  //         .then((user)=> {
+  //       this.userLikePostId = user.data.likes
+  //         }).catch((err)=>{console.log(err)})
+  //       likeBtn[index].classList.replace('class-btn-att-like','class-btn-att-unlike')
+  //       this.getPosts()
+  //    }).catch((err)=>{console.log(err)})
+  //   }
+  //   this.getPosts()
+  //   },
+   
 
-  addfollow(posterId){
+    clickFollow(posterId,index){
+      const followBtn = document.querySelectorAll('.classfollowbtn')
+      if(followBtn[index].classList.contains('btn-att-unfollow')){
+        axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
+        .then(()=>{
+          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          .then((docs)=>{ 
+            this.userFollowingId = docs.data.following
+            console.log(this.userFollowingId);
+           
+          })
+        }).catch((err)=>{ console.log(err);})
+        followBtn[index].classList.replace('btn-att-unfollow' ,'btn-att-follow')
+        this.getPosts()
+      }else{
+        axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
+        .then(()=>{
+          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          .then((docs)=>{this.userFollowingId = docs.data.following
+            console.log(this.userFollowingId);
+          
+       
+          })
+        }).catch((err)=>{ console.log(err);})
+        followBtn[index].classList.replace('btn-att-follow' ,'btn-att-unfollow')
+        this.getPosts()
+      }
+  
+    },
+
+
+  addfollow(posterId,index){
   axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
   .then(()=>{
-    this.follow = true
     this.getPosts()
   })
   .catch((err)=>{err.message}) 
@@ -297,7 +360,6 @@ today = dd+'/'+mm+'/'+yyyy;
 addUnFollow(posterId){
   axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
   .then(()=>{
-    this.follow = false
     this.getPosts()
   })
   .catch((err)=>{err.message}) 
@@ -320,7 +382,6 @@ addUnFollow(posterId){
 
   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
     .then((docs) => {
-      
         this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
@@ -329,7 +390,6 @@ addUnFollow(posterId){
         this.userLikePostId = docs.data.likes
         this.userFollowingId = docs.data.following
         console.log(this.userFollowingId);
-       
     }).then(()=>{
       axios.get("http://localhost:5000/api/post")
       .then((docs) => {
@@ -345,6 +405,7 @@ addUnFollow(posterId){
     .catch((error)=>{ console.log(error);
     }) 
   this.getcolor()
+
   },
 }
 
@@ -402,6 +463,7 @@ cursor: pointer;
   align-items: center;
   border: solid 2px $tertiary;
   border-radius: 50%; 
+  margin-right: 1%;
   background-color: rgb(89, 165, 35);
 }
 
@@ -475,6 +537,7 @@ background-color: $tertiary;
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%; 
+  margin-right: 1%;
   background-color: rgb(89, 165, 35);
 }
 
@@ -487,6 +550,7 @@ background-color: $tertiary;
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%; 
+  margin-right: 1%;
   background-color: rgb(89, 165, 35);
 }
 
@@ -667,9 +731,9 @@ background-color: $tertiary;
 //   padding-left: 3%;
 // }
 
-#fullname-main {
-// padding-left:1%;;
-}
+// #fullname-main {
+// // padding-left:1%;;
+// }
 
 
 p.full-date {
@@ -681,8 +745,6 @@ p.full-date {
   margin-bottom: 0;
   padding-left: 1%;
 }
-
-
 
 p.firstpost {
   display: flex;
@@ -736,6 +798,31 @@ p.firstpost {
   } 
 }
 
+.classfollowbtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: $secondary;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover{
+    background-color: $tertiary;
+  color: $secondary;
+  translate: 3px;
+  border: solid 1px $secondary;
+  &.classfollowbtn.img-att:before {
+    color:$secondary;
+  }
+  } 
+}
+
 .btn-att-follow {
   display: flex;
   flex-direction: row;
@@ -755,7 +842,7 @@ p.firstpost {
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
-  &.btn-att-follow>.img-att:before {
+  &.classfollowbtn.img-att:before {
     color:$secondary;
   }
   } 
