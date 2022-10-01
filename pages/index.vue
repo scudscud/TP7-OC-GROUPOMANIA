@@ -1,5 +1,7 @@
 <template >
 
+  <div>
+
 <div id="Book" :key="componentKey">
 
   <div id="fix-top" @click="showpost = !showpost" >
@@ -11,11 +13,10 @@
         </button>   -->
   </div>
 
-<div v-if="this.posts[0] != undefined" >     
+<div class="center-main" v-if="this.posts[0] != undefined" >     
   <v-card  v-for="(post,index) in posts" :key="post.id" :index="index"  class="card-post"  >    
     <div class="border-card"> 
       <div id="card-autor-book" v-if="post.posterId === userid " >
-      
           <div class="name-date-book">
             <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture'/>
               <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
@@ -42,36 +43,39 @@
             <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)"><v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon >Supprimer </button>
         </div>
   </div>
-
         <div id="card-autor-book-none" v-else>
         <div class="user-book-main-none">
               <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
               <div v-else id="avatar-empty-book-book">{{avatarpicemptyNone}}</div>
-              <span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
-        </div>
-      </div>    
+              <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p></div>
+              <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) " @click="addUnFollow(post.posterId,index)" type="submit" class="btn-main-follow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">abonné</p></button >
+              <button v-else  @click="addFollow(post.posterId,index)" type="submit" class="btn-main-unfollow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">S'abonné</p></button>
+        </div>    
+        <!-- <div id="card-autor-book-none" v-else>
+        <div class="user-book-main-none">
+              <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
+              <div v-else id="avatar-empty-book-book">{{avatarpicemptyNone}}</div><span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
+              <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) " :class="userFollowingId.includes(post.posterId) ? 'btn-att-unfollow' : 'btn-att-follow'"  @click="clickFollow(post.posterId,index)" type="submit" class="classfollowbtn"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Follow</p></button >
+                <button v-else  @click="clickFollow(post.posterId,index)" type="submit" class="classfollowbtn"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">UnFollow</p></button > </div> </div>     -->
           <div v-if='post.picture !="" '  class="image-card">
             <img class="card-img " :src="post.picture" alt="photo" />
           </div>
           <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
-          <div class="btn-card" id="card-att">
-
-
-
+          <div v-if="role !== undefined" class="btn-card" id="card-att">
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'" @click="clickLike(post._id,index)"   class="classlikebtn" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div  v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></button> 
-
-                <button v-if="post.posterId != userid" :class="userFollowingId.includes(post.posterId) ? 'btn-att-unfollow' : 'btn-att-follow'"  @click="clickFollow(post.posterId,index)" type="submit" class="classfollowbtn"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Follow</p></button >
-                <!-- <button v-else-if="post.posterId != userid && follow == true"   @click="clickFollow(post.posterId),clickFollow(index)" type="submit" class="btn-att-unfollow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">UnFollow</p></button >
-               -->
-
-              <button id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button >
-
-              
+              <button id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button >  
+                  <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) " @click="addUnFollow(post.posterId,index)" type="submit" class="btn-att-follow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">abonné</p></button >
+                <button v-else-if="post.posterId != userid && !userFollowingId.includes(post.posterId) "  @click="addFollow(post.posterId,index)" type="submit" class="btn-att-unfollow"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">S'abonné</p></button >        
+          </div>
+          <div v-else class="btn-card" id="card-att">
+              <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'" @click="clickLike(post._id,index)"   class="classlikebtn" ><v-icon class="img-att">mdi-thumb-up-outline</v-icon><p class="text-att">Like</p><div  v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span></div></button> 
+              <button id="btn-att"><v-icon class="img-att"> mdi-message-outline</v-icon><p class="text-att">Commenter</p></button >          
           </div>
     </div>       
   </v-card>
 </div>
-<div v-else>     
+
+<div class="center-main" v-else>     
   <v-card  class="card-post"  >    
    <div class="border-card">                                       
     <div id="card-autor-book-first" >
@@ -91,11 +95,14 @@
   
   </v-card>
 </div>
+</div>
+
+
   <deletepost v-if="showdel" :id="userid" :keyid="post._id"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
   <modify v-if="showmodify" :key="componentKey" v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
   <Postcreate  v-show="showpost" @close-modale-post="showpost = false,getPosts()"/>
-</div>
 
+</div>
 </template>
 <script>
 
@@ -290,69 +297,44 @@ today = dd+'/'+mm+'/'+yyyy;
   }
   } ,
 
-  // clickLike(postId, index ){
-  //    const likeBtn = document.querySelectorAll('.classlikebtn')
-  //    if(likeBtn[index].classList.contains('class-btn-att-unlike')){
-  //    axios.patch(`http://localhost:5000/api/post/like-post/${postId}`,{id: this.userid})
-  //    .then(()=>{
-  //       axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-  //       .then((user)=> {
-  //       this.userLikePostId = user.data.likes
-  //       }).catch((err)=>{console.log(err)})
-  //       likeBtn[index].classList.replace('class-btn-att-unlike','class-btn-att-like')
-  //    this.getPosts()
-  //     }).catch((err)=>{console.log(err)})
-   
-  //   }else{ 
-  //     axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`,{id: this.userid})
-  //     .then(()=>{
-  //       axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-  //         .then((user)=> {
-  //       this.userLikePostId = user.data.likes
-  //         }).catch((err)=>{console.log(err)})
-  //       likeBtn[index].classList.replace('class-btn-att-like','class-btn-att-unlike')
-  //       this.getPosts()
-  //    }).catch((err)=>{console.log(err)})
-  //   }
-  //   this.getPosts()
-  //   },
-   
-
-    clickFollow(posterId,index){
-      const followBtn = document.querySelectorAll('.classfollowbtn')
-      if(followBtn[index].classList.contains('btn-att-unfollow')){
-        axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
-        .then(()=>{
-          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-          .then((docs)=>{ 
-            this.userFollowingId = docs.data.following
-            console.log(this.userFollowingId);
-           
-          })
-        }).catch((err)=>{ console.log(err);})
-        followBtn[index].classList.replace('btn-att-unfollow' ,'btn-att-follow')
-        this.getPosts()
-      }else{
-        axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
-        .then(()=>{
-          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-          .then((docs)=>{this.userFollowingId = docs.data.following
-            console.log(this.userFollowingId);
-          
+    // clickFollow(posterId,index){
+    //   const followBtn = document.querySelectorAll('.classfollowbtn')
+    //   if(followBtn[index].classList.contains('btn-att-follow')){
+    //     axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
+    //     // .then(()=>{
+    //     //   axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    //     //   .then((docs)=>{ 
+    //     //     this.userFollowingId = docs.data.following
+    //     //     console.log(this.userFollowingId);          
+    //     //   })
+    //     // })
+    //     .catch((err)=>{ console.log(err);})
+    //     followBtn[index].classList.replace('btn-att-follow' ,'btn-att-unfollow')
+        
+    //   }else{
+    //     axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
+    //     // .then(()=>{
+    //     //   axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    //     //   .then((docs)=>{this.userFollowingId = docs.data.following
+    //     //     console.log(this.userFollowingId);
+    //     //   })
+    //     // })
+    //     .catch((err)=>{ console.log(err);})
+    //     followBtn[index].classList.replace('btn-att-unfollow' ,'btn-att-follow')
        
-          })
-        }).catch((err)=>{ console.log(err);})
-        followBtn[index].classList.replace('btn-att-follow' ,'btn-att-unfollow')
-        this.getPosts()
-      }
+    //   }
   
-    },
+    // },
 
 
-  addfollow(posterId,index){
+  addFollow(posterId,index){
   axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
   .then(()=>{
-    this.getPosts()
+          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          .then((docs)=>{this.userFollowingId = docs.data.following
+            // console.log(this.userFollowingId);
+        })
+    // this.getPosts()
   })
   .catch((err)=>{err.message}) 
 },
@@ -360,7 +342,11 @@ today = dd+'/'+mm+'/'+yyyy;
 addUnFollow(posterId){
   axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
   .then(()=>{
-    this.getPosts()
+          axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          .then((docs)=>{this.userFollowingId = docs.data.following
+            // console.log(this.userFollowingId);
+        })
+    // this.getPosts()
   })
   .catch((err)=>{err.message}) 
 },
@@ -414,6 +400,22 @@ addUnFollow(posterId){
 
 <style lang="scss">
 
+#Book{
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  // width: 100%;
+}
+
+.center-main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // width: auto;
+}
+
 .card-post {
   display: flex;
   flex-direction: column;
@@ -421,6 +423,9 @@ addUnFollow(posterId){
   justify-content: center;
   padding: 1%;
   margin-bottom: 2%;
+  max-width: 700px;
+  min-width: 350px;
+  width: 100%;
   // background-color: red;
 }
 .border-card{
@@ -433,6 +438,7 @@ border: 5px solid $secondary;
  flex-direction: row;
  justify-content: center;
  align-items: center;
+//  max-width: 700px;
  width: 100%;
  height: 50px;
  border: solid 2px $secondary;
@@ -573,14 +579,17 @@ background-color: $tertiary;
   // border-bottom-right-radius: -5%;
   
 }
+
 #card-autor-book-none {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
   background-color: $tertiary;
   padding: 1%;
   border-bottom: solid 2px $secondary;
+  // height: 75px;
   // margin-bottom: 1%;
   // padding-top: 2%;
   // border-bottom-left-radius: -5%;
@@ -591,22 +600,38 @@ background-color: $tertiary;
 .user-book-main-none{
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  width: 100%;
+  // padding-bottom: 2%;
 }
 
-.fullname-none {
+p.fullname-none {
   display: flex;
   flex-direction: row;
-  height: 20px;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  // margin-left: 1%;
   // padding-top: 2%;
-  padding-left: 3%;
-  padding-right: 2%;
-  margin: 0;
+  // padding-left: 3%;
+  // padding-right: 2%;
+  margin-bottom: 0;
 }
+
+// margin-top: 1.5%;
+//   margin-right: 1%;
+//   display: flex;
+//   width: 50px;
+//   height: 50px;
+//   justify-content: center;
+//   align-items: center;
+//   border: solid 2px $secondary;
+//   border-radius: 50%; 
 
 .picture-user-none{
   display: flex;
+  margin-right: 1%;
   width: 50px;
   height: 50px;
   justify-content: center;
@@ -671,6 +696,7 @@ background-color: $tertiary;
 
 .image-card{
   display: flex;
+  
   width: 100%;
   height: 100%;
   padding: 1%  1% ;
@@ -690,8 +716,9 @@ background-color: $tertiary;
   object-fit: cover;
 // overflow: hidden;
   max-height:300px ;
- max-width: 500px;
- min-width: 300px;
+  max-width: 500px;
+  // width: 100%;
+  min-width: 300px;
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
@@ -707,6 +734,7 @@ background-color: $tertiary;
 // overflow: hidden;
   max-height:300px ;
  max-width: 500px;
+ width: 100%;
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
@@ -716,6 +744,7 @@ background-color: $tertiary;
 .message-main {
   padding: 1%;
   text-align: center;
+  max-width: 650px;
 }
 
 .name-date-book {
@@ -842,7 +871,33 @@ p.firstpost {
   color: $secondary;
   translate: 3px;
   border: solid 1px $secondary;
-  &.classfollowbtn.img-att:before {
+  &.btn-att-follow.img-att:before {
+    color:$secondary;
+  }
+  } 
+}
+
+.btn-main-follow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 30px;
+  // margin-top: 2%;
+  margin-right: 1%;
+  // margin-left: auto;
+  background-color: $secondary;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover{
+    background-color: $tertiary;
+  color: $secondary;
+  translate: 3px;
+  border: solid 1px $secondary;
+  &.btn-main-follow>.img-att:before {
     color:$secondary;
   }
   } 
@@ -871,6 +926,34 @@ p.firstpost {
   translate: 3px;
   border: solid 1px $secondary;
   &.btn-att-unfollow >.img-att:before {
+    color:$secondary;
+  }
+  } 
+}
+
+.btn-main-unfollow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 30px;
+  // margin-top: 2%;
+  // margin-left: auto;
+  margin-right: 3%;
+  background-color:  $primary;
+  color: $secondary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &.btn-main-unfollow >.img-att:before {
+    color:$secondary;}
+  &:hover{
+  background-color: $tertiary;
+  color: $secondary;
+  translate: 3px;
+  border: solid 1px $secondary;
+  &.btn-main-unfollow >.img-att:before {
     color:$secondary;
   }
   } 
