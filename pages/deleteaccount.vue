@@ -13,23 +13,12 @@
         <span>Compte supprimer avec succée</span>
         <span>à bientôt peut etre ☺️</span>
       </p>
-      <v-btn id="btn-deco-delacc-denied" type="text" href="./"
-        ><span>Non j'ai changer d'avis</span></v-btn
-      >
-      <v-btn
-        v-if="!showdelcon"
-        id="btn-deco-delacc-pre"
-        @click="showdelcon = true"
-        type="text"
-        ><span>Supprimer mon compte</span></v-btn
-      >
+      <v-btn id="btn-deco-delacc-denied" type="text" href="./"><span>Non j'ai changer d'avis</span></v-btn>
+      <v-btn v-if="!showdelcon" id="btn-deco-delacc-pre" @click="showdelcon = true" type="text"><span>Supprimer mon
+          compte</span></v-btn>
       <div v-else id="block-btn-confirm-delacc">
-        <span id="span-btn-confirm-delacc"
-          >Veuillez confirmer la suppression de votre compte</span
-        >
-        <v-btn id="btn-deco-delacc" @click="delAccount" type="text"
-          ><span>Confirmer la suppression</span></v-btn
-        >
+        <span id="span-btn-confirm-delacc">Veuillez confirmer la suppression de votre compte</span>
+        <v-btn id="btn-deco-delacc" @click="delAccount" type="text"><span>Confirmer la suppression</span></v-btn>
       </div>
     </v-card>
   </v-col>
@@ -44,22 +33,57 @@ export default {
     return {
       deleteconfirm: false,
       showdelcon: false,
+      posts: [],
     };
   },
   methods: {
-    delAccount() {
-      axios
-        .delete(`http://localhost:5000/api/user/${this.userid}`)
-        .then(() => {
-          this.deleteconfirm = true;
-          setTimeout(() => {
-            this.deleteconfirm = true;
-            window.location.reload();
-          }, 2500);
+    async delAccount() {
+      await axios.get("http://localhost:5000/api/post")
+        .then((docpost) => {
+          docpost.data.forEach((elt) => {
+            if (elt.posterId === this.userjwtid) {
+              this.posts.push(elt._id);
+            }
+          });
+          this.posts.forEach((delpost) => {
+            // console.log(this.posts);
+            // console.log(delpost);
+            let id = this.userjwtid;
+            axios.delete(`http://localhost:5000/api/post/${delpost}`, {
+                data: { id: id },
+              })
+              .then((Post) => {
+                Post.data.likers.forEach((userDeleteLike) => {
+                  axios.patch(
+                    `http://localhost:5000/api/post/unlike-post/${delpost}`,
+                    { id: userDeleteLike }
+                  );
+                });
+              });
+          });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        })
+        .then(() => {
+          let id = this.userjwtid;
+          axios.delete(`http://localhost:5000/api/user/${this.userid}`, {
+              data: { idrequest: id },
+            })
+            .then((rep) => {
+              console.log(rep);
+              this.deleteconfirm = true;
+              setTimeout(() => {
+                this.deleteconfirm = true;
+                window.location.href = "./";
+              }, 2000);
+            })
+            .catch((err) => console.log(err));
+          // })
+        });
     },
   },
+
   async mounted() {
     axios.defaults.withCredentials = true;
     // console.log($refs.deletepost.$el)
@@ -145,7 +169,7 @@ export default {
   padding-right: 2%;
 }
 
-#first-lign-text{
+#first-lign-text {
   margin-top: 1%;
 }
 
@@ -155,6 +179,7 @@ export default {
   width: 100%;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background-color: greenyellow;
     color: black;
@@ -165,6 +190,7 @@ export default {
   text-align: center;
   padding-bottom: 1%;
 }
+
 #block-btn-confirm-delacc {
   text-align: center;
 }
@@ -175,16 +201,19 @@ export default {
   width: 100%;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background-color: $tertiary;
     color: $primary;
   }
 }
+
 #btn-deco-delacc-pre {
   background-color: $primary;
   width: 100%;
   justify-content: center;
   align-items: center;
+
   &:hover {
     background-color: $tertiary;
     color: $primary;

@@ -70,9 +70,13 @@
       name: "postcreate",
       methods: {
       postValid(){
-        // let regex = "^\s+$"
-       if(this.message !='' || this.url !=''){
+        
+        let testRegex = this.message.split(' ').join('')
     
+
+     
+       if(testRegex !='' || this.url !=''  ){
+        this.message.trimStart('')
         this.validPost = true
         return true
        } else {
@@ -144,6 +148,7 @@
                 me.message = ''
                 me.url = ''
                 me.posted = false
+                me.file = []
                 // window.location.reload()            
                 }, 2500);         
               })
@@ -255,6 +260,7 @@
     
       async mounted(){
        axios.defaults.withCredentials = true;
+       this.file = []
     
        await axios.get(`http://localhost:5000/jwtid`)
         .then((res) => {

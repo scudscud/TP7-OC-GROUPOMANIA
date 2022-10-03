@@ -287,7 +287,7 @@ export default {
           window.prompt("entrer la clé reçu par mail ( n'importe quel touche)")
           setTimeout(() => {
             window.location.href = "./";
-          }, 3000);
+          }, 2000);
         })
         .catch((error) => {
           this.infomsg = error.response.data.error;

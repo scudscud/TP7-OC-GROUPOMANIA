@@ -1,21 +1,17 @@
 <template>
   <v-card class="card">
-    <v-card-text class="card-profil-title"><h1 class="card-profil-title-h1">Mon profil</h1></v-card-text>
+    <v-card-text class="card-profil-title">
+      <h1 class="card-profil-title-h1">Mon profil</h1>
+    </v-card-text>
 
     <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
           <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-          <input
-            id="avatar"
-            class="form-avatar-profil"
-            type="file"
-            value=""
-            name="avatar"
-            placeholder="votre photo/avatar"
-            @change="picPreview"
-        /></label>
+          <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
+            placeholder="votre photo/avatar" @change="picPreview" />
+        </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
@@ -26,19 +22,11 @@
 
           <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
           <button id="btn-del-pic-profil-bis" @click="profilUpdate">
-            <v-icon id="btn-del-pic-profil-icon" size="25px"
-              >mdi-camera-off</v-icon
-            >
+            <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
           </button>
-          <input
-            id="avatar"
-            class="form-avatar-profil"
-            type="file"
-            value=""
-            name="avatar"
-            placeholder="votre photo/avatar"
-            @change="picPreview"
-        /></label>
+          <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
+            placeholder="votre photo/avatar" @change="picPreview" />
+        </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
@@ -46,33 +34,17 @@
     <v-card-text v-else class="card-profil-name">
       <div class="block-picture-url">
         <label class="lab-pic-del" for="avatar">
-          <v-icon class="lab-pic-custom-url" size="25px"
-            >mdi-camera-plus</v-icon
-          >
+          <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" />
-          <input
-            id="avatar"
-            class="form-avatar-profil-url"
-            type="file"
-            value=""
-            name="avatar"
-            placeholder="votre photo/avatar"
-            @change="picPreview"
-          />
+          <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
+            placeholder="votre photo/avatar" @change="picPreview" />
         </label>
         <div class="block-btn-pic-profil">
           <button id="btn-del-pic-profil" @click="delPicPreview">
             Annuler
           </button>
-          <button
-            v-if="!posted"
-            id="btn-confirm-pic-profil"
-            action="/upload"
-            type="submit"
-            method="post"
-            enctype="multipart/form-data"
-            @click="profilUpdate"
-          >
+          <button v-if="!posted" id="btn-confirm-pic-profil" action="/upload" type="submit" method="post"
+            enctype="multipart/form-data" @click="profilUpdate">
             Valider
           </button>
           <button v-else id="btn-confirm-pic-profil-post">Valider</button>
@@ -92,38 +64,32 @@
 
     <v-card-text class="deploy-modidify" v-show="modifbio">
       <form method="post" @submit.prevent>
-        <label for="biographie"><h2>Biographie :</h2></label>
-        <textarea
-          v-model="bio"
-          name="biographie"
-          class="card-profil-textarea"
-          type="textarea"
-          placeholder="votre biographie"
-          maxlength="500"
-        ></textarea>
+        <label for="biographie">
+          <h2>Biographie :</h2>
+        </label>
+        <textarea v-model="bio" name="biographie" class="card-profil-textarea" type="textarea"
+          placeholder="votre biographie" maxlength="500"></textarea>
 
         <div class="btn-bio">
           <button id="btn-bio-send" type="submit">Enregistrer</button>
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
-          <button
-            id="btn-bio-close"
-            @click="deletebio(), (modifbio = !modifbio)"
-          >
+          <button id="btn-bio-close" @click="deletebio(), (modifbio = !modifbio)">
             Fermer
           </button>
         </div>
       </form>
     </v-card-text>
-    <v-card-text v-if="follower[0] != undefined" class="card-profil-friend" >
+    <v-card-text v-if="follower[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnés&nbsp({{info.length}})</h2>
       </div>
-      <div v-for="(p, index) in info" class="btn-profil-follow"   >
-        <p  class="card-profil-friend-p">{{p[1].name}}</p>
-        <button v-if="!p[0].followers.includes(userid) "  class="btn-unfollow " @click="getFollowBack(p[0]._id)" > S'abonné</button>
+      <div v-for="(p, index) in info" class="btn-profil-follow">
+        <p class="card-profil-friend-p">{{p[1].name}}</p>
+        <button v-if="!p[0].followers.includes(userid) " class="btn-unfollow " @click="getFollowBack(p[0]._id)">
+          S'abonné</button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-      
+
       </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
@@ -133,16 +99,17 @@
       </div>
       <p class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
-    <v-card-text v-if="following[0] != undefined" class="card-profil-friend" >
+    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnements&nbsp({{infoAbo.length}})</h2>
       </div>
-      <div v-for="(p, index) in infoAbo" class="btn-profil-follow" >
-        <p  class="card-profil-friend-p">{{p[1].name}}  </p>
-        <button :key="followkey " v-if="p[0].followers.includes(userid) "  class="btn-unfollow " @click="getUnFollowBack(p[0]._id)" > Se désabonné </button>
+      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
+        <p class="card-profil-friend-p">{{p[1].name}} </p>
+        <button :key="followkey " v-if="p[0].followers.includes(userid) " class="btn-unfollow "
+          @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-    
+
       </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
@@ -153,33 +120,36 @@
       <p class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
 
-    <v-card-text class="card-profil-post"  v-if="pub[0] != undefined">
+    <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
       <div class="card-profil-friend-pub">
         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
         <h2 class="h2-post">Mes publications&nbsp({{pub.length}})</h2>
       </div>
-      <div class="align-pub-user">                      
-      <div class="btn-profil-post-del" v-for="(p, index) in pub" >
-        
-        <p class="card-profil-post-p" > publication&nbsp:&nbsp{{p.date}}</p>
-        <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span>
-        <div class="btn-post-profil">
-        <button class="btn-post-modify-profil" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">Modifier </button>
-        <button  class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)">supprimer</button>
-        </div>
-          <div v-if='p.picture !="" ' class="image-card-profil"><img class="card-img-profil" :src="p.picture" alt="photo"/></div>
+      <div class="align-pub-user">
+        <div class="btn-profil-post-del" v-for="(p, index) in pub">
+
+          <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
+          <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span>
+          <div class="btn-post-profil">
+            <button class="btn-post-modify-profil" type="submit"
+              @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button>
+            <button class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)">supprimer</button>
+          </div>
+          <div v-if='p.picture !="" ' class="image-card-profil"><img class="card-img-profil" :src="p.picture"
+              alt="photo" /></div>
           <div v-if="p.message != ''" class="message-profil"> {{p.message}}</div>
         </div>
       </div>
     </v-card-text>
-    <v-card-text class="card-profil-post"  v-else>
+    <v-card-text class="card-profil-post" v-else>
       <div class="card-profil-friend-pub">
-      <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
-      <h2 class="h2-post">Mes publications</h2>
-    </div>
+        <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
+        <h2 class="h2-post">Mes publications</h2>
+      </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
-    <deletepost v-if="showdel"  v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
+    <modify v-if="showmodify"  v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
+    <deletepost v-if="showdel" v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
   </v-card>
 
 </template>
@@ -189,7 +159,8 @@ import axios from "axios";
 
 export default {
   name: "Profil",
-  components:{
+  components: {
+    modify: () => import("./index/modifytest.vue"),
     deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
   },
 
@@ -208,21 +179,18 @@ export default {
       follower: [],
       followBack: false,
       followBackId: [],
-      followInfo:[],
+      followInfo: [],
       newfollowInfo: [],
-      info:[],
-      followId:'',
+      info: [],
+      followId: '',
 
-
-      following:[],
+      following: [],
       followingBack: false,
       followingBackId: [],
-      followingInfo:[],
-      newfollowingInfo:[],
-      followingId:'',
+      followingInfo: [],
+      newfollowingInfo: [],
+      followingId: '',
       infoAbo: [],
-    
-  
 
       publication: "Vous n'avez rien publier",
       publications: [],
@@ -234,9 +202,10 @@ export default {
       userid: "",
       posted: "",
 
-    followkey: 0,
+      followkey: 0,
 
-    showdel: false,
+      showdel: false,
+      showmodify: false,
 
     };
   },
@@ -284,31 +253,33 @@ export default {
       this.picutername = namereg;
     },
 
-    postIdDel(post){
-        const parse= JSON.stringify(post);
-        localStorage.setItem('categories', parse);
+    postIdDel(post) {
+      const parse = JSON.stringify(post);
+      localStorage.setItem('categories', parse);
     },
-  
+
 
     getPosts() {
       this.pub = []
       axios.get(`http://localhost:5000/api/post`)
-    .then((test) => {
-      test.data.forEach((doc) => {
-        if (doc.posterId === this.userid) {
-          const id = [];
-          id.push(doc._id);
-          id.forEach((postid) => {
-            axios
-              .get(`http://localhost:5000/api/post/${postid}`)
-              .then((doc) => {
-                console.log(doc.data._id);
-                this.pub.push(doc.data);
+        .then((test) => {
+          test.data.forEach((doc) => {
+            if (doc.posterId === this.userid) {
+              const id = [];
+              id.push(doc._id);
+              id.forEach((postid) => {
+                axios
+                  .get(`http://localhost:5000/api/post/${postid}`)
+                  .then((doc) => {
+                    console.log(doc.data._id);
+                    this.pub.push(doc.data);
+                  });
               });
+            }
           });
-        }
-      });
-    });
+        }).catch((error) => {
+          console.log(error);
+        })
     },
 
     async profilUpdate() {
@@ -398,6 +369,8 @@ export default {
                     this.info.push(this.followInfo)
                   });
               });
+            }).catch((error) => {
+              console.log(error);
             }).then(() => {
               this.following.forEach((i) => {
                 axios.get(`http://localhost:5000/api/user/${i}`)
@@ -412,6 +385,8 @@ export default {
                     this.infoAbo.push(this.followingInfo)
                   })
               })
+            }).catch((error) => {
+              console.log(error);
             })
         })
     },
@@ -437,6 +412,8 @@ export default {
             })
             .catch((error) => {
               console.log(error);
+            }).catch((error) => {
+              console.log(error);
             })
             .then((test) => {
               this.follower.forEach((i, u, l) => {
@@ -452,7 +429,10 @@ export default {
                     this.info.push(this.followInfo)
                   });
               });
-            }).then(() => {
+            }).catch((error) => {
+              console.log(error);
+            })
+            .then(() => {
               this.following.forEach((i) => {
                 axios.get(`http://localhost:5000/api/user/${i}`)
                   .then((docs) => {
@@ -466,8 +446,9 @@ export default {
                     this.infoAbo.push(this.followingInfo)
                   })
               })
+            }).catch((error) => {
+              console.log(error);
             })
-          console.log('oj');
         })
     },
   },
@@ -507,52 +488,58 @@ export default {
         console.log(error);
       })
       .then((test) => {
-        this.follower.forEach((i,u,l) => {
-        axios.get(`http://localhost:5000/api/user/${i}`)
-        .then((docs) => {
-          // console.log(docs);
-            this.followId = docs.data._id
-            this.followLastname = docs.data.lastname;
-            this.followFirstname = docs.data.firstname;
-            this.followBackId = docs.data.followers;
-            let name = this.followFirstname + " " + this.followLastname;
-            this.followInfo = [docs.data,{"name":name}]
-            this.info.push(this.followInfo)                    
-          });
-        });      
-      }).then(()=>{
-        this.following.forEach((i)=>{
+        this.follower.forEach((i, u, l) => {
           axios.get(`http://localhost:5000/api/user/${i}`)
-          .then((docs)=>{
-            console.log(docs);
-            this.followingId = docs.data._id
-            this.followingLastname = docs.data.lastname;
-            this.followingFirstname = docs.data.firstname;
-            this.followingBackId = docs.data.followers;
-            let name = this.followingFirstname + " " + this.followingLastname;
-            this.followingInfo = [docs.data,{"name":name}]
-            this.infoAbo.push(this.followingInfo)
-          })
+            .then((docs) => {
+              // console.log(docs);
+              this.followId = docs.data._id
+              this.followLastname = docs.data.lastname;
+              this.followFirstname = docs.data.firstname;
+              this.followBackId = docs.data.followers;
+              let name = this.followFirstname + " " + this.followLastname;
+              this.followInfo = [docs.data, { "name": name }]
+              this.info.push(this.followInfo)
+            });
+        });
+      }).catch((error) => {
+        console.log(error);
+      })
+      .then(() => {
+        this.following.forEach((i) => {
+          axios.get(`http://localhost:5000/api/user/${i}`)
+            .then((docs) => {
+              console.log(docs);
+              this.followingId = docs.data._id
+              this.followingLastname = docs.data.lastname;
+              this.followingFirstname = docs.data.firstname;
+              this.followingBackId = docs.data.followers;
+              let name = this.followingFirstname + " " + this.followingLastname;
+              this.followingInfo = [docs.data, { "name": name }]
+              this.infoAbo.push(this.followingInfo)
+            })
         })
+      }).catch((error) => {
+        console.log(error);
       })
 
     await axios.get(`http://localhost:5000/api/post`)
-    .then((test) => {
-      test.data.forEach((doc) => {
-        if (doc.posterId === this.userid) {
-          const id = [];
-          id.push(doc._id);
-          id.forEach((postid) => {
-            axios
-              .get(`http://localhost:5000/api/post/${postid}`)
-              .then((doc) => {
-                console.log(doc.data._id);
-                this.pub.push(doc.data);
-              });
-          });
-        }
-      });
-    });
+      .then((test) => {
+        test.data.forEach((doc) => {
+          if (doc.posterId === this.userid) {
+            const id = [];
+            id.push(doc._id);
+            id.forEach((postid) => {
+              axios
+                .get(`http://localhost:5000/api/post/${postid}`)
+                .then((doc) => {
+                  console.log(doc.data._id);
+                  this.pub.push(doc.data);
+                }).catch((err) => { err })
+            });
+          }
+        });
+      }).catch((err) => { err })
+
     this.getcolor();
   },
 };
@@ -563,6 +550,7 @@ label.lab-pic {
   display: flex;
   // width: 130px;
 }
+
 .lab-pic-del {
   display: flex;
   justify-content: center;
@@ -583,6 +571,7 @@ label.lab-pic {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
+
   &:hover {
     cursor: pointer;
   }
@@ -592,6 +581,7 @@ label.lab-pic {
   padding-top: 2%;
   display: none;
   visibility: none;
+
   &:hover {
     cursor: pointer;
   }
@@ -617,6 +607,7 @@ img.form-avatar-dl {
   border: solid 2px $secondary;
   border-radius: 50%;
 }
+
 #avatar-empty-profil {
   display: flex;
   width: 120px;
@@ -628,6 +619,7 @@ img.form-avatar-dl {
   font-size: 5rem;
   padding-bottom: 5%;
 }
+
 img#form-picture-profil {
   display: flex;
   width: 120px;
@@ -692,12 +684,14 @@ button#btn-del-pic-profil {
   border: solid 2px $secondary;
   border-radius: 30%;
   color: $secondary;
+
   &:hover {
     border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
 }
+
 button#btn-del-pic-profil-bis {
   position: relative;
   top: 80px;
@@ -709,10 +703,12 @@ button#btn-del-pic-profil-bis {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
+
   &:hover {
     cursor: pointer;
   }
 }
+
 #btn-del-pic-profil-icon {
   position: relative;
   top: -2px;
@@ -724,6 +720,7 @@ button#btn-del-pic-profil-bis {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
+
   &:hover {
     cursor: pointer;
   }
@@ -740,10 +737,12 @@ button#btn-del-pic-profil-bis {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
+
   &:hover {
     cursor: pointer;
   }
 }
+
 button#btn-confirm-pic-profil {
   display: flex;
   // height: 20px;
@@ -753,12 +752,14 @@ button#btn-confirm-pic-profil {
   border: solid 2px $secondary;
   border-radius: 30%;
   color: $secondary;
+
   &:hover {
     border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
 }
+
 button#btn-confirm-pic-profil-post {
   display: flex;
   // height: 20px;
@@ -768,6 +769,7 @@ button#btn-confirm-pic-profil-post {
   border: solid 2px $secondary;
   border-radius: 30%;
   color: green;
+
   &:hover {
     border-radius: 20%;
     background-color: $secondary;
@@ -779,6 +781,7 @@ button#btn-confirm-pic-profil-post {
   padding-top: 2%;
   display: none;
   visibility: none;
+
   &:hover {
     cursor: pointer;
   }
@@ -795,6 +798,7 @@ button#btn-confirm-pic-profil-post {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
+
   &:hover {
     cursor: pointer;
   }
@@ -806,6 +810,7 @@ button#btn-confirm-pic-profil-post {
   font-size: 1.8rem;
   padding-top: 4%;
 }
+
 .block-picture-url {
   padding-top: 10px;
 }
@@ -824,6 +829,7 @@ button#btn-confirm-pic-profil-post {
   font-size: 1.8rem;
   padding-top: 4%;
 }
+
 .firstname {
   padding-top: 1%;
   padding-left: 1%;
@@ -866,6 +872,7 @@ p.card-profil-biographie-p {
   color: $secondary;
   border: solid 2px $tertiary;
   padding: 1%;
+
   &:focus {
     outline: none;
   }
@@ -878,6 +885,7 @@ p.card-profil-biographie-p {
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
@@ -891,6 +899,7 @@ p.card-profil-biographie-p {
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
@@ -906,11 +915,13 @@ p.card-profil-biographie-p {
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
   }
 }
+
 .btn-bio-mod {
   border: solid 2px $secondary;
   margin-top: 1%;
@@ -918,14 +929,17 @@ p.card-profil-biographie-p {
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-    &.btn-bio-mod > .pen-icon {
+
+    &.btn-bio-mod>.pen-icon {
       color: $tertiary;
     }
   }
 }
+
 .btn-follow {
   border: solid 2px $secondary;
   margin-top: 1%;
@@ -933,14 +947,17 @@ p.card-profil-biographie-p {
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-    &.btn-follow > .pen-icon {
+
+    &.btn-follow>.pen-icon {
       color: $tertiary;
     }
   }
 }
+
 .btn-unfollow {
   width: 100px;
   border: solid 2px $secondary;
@@ -950,10 +967,12 @@ p.card-profil-biographie-p {
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-    &.btn-unfollow > .pen-icon {
+
+    &.btn-unfollow>.pen-icon {
       color: $tertiary;
     }
   }
@@ -970,8 +989,9 @@ p.card-profil-biographie-p {
 .card-profil-friend-t {
   display: flex;
   flex-direction: row;
- 
+
 }
+
 .card-profil-friend-pub {
   display: flex;
   flex-direction: row;
@@ -993,7 +1013,7 @@ p.card-profil-friend-p {
   cursor: default;
 }
 
-.btn-profil-follow{
+.btn-profil-follow {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -1016,11 +1036,11 @@ p.card-profil-friend-p {
   padding-right: 1%;
 }
 
-.btn-post-profil{
-display: flex;
-justify-content: space-around;
-align-items: center;
-width: 50%;
+.btn-post-profil {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
 
 
 
@@ -1036,10 +1056,12 @@ width: 50%;
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-    &.btn-post-delete-profil > .pen-icon {
+
+    &.btn-post-delete-profil>.pen-icon {
       color: $tertiary;
     }
   }
@@ -1055,10 +1077,11 @@ width: 50%;
   border-radius: 30%;
   padding-left: 5px;
   padding-right: 5px;
+
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-    
+
   }
 }
 
@@ -1069,18 +1092,18 @@ width: 50%;
   align-items: center;
   display: flex;
   object-fit: cover;
-// overflow: hidden;
-  max-height:300px ;
- max-width: 500px;
- min-width: 300px;
- width: 100%;
+  // overflow: hidden;
+  max-height: 300px;
+  max-width: 500px;
+  min-width: 300px;
+  //  width: 100%;
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
 
-.align-pub-user{
+.align-pub-user {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -1088,14 +1111,14 @@ width: 50%;
 
 }
 
-.image-card-profil{
+.image-card-profil {
   display: flex;
   width: 100%;
   height: 100%;
-  padding: 1%  1% ;
+  padding: 1% 1%;
   // border-top: solid 2px $secondary;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 
 
@@ -1107,7 +1130,7 @@ width: 50%;
 
 }
 
-.btn-profil-post-del{
+.btn-profil-post-del {
   display: flex;
   max-width: 480px;
   width: 100%;

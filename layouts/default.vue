@@ -159,12 +159,12 @@ export default {
         },
         {
           icon: " mdi-logout ",
-          title: "Deconnexion",
+          title: "Déconnexion",
           to: "/disconnect",
         },
         {
           icon: "mdi-delete-circle",
-          title: "Suprimer mon compte",
+          title: "Supprimer mon compte",
           to: "/deleteaccount",
         },
       ],

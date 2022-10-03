@@ -91,8 +91,10 @@ export default{
       }
 },
   postValid(){
-   if(this.message !=='' || this.url !='' || this.oldpic !=''){
-
+    let testRegex = this.message.split(' ').join('')
+    
+   if(testRegex !='' || this.url !='' || this.oldpic !=''){
+    this.message.trimStart('')
     this.validPost = true
     return true
    } else {
@@ -101,7 +103,8 @@ export default{
    }
   },
   textValid(){
-    if(this.message !='' ){
+    let testRegex = this.message.split(' ').join('')
+    if(testRegex !='' ){
       this.createText = true
     }
     else{
@@ -154,7 +157,8 @@ export default{
 
 
  updatePost(){
-    if(this.message !== '' || this.url !== '' ||this.url !== null || this.oldpic !==''){
+  let testRegex = this.message.split(' ').join('')
+    if(testRegex !='' || this.url !== '' ||this.url !== null || this.oldpic !==''){
               // console.log(this.oldpic) 
         // if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
         if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){

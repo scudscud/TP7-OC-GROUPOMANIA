@@ -1,11 +1,13 @@
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
-const fs = require('fs');
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const { connected } = require("process");
 // all user end point \\
 
 exports.getAllUsers = async (req, res) => {
   // const badge =  await UserModel.find().select("-badge");
-  const users = await UserModel.find().select("-password").select('-badge');
+  const users = await UserModel.find().select("-password").select("-badge");
 
   res.status(200).json(users);
 };
@@ -13,17 +15,14 @@ exports.getAllUsers = async (req, res) => {
 // user info end point \\
 
 exports.userInfo = async (req, res) => {
-
-
-  if (!ObjectID.isValid(req.params.id)) return res.status(400).send("utilsateur inconnu :" + req.params.id);
-
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
   UserModel.findById(req.params.id, (err, docs) => {
-  
     if (!err) res.send(docs);
-
-
     else console.log("utilisateur inconnu: " + err);
-  }).select("-password").select('-badge');
+  })
+    .select("-password")
+    .select("-badge");
 };
 
 // update user end point \\
@@ -31,19 +30,21 @@ exports.userInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-   
-    const updatedData = {
-    
-        bio: req.body.bio,
-        photo:
-        req.file != null
-      ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`
-      : ``, 
-    }
+
+  const updatedData = {
+    bio: req.body.bio,
+    photo:
+      req.file != null
+        ? `${req.protocol}://${req.get("host")}/images/default/${
+            req.file.filename
+          }`
+        : ``,
+  };
 
   try {
-    await UserModel.findByIdAndUpdate(req.params.id ,
-       { $set: updatedData },    
+    await UserModel.findByIdAndUpdate(
+      req.params.id,
+      { $set: updatedData },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     )
       .then((docs) => res.send(docs))
@@ -57,15 +58,42 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-
-
 // user delete end point \\
 
 exports.userDelete = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   try {
-  
+    UserModel.findById(req.params.id, (err, docs) => {
+      let token = req.cookies.jwt;
+      jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
+        if (err) {
+          console.log("no token");
+        } else {
+          let connectedUser = docs._id.toString().split('new ObjectId("')[0];
+          let jwtToken = decodedToken.id;
+          console.log(connectedUser);
+          console.log(jwtToken);
+          if (
+            jwtToken !== "62f8f745c348ae5b9f081062" &&
+            jwtToken !== connectedUser
+          ) {
+            return res.cookie("jwt", "", { session: false, maxAge: 1 });
+          } else {
+            console.log("ok");
+          }
+        }
+      });
+      if (!err) {
+        let delimg = docs.photo.split("images/default/")[1];
+        fs.unlink(`images/default/${delimg}`, (err) => {
+          if (err) console.log(err);
+          else {
+            console.log("photo supprimer");
+          }
+        });
+      } else console.log("utilisateur inconnu: " + err);
+    });
     await UserModel.deleteOne({ _id: req.params.id }).exec();
     res.status(200).json({ message: "utilisateur supprimer." });
   } catch (err) {
