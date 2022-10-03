@@ -4,7 +4,7 @@
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
+    <v-card-text v-if="url == '' && urlpic == undefined" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
@@ -79,7 +79,7 @@
         </div>
       </form>
     </v-card-text>
-    <v-card-text v-if="follower[0] != undefined" class="card-profil-friend">
+    <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnés&nbsp({{info.length}})</h2>
@@ -235,7 +235,7 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === "") {
+      if (this.urlpic === "" || this.urlpic === undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
         let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         document.getElementById("avatar-empty-profil").style.backgroundColor =

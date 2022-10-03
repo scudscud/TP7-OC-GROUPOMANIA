@@ -6,7 +6,7 @@
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
                 <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
-                <img v-if="urlpic !==''" class="picture-user-create" :src='urlpic' />
+                <img v-if="urlpic !==''&& urlpic !== undefined" class="picture-user-create" :src='urlpic' />
                 <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
                 <p class="fullname-create">{{fullname}}</p>
                  <div class="header-btn">
@@ -83,10 +83,10 @@ export default{
       .catch((err)=>{console.log(err);});
     },
     getcolor(){
-      if(this.urlpic === ''  ){
+      if(this.urlpic === '' || this.urlpic === undefined  ){
    this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
-    let randomColor = Math.floor(Math.random()*16777215).toString(16)
-    document.getElementById('avatar-empty-modify').style.backgroundColor = '#' + randomColor
+    // let randomColor = Math.floor(Math.random()*16777215).toString(16)
+    document.getElementById('avatar-empty-modify').style.backgroundColor = '#' 
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
       }
 },
@@ -556,6 +556,7 @@ border: solid 2px $secondary;
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%; 
+  background-color: rgb(89, 165, 35);
 }
 
 // .post-date-full{

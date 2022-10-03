@@ -5,7 +5,7 @@
     <div id="Book" :key="componentKey">
 
       <div id="fix-top" @click="showpost = !showpost">
-        <img v-if="urlpic !==''" class="picture-user-none-top" :src='urlpic' />
+        <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' />
         <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
         <button class="new-top"><span class="new-top-span"> Envie de partager, {{firstname}} ? </span></button>
         <!-- <button @click="showpost = !showpost"  id="btn-post-top" alt="menu"> 
@@ -18,7 +18,7 @@
           <div class="border-card">
             <div id="card-autor-book" v-if="post.posterId === userid ">
               <div class="name-date-book">
-                <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user" :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -35,7 +35,7 @@
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book">
-                <img v-if="post.posterpicture  !== ''" class="picture-user" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== undefined" class="picture-user" :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book">{{avatarpicemptyNone}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -53,7 +53,7 @@
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
-                <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== undefined" class="picture-user-none" :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book-book">{{avatarpicemptyNone}}</div>
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
@@ -320,13 +320,15 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === '') {
+      if (this.urlpic === '' || this.urlpic === undefined  ) {
+       
         this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+        console.log(this.avatarpicempty);
         // this.avatarpicemptyNone = elt.posterlastname.split('')[0].toLocaleUpperCase();
 
         // let randomColor = Math.floor(Math.random()*16777215).toString(16)
-        //   // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
-        // //  document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
+          // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+        //  document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
         //  document.querySelectorAll("#avatar-empty-book").style.backgroundColor = randomColor
         //  document.getElementById("avatar-empty-book").style.backgroundColor = "green"
       }
@@ -418,7 +420,9 @@ export default {
           .then((docs) => {
             this.posts = docs.data
             this.posts.forEach(elt => {
+              // console.log(elt.posterlastname);
               this.avatarpicemptyNone = elt.posterlastname.split('')[0].toLocaleUpperCase();
+              // console.log(this.avatarpicemptyNone);
             });
           }).catch((err) => {console.log(err);});
       }).catch((error) => {console.log(error);

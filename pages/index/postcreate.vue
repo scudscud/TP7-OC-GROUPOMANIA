@@ -6,7 +6,7 @@
           <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
             <v-card-text id="card-autor-test">
                     <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
-                    <img v-if="urlpic !== ''" class="picture-user-create" alt="photo de profil" :src="urlpic" />
+                    <img v-if="urlpic !== '' && urlpic !== undefined" class="picture-user-create" alt="photo de profil" :src="urlpic" />
                       <div v-else id="avatar-empty-post">{{avatarpicempty}}</div>
                     <p class="fullname-create">{{fullname}}</p>
                      <div class="header-btn">
@@ -170,10 +170,10 @@
               }
       },
       getcolor(){
-        if(this.urlpic === ''  ){
+        if(this.urlpic === '' || this.urlpic === undefined  ){
        this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
-        let randomColor = Math.floor(Math.random()*16777215).toString(16);
-       document.getElementById('avatar-empty-post').style.backgroundColor = '#' + randomColor}
+        // let randomColor = Math.floor(Math.random()*16777215).toString(16);
+       document.getElementById('avatar-empty-post').style.backgroundColor = '#' }
       }
       
     },
@@ -281,7 +281,7 @@
             this.firstname = docs.data.firstname
             this.lastname = docs.data.lastname
             this.urlpic = docs.data.photo
-              console.log(docs.data.photo)
+           
         }).catch((error)=>{
           console.log(error);
         })
@@ -482,6 +482,7 @@
       align-items: center;
       border: solid 2px $secondary;
       border-radius: 50%; 
+      background-color: rgb(89, 165, 35);
     }
     p.fullname-create{
       margin-left: 1%;

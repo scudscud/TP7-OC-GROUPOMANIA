@@ -53,7 +53,7 @@
       <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title v-text="title" id="temp-title"/>
       <v-spacer />
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
-        <img v-if="urlpic !== ''" class="avatar" :src="urlpic" />
+        <img v-if="urlpic !== '' && urlpic !== undefined" class="avatar" :src="urlpic" />
         <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
         </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
@@ -107,10 +107,11 @@ export default {
       // this.proxy.forceUpdate();
     } ,
     getcolor(){
-      if(this.urlpic === ''  ){
+      if(this.urlpic === '' || this.urlpic === undefined ){
+     
    this.avatarpicempty = this.name.split('')[0]
-    let randomColor = Math.floor(Math.random()*16777215).toString(16);
-   document.getElementById('avatar-empty').style.backgroundColor = '#' + randomColor}
+    // let randomColor = Math.floor(Math.random()*16777215).toString(16);
+   document.getElementById('avatar-empty').style.backgroundColor = '#' }
       }
   },
 
@@ -206,7 +207,7 @@ export default {
     .then((data) => {
       this.name = data.data.firstname
        this.urlpic = data.data.photo
-       console.log(data.data.photo);
+  
 
     }).catch((error)=>{
       console.log(
@@ -257,6 +258,7 @@ html {
   background-color: $tertiary;
   padding-left: 1%;
 }
+
 #avatar-empty {
   display: flex;
   width: 40px;
@@ -268,6 +270,7 @@ html {
   font-size: 1.7rem;
   padding-left: 1%;
   padding-bottom: 2%;
+  background-color: rgb(89, 165, 35);
 }
 
 .username {

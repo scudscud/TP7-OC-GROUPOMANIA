@@ -3,7 +3,7 @@
     <div>
       <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
     </div>
-    <v-col class="d-flex justify-center align-center overlaybis">
+    <v-col class="main d-flex justify-center align-center overlaybis">
       <v-col class="form-sign">
         <v-card id="logo-form" class="logo py-4 d-flex justify-center"
           ><h1><span id="form-span1">Vous inscrire </span></h1></v-card
@@ -318,6 +318,10 @@ export default {
   background-color: rgba(0, 0, 0, 0.7);
   transition: opacity 0.4s;
   z-index: 100;
+}
+
+.main{
+  margin-top: 5%;
 }
 
 .rules {
