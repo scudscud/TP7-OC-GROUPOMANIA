@@ -35,7 +35,7 @@
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== undefined" class="picture-user" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user" :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book">{{avatarpicemptyNone}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->

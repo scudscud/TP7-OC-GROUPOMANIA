@@ -4,7 +4,7 @@
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == undefined" class="card-profil-name">
+    <v-card-text v-if="url == '' || urlpic == undefined" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
@@ -86,7 +86,8 @@
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p class="card-profil-friend-p">{{p[1].name}}</p>
-        <button v-if="!p[0].followers.includes(userid) " class="btn-unfollow " @click="getFollowBack(p[0]._id)">
+      
+        <button v-if="!p[0].followers.includes(userid)  " class="btn-unfollow " @click="getFollowBack(p[0]._id)">
           S'abonné</button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
 
@@ -237,9 +238,9 @@ export default {
     getcolor() {
       if (this.urlpic === "" || this.urlpic === undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
-        let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        document.getElementById("avatar-empty-profil").style.backgroundColor =
-          "#" + randomColor;
+        // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        // document.getElementById("avatar-empty-profil").style.backgroundColor =
+        //   "#" + randomColor;
       }
     },
     deletebio() {
@@ -487,7 +488,7 @@ export default {
       .catch((error) => {
         console.log(error);
       })
-      .then((test) => {
+      .then(() => {
         this.follower.forEach((i, u, l) => {
           axios.get(`http://localhost:5000/api/user/${i}`)
             .then((docs) => {
@@ -499,6 +500,7 @@ export default {
               let name = this.followFirstname + " " + this.followLastname;
               this.followInfo = [docs.data, { "name": name }]
               this.info.push(this.followInfo)
+              console.log(this.info);
             });
         });
       }).catch((error) => {
@@ -516,6 +518,7 @@ export default {
               let name = this.followingFirstname + " " + this.followingLastname;
               this.followingInfo = [docs.data, { "name": name }]
               this.infoAbo.push(this.followingInfo)
+              // console.log(this.infoAbo);
             })
         })
       }).catch((error) => {
@@ -523,8 +526,8 @@ export default {
       })
 
     await axios.get(`http://localhost:5000/api/post`)
-      .then((test) => {
-        test.data.forEach((doc) => {
+      .then((docs) => {
+        docs.data.forEach((doc) => {
           if (doc.posterId === this.userid) {
             const id = [];
             id.push(doc._id);
@@ -618,6 +621,7 @@ img.form-avatar-dl {
   border-radius: 50%;
   font-size: 5rem;
   padding-bottom: 5%;
+  background-color: rgb(6, 132, 6);
 }
 
 img#form-picture-profil {

@@ -142,6 +142,7 @@
               axios.post(`http://localhost:5000/api/post`,formData)
               .then(() => {
                 this.posted= true
+                this.validPost = false
                 setTimeout(() => {
                 let me = this
                 me.$emit('close-modale-post')

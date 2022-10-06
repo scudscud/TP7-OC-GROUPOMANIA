@@ -58,13 +58,15 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+
 // user delete end point \\
 
 exports.userDelete = async (req, res) => {
+  console.log(req.body.idrequest);
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  try {
-    UserModel.findById(req.params.id, (err, docs) => {
+  // try {
+    await UserModel.findById(req.params.id, (err, docs) => {
       let token = req.cookies.jwt;
       jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
         if (err) {
@@ -72,33 +74,42 @@ exports.userDelete = async (req, res) => {
         } else {
           let connectedUser = docs._id.toString().split('new ObjectId("')[0];
           let jwtToken = decodedToken.id;
-          console.log(connectedUser);
-          console.log(jwtToken);
+          // console.log(connectedUser);
+          // console.log(jwtToken);
           if (
             jwtToken !== "62f8f745c348ae5b9f081062" &&
             jwtToken !== connectedUser
           ) {
             return res.cookie("jwt", "", { session: false, maxAge: 1 });
+            
           } else {
             console.log("ok");
+            let delimg = docs.photo.toString().split("images/default/")[1];
+            if (delimg != '') {
+              fs.unlink(`images/default/${delimg}`, (err) => {
+                if (err) console.log(err);
+                else {
+                  console.log("photo supprimer");
+                }
+              });
+            } else console.log("utilisateur inconnu: " + err);
           }
         }
       });
-      if (!err) {
-        let delimg = docs.photo.split("images/default/")[1];
-        fs.unlink(`images/default/${delimg}`, (err) => {
-          if (err) console.log(err);
-          else {
-            console.log("photo supprimer");
-          }
-        });
-      } else console.log("utilisateur inconnu: " + err);
-    });
-    await UserModel.deleteOne({ _id: req.params.id }).exec();
-    res.status(200).json({ message: "utilisateur supprimer." });
-  } catch (err) {
-    res.status(400).send({ message: err });
-  }
+      
+           
+     UserModel.deleteOne(req.body.idrequest )
+      
+      .exec()
+      .then((doc)=>{
+        if(!doc){ return res.stauts(404).end()}
+      return res.status(200).json({ message: "utilisateur supprimer." }).end();
+    })
+  })
+  // } 
+  // catch (err) {
+  //   res.status(400).send({ message: err });
+  // }
 };
 
 // follow user  end point \\
