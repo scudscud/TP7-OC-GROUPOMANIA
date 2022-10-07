@@ -35,10 +35,7 @@ exports.updateUser = async (req, res) => {
     bio: req.body.bio,
     photo:
       req.file != null
-        ? `${req.protocol}://${req.get("host")}/images/default/${
-            req.file.filename
-          }`
-        : ``,
+        ? `${req.protocol}://${req.get("host")}/images/default/${req.file.filename}`: ``,
   };
 
   try {

@@ -36,7 +36,7 @@
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book">
                 <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user" :src='post.posterpicture' />
-                <div v-else id="avatar-empty-book">{{avatarpicemptyNone}}</div>
+                <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
               </div>
@@ -53,8 +53,8 @@
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== undefined" class="picture-user-none" :src='post.posterpicture' />
-                <div v-else id="avatar-empty-book-book">{{avatarpicemptyNone}}</div>
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none" :src='post.posterpicture' />
+                <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
@@ -321,10 +321,12 @@ export default {
 
     getcolor() {
       if (this.urlpic === '' || this.urlpic === undefined  ) {
+        
        
         this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
-        console.log(this.avatarpicempty);
-        // this.avatarpicemptyNone = elt.posterlastname.split('')[0].toLocaleUpperCase();
+        // console.log(this.avatarpicempty);
+        // this.avatarpicemptyNone = this.posterlastname.split('')[0].toLocaleUpperCase();
+        // console.log(this.avatarpicemptyNone);
 
         // let randomColor = Math.floor(Math.random()*16777215).toString(16)
           // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
@@ -419,11 +421,12 @@ export default {
         axios.get("http://localhost:5000/api/post")
           .then((docs) => {
             this.posts = docs.data
-            this.posts.forEach(elt => {
-              // console.log(elt.posterlastname);
-              this.avatarpicemptyNone = elt.posterlastname.split('')[0].toLocaleUpperCase();
-              // console.log(this.avatarpicemptyNone);
-            });
+            // this.avatarpicemptyNone = docs.data.posterlastname.split('')[0].toLocaleUpperCase();
+            // this.posts.forEach(elt => {
+            //   console.log(elt.posterlastname);
+            //   
+            //   // console.log(this.avatarpicemptyNone);
+            // });
           }).catch((err) => {console.log(err);});
       }).catch((error) => {console.log(error);
       });

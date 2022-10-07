@@ -4,7 +4,7 @@
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' || urlpic == undefined" class="card-profil-name">
+    <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
@@ -15,7 +15,7 @@
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
-    <v-card-text v-else-if="url == ''" class="card-profil-name">
+    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <img id="form-picture-profil" :src="urlpic" />
@@ -55,25 +55,28 @@
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
-      <p class="card-profil-biographie-p">{{ biographieP }}</p>
-      <button class="btn-bio-mod" @click="(modifbio = !modifbio), deletebio()">
-        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier
-        ma bio
-      </button>
+      <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
+      <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
+      <button v-if='!modifbio' class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
+        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button>
+
+      <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
+        <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer ma bio </button>
     </v-card-text>
 
-    <v-card-text class="deploy-modidify" v-show="modifbio">
-      <form method="post" @submit.prevent>
-        <label for="biographie">
+    <v-card-text class="deploy-modidify" v-show="modifbio" @change="controleBio()" >
+      <form method="post" @submit.prevent @canplaythrough="controleBio"  >
+        <label for="biographie"  >
           <h2>Biographie :</h2>
         </label>
-        <textarea v-model="bio" name="biographie" class="card-profil-textarea" type="textarea"
-          placeholder="votre biographie" maxlength="500"></textarea>
+        <textarea @change="controleBio()" v-model="newBioUser" name="biographie" class="card-profil-textarea" type="textarea"
+          placeholder="votre biographie" maxlength="500" ></textarea>
 
-        <div class="btn-bio">
-          <button id="btn-bio-send" type="submit">Enregistrer</button>
+        <div class="btn-bio"  >
+          <button id="btn-bio-send" type="submit" @click="controlePostBio">Enregistrer</button>
+          <!-- <button v-else id="btn-bio-send" type="submit" @click="controlePostBio">c'est Vide</button> -->
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
-          <button id="btn-bio-close" @click="deletebio(), (modifbio = !modifbio)">
+          <button id="btn-bio-close" @click="(warningRecord = !warningRecord)">
             Fermer
           </button>
         </div>
@@ -149,6 +152,9 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
+    <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
+    <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
+    <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
     <modify v-if="showmodify"  v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
     <deletepost v-if="showdel" v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
   </v-card>
@@ -161,11 +167,12 @@ import axios from "axios";
 export default {
   name: "Profil",
   components: {
+    WarningDelete: () => import ("../components/warnindelete.vue"),
+    WarningEmpty: ()=> import ("../components/warningempty.vue"),
+    WarningRecord: () => import("../components/warningrecord.vue"),
     modify: () => import("./index/modifytest.vue"),
     deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
   },
-
-
 
   data() {
     return {
@@ -174,7 +181,10 @@ export default {
       avatarpicempty: "",
       picutername: "",
       modifbio: false,
+      deletebiouser: false,
       bio: "",
+      bioUser: "",
+      newBioUser: '',
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       friend: "Aie c'est vide ",
       follower: [],
@@ -207,6 +217,12 @@ export default {
 
       showdel: false,
       showmodify: false,
+      warningRecord:false,
+      warningEmpty: false,
+      warningDelete :false,
+
+      bioValid:false,
+
 
     };
   },
@@ -223,6 +239,112 @@ export default {
 
   methods: {
 
+    getBio(){
+       axios
+      .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((docs) => {
+        this.newBioUser = docs.data.bio
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    },
+
+    // getRefreshBio(){
+    //   axios
+    //   .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+    //   .then((docs) => {
+    //     this.bioUser = docs.data.bio
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    // },
+
+    // postBio(){
+    //   let formData = new FormData();
+    //   formData.append("bio", this.newBioUser);
+    //   axios
+    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
+    //     .then(()=>{
+    //       this.newBioUser = ''
+    //     }).catch((err)=>{console.log(err);})
+    // },
+    deleteUserBio(){
+      let formData = new FormData();
+      formData.append("bio", this.bio);
+      axios.put(`http://localhost:5000/api/user/${this.userid}`, formData)
+          .then(()=>{
+            this.BioUser = ''
+        }).then(()=>{
+          axios
+      .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((docs) => {
+        this.bioUser = docs.data.bio
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+        })  
+
+
+    },
+
+
+    controleBio(){
+      let testRegex = this.newBioUser.split(' ').join('')
+      if(testRegex !='' || this.bioUser !== ''){
+          this.bioValid = true
+          return true
+        }
+        else{
+        this.bioValid = false
+        return false
+        }
+    },
+
+
+    controlePostBio(){
+      let testRegex = this.newBioUser.split(' ').join('')
+        if(testRegex !=''){
+          this.bioValid = true
+          this.newBioUser.trimStart('')
+          let formData = new FormData();
+      formData.append("bio", this.newBioUser);
+      axios.put(`http://localhost:5000/api/user/${this.userid}`, formData)
+          .then(()=>{
+            this.newBioUser = ''
+          this.modifbio = !this.modifbio
+      
+        }).then(()=>{
+          axios
+      .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((docs) => {
+        this.bioUser = docs.data.bio
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+        })  
+        }
+        else{
+        this.bioValid = false
+        this.warningEmpty = true
+        setTimeout(()=>{
+          this.bioValid = true
+        },2000)
+        return false
+       
+        }
+    },
+
+    deletebio() {
+      console.log(this.bio);
+      this.newBioUser = this.bioUser;
+    },
+
+   
+
     delPicPreview() {
       this.url = "";
     },
@@ -236,17 +358,16 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === "" || this.urlpic === undefined) {
+      if (this.urlpic === "" ) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
         // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         // document.getElementById("avatar-empty-profil").style.backgroundColor =
         //   "#" + randomColor;
       }
     },
-    deletebio() {
-      console.log(this.bio);
-      this.bio = "";
-    },
+
+
+
 
     getImage(imagename) {
       let name = avatar.value;
@@ -263,8 +384,8 @@ export default {
     getPosts() {
       this.pub = []
       axios.get(`http://localhost:5000/api/post`)
-        .then((test) => {
-          test.data.forEach((doc) => {
+        .then((docs) => {
+          docs.data.forEach((doc) => {
             if (doc.posterId === this.userid) {
               const id = [];
               id.push(doc._id);
@@ -290,14 +411,14 @@ export default {
       // formData.append('posterpicture', this.photo)
       formData.append("fullname", this.fullname);
       formData.append("photo", this.photo);
-      formData.append("bio", this.bio);
-      console.log(this.photo.filename);
+      // formData.append("bio", this.bio);
+      // console.log(this.photo.filename);
       // console.log(this.bio);
       await axios
         .put(`http://localhost:5000/api/user/${this.userid}`, formData)
         .then(() => {
-          axios.get(`http://localhost:5000/api/post`).then((test) => {
-            test.data.forEach((doc) => {
+          axios.get(`http://localhost:5000/api/post`).then((post) => {
+            post.data.forEach((doc) => {
               if (doc.posterId === this.userid) {
                 const id = [];
                 id.push(doc._id);
@@ -348,7 +469,7 @@ export default {
               this.firstname = docs.data.firstname;
               this.lastname = docs.data.lastname;
               this.urlpic = docs.data.photo;
-              this.userpicture = docs.data.pictureprofil;
+              // this.userpicture = docs.data.pictureprofil;
               this.follower = docs.data.followers;
               this.following = docs.data.following;
               // console.log(this.follower);
@@ -401,12 +522,12 @@ export default {
             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
             .then((docs) => {
               // console.log(docs.data.photo);
-              this.role = docs.data.role;
-              this.userid = docs.data._id;
-              this.firstname = docs.data.firstname;
-              this.lastname = docs.data.lastname;
-              this.urlpic = docs.data.photo;
-              this.userpicture = docs.data.pictureprofil;
+              // this.role = docs.data.role;
+              // this.userid = docs.data._id;
+              // this.firstname = docs.data.firstname;
+              // this.lastname = docs.data.lastname;
+              // this.urlpic = docs.data.photo;
+              // this.userpicture = docs.data.pictureprofil;
               this.follower = docs.data.followers;
               this.following = docs.data.following;
               // console.log(this.follower);
@@ -475,15 +596,17 @@ export default {
       .get(`http://localhost:5000/api/user/${this.userjwtid}`)
       .then((docs) => {
         // console.log(docs.data.photo);
-        this.role = docs.data.role;
+        // this.role = docs.data.role;
         this.userid = docs.data._id;
         this.firstname = docs.data.firstname;
         this.lastname = docs.data.lastname;
         this.urlpic = docs.data.photo;
-        this.userpicture = docs.data.pictureprofil;
+        this.bioUser = docs.data.bio
+        // this.userpicture = docs.data.pictureprofil;
         this.follower = docs.data.followers;
         this.following = docs.data.following;
         // console.log(this.follower);
+        // console.log(this.urlpic);
       })
       .catch((error) => {
         console.log(error);
@@ -624,7 +747,7 @@ img.form-avatar-dl {
   background-color: rgb(6, 132, 6);
 }
 
-img#form-picture-profil {
+#form-picture-profil {
   display: flex;
   width: 120px;
   height: 120px;
@@ -896,6 +1019,8 @@ p.card-profil-biographie-p {
   }
 }
 
+
+
 #btn-bio-send {
   border: solid 2px $secondary;
   margin-top: 1%;
@@ -908,6 +1033,19 @@ p.card-profil-biographie-p {
     background-color: $secondary;
     color: $tertiary;
   }
+}
+
+#btn-bio-send:disabled {
+
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color:  #ccc;
+  color: $tertiary;
+
 }
 
 #btn-bio-close {

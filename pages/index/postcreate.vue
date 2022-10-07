@@ -54,8 +54,8 @@
             />
             <!-- <input id="messagetext" v-model="message" name="messagetext" class="card-create-comment" type="text" placeholder="Ecrivez ici votre commentaire" maxlength="300" /> -->
             <div class="btn-bio">
-              <button  v-if="!createText"  @change="postValid()"  id="btn-comment-send" >Enregistrer le commentaire</button>
-              <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button>
+              <!-- <button  v-if="!createText"  @change="postValid()"  id="btn-comment-send" >Enregistrer le commentaire</button>
+              <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button> -->
               <button id="btn-comment-delete" @click.stop="deletemess(),textValid()">Annuler</button>
             </div>
            </v-card-text>
@@ -70,11 +70,7 @@
       name: "postcreate",
       methods: {
       postValid(){
-        
         let testRegex = this.message.split(' ').join('')
-    
-
-     
        if(testRegex !='' || this.url !=''  ){
         this.message.trimStart('')
         this.validPost = true
@@ -85,8 +81,9 @@
        }
       },
       textValid(){
-        // let regex = "^\s*$"
-        if(this.message !=''){
+        let testRegex = this.message.split(' ').join('')
+        if(testRegex !=''){
+          this.message.trimStart('')
           this.createText = true
         }
         else{
