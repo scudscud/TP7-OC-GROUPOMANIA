@@ -4,13 +4,23 @@
 
     <div id="Book" :key="componentKey">
 
-      <div id="fix-top" @click="showpost = !showpost">
-        <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' />
-        <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
-        <button class="new-top"><span class="new-top-span"> Envie de partager, {{firstname}} ? </span></button>
-        <!-- <button @click="showpost = !showpost"  id="btn-post-top" alt="menu"> 
-        <v-icon >mdi-newspaper-plus </v-icon>
-        </button>   -->
+      <div id="fix-top">
+        <div id="fix-top-bis" @click="showpost = !showpost">
+          <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' />
+          <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
+          <button class="new-top">
+            <p class="new-top-span"> Envie de partager, {{firstname}} ? </p>
+          </button>
+        </div>
+        <button class="post-option" @focusin="showsort = !showsort">
+          <v-icon class="post-option-dot">mdi-dots-horizontal </v-icon>
+        </button>
+      </div>
+
+      <div class="empty-sort" v-if="emptyfollow"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à
+        quelqu'un </div>
+      <div class="empty-sort" v-if="emptylike"> 😭 vous n'avais aimer aucune publication 😭 liker une publication </div>
+      <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !!
       </div>
 
       <div class="center-main" v-if="this.posts[0] != undefined">
@@ -18,7 +28,8 @@
           <div class="border-card">
             <div id="card-autor-book" v-if="post.posterId === userid ">
               <div class="name-date-book">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user"
+                  :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -35,7 +46,8 @@
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user"
+                  :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -53,7 +65,8 @@
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none" :src='post.posterpicture' />
+                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
+                  :src='post.posterpicture' />
                 <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
@@ -139,8 +152,11 @@
         </v-card>
       </div>
     </div>
-      
 
+    <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
+      @close-modale-sort-friend="showsort = false,getPostFriend()"
+      @close-modale-sort-mypost="showsort = false,getPostOwn()"
+      @close-modale-sort-like="showsort = false,getPostIlike()" />
     <deletepost v-if="showdel" :id="userid" :keyid="post._id" v-show="showdel"
       @close-modale-delete="showdel = false,getPosts()" />
     <modify v-if="showmodify" :key="componentKey" v-show="showmodify"
@@ -152,6 +168,7 @@
 <script>
 
 import axios from "axios"
+import { trusted } from "mongoose";
 import { ref } from 'vue';
 const componentKey = ref(0);
 const forceRerender = () => {
@@ -162,7 +179,7 @@ export default {
   name: "Book",
 
   components: {
-
+    sortPost: () => import("../components/sortpostby.vue"),
     Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
     modify: () => import("./index/modifytest.vue"),
     //  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
@@ -182,6 +199,7 @@ export default {
       avatarpicempty: '',
       avatarpicemptyNone: '',
       log: false,
+      showsort: false,
       showdelete: false,
       showmodify: false,
       showdel: false,
@@ -205,6 +223,12 @@ export default {
       userLikePostId: [],
       userFollowingId: [],
       follow: false,
+      emptylike: false,
+      emptyfollow: false,
+      emptyownpost: false,
+      // postsfollow: "",
+      // postsILike: "",
+      // postsown: "",
       // userlike:[],
       // numberlike:[],
       // likeby:'',
@@ -263,6 +287,96 @@ export default {
   },
   methods: {
 
+    getPostFriend() {
+      this.posts = []
+      axios.get("http://localhost:5000/api/post")
+        .then((docs) => {
+          docs.data.forEach((doc) => {
+            this.userFollowingId.forEach((idfollow) => {
+              if (doc.posterId === idfollow) {
+                // this.postsfollow = doc
+                this.posts.push(doc)
+              }
+            })
+          })
+        })
+        .then(() => {
+          if (this.posts[0] == undefined) {
+            axios.get("http://localhost:5000/api/post").then((docs) => {
+              this.posts = docs.data
+            })
+            this.emptyfollow = true
+            setTimeout(() => {
+              this.emptyfollow = false
+            }, 4000);
+          }
+          else {
+            return this.posts          
+          }
+        })
+        .catch((err) => { console.log(err); });
+    },
+
+    getPostIlike() {
+      this.posts = []
+      axios.get("http://localhost:5000/api/post")
+        .then((docs) => {
+          docs.data.forEach((doc) => {
+            this.userLikePostId.forEach((idlike) => {
+              if (doc._id === idlike) {
+                // this.postsILike = doc
+                this.posts.push(doc)
+              }
+            })
+          })
+        }).then(() => {
+          if (this.posts[0] == undefined) {
+            axios.get("http://localhost:5000/api/post").then((docs) => {
+              this.posts = docs.data
+            })
+            this.emptylike = true
+            setTimeout(() => {
+              this.emptylike = false
+            }, 5000);
+          } 
+          else {
+            return this.posts
+          
+          }
+        })
+        .catch((err) => { console.log(err); });
+    },
+
+    getPostOwn() {
+      this.posts = []
+      axios.get("http://localhost:5000/api/post")
+        .then((docs) => {
+          docs.data.forEach((doc) => {
+            if (doc.posterId === this.userid) {
+              // this.postsown = doc
+              this.posts.push(doc)
+            }
+          })
+        }).then(() => {
+          if (this.posts[0] == undefined) {
+            axios.get("http://localhost:5000/api/post").then((docs) => {
+              this.posts = docs.data
+            })
+            this.emptyownpost = true
+            setTimeout(() => {
+              this.emptyownpost = false
+            }, 5000);
+          }
+           else {
+            // console.log(  this.postsown);
+            console.log(this.posts);
+           return this.posts
+            
+          }
+        })
+        .catch((err) => { console.log(err); });
+    },
+
     clickLike(postId, index) {
       const likeBtn = document.querySelectorAll('.classlikebtn')
       if (likeBtn[index].classList.contains('class-btn-att-unlike')) {
@@ -320,16 +434,16 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === '' || this.urlpic === undefined  ) {
-        
-       
+      if (this.urlpic === '' || this.urlpic === undefined) {
+
+
         this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
         // console.log(this.avatarpicempty);
         // this.avatarpicemptyNone = this.posterlastname.split('')[0].toLocaleUpperCase();
         // console.log(this.avatarpicemptyNone);
 
         // let randomColor = Math.floor(Math.random()*16777215).toString(16)
-          // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
+        // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
         //  document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
         //  document.querySelectorAll("#avatar-empty-book").style.backgroundColor = randomColor
         //  document.getElementById("avatar-empty-book").style.backgroundColor = "green"
@@ -427,8 +541,9 @@ export default {
             //   
             //   // console.log(this.avatarpicemptyNone);
             // });
-          }).catch((err) => {console.log(err);});
-      }).catch((error) => {console.log(error);
+          }).catch((err) => { console.log(err); });
+      }).catch((error) => {
+        console.log(error);
       });
     this.getcolor()
   },
@@ -476,16 +591,48 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-   max-width: 700px;
-   margin-right: auto;
-   margin-left: auto;
+  max-width: 700px;
+  margin-right: auto;
+  margin-left: auto;
   width: 100%;
   height: 50px;
   border: solid 2px $secondary;
   border-radius: 10px/5px;
   margin-bottom: 2%;
   background-color: $secondary;
+  // cursor: pointer;
+}
+
+#fix-top-bis {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  //  max-width: 500px;
+  //  margin-right: auto;
+  //  margin-left: auto;
+  width: 100%;
+  height: 50px;
+  // border: solid 2px $secondary;
+  // border-radius: 10px/5px;
+  // margin-bottom: 2%;
+  // background-color: $secondary;
   cursor: pointer;
+}
+
+.empty-sort {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 1%;
+  border: solid 1px $primary;
+  border-radius: 10px/5px;
 }
 
 .picture-user-none-top {
@@ -513,14 +660,34 @@ export default {
   background-color: rgb(89, 165, 35);
 }
 
+// .post-option{
+//   // position: relative;
+//   // left : 10%;
+//   // border: solid black 1px;
+
+
+
+// }
+
+.post-option-dot:before {
+  color: $primary;
+  // position: relative;
+  // left : 100%;
+}
+
 .new-top {
-  padding-left: 1%;
+  // padding: 0;
+  // padding-left: 1%;
   border: solid 2px black;
   border-radius: 30px / 30px;
   height: 35px;
 }
 
 .new-top-span {
+  display: flex;
+  flex-direction: row;
+
+  width: auto;
   color: black;
 }
 

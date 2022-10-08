@@ -6,7 +6,7 @@
     <p class="logo-disconnect-delete"><img class="logo-white" src="../../logo/logo.png" />
     <span>La team GROUPOMANIA </span>
     </p>
-  <p id="span-del-post">Vous-êtes sur de vouloir supprimer cette publication?</p>
+  <p id="span-del-post">  ⚠️ Vous-êtes sur de vouloir supprimer cette publication?  ⚠️ </p>
    <!-- <p>cette action est irreversible </p> -->
    <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
