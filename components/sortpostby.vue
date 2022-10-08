@@ -11,6 +11,7 @@
                 <li ><button class="friend-btn" @click="$emit('close-modale-sort-friend')" >Amis</button></li>
                 <li ><button class="mypost-btn" @click="$emit('close-modale-sort-mypost')" >Mes posts</button></li>
                 <li ><button class="postlike-btn" @click="$emit('close-modale-sort-like')" >Publications liker</button></li>
+                <li ><button class="postall-btn" @click="$emit('close-modale-sort-all')" >Toutes les publications</button></li>
 
                </div>
                 <!-- <p>cette action est irreversible </p> -->
@@ -145,6 +146,11 @@ export default {
 }
 
 .postlike-btn:hover{
+    background-color: $secondary;
+    color:$tertiary;
+    border-radius: 10%;
+}
+.postall-btn:hover{
     background-color: $secondary;
     color:$tertiary;
     border-radius: 10%;

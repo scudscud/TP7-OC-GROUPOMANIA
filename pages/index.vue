@@ -17,8 +17,7 @@
         </button>
       </div>
 
-      <div class="empty-sort" v-if="emptyfollow"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à
-        quelqu'un </div>
+      <div class="empty-sort" v-if="emptyfollow"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
       <div class="empty-sort" v-if="emptylike"> 😭 vous n'avais aimer aucune publication 😭 liker une publication </div>
       <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !!
       </div>
@@ -27,12 +26,15 @@
         <v-card v-for="(post,index) in posts" :key="post.id" :index="index" class="card-post">
           <div class="border-card">
             <div id="card-autor-book" v-if="post.posterId === userid ">
-              <div class="name-date-book">
+              <!-- <nuxt-link :to="{name: 'profilUsermain', params: { id : post.posterId} }" class="name-date-book"  > -->
+              <div class="name-date-book"  >
+                <nuxt-link class="link" :to="{name:'profiluser'}">
                 <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user"
-                  :src='post.posterpicture' />
-                <div v-else id="avatar-empty-book">{{avatarpicempty}}</div>
+                  :src='post.posterpicture' /> 
+                <div v-else id="avatar-empty-book" >{{avatarpicempty}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
+              <!-- </nuxt-link> -->
               </div>
               <div class="btn-book-main">
                 <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">
@@ -45,10 +47,10 @@
             </div>
 
             <div id="card-autor-book" v-else-if="role !== undefined">
-              <div class="name-date-book">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user"
+              <div class="name-date-book" >
+                <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user"
                   :src='post.posterpicture' />
-                <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
+                <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
               </div>
@@ -64,10 +66,10 @@
               </div>
             </div>
             <div id="card-autor-book-none" v-else>
-              <div class="user-book-main-none">
-                <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
+              <div class="user-book-main-none" >
+               <nuxt-link class="link" :to="{name:'profilUsermain-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
                   :src='post.posterpicture' />
-                <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div>
+                <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
@@ -156,7 +158,8 @@
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-friend="showsort = false,getPostFriend()"
       @close-modale-sort-mypost="showsort = false,getPostOwn()"
-      @close-modale-sort-like="showsort = false,getPostIlike()" />
+      @close-modale-sort-like="showsort = false,getPostIlike()"
+      @close-modale-sort-all="showsort = false,getPosts()" />
     <deletepost v-if="showdel" :id="userid" :keyid="post._id" v-show="showdel"
       @close-modale-delete="showdel = false,getPosts()" />
     <modify v-if="showmodify" :key="componentKey" v-show="showmodify"
@@ -226,9 +229,10 @@ export default {
       emptylike: false,
       emptyfollow: false,
       emptyownpost: false,
-      // postsfollow: "",
-      // postsILike: "",
-      // postsown: "",
+      postsfollow: false,
+      postsILike: false,
+      postsown: false,
+      postall: false,
       // userlike:[],
       // numberlike:[],
       // likeby:'',
@@ -286,6 +290,14 @@ export default {
   events: {
   },
   methods: {
+
+    goProfilUser(id){
+      window.location.href = `./profilUsermain?id=${id}`
+    },
+
+    goProfilUserOwn(){
+      window.location.href = `./profiluser`
+    },
 
     getPostFriend() {
       this.posts = []
@@ -739,6 +751,21 @@ export default {
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%;
+}
+.link{
+  text-decoration: none;
+  color: aliceblue;
+  margin-right: 1%;
+
+  // margin-top: 1.5%;
+  // margin-right: 1%;
+  // display: flex;
+  // width: 50px;
+  // height: 50px;
+  // justify-content: center;
+  // align-items: center;
+  // border: solid 2px $secondary;
+  // border-radius: 50%;
 }
 
 #avatar-empty-book {
