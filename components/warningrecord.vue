@@ -3,7 +3,7 @@
     <v-col class=" d-flex  justify-center align-center">
     
     <v-card class="popup-del-com ">
-        <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" />
+        <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" alt="logo" />
         <span>La team GROUPOMANIA </span>
         </p>
       <p id="span-del-post"> ⚠️ Vous-êtes sur le point de fermer sans enregister les modifications ⚠️ </p>

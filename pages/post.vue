@@ -3,7 +3,7 @@
 <v-card id="card-post-comp"  >
  
       <v-card-text id="card-autor">
-                <img class="picture-user" src="../logo/avatar1.png" />
+                <img class="picture-user" src="../logo/avatar1.png" alt="logo" />
                 <span class="fullname">{{fullname}}</span><span class="post-date"> à posté le :</span><span class="date-now">{{date}}</span><span class="hour-à"> à </span><span class="hour-now">{{hour}}</span>
         </v-card-text>
       <img class="card-img mb-5"

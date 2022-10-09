@@ -18,7 +18,7 @@
       <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
         <div class="block-picture">
           <label class="lab-pic" for="avatar">
-            <img id="form-picture-profil" :src="urlpic" />
+            <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
   
             <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
             <button id="btn-del-pic-profil-bis" @click="profilUpdate">
@@ -35,7 +35,7 @@
         <div class="block-picture-url">
           <label class="lab-pic-del" for="avatar">
             <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
-            <img class="form-avatar-dl" :src="url" />
+            <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
             <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
               placeholder="votre photo/avatar" @change="picPreview" />
           </label>
@@ -133,7 +133,8 @@
           <div class="btn-profil-post-del" v-for="(p, index) in pub">
   
             <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
-            <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span>
+            <div class="like-profilmain-user"><v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span></div>
+            <!-- <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span> -->
             <div class="btn-post-profil">
               <button class="btn-post-modify-profil" type="submit"
                 @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button>
@@ -396,6 +397,9 @@
                     .then((doc) => {
                       console.log(doc.data._id);
                       this.pub.push(doc.data);
+                      this.pub.sort(function (a, b) {
+                      return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
                     });
                 });
               }
@@ -669,6 +673,9 @@
                   .then((doc) => {
                     console.log(doc.data._id);
                     this.pub.push(doc.data);
+                    this.pub.sort(function (a, b) {
+                      return new Date(b.createdAt) - new Date(a.createdAt);
+                    });
                   }).catch((err) => { err })
               });
             }

@@ -6,7 +6,7 @@
       <p>si tel est votre choix ...</p>
 
       <p class="logo-delacc">
-        <img class="logo-white-delacc" src="../logo/logo.png" />La team
+        <img class="logo-white-delacc" src="../logo/logo.png" alt="logo" />La team
         GROUPOMANIA
       </p>
       <p id="del-acc-con" v-if="(deleteconfirm = false)">

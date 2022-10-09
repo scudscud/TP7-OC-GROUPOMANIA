@@ -6,7 +6,7 @@
 
       <div id="fix-top">
         <div id="fix-top-bis" @click="showpost = !showpost">
-          <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' />
+          <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' alt="phtot de l'utilisateur"  />
           <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
           <button class="new-top">
             <p class="new-top-span"> Envie de partager, {{firstname}} ? </p>
@@ -30,7 +30,7 @@
               <div class="name-date-book"  >
                 <nuxt-link class="link" :to="{name:'profiluser'}">
                 <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user"
-                  :src='post.posterpicture' /> 
+                  :src='post.posterpicture' alt="phtot de l'utilisateur"  /> 
                 <div v-else id="avatar-empty-book" >{{avatarpicempty}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -49,7 +49,7 @@
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book" >
                 <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user"
-                  :src='post.posterpicture' />
+                  :src='post.posterpicture' alt="phtot de l'utilisateur" />
                 <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -68,7 +68,7 @@
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none" >
                <nuxt-link class="link" :to="{name:'profilUsermain-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
-                  :src='post.posterpicture' />
+                  :src='post.posterpicture' alt="phtot de l'utilisateur"  />
                 <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
@@ -470,6 +470,7 @@ export default {
     },
 
     getPosts() {
+      localStorage.removeItem('sort')
       axios.get("http://localhost:5000/api/post")
         .then((docs) => {
           this.posts = docs.data

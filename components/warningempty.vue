@@ -3,7 +3,7 @@
     <v-col class=" d-flex  justify-center align-center">
     
     <v-card class="popup-del-com-empty ">
-        <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" />
+        <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" alt="logo" />
         <span>La team GROUPOMANIA </span>
         </p>
       <p id="span-del-post"> ⚠️ Oups votre bio est vide de chez vide ⚠️ vous ne pas pouvez enregistrer ça </p>

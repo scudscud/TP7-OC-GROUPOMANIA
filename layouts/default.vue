@@ -50,10 +50,10 @@
       </v-btn> -->
 
       <v-spacer />
-      <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title v-text="title" id="temp-title"/>
+      <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title v-text="title" id="temp-title" alt="logo"/>
       <v-spacer />
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
-        <img v-if="urlpic !== '' && urlpic !== undefined" class="avatar" :src="urlpic" />
+        <img v-if="urlpic !== '' && urlpic !== undefined" class="avatar" :src="urlpic" alt="photo de l'utilisateur" />
         <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
         </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">

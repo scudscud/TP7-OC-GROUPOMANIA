@@ -3,7 +3,7 @@
         <v-col class=" d-flex  justify-center align-center">
 
             <v-card class="popup-del-com-delbio ">
-                <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" />
+                <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" alt="logo" />
                     <span>La team GROUPOMANIA </span>
                 </p>
                 <p id="span-del-bio"> ⚠️ Vous-êtes sur le point de supprimer votre bio ⚠️ </p>

@@ -7,7 +7,7 @@
     >
  
       <v-card-text id="card-autor">
-                <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil"/>
+                <img class="picture-user" src="../logo/avatar1.png" alt="photo de profil" />
                 <p class="fullname">{{fullname}}</p>
                 <div class="header-btn">
                   <button id="btn-send-post" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Valider</span></div></button> 

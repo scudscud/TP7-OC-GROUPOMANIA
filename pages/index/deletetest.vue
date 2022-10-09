@@ -3,12 +3,12 @@
 <v-col class=" d-flex  justify-center align-center">
 
 <v-card class="popup-del-com ">
-    <p class="logo-disconnect-delete"><img class="logo-white" src="../../logo/logo.png" />
+    <p class="logo-disconnect-delete"><img class="logo-white" src="../../logo/logo.png" alt="logo groupomania" />
     <span>La team GROUPOMANIA </span>
     </p>
   <p id="span-del-post">  ⚠️ Vous-êtes sur de vouloir supprimer cette publication?  ⚠️ </p>
    <!-- <p>cette action est irreversible </p> -->
-   <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
+   <v-btn v-if="click" id="btn-notdelete-comfirm" @click="$emit('close-modale-delete'),delDeletePost()" ><span >non j'ai changer d'avis</span></v-btn>
   <p class="comfirm-span-delete">si tel est votre choix ...</p>
   
 <v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
@@ -31,6 +31,7 @@ export default {
   data(){
 return{
 deleteconfirm: false ,
+click: false,
 // userid:'',
 // userjwtid:'',
 // postId:'',
@@ -61,6 +62,7 @@ deleteconfirm: false ,
         })
         .then(()=>{
            localStorage.removeItem('categories')
+           this.click = false
           this.deleteconfirm = true
             setTimeout(() => {
             this.$emit('close-modale-delete')
@@ -130,7 +132,7 @@ z-index: 1000;
   width: 320px;
   // max-height: 200px;
   // min-height: 200px;
-  height: 300px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: center;
