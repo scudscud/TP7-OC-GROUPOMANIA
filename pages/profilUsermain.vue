@@ -8,9 +8,7 @@
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
-          <!-- <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon> -->
-          <!-- <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-              placeholder="votre photo/avatar" @change="picPreview" /> -->
+       
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
@@ -20,68 +18,22 @@
         <label class="lab-pic" for="avatar">
           <img id="form-picture-profil" :src="urlpic" alt="phtot de l'utilisateur" />
 
-          <!-- <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-            <button id="btn-del-pic-profil-bis" @click="profilUpdate">
-              <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
-            </button>
-            <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-              placeholder="votre photo/avatar" @change="picPreview" /> -->
+       
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
-    <!-- <v-card-text v-else class="card-profil-name">
-        <div class="block-picture-url">
-          <label class="lab-pic-del" for="avatar"> -->
-    <!-- <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon> -->
-    <!-- <img class="form-avatar-dl" :src="url" />
-            <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
-              placeholder="votre photo/avatar" @change="picPreview" />
-          </label>
-          <div class="block-btn-pic-profil">
-            <button id="btn-del-pic-profil" @click="delPicPreview">
-              Annuler
-            </button>
-            <button v-if="!posted" id="btn-confirm-pic-profil" action="/upload" type="submit" method="post"
-              enctype="multipart/form-data" @click="profilUpdate">
-              Valider
-            </button>
-            <button v-else id="btn-confirm-pic-profil-post">Valider</button>
-          </div>
-        </div>
-        <span class="fullname-url">{{ fullname }}</span>
-      </v-card-text> -->
+ 
 
     <v-card-text class="card-profil-biographie">
       <h2>biographie </h2>
       <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
-      <!-- <button v-if='!modifbio' class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
-          <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button> -->
-
-      <!-- <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
-          <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer ma bio </button> -->
+   
     </v-card-text>
 
-    <!-- <v-card-text class="deploy-modidify" v-show="modifbio" @change="controleBio()" >
-        <form method="post" @submit.prevent @canplaythrough="controleBio"  >
-          <label for="biographie"  >
-            <h2>Biographie :</h2>
-          </label>
-          <textarea @change="controleBio()" v-model="newBioUser" name="biographie" class="card-profil-textarea" type="textarea"
-            placeholder="votre biographie" maxlength="500" ></textarea>
-  
-          <div class="btn-bio"  >
-            <button id="btn-bio-send" type="submit" @click="controlePostBio">Enregistrer</button> -->
-    <!-- <button v-else id="btn-bio-send" type="submit" @click="controlePostBio">c'est Vide</button> -->
-    <!-- <button id="btn-bio-delete" @click="deletebio">Annuler</button>
-            <button id="btn-bio-close" @click="(warningRecord = !warningRecord)">
-              Fermer
-            </button>
-          </div>
-        </form>
-      </v-card-text> -->
+   
     <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
@@ -174,11 +126,7 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
-    <!-- <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
-      <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
-      <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
-      <modify v-if="showmodify"  v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
-      <deletepost v-if="showdel" v-show="showdel" @close-modale-delete="showdel = false,getPosts()" /> -->
+ 
   </v-card>
 
 </template>
@@ -189,11 +137,7 @@ import axios from "axios";
 export default {
   name: "Profil",
   components: {
-    // WarningDelete: () => import ("../components/warnindelete.vue"),
-    // WarningEmpty: ()=> import ("../components/warningempty.vue"),
-    // WarningRecord: () => import("../components/warningrecord.vue"),
-    // modify: () => import("./index/modifytest.vue"),
-    // deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
+
   },
 
   data() {
@@ -544,6 +488,7 @@ export default {
               this.info.push(this.followInfo)
               if (this.followId === this.userjwtid) {
                 this.followBack = true
+                this.newfollow = false
               }
 
             });
