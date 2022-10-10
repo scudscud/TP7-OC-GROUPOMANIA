@@ -31,7 +31,7 @@ export default {
   data(){
 return{
 deleteconfirm: false ,
-click: false,
+click: true,
 // userid:'',
 // userjwtid:'',
 // postId:'',

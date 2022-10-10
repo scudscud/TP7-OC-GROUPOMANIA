@@ -130,7 +130,7 @@
         <h2 class="h2-post">Mes publications&nbsp({{pub.length}})</h2>
       </div>
       <div class="align-pub-user">
-        <div class="btn-profil-post-del" v-for="(p, index) in pub">
+        <div class="profil-post" v-for="(p, index) in pub">
 
           <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
           <div class="like-profilmain-user">
@@ -1281,7 +1281,7 @@ p.card-profil-friend-p {
 
 }
 
-.btn-profil-post-del {
+.profil-post {
   display: flex;
   max-width: 480px;
   width: 100%;
@@ -1292,6 +1292,13 @@ p.card-profil-friend-p {
   border-radius: 2%;
   justify-content: center;
   align-items: center;
+  &:hover {
+    // border-color:green;
+
+    transform: scale(1.05);
+    transition: ease 0.5s ;
+
+  }
 }
 
 p.card-profil-post-p {

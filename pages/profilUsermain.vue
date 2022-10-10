@@ -8,7 +8,7 @@
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
-       
+
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
@@ -18,33 +18,31 @@
         <label class="lab-pic" for="avatar">
           <img id="form-picture-profil" :src="urlpic" alt="phtot de l'utilisateur" />
 
-       
+
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
- 
+
 
     <v-card-text class="card-profil-biographie">
       <h2>biographie </h2>
       <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
-   
+
     </v-card-text>
 
-   
+
     <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnements&nbsp({{infoAbo.length}})</h2>
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e)  </p>
+        <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e) </p>
         <p v-else class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0]._id.includes(userjwtid) && followBack == false" class="btn-unfollow "
-          @click="getFollowBack(userid)"> S'abonné  </button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button>  -->
+        <button :key="followkey " v-if="p[0]._id.includes(userjwtid) && followBack == false" class="btn-unfollow " @click="getFollowBack(userid)"> S'abonné </button>       
       </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
@@ -52,7 +50,8 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnements</h2>
       </div>
-      <p class="card-profil-friend-p">{{ friendAbo }}</p>
+      <!-- <p class="card-profil-friend-p">{{ friendAbo }}</p> -->
+      <p class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson, Abonnez-vous !!  </p>
     </v-card-text>
 
     <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
@@ -63,21 +62,11 @@
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">Vous êtes abonné(e) à {{fullname}}</p>
         <p v-else class="card-profil-friend-p">{{p[1].name}}</p>
-
-
-        <button v-if="p[0]._id.includes(userjwtid)  " class="btn-unfollow " @click="getUnFollowBack(userid)">
-          Se désabonné</button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-
+        <button v-if="p[0]._id.includes(userjwtid)  " class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        
-        <p v-if="p[0]._id !== userjwtid && newfollow"  class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <!-- <p v-else class="card-profil-friend-p">{{p[1].name}}</p> -->
-        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-unfollow " @click="getFollowBack(userid)">
-          S abonné</button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-      
+        <p v-if="p[0]._id !== userjwtid && newfollow" class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-unfollow " @click="getFollowBack(userid)"> S abonné</button>
       </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
@@ -85,7 +74,10 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnés</h2>
       </div>
-      <p class="card-profil-friend-p">{{ friend }}</p>
+      <div class="btn-profil-follow">
+        <p class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button class="btn-unfollow " @click="getFollowBack(userid)"> S abonné</button>
+      </div>
     </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
@@ -94,7 +86,7 @@
         <h2 class="h2-post">Ces publications&nbsp({{pub.length}})</h2>
       </div>
       <div class="align-pub-user">
-        <div class="btn-profil-post-del" v-for="(p, index) in pub">
+        <div class="profil-post" v-for="(p, index) in pub">
 
           <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
           <div class="like-profilmain-user">
@@ -126,7 +118,7 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
- 
+
   </v-card>
 
 </template>
@@ -341,7 +333,7 @@ export default {
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
                     if (this.followingId === this.userjwtid) {
-                     
+
                       this.newfollow = false
                     }
 
@@ -393,7 +385,7 @@ export default {
                     this.info.push(this.followInfo)
                     if (this.followId === this.userjwtid) {
                       this.followBack = true
-                    
+
                     } else {
                       this.followBack = false
                       this.newfollow = true
@@ -419,7 +411,7 @@ export default {
                     this.infoAbo.push(this.followingInfo)
                     if (this.followingId === this.userjwtid) {
                       this.newfollow = false
-                   }
+                    }
                   })
               })
             }).catch((error) => {
@@ -509,8 +501,7 @@ export default {
               let name = this.followingFirstname + " " + this.followingLastname;
               this.followingInfo = [docs.data, { "name": name }]
               this.infoAbo.push(this.followingInfo)
-            if(this.followingId === this.userjwtid )
-            {this.newfollow = false}
+              if (this.followingId === this.userjwtid) { this.newfollow = false }
             })
         })
       }).catch((error) => {
@@ -544,63 +535,6 @@ export default {
 label.lab-pic {
   display: flex;
   // width: 130px;
-}
-
-.lab-pic-del {
-  display: flex;
-  justify-content: center;
-  // margin-right: 10%;
-  // width: 100%;
-  // width: 20%;
-  // flex-direction: column;
-}
-
-.lab-pic-custom {
-  position: relative;
-  top: 80px;
-  left: -30px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.form-avatar-profil {
-  padding-top: 2%;
-  display: none;
-  visibility: none;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.card-profil-picture-user {
-  display: flex;
-  width: 120px;
-  height: 120px;
-
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-}
-
-img.form-avatar-dl {
-  display: flex;
-  width: 120px;
-  height: 120px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
 }
 
 #avatar-empty-profil {
@@ -656,71 +590,6 @@ div.v-card__text.card-profil-name {
   background-color: $tertiary;
 }
 
-.card-profil-name-url {
-  display: flex;
-  justify-content: center;
-  background-color: $tertiary;
-}
-
-.block-btn-pic-profil {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 175px;
-  margin-left: 30px;
-}
-
-button#btn-del-pic-profil {
-  display: flex;
-  // height: 20px;
-  justify-content: center;
-  align-items: center;
-  margin-left: 0%;
-  border: solid 2px $secondary;
-  border-radius: 30%;
-  color: $secondary;
-
-  &:hover {
-    border-radius: 20%;
-    background-color: $secondary;
-    color: $tertiary;
-  }
-}
-
-button#btn-del-pic-profil-bis {
-  position: relative;
-  top: 80px;
-  left: -170px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-#btn-del-pic-profil-icon {
-  position: relative;
-  top: -2px;
-  left: -18px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 .lab-pic-custom-url {
   position: relative;
@@ -783,41 +652,6 @@ button#btn-confirm-pic-profil-post {
   }
 }
 
-.lab-pic-custom-url {
-  position: relative;
-  top: 70px;
-  left: 140px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.fullname-url {
-  padding-top: 1%;
-  padding-left: 5%;
-  font-size: 1.8rem;
-  padding-top: 4%;
-}
-
-.block-picture-url {
-  padding-top: 10px;
-}
-
-.lastname {
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  padding-top: 4%;
-  //   padding-left: 1%;
-}
 
 .fullname {
   padding-top: 1%;
@@ -826,19 +660,6 @@ button#btn-confirm-pic-profil-post {
   padding-top: 4%;
 }
 
-.firstname {
-  padding-top: 1%;
-  padding-left: 1%;
-  font-size: 1.8rem;
-  padding-top: 4%;
-}
-
-.picture {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
 .card-profil-biographie {
   border-bottom: solid 2px;
@@ -852,121 +673,6 @@ p.card-profil-biographie-p {
   padding-bottom: 2%;
   // border: 2px solid $secondary;
   cursor: default;
-}
-
-// .btn-bio {
-//   display: flex;
-//   flex-direction: row;
-// }
-
-// .deploy-modidify {
-//   border-bottom: 2px solid $primary;
-// }
-
-// .card-profil-textarea {
-//   width: 100%;
-//   color: $secondary;
-//   border: solid 2px $tertiary;
-//   padding: 1%;
-
-//   &:focus {
-//     outline: none;
-//   }
-// }
-
-// #btn-bio-delete {
-//   border: solid 2px $secondary;
-//   border-radius: 30%;
-//   margin-right: auto;
-//   margin-top: 1%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-
-//   &:hover {
-//     background-color: $secondary;
-//     color: $tertiary;
-//   }
-// }
-
-
-
-// #btn-bio-send {
-//   border: solid 2px $secondary;
-//   margin-top: 1%;
-//   margin-right: 1%;
-//   border-radius: 30%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-
-//   &:hover {
-//     background-color: $secondary;
-//     color: $tertiary;
-//   }
-// }
-
-// #btn-bio-send:disabled {
-
-//   border: solid 2px $secondary;
-//   margin-top: 1%;
-//   margin-right: 1%;
-//   border-radius: 30%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-//   background-color:  #ccc;
-//   color: $tertiary;
-
-// }
-
-// #btn-bio-close {
-//   border: solid 2px $secondary;
-//   margin-top: 1%;
-//   //   margin-left: 80%;
-//   // flex-grow: 80%;
-//   // flex-shrink: 100%;
-//   border-radius: 30%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-
-//   &:hover {
-//     background-color: $secondary;
-//     color: $tertiary;
-//   }
-// }
-
-// .btn-bio-mod {
-//   border: solid 2px $secondary;
-//   margin-top: 1%;
-//   margin-right: 1%;
-//   border-radius: 30%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-
-//   &:hover {
-//     background-color: $secondary;
-//     color: $tertiary;
-
-//     &.btn-bio-mod>.pen-icon {
-//       color: $tertiary;
-//     }
-//   }
-// }
-
-.btn-follow {
-  border: solid 2px $secondary;
-  margin-top: 1%;
-  margin-right: 1%;
-  border-radius: 30%;
-  padding-left: 5px;
-  padding-right: 5px;
-
-  &:hover {
-    background-color: $secondary;
-    color: $tertiary;
-
-    &.btn-follow>.pen-icon {
-      color: $tertiary;
-    }
-  }
 }
 
 .btn-unfollow {
@@ -1028,14 +734,15 @@ p.card-profiluser-friend {
   font-style: italic;
   font-weight: bold;
   margin: 0;
-  color:rgb(40, 207, 40);
+  color: rgb(40, 207, 40);
   cursor: default;
 }
+
 p.card-profiluser-friend-new {
   font-style: italic;
   font-weight: bold;
   margin: 0;
-  color:rgb(40, 207, 40);
+  color: rgb(40, 207, 40);
 
   cursor: default;
 }
@@ -1068,9 +775,6 @@ p.card-profiluser-friend-new {
   justify-content: space-around;
   align-items: center;
   width: 50%;
-
-
-
 }
 
 .btn-post-delete-profil {
@@ -1097,9 +801,6 @@ p.card-profiluser-friend-new {
 .btn-post-modify-profil {
   width: 100px;
   border: solid 2px $secondary;
-  // margin-top: 1%;
-  // margin-right: 1%;
-  // margin-left: 1%;
   margin-bottom: 1%;
   border-radius: 30%;
   padding-left: 5px;
@@ -1108,7 +809,6 @@ p.card-profiluser-friend-new {
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-
   }
 }
 
@@ -1124,22 +824,16 @@ p.card-profiluser-friend-new {
   margin-right: 10%;
 }
 
-
-
 .card-img-profil {
   display: flex;
   justify-content: center;
   align-items: center;
   display: flex;
   object-fit: cover;
-  // overflow: hidden;
   max-height: 300px;
   max-width: 500px;
   min-width: 300px;
-  //  width: 100%;
-  // padding: 1%;
   border: solid 2px $secondary;
-  // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
 
@@ -1148,7 +842,6 @@ p.card-profiluser-friend-new {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
 }
 
 .image-card-profil {
@@ -1161,7 +854,6 @@ p.card-profiluser-friend-new {
   align-items: center;
 }
 
-
 .message-profil {
   padding: 2%;
   text-align: center;
@@ -1169,7 +861,6 @@ p.card-profiluser-friend-new {
   width: 100%;
   border-top: solid 2px;
   border-radius: 2%;
-
 }
 
 button.class-btn-like-userprofil {
@@ -1203,7 +894,6 @@ button.class-btn-like-userprofil {
 
 p.text-att-userprofil {
   margin-bottom: 0;
-
 }
 
 button.class-btn-unlike-userprofil {
@@ -1237,7 +927,7 @@ button.class-btn-unlike-userprofil {
   }
 }
 
-.btn-profil-post-del {
+.profil-post {
   display: flex;
   max-width: 480px;
   width: 100%;
@@ -1248,6 +938,14 @@ button.class-btn-unlike-userprofil {
   border-radius: 2%;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    // border-color:green;
+
+    transform: scale(1.05);
+    transition: ease 0.5s;
+
+  }
 }
 
 p.card-profil-post-p {
@@ -1259,5 +957,194 @@ p.card-profil-post-p {
   // border: 2px solid $primary;
   cursor: default;
 }
+
+// .lab-pic-custom-url {
+//   position: relative;
+//   top: 70px;
+//   left: 140px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// .fullname-url {
+//   padding-top: 1%;
+//   padding-left: 5%;
+//   font-size: 1.8rem;
+//   padding-top: 4%;
+// }
+
+// .block-picture-url {
+//   padding-top: 10px;
+// }
+
+// .lastname {
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 1.8rem;
+//   padding-top: 4%;
+//   //   padding-left: 1%;
+// }
+// .btn-follow {
+//   border: solid 2px $secondary;
+//   margin-top: 1%;
+//   margin-right: 1%;
+//   border-radius: 30%;
+//   padding-left: 5px;
+//   padding-right: 5px;
+
+//   &:hover {
+//     background-color: $secondary;
+//     color: $tertiary;
+
+//     &.btn-follow>.pen-icon {
+//       color: $tertiary;
+//     }
+//   }
+// }
+// .firstname {
+//   padding-top: 1%;
+//   padding-left: 1%;
+//   font-size: 1.8rem;
+//   padding-top: 4%;
+// }
+
+// .picture {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .card-profil-name-url {
+//   display: flex;
+//   justify-content: center;
+//   background-color: $tertiary;
+// }
+
+// .block-btn-pic-profil {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   width: 175px;
+//   margin-left: 30px;
+// }
+
+// button#btn-del-pic-profil {
+//   display: flex;
+//   // height: 20px;
+//   justify-content: center;
+//   align-items: center;
+//   margin-left: 0%;
+//   border: solid 2px $secondary;
+//   border-radius: 30%;
+//   color: $secondary;
+
+//   &:hover {
+//     border-radius: 20%;
+//     background-color: $secondary;
+//     color: $tertiary;
+//   }
+// }
+
+// button#btn-del-pic-profil-bis {
+//   position: relative;
+//   top: 80px;
+//   left: -170px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// #btn-del-pic-profil-icon {
+//   position: relative;
+//   top: -2px;
+//   left: -18px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// .lab-pic-del {
+//   display: flex;
+//   justify-content: center;
+//   // margin-right: 10%;
+//   // width: 100%;
+//   // width: 20%;
+//   // flex-direction: column;
+// }
+
+// .lab-pic-custom {
+//   position: relative;
+//   top: 80px;
+//   left: -30px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// .form-avatar-profil {
+//   padding-top: 2%;
+//   display: none;
+//   visibility: none;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// .card-profil-picture-user {
+//   display: flex;
+//   width: 120px;
+//   height: 120px;
+
+//   justify-content: center;
+//   align-items: center;
+//   border: solid 2px $secondary;
+//   border-radius: 50%;
+// }
+
+// img.form-avatar-dl {
+//   display: flex;
+//   width: 120px;
+//   height: 120px;
+//   justify-content: center;
+//   align-items: center;
+//   border: solid 2px $secondary;
+//   border-radius: 50%;
+// }
 </style>
   

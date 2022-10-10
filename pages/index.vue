@@ -57,7 +57,7 @@
               <div class="btn-book-main">
                 <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
                 <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">
-                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier
+                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> Bannir
                 </button>
                 <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
                 <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)">
@@ -162,7 +162,7 @@
       @close-modale-sort-all="showsort = false,getPosts()" />
     <deletepost v-if="showdel" :id="userid" :keyid="post._id" v-show="showdel"
       @close-modale-delete="showdel = false,getRefresh()" />
-    <modify v-if="showmodify" :key="componentKey" v-show="showmodify"
+    <modify v-if="showmodify"  v-show="showmodify"
       @close-modale-modify=" showmodify=false,getRefresh()" />
     <Postcreate v-show="showpost" @close-modale-post="showpost = false,getRefresh()" />
 
@@ -171,12 +171,12 @@
 <script>
 
 import axios from "axios"
-import { trusted } from "mongoose";
-import { ref } from 'vue';
-const componentKey = ref(0);
-const forceRerender = () => {
-  componentKey.value += 1
-}
+// import { trusted } from "mongoose";
+// import { ref } from 'vue';
+// const componentKey = ref(0);
+// const forceRerender = () => {
+//   componentKey.value += 1
+// }
 
 export default {
   name: "Book",
