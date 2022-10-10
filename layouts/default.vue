@@ -4,41 +4,48 @@
       <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
     </div>
 
-    <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app >
+    <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list class="temp">
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon> {{ item.icon }}</v-icon>
           </v-list-item-action>
-          <v-list-item-content> 
+          <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer"><v-icon>mdi-menu</v-icon> </v-btn>
+      <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
 
-      <router-link id="btn-post-router" to="/"> 
-      <v-btn  id="btn-post-nav" alt="menu">
-        <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
-        </v-btn>  
-        </router-link>
-    
-        <!-- <router-link  class="btn-post-router-plus"  to="/postpage"> 
-      <v-btn id="btn-post-nav"  alt="menu"  >
-        <v-icon>mdi-newspaper-plus </v-icon>
-        </v-btn>  
-        </router-link> -->
+      <router-link id="btn-post-router" to="/" test>
+        <v-btn  id="btn-post-nav" alt="menu">
+          <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
+        </v-btn>
+        <!-- <v-btn v-else @click="url" active id="btn-post-nav-select" alt="menu">
+          <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
+        </v-btn> -->
+      </router-link>
+      <router-link class="btn-post-router-plus" to="/postpage">
+        <v-btn id="btn-post-nav" alt="menu">
+          <v-icon>mdi-chat </v-icon>
+        </v-btn>
+        <!-- <v-btn v-else active @click="url" id="btn-post-nav-select" alt="menu">
+          <v-icon>mdi-chat </v-icon>
+        </v-btn> -->
+      </router-link>
 
-  <!-- <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
+      <!-- <v-btn @click="showpost = !showpost" id="btn-post-nav" alt="menu">
         <v-icon>mdi-newspaper-plus </v-icon>
         </v-btn>  -->
-  <v-btn id="btn-post-nav" alt="menu">
+      <!-- <v-btn id="btn-post-nav" alt="menu">
         <v-icon>mdi-chat </v-icon>
-        </v-btn> 
+        </v-btn>  -->
 
-<!-- 
+      <!-- 
        <router-link     to="/postpage"> 
        <button :class="hoverbtn ? 'btn-hover' : 'btn-post-router-plus' "  @click=" toggleClass" alt="menu" >
         <v-icon id="icon">mdi-newspaper-plus </v-icon>
@@ -50,12 +57,13 @@
       </v-btn> -->
 
       <v-spacer />
-      <img class="logo-white" src="../logo/logo.png" /><v-toolbar-title v-text="title" id="temp-title" alt="logo"/>
+      <img class="logo-white" src="../logo/logo.png" />
+      <v-toolbar-title v-text="title" id="temp-title" alt="logo" />
       <v-spacer />
       <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
         <img v-if="urlpic !== '' && urlpic !== undefined" class="avatar" :src="urlpic" alt="photo de l'utilisateur" />
-        <div v-else id="avatar-empty" >{{avatarpicempty}}</div>
-        </v-btn>
+        <div v-else id="avatar-empty">{{avatarpicempty}}</div>
+      </v-btn>
       <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
       </v-btn> -->
@@ -68,11 +76,11 @@
 
     <v-navigation-drawer class="drawer-right" v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-item v-for="(item, v) in itemsuser" :key="v" :to="item.to" router exact >
+        <v-list-item v-for="(item, v) in itemsuser" :key="v" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon> {{ item.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
+          </v-list-item-action>
+          <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
@@ -92,53 +100,64 @@ import SignIn from "../components/sign-in.vue";
 // import indexVue from "../pages/index.vue";
 
 export default {
-  components: { SignIn,
+  components: {
+    SignIn,
     // indexVue,
     // modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
     //  Post
-    },
+  },
   name: "DefaultLayout",
 
-  methods:{
-    forceRerender() {
-      this.componentKey += 1;  
-    },
-    refresh(){
-      // this.proxy.forceUpdate();
-    } ,
-    getcolor(){
-      if(this.urlpic === '' || this.urlpic === undefined ){
-     
-   this.avatarpicempty = this.name.split('')[0]
-    // let randomColor = Math.floor(Math.random()*16777215).toString(16);
-   document.getElementById('avatar-empty').style.backgroundColor = '#' }
+  methods: {
+    // url() {
+    //   let params = window.location.toString()
+    //   let idUserURL = params.split('/')[3]
+    //   this.urlbtn = idUserURL
+    //   console.log('test' + this.urlbtn);
+    //   if (this.urlbtn == 'postpage') {
+    //     this.postbtn = true
+    //   } else {
+    //     this.postbtn = false
+    //   }
+    // },
+
+ 
+    getcolor() {
+      if (this.urlpic === '' || this.urlpic === undefined) {
+
+        this.avatarpicempty = this.name.split('')[0]
+        // let randomColor = Math.floor(Math.random()*16777215).toString(16);
+        document.getElementById('avatar-empty').style.backgroundColor = '#'
       }
+    }
   },
 
-  computed :{
- 
+  computed: {
+
   },
- 
+
 
   data() {
     return {
+      urlbtn: "",
+      postbtn: false,
       componentKey: 0,
-      name:'',
-      avatarpicempty : '',
-      userjwtid:'',
-      urlpic:'',
+      name: '',
+      avatarpicempty: '',
+      userjwtid: '',
+      urlpic: '',
       show: true,
       right: true,
       drawer: false,
-      miniVariant:false,
+      miniVariant: false,
       rightDrawer: false,
       clipped: false,
       fixed: false,
       // showpost: false,
-      showbtn:true,
-      hoverbtn:false,
+      showbtn: true,
+      hoverbtn: false,
       itemsuser: [
-         {
+        {
           icon: "mdi-account",
           title: "Mon profil",
           to: "/profiluser",
@@ -183,38 +202,41 @@ export default {
         {
           icon: " mdi-chat",
           title: "le Groupo-chat",
-        },  
+          to: "/postpage",
+        },
       ],
-    
+
       // icon: "../logo/logo.png",
       title: "Groupomania le réseau",
     };
   },
 
-  async mounted(){
 
-  await axios.get(`http://localhost:5000/jwtid`)
-    .then((res) => {
-      // console.log(res.data);
-      this.userjwtid = res.data
-    this.show = false
-    // this.log = true
-    // TODO => Insert loader \\ 
-    // }).catch((error)=>{
-    //   console.log(error);
-    })
-   await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    .then((data) => {
-      this.name = data.data.firstname
-       this.urlpic = data.data.photo
-  
+  async mounted() {
 
-    }).catch((error)=>{
-      console.log(
-     error
-      )
-    })
-      this.getcolor()
+    await axios.get(`http://localhost:5000/jwtid`)
+      .then((res) => {
+        // console.log(res.data);
+        this.userjwtid = res.data
+        this.show = false
+        // this.log = true
+        // TODO => Insert loader \\ 
+        // }).catch((error)=>{
+        //   console.log(error);
+      })
+    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((data) => {
+        this.name = data.data.firstname
+        this.urlpic = data.data.photo
+
+
+      }).catch((error) => {
+        console.log(
+          error
+        )
+      })
+    this.getcolor()
+
 
   },
 
@@ -226,7 +248,6 @@ export default {
 
 </script>
 <style lang="scss">
-
 html {
   font-family: "Lato";
 }
@@ -289,12 +310,13 @@ html {
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-  &:hover{
-  background-color: $secondary;
-  border: solid $tertiary;
-  color: black;
-  border-radius: 20%;
-}
+
+  &:hover {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: black;
+    border-radius: 20%;
+  }
 }
 
 #temp-menu {
@@ -304,42 +326,66 @@ html {
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-  &:hover{
-  background-color: $secondary;
-  border: solid $tertiary;
-  color: black;
-  border-radius: 20%;
+
+  &:hover {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: black;
+    border-radius: 20%;
   }
 }
 
-#btn-post-nav{
-background-color: $tertiary;
+#btn-post-nav {
+  background-color: $tertiary;
   height: 35px;
   width: auto;
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-  &:hover{
-  background-color: $secondary;
-  border: solid $tertiary;
-  color:$tertiary;
-  border-radius: 20%;
+
+  &:hover {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: $tertiary;
+    border-radius: 20%;
   }
 }
 
-#btn-post-router{
-text-decoration: none;
-color:$secondary;
-font-weight: bold;
-margin-left: 0.5%;
-margin-right: 0.5%;
+#btn-post-nav-select {
+  background-color: $secondary;
+  border: solid $tertiary;
+  color: $tertiary;
+  border-radius: 20%;
+  height: 35px;
+  width: auto;
+
+  &:hover {
+    background-color: $tertiary;
+    border: solid $secondary;
+    color: $secondary;
+    border-radius: 30%;
+  }
 }
 
-#btn-post-router-plus{
+#btn-post-router {
   text-decoration: none;
-color:$secondary;
-font-weight: bold;
-margin-right: 0.5%;
+  color: $secondary;
+  font-weight: bold;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  // &:active{
+  //   background-color: red;
+  // }
+}
+
+#btn-post-router-plus {
+  text-decoration: none;
+  color: $secondary;
+  font-weight: bold;
+  margin-right: 0.5%;
+  // &:active{
+  //   background-color: red;
+  // }
 }
 
 
@@ -348,38 +394,35 @@ margin-right: 0.5%;
   font-size: 35px;
   letter-spacing: 2px;
   animation: textAnimated 30s linear infinite reverse;
+
   @keyframes textAnimated {
     0% {
-      background: linear-gradient(
-        70deg,
-        darken($primary, 10%),
-        $tertiary,
-        $secondary
-      );
+      background: linear-gradient(70deg,
+          darken($primary, 10%),
+          $tertiary,
+          $secondary );
       background-position: -16em 0;
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
     }
+
     50% {
-      background: linear-gradient(
-        85deg,
-        darken($primary, 10%),
-        $tertiary,
-        $secondary
-      );
+      background: linear-gradient(85deg,
+          darken($primary, 10%),
+          $tertiary,
+          $secondary );
       background-position: 0 0;
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
     }
+
     100% {
-      background: linear-gradient(
-        70deg,
-        darken($primary, 10%),
-        $tertiary,
-        $secondary
-      );
+      background: linear-gradient(70deg,
+          darken($primary, 10%),
+          $tertiary,
+          $secondary );
       background-position: -15em;
       background-clip: text;
       -webkit-background-clip: text;

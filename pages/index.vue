@@ -603,6 +603,11 @@ export default {
 </script>
 
 <style lang="scss">
+div.v-main__wrap {
+  background-color:  rgb(18, 7, 48);
+
+}
+
 #Book {
   display: flex;
   flex-direction: column;
@@ -629,6 +634,13 @@ export default {
   max-width: 700px;
   min-width: 350px;
   width: 100%;
+  &:hover {
+    // border-color:green;
+
+    transform: scale(1.02);
+    transition: ease 0.5s ;
+
+  }
   // background-color: red;
 }
 
@@ -661,14 +673,16 @@ export default {
   align-items: center;
   //  max-width: 500px;
   //  margin-right: auto;
-  //  margin-left: auto;
+  padding-left: 8%;
   width: 100%;
   height: 50px;
+ 
   // border: solid 2px $secondary;
   // border-radius: 10px/5px;
   // margin-bottom: 2%;
   // background-color: $secondary;
   cursor: pointer;
+  &:hover {transform: scale(1.05);}
 }
 
 .empty-sort {
@@ -686,44 +700,27 @@ export default {
   border-radius: 10px/5px;
 }
 
-.picture-user-none-top {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  margin-right: 1%;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px;
-  border-radius: 50%;
+
+.post-option :hover{
+  // position: relative;
+  // left : 10%;
+  // border: solid black 1px;
+
+ translate : 4px;
+
+
 }
-
-#avatar-empty-book-top {
-  font-size: 1.8rem;
-  display: flex;
-  margin-right: 1%;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $tertiary;
-  border-radius: 50%;
-  margin-right: 1%;
-  background-color: rgb(89, 165, 35);
-}
-
-// .post-option{
-//   // position: relative;
-//   // left : 10%;
-//   // border: solid black 1px;
-
-
-
-// }
 
 .post-option-dot:before {
   color: $primary;
   // position: relative;
   // left : 100%;
+  // &:hover{
+  // transform: 20px;
+
+
+
+  // }
 }
 
 .new-top {
@@ -780,6 +777,32 @@ export default {
   padding-bottom: 0.5%;
 }
 
+.picture-user-none-top {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  margin-right: 1%;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px;
+  border-radius: 50%;
+}
+
+#avatar-empty-book-top {
+  font-size: 1.8rem;
+  display: flex;
+  margin-right: 1%;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $tertiary;
+  border-radius: 50%;
+  margin-right: 1%;
+  background-color: rgb(89, 165, 35);
+}
+
+
 .picture-user {
   margin-top: 1.5%;
   margin-right: 1%;
@@ -790,7 +813,80 @@ export default {
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%;
+  border-color: $primary;
+  &:hover {
+    // border-color:green;
+
+    transform: scale(1.05);
+    transition: ease 0.5s ;
+
+  }
 }
+
+#avatar-empty-book {
+  // margin-top: 5%;
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  border-color: $primary;
+  margin-right: 1%;
+  background-color: rgb(89, 165, 35);
+  color:aliceblue;
+  // color:$primary;
+  &:hover {
+    transform: scale(1.05);
+    // transition: ease 0.5s ;
+
+  }
+}
+.picture-user-none {
+  display: flex;
+  margin-right: 1%;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  border-color: aliceblue;
+  &:hover {
+    border-color: $primary;
+    // border-color:green;
+    // border-color: $secondary;
+    transform: scale(1.05);
+    // transition: ease 0.5s ;
+
+  }
+}
+
+#avatar-empty-book-book {
+  font-size: 1.8rem;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  border-color: $primary;
+  margin-right: 1%;
+  background-color: rgb(89, 165, 35);
+  // color:$primary;
+  color:aliceblue;
+  &:hover {
+    // border-color:green;
+    border-color: $primary;
+    transform: scale(1.05);
+    transition: ease 0.5s ;
+
+  }
+}
+
 .link{
   text-decoration: none;
   color: aliceblue;
@@ -807,32 +903,6 @@ export default {
   // border-radius: 50%;
 }
 
-#avatar-empty-book {
-  // margin-top: 5%;
-  font-size: 1.8rem;
-  display: flex;
-  width: 50px;
-  height: 50px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-  margin-right: 1%;
-  background-color: rgb(89, 165, 35);
-}
-
-#avatar-empty-book-book {
-  font-size: 1.8rem;
-  display: flex;
-  width: 50px;
-  height: 50px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-  margin-right: 1%;
-  background-color: rgb(89, 165, 35);
-}
 
 .history {
   font-style: italic;
@@ -904,16 +974,7 @@ p.fullname-none {
 //   border: solid 2px $secondary;
 //   border-radius: 50%; 
 
-.picture-user-none {
-  display: flex;
-  margin-right: 1%;
-  width: 50px;
-  height: 50px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-}
+
 
 .pen-icon-main {
   padding-right: 5%;

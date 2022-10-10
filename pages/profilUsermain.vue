@@ -82,6 +82,27 @@
           </div>
         </form>
       </v-card-text> -->
+    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
+      <div class="card-profil-friend-t">
+        <v-icon class="icon-friend">mdi-account-group</v-icon>
+        <h2 class="h2-friend">Ces abonnements&nbsp({{infoAbo.length}})</h2>
+      </div>
+      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
+        <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e)  </p>
+        <p v-else class="card-profil-friend-p">{{p[1].name}} </p>
+        <button :key="followkey " v-if="p[0]._id.includes(userjwtid) && followBack == false" class="btn-unfollow "
+          @click="getFollowBack(userid)"> S'abonné  </button>
+        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button>  -->
+      </div>
+    </v-card-text>
+    <v-card-text v-else class="card-profil-friend">
+      <div class="card-profil-friend-t">
+        <v-icon class="icon-friend">mdi-account-group</v-icon>
+        <h2 class="h2-friend">Ces abonnements</h2>
+      </div>
+      <p class="card-profil-friend-p">{{ friendAbo }}</p>
+    </v-card-text>
+
     <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
@@ -97,6 +118,15 @@
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
 
       </div>
+      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
+        
+        <p v-if="p[0]._id !== userjwtid && newfollow"  class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <!-- <p v-else class="card-profil-friend-p">{{p[1].name}}</p> -->
+        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-unfollow " @click="getFollowBack(userid)">
+          S abonné</button>
+        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
+      
+      </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
@@ -104,27 +134,6 @@
         <h2 class="h2-friend">Ces abonnés</h2>
       </div>
       <p class="card-profil-friend-p">{{ friend }}</p>
-    </v-card-text>
-    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
-      <div class="card-profil-friend-t">
-        <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnements&nbsp({{infoAbo.length}})</h2>
-      </div>
-      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) abonné(e) </p>
-        <p v-else class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0]._id.includes(userjwtid) && followBack == false" class="btn-unfollow "
-          @click="getFollowBack(userid)"> S'abonné </button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button>  -->
-
-      </div>
-    </v-card-text>
-    <v-card-text v-else class="card-profil-friend">
-      <div class="card-profil-friend-t">
-        <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnements</h2>
-      </div>
-      <p class="card-profil-friend-p">{{ friendAbo }}</p>
     </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
@@ -213,6 +222,7 @@ export default {
 
       userLikePostId: [],
 
+      newfollow: true,
       following: [],
       followingBack: false,
       followingBackId: [],
@@ -286,128 +296,6 @@ export default {
       this.getPosts()
     },
 
-
-
-
-
-    // getBio(){
-    //    axios
-    //   .get(`http://localhost:5000/api/user/${this.userid}`)
-    //   .then((docs) => {
-    //     this.newBioUser = docs.data.bio
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // },
-
-    // getRefreshBio(){
-    //   axios
-    //   .get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    //   .then((docs) => {
-    //     this.bioUser = docs.data.bio
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // },
-
-    // postBio(){
-    //   let formData = new FormData();
-    //   formData.append("bio", this.newBioUser);
-    //   axios
-    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //     .then(()=>{
-    //       this.newBioUser = ''
-    //     }).catch((err)=>{console.log(err);})
-    // },
-    // deleteUserBio(){
-    //   let formData = new FormData();
-    //   formData.append("bio", this.bio);
-    //   axios.put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //       .then(()=>{
-    //         this.BioUser = ''
-    //     }).then(()=>{
-    //       axios
-    //   .get(`http://localhost:5000/api/user/${this.userid}`)
-    //   .then((docs) => {
-    //     this.bioUser = docs.data.bio
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    //     })  
-
-
-    // },
-
-
-    // controleBio(){
-    //   let testRegex = this.newBioUser.split(' ').join('')
-    //   if(testRegex !='' || this.bioUser !== ''){
-    //       this.bioValid = true
-    //       return true
-    //     }
-    //     else{
-    //     this.bioValid = false
-    //     return false
-    //     }
-    // },
-
-
-    // controlePostBio(){
-    //   let testRegex = this.newBioUser.split(' ').join('')
-    //     if(testRegex !=''){
-    //       this.bioValid = true
-    //       this.newBioUser.trimStart('')
-    //       let formData = new FormData();
-    //   formData.append("bio", this.newBioUser);
-    //   axios.put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //       .then(()=>{
-    //         this.newBioUser = ''
-    //       this.modifbio = !this.modifbio
-
-    //     }).then(()=>{
-    //       axios
-    //   .get(`http://localhost:5000/api/user/${this.userid}`)
-    //   .then((docs) => {
-    //     this.bioUser = docs.data.bio
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    //     })  
-    //     }
-    //     else{
-    //     this.bioValid = false
-    //     this.warningEmpty = true
-    //     setTimeout(()=>{
-    //       this.bioValid = true
-    //     },2000)
-    //     return false
-
-    //     }
-    // },
-
-    // deletebio() {
-    //   console.log(this.bio);
-    //   this.newBioUser = this.bioUser;
-    // },
-
-
-
-    // delPicPreview() {
-    //   this.url = "";
-    // },
-
-    // picPreview(e) {
-    //   e.target.value[0].split(" ");
-    //   const pic = e.target.files[0];
-    //   this.photo = pic;
-    //   this.url = URL.createObjectURL(pic);
-    //   this.validPost = !this.validPost;
-    // },
-
     getcolor() {
       if (this.urlpic === "") {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
@@ -417,20 +305,11 @@ export default {
       }
     },
 
-
-
-
     getImage(imagename) {
       let name = avatar.value;
       let namereg = name.replace(/^.*\\/, "");
       this.picutername = namereg;
     },
-
-    // postIdDel(post) {
-    //   const parse = JSON.stringify(post);
-    //   localStorage.setItem('categories', parse);
-    // },
-
 
     async getPosts() {
       this.pub = []
@@ -456,57 +335,6 @@ export default {
           console.log(error);
         })
     },
-
-    // async profilUpdate() {
-    //   // photoName = this.fullname.split(' ')
-    //   // console.log(photoName);
-    //   let formData = new FormData();
-    //   // formData.append('posterpicture', this.photo)
-    //   formData.append("fullname", this.fullname);
-    //   formData.append("photo", this.photo);
-    //   // formData.append("bio", this.bio);
-    //   // console.log(this.photo.filename);
-    //   // console.log(this.bio);
-    //   await axios
-    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //     .then(() => {
-    //       axios.get(`http://localhost:5000/api/post`).then((post) => {
-    //         post.data.forEach((doc) => {
-    //           if (doc.posterId === this.userid) {
-    //             const id = [];
-    //             id.push(doc._id);
-    //             id.forEach((postid) => {
-    //               // console.log(postid);
-    //               // console.log(this.photo);
-    //               let formData = new FormData();
-    //               formData.append("picture", this.photo);
-    //               axios.put(
-    //                 `http://localhost:5000/api/post/photo/${postid}`,
-    //                 formData
-    //               );
-    //             });
-    //           }
-    //         });
-    //       });
-    //     })
-    //     .then(() => {
-    //       this.posted = true;
-    //       setTimeout(() => {
-    //         this.posted = false;
-    //         window.location.reload();
-    //       }, 1000);
-    //     })
-    //     .catch((errors, test) => {
-    //       this.maxsize = errors.response.data.errors.maxsize;
-    //       this.format = errors.response.data.errors.format;
-    //       setTimeout(() => {
-    //         this.maxsize = "";
-    //         this.format = "";
-    //       }, 3000);
-    //       console.log(errors.response.data.errors.maxsize);
-    //       console.log(errors.response.data.errors.format);
-    //     });
-    // },
 
 
     getFollowBack(id) {
@@ -547,6 +375,7 @@ export default {
                     this.info.push(this.followInfo)
                     if (this.followId === this.userjwtid) {
                       this.followBack = true
+                      this.newfollow = false
                     }
 
 
@@ -567,6 +396,10 @@ export default {
                     let name = this.followingFirstname + " " + this.followingLastname;
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
+                    if (this.followingId === this.userjwtid) {
+                     
+                      this.newfollow = false
+                    }
 
                   })
               })
@@ -611,14 +444,15 @@ export default {
                     this.followLastname = docs.data.lastname;
                     this.followFirstname = docs.data.firstname;
                     this.followBackId = docs.data.followers;
-
                     let name = this.followFirstname + " " + this.followLastname;
                     this.followInfo = [docs.data, { "name": name }]
                     this.info.push(this.followInfo)
                     if (this.followId === this.userjwtid) {
                       this.followBack = true
+                    
                     } else {
                       this.followBack = false
+                      this.newfollow = true
                     }
 
                   });
@@ -636,11 +470,12 @@ export default {
                     this.followingLastname = docs.data.lastname;
                     this.followingFirstname = docs.data.firstname;
                     this.followingBackId = docs.data.followers;
-
                     let name = this.followingFirstname + " " + this.followingLastname;
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
-
+                    if (this.followingId === this.userjwtid) {
+                      this.newfollow = false
+                   }
                   })
               })
             }).catch((error) => {
@@ -729,7 +564,8 @@ export default {
               let name = this.followingFirstname + " " + this.followingLastname;
               this.followingInfo = [docs.data, { "name": name }]
               this.infoAbo.push(this.followingInfo)
-              // console.log(this.infoAbo);
+            if(this.followingId === this.userjwtid )
+            {this.newfollow = false}
             })
         })
       }).catch((error) => {
@@ -1244,14 +1080,18 @@ p.card-profil-friend-p {
 }
 
 p.card-profiluser-friend {
-  // display: flex;
-  // justify-content:center;
-  // align-items: center;
+  font-style: italic;
+  font-weight: bold;
   margin: 0;
-  color: $primary;
-  // padding-left: 1%;
-  // padding-bottom: 2%;
-  // border: 2px solid $primary;
+  color:rgb(40, 207, 40);
+  cursor: default;
+}
+p.card-profiluser-friend-new {
+  font-style: italic;
+  font-weight: bold;
+  margin: 0;
+  color:rgb(40, 207, 40);
+
   cursor: default;
 }
 
