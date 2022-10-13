@@ -18,6 +18,56 @@
 
 </template>
 <script>
+
+
+// test likes profilusermain sans refresh\\
+// <v-card-text class="card-profil-post" v-if="pub[0] != undefined && this.mypost ">
+//       <div class="card-profil-friend-pub">
+//         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
+//         <h2 class="h2-post">Ces publications&nbsp</h2>
+//       </div>
+//       <div class="align-pub-user" v-for="(p, index) in pub">
+//         <div class="profilusermain-post" v-if="p.posterId === id" >
+
+//           <p   class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
+//           <div class="like-profilmain-user" v-if="p.likers.length != 0">
+//             <v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span>
+//           </div>
+//           <div class="btn-post-profil">
+//             <!-- <button class="btn-post-modify-profil" type="submit"
+//                 @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button> -->
+//             <!-- <button class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)"> Like </button>  -->
+//             <button :class="p.likers.includes(userjwtid) ? 'class-btn-like-userprofil' : 'class-btn-unlike-userprofil'"
+//               @click="clickLike(p._id,index)" class="classlikebtn">
+//               <v-icon class="img-att-userprofil">mdi-thumb-up-outline</v-icon>
+//               <p class="text-att-userprofil">Like</p>
+//               <!-- <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
+//                 </div> -->
+//             </button>
+//           </div>
+
+//           <div v-if='p.picture !="" ' class="image-card-profil"><img class="card-img-profil" :src="p.picture"
+//               alt="photo" /></div>
+//           <div v-if="p.message != ''" class="message-profil"> {{p.message}}</div>
+//         </div>
+//       </div>
+//     </v-card-text>
+//     <v-card-text class="card-profilusermain-post" v-else>
+//       <div class="card-profil-friend-pub">
+//         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
+//         <h2 class="h2-post">Ces publications</h2>
+//       </div>
+//       <div class="card-profil-post-p">{{ publication }}</div>
+//     </v-card-text>
+
+
+
+
+
+
+
+
+
 // //---------------------------------option a dev read URL --------------------------------\\
 
 //   //       <!-- <router-link   to="/postpage"> 

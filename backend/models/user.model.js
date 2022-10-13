@@ -47,7 +47,7 @@ const userSchema = mongoose.Schema(
       unique: true,
       trim: true,
     },
-   password: {
+    password: {
       type: String,
       required: true,
       minlenth: 3,
@@ -61,8 +61,7 @@ const userSchema = mongoose.Schema(
         type:String,
     },
     photo: {
-      type: String,
-     
+      type: String,   
     },
     bio: {
       type: String,
@@ -74,11 +73,21 @@ const userSchema = mongoose.Schema(
     following: {
       type: [String],
     },
+    signalBy:{
+    type: [String]
+    },
+    ban: {
+      type: Boolean,
+      required : true,
+    }
   },
   {
     timestamps: true,
   }
+
 );
+
+
 //bcrypt password and badge user \\
 
 // crypt password and badge from sign up \\

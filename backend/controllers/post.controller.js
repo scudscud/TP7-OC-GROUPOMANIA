@@ -133,6 +133,18 @@ exports.getOnePost = (req, res) => {
     res.status(401).json(err);
    })
 };
+exports.getPostByPosterid= (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  PostModel.find({posterId : req.params.id})
+  
+   .then((post)=>{
+    console.log(req.params)
+    res.status(200).json(post);
+   }).catch((err)=>{
+    res.status(401).json(err);
+   })
+};
 
 // delete post end point \\
 exports.deletePost = (req, res) => {

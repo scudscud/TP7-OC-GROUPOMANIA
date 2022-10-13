@@ -142,17 +142,12 @@ export default{
     },
 
     deletePictureModify(){
-
       axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
       .then(()=>{
-
         console.log('ok');
       }).catch((err)=>{
         console.log(err);
       })
-
-
-
     },
 
 

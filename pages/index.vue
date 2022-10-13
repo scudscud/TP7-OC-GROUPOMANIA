@@ -79,8 +79,9 @@
               </button>
               <button v-else @click="addFollow(post.posterId,index)" type="submit" class="btn-main-unfollow">
                 <v-icon class="img-att"> mdi-account-group </v-icon>
-                <p class="text-att">S'abonné</p>
+                <p class="text-att">S'abonner</p>
               </button>
+             
             </div>
             <!-- <div id="card-autor-book-none" v-else>
         <div class="user-book-main-none">
@@ -127,6 +128,8 @@
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
                 <p class="text-att">Commenter</p>
               </button>
+              <!-- <button id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag</v-icon><p class="text-att">Signaler</p></button> -->
+              <button v-if="post.posterId !== userid " id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att">Signaler</p></button>
             </div>
           </div>
         </v-card>
@@ -154,7 +157,7 @@
         </v-card>
       </div>
     </div>
-
+    <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-friend="showsort = false,getPostFriend()"
       @close-modale-sort-mypost="showsort = false,getPostOwn()"
@@ -182,6 +185,7 @@ export default {
   name: "Book",
 
   components: {
+    report:() => import(/* webpackChunkName:"report"*/"../components/warningReportPost.vue"),
     sortPost: () => import("../components/sortpostby.vue"),
     Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
     modify: () => import("./index/modifytest.vue"),
@@ -234,6 +238,7 @@ export default {
       postsown: false,
       postall: false,
       sortPosts : '',
+      showReport : false,
       // userlike:[],
       // numberlike:[],
       // likeby:'',
@@ -301,8 +306,6 @@ export default {
     },
 
     getPostFriend() {
-    
-   
       this.posts = []
       axios.get("http://localhost:5000/api/post")
         .then((docs) => {
@@ -335,8 +338,6 @@ export default {
     },
 
     getPostIlike() {
-     
-    
       this.posts = []
       axios.get("http://localhost:5000/api/post")
         .then((docs) => {
@@ -362,14 +363,12 @@ export default {
           else {
             localStorage.setItem('sort', 'Like');
             return this.posts
-          
           }
         })
         .catch((err) => { console.log(err); });
     },
 
     getPostOwn() {
-      
       this.posts = []
       axios.get("http://localhost:5000/api/post")
         .then((docs) => {
@@ -786,6 +785,7 @@ div.v-main__wrap {
   align-items: center;
   border: solid 2px;
   border-radius: 50%;
+  border-color: $tertiary;
 }
 
 #avatar-empty-book-top {
@@ -873,7 +873,7 @@ div.v-main__wrap {
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%;
-  border-color: $primary;
+  border-color: $secondary;
   margin-right: 1%;
   background-color: rgb(89, 165, 35);
   // color:$primary;
@@ -1142,6 +1142,20 @@ p.firstpost {
   padding-left: 3%;
 }
 
+.img-att {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding-right: 10%;
+
+  &:before {
+    color: $tertiary;
+
+  }
+}
+
+
 #btn-att {
   display: flex;
   flex-direction: row;
@@ -1156,16 +1170,52 @@ p.firstpost {
   width: auto;
   cursor: pointer;
   padding: 2%;
-
   &:hover {
     background-color: $tertiary;
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
-
     &#btn-att>.img-att:before {
       color: $secondary;
     }
+  }
+}
+#btn-att-flag {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: $secondary;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover {
+    background-color: $tertiary;
+    color: $secondary;
+    translate: 3px;
+    border: solid 1px $secondary;
+    &#btn-att-flag>.img-att-flag:before {
+      color: $secondary;
+    }
+  }
+}
+
+.img-att-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding-right: 10%;
+  &:before {
+    color: $tertiary;
+  }
+  &:hover{
+    color: $secondary;
   }
 }
 
@@ -1391,18 +1441,6 @@ button.class-btn-att-like {
 
 }
 
-.img-att {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  padding-right: 10%;
-
-  &:before {
-    color: $tertiary;
-
-  }
-}
 
 
 

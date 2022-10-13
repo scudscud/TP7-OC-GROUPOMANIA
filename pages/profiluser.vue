@@ -21,11 +21,11 @@
           <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
 
           <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-          <button id="btn-del-pic-profil-bis" @click="profilUpdate">
+          <button id="btn-del-pic-profil-bis" @click="picPreview">
             <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
           </button>
           <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
+            placeholder="votre photo/avatar" @click="delPic" />
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
@@ -90,7 +90,7 @@
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p class="card-profil-friend-p">{{p[1].name}}</p>
       
-        <button v-if="!p[0].followers.includes(userid)  " class="btn-unfollow " @click="getFollowBack(p[0]._id)">
+        <button v-if="!p[0].followers.includes(userid)  " class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">
           S'abonné</button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
 
@@ -121,7 +121,9 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnements</h2>
       </div>
-      <p class="card-profil-friend-p">{{ friend }}</p>
+      <p v-if="follower[0] != undefined && info.length != 1" class="card-profil-friend-p">Ne faite votre timide {{info.length}} personnes sont abonné(e)s n'hésitez pas à vous abonnez en retour</p>
+      <p v-else-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{info.name}} est abonné(e)</p>
+      <p v-else class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
@@ -133,7 +135,7 @@
         <div class="profil-post" v-for="(p, index) in pub">
 
           <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
-          <div class="like-profilmain-user">
+          <div v-if="p.likers.length != 0" class="like-profilmain-user" >
             <v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span>
           </div>
           <!-- <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span> -->
@@ -346,13 +348,18 @@ export default {
       this.newBioUser = this.bioUser;
     },
 
-   
-
     delPicPreview() {
       this.url = "";
     },
 
+         
+    delPic(e){
+      this.url = ""
+      // this.urlpic === ""
+    },
+
     picPreview(e) {
+      console.log(e);
       e.target.value[0].split(" ");
       const pic = e.target.files[0];
       this.photo = pic;
@@ -361,7 +368,7 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === "" ) {
+      if (this.urlpic === "" || this.urlpic === undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
         // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         // document.getElementById("avatar-empty-profil").style.backgroundColor =
@@ -960,10 +967,10 @@ button#btn-confirm-pic-profil-post {
 }
 
 .fullname {
-  padding-top: 1%;
+  // padding-top: 1%;
   padding-left: 1%;
   font-size: 1.8rem;
-  padding-top: 4%;
+  padding-top: 7%;
 }
 
 .firstname {
@@ -1129,6 +1136,22 @@ p.card-profil-biographie-p {
   }
 }
 
+.btn-followback-profil-user {
+  width: 100px;
+  border: solid 2px rgb(16, 148, 13);
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+    &.btn-unfollow>.pen-icon {
+      color: $tertiary;
+    }
+  }
+}
+
+
 .pen-icon {
   padding-bottom: 2%;
 }
@@ -1287,7 +1310,7 @@ p.card-profil-friend-p {
   width: 100%;
   max-height: 500px;
   flex-direction: column;
-  margin-bottom: 1%;
+  margin-bottom: 2%;
   border: solid 2px;
   border-radius: 2%;
   justify-content: center;
@@ -1295,10 +1318,18 @@ p.card-profil-friend-p {
   &:hover {
     // border-color:green;
 
-    transform: scale(1.05);
+    transform: scale(1.03);
     transition: ease 0.5s ;
 
   }
+}
+
+.like-profilmain-user {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1%;
+  align-items: center;
+  justify-content: center;
 }
 
 p.card-profil-post-p {
@@ -1310,4 +1341,9 @@ p.card-profil-post-p {
   // border: 2px solid $primary;
   cursor: default;
 }
+
+.img-like-profilmain {
+  margin-right: 10%;
+}
+
 </style>

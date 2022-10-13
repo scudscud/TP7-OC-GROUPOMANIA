@@ -4,16 +4,16 @@
       <h1 class="card-profil-title-h1">Son profil </h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
+    <v-card-text v-if="url == '' && urlpic == ''" class="card-profiluser">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
-          <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
+          <div id="avatar-empty-profiluser">{{ avatarpicempty }}</div>
 
         </label>
       </div>
-      <span class="fullname">{{ fullname }}</span>
+      <span class="fullname-usermain">{{ fullname }}</span>
     </v-card-text>
-    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
+    <v-card-text v-else-if=" urlpic !== '' " class="card-profilusermain">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <img id="form-picture-profil" :src="urlpic" alt="phtot de l'utilisateur" />
@@ -21,7 +21,7 @@
 
         </label>
       </div>
-      <span class="fullname">{{ fullname }}</span>
+      <span class="fullname-profilusermain">{{ fullname }}</span>
     </v-card-text>
 
 
@@ -29,7 +29,7 @@
     <v-card-text class="card-profil-biographie">
       <h2>biographie </h2>
       <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
-      <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
+      <p v-else class="card-profilusermain-biographie-p">{{ bioUser }}</p>
 
     </v-card-text>
 
@@ -39,10 +39,10 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnements&nbsp({{infoAbo.length}})</h2>
       </div>
-      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e) </p>
-        <p v-else class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0]._id.includes(userjwtid) && followBack == false" class="btn-unfollow " @click="getFollowBack(userid)"> S'abonné </button>       
+      <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
+        <p v-if="pi[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e) </p>
+        <p v-else class="card-profil-friend-p">{{pi[1].name}} </p>
+        <button :key="followkey " v-if="pi[0]._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné </button>       
       </div>
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
@@ -50,9 +50,14 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnements</h2>
       </div>
+      <div class="btn-profil-follow">
       <!-- <p class="card-profil-friend-p">{{ friendAbo }}</p> -->
-      <p class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson, Abonnez-vous !!  </p>
+      <p class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
+      <!-- <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button> -->
+      </div>
     </v-card-text>
+
+
 
     <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
@@ -64,10 +69,19 @@
         <p v-else class="card-profil-friend-p">{{p[1].name}}</p>
         <button v-if="p[0]._id.includes(userjwtid)  " class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
       </div>
-      <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="p[0]._id !== userjwtid && newfollow" class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-unfollow " @click="getFollowBack(userid)"> S abonné</button>
+      <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
+        <p v-if="pi[0]._id !== userjwtid && newfollow " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="pi[0]._id !== userjwtid && newfollow" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
+        <!-- <p v-if="pi[0]._id !== userjwtid " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="pi[0]._id !== userjwtid " class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button> -->
       </div>
+      <div v-for="(p, index) in info" class="btn-profil-follow">
+        <p v-if="p[0]._id !== userjwtid && newfollow " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
+        <!-- <p v-if="pi[0]._id !== userjwtid " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="pi[0]._id !== userjwtid " class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button> -->
+      </div>
+
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
@@ -75,8 +89,8 @@
         <h2 class="h2-friend">Ces abonnés</h2>
       </div>
       <div class="btn-profil-follow">
-        <p class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button class="btn-unfollow " @click="getFollowBack(userid)"> S abonné</button>
+        <p class="card-profiluser-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
       </div>
     </v-card-text>
 
@@ -86,10 +100,10 @@
         <h2 class="h2-post">Ces publications&nbsp({{pub.length}})</h2>
       </div>
       <div class="align-pub-user">
-        <div class="profil-post" v-for="(p, index) in pub">
+        <div class="profilusermain-post" v-for="(p, index) in pub">
 
           <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
-          <div class="like-profilmain-user">
+          <div class="like-profilmain-user" v-if="p.likers.length != 0">
             <v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span>
           </div>
           <div class="btn-post-profil">
@@ -111,7 +125,7 @@
         </div>
       </div>
     </v-card-text>
-    <v-card-text class="card-profil-post" v-else>
+    <v-card-text class="card-profilusermain-post" v-else>
       <div class="card-profil-friend-pub">
         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
         <h2 class="h2-post">Ces publications</h2>
@@ -144,7 +158,7 @@ export default {
       bio: "",
       bioUser: "",
       newBioUser: '',
-      biographieP: "C'est vide, cette personne est assez secrete nouez le contact abonné(e) vous à elle !!! ",
+      biographieP: "C'est vide, cette personne est assez secrete !!! ",
       friend: "Aie c'est vide,cette personne n'as pas d'amis faite le premier pas !!! ",
       friendAbo: "Cette personne ne connait plus personne en Harley Davidson, abonné(e) vous à elle, elle vous le rendras surement ",
       follower: [],
@@ -170,13 +184,15 @@ export default {
       publication: "Aie c'est vide, cette personne n'as rien publié",
       publications: [],
       pub: [],
+      newpub:[],
+      likepub:[],
 
       lastname: "",
       firstname: "",
       photo: [],
       userid: "",
       posted: "",
-      date: "",
+
 
       followkey: 0,
 
@@ -215,9 +231,8 @@ export default {
                 this.userLikePostId = user.data.likes
               }).catch((err) => { console.log(err) })
             likeBtn[index].classList.replace('class-btn-unlike-userprofil', 'class-btn-like-userprofil')
-            // this.getPosts()
+            this.getPosts()
           }).catch((err) => { console.log(err) })
-
       } else {
         axios.patch(`http://localhost:5000/api/post/unlike-post/${postId}`, { id: this.userjwtid })
           .then(() => {
@@ -226,10 +241,9 @@ export default {
                 this.userLikePostId = user.data.likes
               }).catch((err) => { console.log(err) })
             likeBtn[index].classList.replace('class-btn-like-userprofil', 'class-btn-unlike-userprofil')
-            // this.getPosts()
+            this.getPosts()
           }).catch((err) => { console.log(err) })
-      }
-      this.getPosts()
+        }
     },
 
     getcolor() {
@@ -247,31 +261,57 @@ export default {
       this.picutername = namereg;
     },
 
-    async getPosts() {
-      this.pub = []
-      // this.date = []
-      await axios.get(`http://localhost:5000/api/post`)
-        .then((docs) => {
-          docs.data.forEach((doc) => {
-            if (doc.posterId === this.userid) {
-              const id = [];
-              id.push(doc._id);
-              id.forEach((postid) => {
-                axios.get(`http://localhost:5000/api/post/${postid}`)
-                  .then((doc) => {
-                    this.pub.push(doc.data);
-                    this.pub.sort(function (a, b) {
-                      return new Date(b.createdAt) - new Date(a.createdAt);
-                    });
-                  });
-              });
-            }
-          });
-        }).catch((error) => {
-          console.log(error);
-        })
-    },
+    // async getPosts() {
+    //   this.pub = []
+    //   // this.date = []
+    //   await axios.get(`http://localhost:5000/api/post`)
+    //     .then((docs) => {
+    //       docs.data.forEach((doc) => {
+    //         if (doc.posterId === this.userid) {
+    //           const id = [];
+    //           id.push(doc._id);
+    //           id.forEach((postid) => {
+    //             axios.get(`http://localhost:5000/api/post/${postid}`)
+    //               .then((doc) => {
+    //                 this.pub.push(doc.data);
+    //                 this.pub.sort(function (a, b) {
+    //                   return new Date(b.createdAt) - new Date(a.createdAt);
+    //                 });
+    //               });
+    //           });
+    //         }
+    //       });
+    //     }).catch((error) => {
+    //       console.log(error);
+    //     })
+    // },
 
+    // getPosts() {
+      
+    //   this.pub = []
+    //   axios.get("http://localhost:5000/api/post")
+    //     .then((docs) => {
+    //       docs.data.forEach((doc) => {
+    //         if (doc.posterId === this.userid) {
+    //           // this.postsown = doc
+    //           this.pub.push(doc)
+    //           this.pub.sort(function (a, b) {
+    //                   return new Date(b.createdAt) - new Date(a.createdAt);
+    //                 });
+    //         }
+    //       })
+    //     })
+    //     .catch((err) => { console.log(err); });
+    // },
+
+    getPosts() { 
+      // this.pub = []
+      axios.get(`http://localhost:5000/api/post/postby/${this.id}`)
+        .then((doc)=>{
+          this.pub= doc.data
+          console.log(doc.data);
+        }).catch((err) => { console.log(err); });
+    },
 
     getFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userjwtid}`, { idToFollow: id })
@@ -507,24 +547,28 @@ export default {
       }).catch((error) => {
         console.log(error);
       })
+     
+      // axios.get("http://localhost:5000/api/post")
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       if (doc.posterId === this.userid) {
+      //         // this.postsown = doc           
+      //         // this.pub.push(doc)
+      //         this.pub.sort(function (a, b) {
+      //                 return new Date(b.createdAt) - new Date(a.createdAt);
+      //               });
+      //       }
+      //     })
+      //   })
+      //   .catch((err) => { console.log(err); });
 
-    await axios.get(`http://localhost:5000/api/post`)
-      .then((docs) => {
-        docs.data.forEach((doc) => {
-          if (doc.posterId === this.userid) {
-            const id = [];
-            id.push(doc._id);
-            id.forEach((postid) => {
-              axios
-                .get(`http://localhost:5000/api/post/${postid}`)
-                .then((doc) => {
-                  console.log(doc.data._id);
-                  this.pub.push(doc.data);
-                }).catch((err) => { err })
-            });
-          }
-        });
-      }).catch((err) => { err })
+
+        axios.get(`http://localhost:5000/api/post/postby/${this.id}`)
+        .then((doc)=>{
+          this.pub= doc.data
+          console.log(doc.data);
+        })
+
 
     this.getcolor();
   },
@@ -537,16 +581,44 @@ label.lab-pic {
   // width: 130px;
 }
 
-#avatar-empty-profil {
+div.v-card__text.card-profilusermain {
+  padding-top: 1%;
   display: flex;
-  width: 120px;
-  height: 120px;
+  justify-content: center;
+  background-color: $tertiary;
+}
+
+div.v-card__text.card-profiluser {
+  padding-top: 1%;
+  padding-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  background-color: $tertiary;
+}
+
+.fullname-profilusermain {
+  // padding-top: 1%;
+  padding-left: 1%;
+  font-size: 1.8rem;
+  padding-top: 6%;
+}
+
+span.fullname-usermain {
+  padding-left: 1%;
+  font-size: 1.8rem;
+  padding-top: 5%;
+}
+
+#avatar-empty-profiluser {
+  display: flex;
+  width: 100px;
+  height: 100px;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
   border-radius: 50%;
   font-size: 5rem;
-  padding-bottom: 5%;
+  padding-bottom: 3%;
   background-color: rgb(6, 132, 6);
 }
 
@@ -583,12 +655,7 @@ label.lab-pic {
   color: $primary;
 }
 
-div.v-card__text.card-profil-name {
-  padding-top: 1%;
-  display: flex;
-  justify-content: center;
-  background-color: $tertiary;
-}
+
 
 
 .lab-pic-custom-url {
@@ -652,24 +719,15 @@ button#btn-confirm-pic-profil-post {
   }
 }
 
-
-.fullname {
-  padding-top: 1%;
-  padding-left: 1%;
-  font-size: 1.8rem;
-  padding-top: 4%;
-}
-
-
 .card-profil-biographie {
   border-bottom: solid 2px;
   border-bottom: 2px solid $secondary;
   border-top: 2px solid $secondary;
 }
 
-p.card-profil-biographie-p {
+p.card-profilusermain-biographie-p {
   margin: 0;
-  padding-left: 1%;
+  // padding-left: 1%;
   padding-bottom: 2%;
   // border: 2px solid $secondary;
   cursor: default;
@@ -689,6 +747,20 @@ p.card-profil-biographie-p {
     background-color: $secondary;
     color: $tertiary;
 
+    &.btn-unfollow>.pen-icon {
+      color: $tertiary;
+    }
+  }
+}
+.btn-followback-profil-user {
+  width: 100px;
+  border: solid 2px rgb(16, 148, 13);
+  border-radius: 30%;
+  padding-left: 5px;
+  padding-right: 5px;
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
     &.btn-unfollow>.pen-icon {
       color: $tertiary;
     }
@@ -927,13 +999,14 @@ button.class-btn-unlike-userprofil {
   }
 }
 
-.profil-post {
+div.profilusermain-post {
   display: flex;
   max-width: 480px;
   width: 100%;
   max-height: 500px;
   flex-direction: column;
-  margin-bottom: 1%;
+  margin-bottom: 2%;
+  // padding-bottom: 1%;
   border: solid 2px;
   border-radius: 2%;
   justify-content: center;
@@ -942,7 +1015,7 @@ button.class-btn-unlike-userprofil {
   &:hover {
     // border-color:green;
 
-    transform: scale(1.05);
+    transform: scale(1.03);
     transition: ease 0.5s;
 
   }

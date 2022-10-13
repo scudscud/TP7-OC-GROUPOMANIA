@@ -23,7 +23,7 @@ const PostSchema = new mongoose.Schema(
             // required: true,
         },
         posterrole : {
-               type : String  
+        type : String  
         },
         message: {
             type: String,
@@ -35,6 +35,9 @@ const PostSchema = new mongoose.Schema(
         },
         video: {
             type:String,
+        },
+        signalBy:{
+            type: [String]
         },
         likers: {
             type: [String],
