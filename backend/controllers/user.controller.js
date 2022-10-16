@@ -3,6 +3,7 @@ const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const { connected } = require("process");
+const PostModel = require("../models/post.model");
 // all user end point \\
 
 exports.getAllUsers = async (req, res) => {
@@ -112,7 +113,7 @@ exports.userDelete = async (req, res) => {
 // follow user  end point \\
 
 exports.follow = async (req, res) => {
-  if (
+  if ( 
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToFollow)
   )
@@ -125,12 +126,40 @@ exports.follow = async (req, res) => {
     )
       .then((docs) => res.status(201).json(docs))
       .catch((err) => res.status(400).json({ message: err }));
-
+  
     await UserModel.findByIdAndUpdate(
       req.body.idToFollow,
       { $addToSet: { followers: req.params.id } },
       { new: true, upsert: true }
     ).catch((err) => res.status(400).json({ message: err }));
+
+    await PostModel.updateMany({posterId : req.body.idToFollow},
+      {$addToSet :{ posterfollower : req.params.id } },
+      { multi: true, upsert: true }
+
+
+      )
+  //   .then((doc)=>{
+    
+        
+  //     PostModel.updateMany(req.body.idToFollow,
+  //  {$addToSet :{ posterfollower : req.params.id } },
+  //     { multi: true, upsert: true }
+
+  //     )
+  //     console.log(doc)
+  //   }) 
+    // .then((docs) => res.status(201).json(docs))
+      .catch((err) => res.status(400).json({ message: err }));
+
+    await PostModel.updateMany({posterId : req.params.id},
+      {$addToSet :{ posterfollowing : req.body.id  }},
+      { multi: true, upsert: true }
+      )
+      .catch((err) => res.status(400).json({ message: err }));
+
+
+ 
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -139,11 +168,11 @@ exports.follow = async (req, res) => {
 // unfollow user end point \\
 
 exports.unfollow = async (req, res) => {
-  if (
-    !ObjectID.isValid(req.params.id) ||
-    !ObjectID.isValid(req.body.idToUnFollow)
-  )
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  // if (
+  //   !ObjectID.isValid(req.params.id) ||
+  //   !ObjectID.isValid(req.body.idToUnFollow)
+  // )
+  //   return res.status(400).send("utilsateur inconnu :" + req.params.id);
   try {
     await UserModel.findByIdAndUpdate(
       req.params.id,

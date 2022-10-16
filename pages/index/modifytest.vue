@@ -321,7 +321,7 @@ today = dd+'/'+mm+'/'+yyyy;
       // console.log(res.data);
     this.userjwtid = res.data
     this.show = false
-    this.log = true
+    // this.log = true
     // TODO => Insert loader \\ 
     }).catch((error)=>{
       console.log(error);

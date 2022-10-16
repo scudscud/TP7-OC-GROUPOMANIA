@@ -121,9 +121,12 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnements</h2>
       </div>
-      <p v-if="follower[0] != undefined && info.length != 1" class="card-profil-friend-p">Ne faite votre timide {{info.length}} personnes sont abonné(e)s n'hésitez pas à vous abonnez en retour</p>
-      <p v-else-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{info.name}} est abonné(e)</p>
+      <div  class="btn-profil-follow">
+      <p v-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{follower.length}} est abonné(e)s n'hésitez pas à vous abonnez en retour</p>
+      <!-- <p v-else-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{followers.lastname}} est abonné(e)</p> -->
       <p v-else class="card-profil-friend-p">{{ friend }}</p>
+      <!-- <button v-if="follower[0] != undefined && info.length != 1" class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">S'abonné</button> -->
+    </div>
     </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
@@ -392,29 +395,35 @@ export default {
 
 
     getPosts() {
-      this.pub = []
-      axios.get(`http://localhost:5000/api/post`)
-        .then((docs) => {
-          docs.data.forEach((doc) => {
-            if (doc.posterId === this.userid) {
-              const id = [];
-              id.push(doc._id);
-              id.forEach((postid) => {
-                axios
-                  .get(`http://localhost:5000/api/post/${postid}`)
-                  .then((doc) => {
-                    console.log(doc.data._id);
-                    this.pub.push(doc.data);
-                    this.pub.sort(function (a, b) {
-                      return new Date(b.createdAt) - new Date(a.createdAt);
-                    });
-                  });
-              });
-            }
-          });
-        }).catch((error) => {
-          console.log(error);
+      
+      axios.get(`http://localhost:5000/api/post/postby/${this.userjwtid}`)
+        .then((doc)=>{
+          this.pub= doc.data
+          console.log(doc.data);
         })
+      // this.pub = []
+      // axios.get(`http://localhost:5000/api/post`)
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       if (doc.posterId === this.userid) {
+      //         const id = [];
+      //         id.push(doc._id);
+      //         id.forEach((postid) => {
+      //           axios
+      //             .get(`http://localhost:5000/api/post/${postid}`)
+      //             .then((doc) => {
+      //               console.log(doc.data._id);
+      //               this.pub.push(doc.data);
+      //               this.pub.sort(function (a, b) {
+      //                 return new Date(b.createdAt) - new Date(a.createdAt);
+      //               });
+      //             });
+      //         });
+      //       }
+      //     });
+      //   }).catch((error) => {
+      //     console.log(error);
+      //   })
     },
 
     async profilUpdate() {
@@ -661,26 +670,33 @@ export default {
         console.log(error);
       })
 
-    await axios.get(`http://localhost:5000/api/post`)
-      .then((docs) => {
-        docs.data.forEach((doc) => {
-          if (doc.posterId === this.userid) {
-            const id = [];
-            id.push(doc._id);
-            id.forEach((postid) => {
-              axios
-                .get(`http://localhost:5000/api/post/${postid}`)
-                .then((doc) => {
-                  console.log(doc.data._id);
-                  this.pub.push(doc.data);
-                  this.pub.sort(function (a, b) {
-                      return new Date(b.createdAt) - new Date(a.createdAt);
-                    });
-                }).catch((err) => { err })
-            });
-          }
-        });
-      }).catch((err) => { err })
+      
+      axios.get(`http://localhost:5000/api/post/postby/${this.userjwtid}`)
+        .then((doc)=>{
+          this.pub= doc.data
+          console.log(doc.data);
+        })
+
+    // await axios.get(`http://localhost:5000/api/post`)
+    //   .then((docs) => {
+    //     docs.data.forEach((doc) => {
+    //       if (doc.posterId === this.userid) {
+    //         const id = [];
+    //         id.push(doc._id);
+    //         id.forEach((postid) => {
+    //           axios
+    //             .get(`http://localhost:5000/api/post/${postid}`)
+    //             .then((doc) => {
+    //               console.log(doc.data._id);
+    //               this.pub.push(doc.data);
+    //               this.pub.sort(function (a, b) {
+    //                   return new Date(b.createdAt) - new Date(a.createdAt);
+    //                 });
+    //             }).catch((err) => { err })
+    //         });
+    //       }
+    //     });
+    //   }).catch((err) => { err })
 
     this.getcolor();
   },

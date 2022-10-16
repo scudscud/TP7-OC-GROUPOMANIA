@@ -72,7 +72,7 @@
 .instruction-term {
   margin-top: 100px;
   width: 60%;
-  height: 60%;
+  height: 65%;
   border: solid 2px;
   border-radius: 5%;
   padding: 2%;

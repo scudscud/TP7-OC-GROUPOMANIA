@@ -36,6 +36,16 @@ const PostSchema = new mongoose.Schema(
         video: {
             type:String,
         },
+        signal:{
+            type : Boolean
+        },
+        posterfollower:{
+           type : [String]
+        },
+        posterfollowing:{
+            type : [String]
+        },
+
         signalBy:{
             type: [String]
         },

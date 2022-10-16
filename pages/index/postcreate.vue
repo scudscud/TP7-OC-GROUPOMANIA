@@ -136,6 +136,8 @@
               formData.append('message', this.message)
               formData.append('file', this.file)
               formData.append('role',this.role)
+              formData.append('posterFollower',this.userFollowerId)
+              formData.append('posterFollowing',this.userFollowingId)
               axios.post(`http://localhost:5000/api/post`,formData)
               .then(() => {
                 this.posted= true
@@ -208,6 +210,8 @@
           format:'',
           posted: false,
           role:'',
+          userFollowingId: [],
+          userFollowerId : [],
            // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
           // lastname: "",
           // firstname: "",
@@ -279,6 +283,9 @@
             this.firstname = docs.data.firstname
             this.lastname = docs.data.lastname
             this.urlpic = docs.data.photo
+            this.userFollowingId = docs.data.following
+            this.userFollowerId = docs.data.followers
+            // console.log(this.userFollowingId);
            
         }).catch((error)=>{
           console.log(error);

@@ -78,7 +78,7 @@ const userSchema = mongoose.Schema(
     },
     ban: {
       type: Boolean,
-      required : true,
+    
     }
   },
   {

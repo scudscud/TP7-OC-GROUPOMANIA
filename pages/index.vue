@@ -22,10 +22,12 @@
       <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !!
       </div>
 
+     
       <div class="center-main" v-if="this.posts[0] != undefined">
-        <v-card v-for="(post,index) in posts" :key="post.id" :index="index" class="card-post">
-          <div class="border-card">
-            <div id="card-autor-book" v-if="post.posterId === userid ">
+        
+        <v-card class="card-post" v-for="(post,index) in posts" :key="post.id" :index="index">
+          <div class="border-card"  >
+            <div id="card-autor-book" v-if="post.posterId === userid " >
               <!-- <nuxt-link :to="{name: 'profilUsermain', params: { id : post.posterId} }" class="name-date-book"  > -->
               <div class="name-date-book"  >
                 <nuxt-link class="link" :to="{name:'profiluser'}">
@@ -133,8 +135,8 @@
             </div>
           </div>
         </v-card>
+  
       </div>
-
       <div class="center-main" v-else>
         <v-card class="card-post">
           <div class="border-card">
@@ -159,7 +161,8 @@
     </div>
     <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
-      @close-modale-sort-friend="showsort = false,getPostFriend()"
+      @close-modale-sort-following="showsort = false,getPostFollowing()"
+      @close-modale-sort-follower="showsort = false,getPostFollower()"
       @close-modale-sort-mypost="showsort = false,getPostOwn()"
       @close-modale-sort-like="showsort = false,getPostIlike()"
       @close-modale-sort-all="showsort = false,getPosts()" />
@@ -229,6 +232,7 @@ export default {
       like: "",
       userLikePostId: [],
       userFollowingId: [],
+      userFollowerId:[],
       follow: false,
       emptylike: false,
       emptyfollow: false,
@@ -239,6 +243,7 @@ export default {
       postall: false,
       sortPosts : '',
       showReport : false,
+      Followers : false,
       // userlike:[],
       // numberlike:[],
       // likeby:'',
@@ -305,52 +310,140 @@ export default {
       window.location.href = `./profiluser`
     },
 
-    getPostFriend() {
-      this.posts = []
-      axios.get("http://localhost:5000/api/post")
-        .then((docs) => {
-          docs.data.forEach((doc) => {
-            this.userFollowingId.forEach((idfollow) => {
-              if (doc.posterId === idfollow) {
-                // this.postsfollow = doc
-                this.posts.push(doc)
-              }
-            })
+  getPostFollowing() {
+      // let p = {}
+      // this.userFollowingId.forEach((docs)  => {
+      //   axios.get(`http://localhost:5000/api/post/postby/${docs}`)
+      //   .then((doc)=>{
+      //    doc.data.forEach((y)=>{ 
+      //     p = y          
+      //    })
+     
+      //   //  test.sort(function (a, b) {
+      //   //               return new Date(b.createdAt) - new Date(a.createdAt);
+      //               })
+
+
+          // this.posts = doc.data
+          // this.posts.push(doc.data)
+   
+            axios.get(`http://localhost:5000/api/post/postfollowing/${this.userid}`)
+                 .then((doc)=>{
+                  console.log(doc);
+                //  this.posts = doc.data
+
+
+
+
           })
-        })
-        .then(() => {
-          if (this.posts[0] == undefined) {
-            axios.get("http://localhost:5000/api/post").then((docs) => {
-              this.posts = docs.data
-            })
-            localStorage.removeItem('sort')
-            this.emptyfollow = true
-            setTimeout(() => {
-              this.emptyfollow = false
-            }, 4000);
-          }
-          else {
-            localStorage.setItem('sort', 'Friend');
-            return this.posts          
-          }
-        })
-        .catch((err) => { console.log(err); });
+       
+       
+          // if(this.posts[0] === undefined){
+          //   axios.get("http://localhost:5000/api/post").then((docs) => {
+          //     this.posts = docs.data
+          //   })
+          //   localStorage.removeItem('sort')
+          //   this.emptyfollow = true
+          //   setTimeout(() => {
+          //     this.emptyfollow = false
+          //   }, 5000);
+          // }else{
+          // localStorage.setItem('sort', 'Following');
+          //   return this.posts
+          // }
+
+          // }).catch((err) => { console.log(err); })
+        // })
+
+     
+      // this.posts = []
+      // axios.get("http://localhost:5000/api/post")
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       this.userFollowingId.forEach((idfollow) => {
+      //         if (doc.posterId === idfollow) {
+      //           // this.postsfollow = doc
+      //           this.posts.push(doc)
+      //         }
+      //       })
+      //     })
+      //   })
+      //   .then(() => {
+      //     if (this.posts[0] == undefined) {
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptyfollow = true
+      //       setTimeout(() => {
+      //         this.emptyfollow = false
+      //       }, 4000);
+      //     }
+      //     else {
+      //       localStorage.setItem('sort', 'Friend');
+      //       return this.posts          
+      //     }
+      //   })
+      //   .catch((err) => { console.log(err); });
     },
 
+    getPostFollower() {
+      // this.Followers = true
+      localStorage.setItem('sort', 'Follower');
+          this.getPostsRefresh()
+      // axios.get(`http://localhost:5000/api/post/postfollower/${this.userid}`)
+      //   .then((doc)=>{
+      //     this.posts = doc.data
+      //     console.log(doc.data);
+      //     if(doc.data[0]=== undefined){
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptylike = true
+      //       setTimeout(() => {
+      //         this.emptylike = false
+      //       }, 5000);
+      //     }else{
+      //     localStorage.setItem('sort', 'Follower');
+      //       return this.posts
+      //     }
+      //   }).catch((err) => { console.log(err); });
+      //  this.userFollowerId.forEach( (docs) => {
+      //   // console.log(docs);
+      //   axios.get(`http://localhost:5000/api/post/postby/${docs}`)
+      //   .then((doc)=>{
+      //     //  let test = []
+      //     //  test.push(doc)
+       
+      //     // this.posts  = doc.concat(doc)
+      //     // // this.posts.push(doc.data)
+      //     // console.log(this.posts);
+      
+      //     if(this.posts[0] === undefined){
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptylike = true
+      //       setTimeout(() => {
+      //         this.emptylike = false
+      //       }, 5000);
+      //     }else{
+      //     localStorage.setItem('sort', 'Follower');
+      //       return this.posts
+      //     }
+      //   }).catch((err) => { console.log(err); })
+      // });
+      // console.log(test);
+      },
+
     getPostIlike() {
-      this.posts = []
-      axios.get("http://localhost:5000/api/post")
-        .then((docs) => {
-          docs.data.forEach((doc) => {
-            this.userLikePostId.forEach((idlike) => {
-              if (doc._id === idlike) {
-                // this.postsILike = doc
-                this.posts.push(doc)
-              }
-            })
-          })
-        }).then(() => {
-          if (this.posts[0] == undefined) {
+      axios.get(`http://localhost:5000/api/post/postlike/${this.userid}`)
+        .then((doc)=>{
+          this.posts = doc.data
+          console.log(doc.data);
+          if(doc.data[0]=== undefined){
             axios.get("http://localhost:5000/api/post").then((docs) => {
               this.posts = docs.data
             })
@@ -359,42 +452,87 @@ export default {
             setTimeout(() => {
               this.emptylike = false
             }, 5000);
-          } 
-          else {
-            localStorage.setItem('sort', 'Like');
+          }else{
+          localStorage.setItem('sort', 'Like');
             return this.posts
           }
-        })
-        .catch((err) => { console.log(err); });
+        }).catch((err) => { console.log(err); });
+
+      // this.posts = []
+      // axios.get("http://localhost:5000/api/post")
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       this.userLikePostId.forEach((idlike) => {
+      //         if (doc._id === idlike) {
+      //           // this.postsILike = doc
+      //           this.posts.push(doc)
+      //         }
+      //       })
+      //     })
+      //   }).then(() => {
+      //     if (this.posts[0] == undefined) {
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptylike = true
+      //       setTimeout(() => {
+      //         this.emptylike = false
+      //       }, 5000);
+      //     } 
+      //     else {
+      //       localStorage.setItem('sort', 'Like');
+      //       return this.posts
+      //     }
+      //   })
+      //   .catch((err) => { console.log(err); });
     },
 
     getPostOwn() {
-      this.posts = []
-      axios.get("http://localhost:5000/api/post")
-        .then((docs) => {
-          docs.data.forEach((doc) => {
-            if (doc.posterId === this.userid) {
-              // this.postsown = doc
-              this.posts.push(doc)
-            }
-          })
-        }).then(() => {
-          if (this.posts[0] == undefined) {
+      axios.get(`http://localhost:5000/api/post/postby/${this.userid}`)
+        .then((doc)=>{
+          this.posts = doc.data
+          if(doc.data[0]=== undefined){
             axios.get("http://localhost:5000/api/post").then((docs) => {
               this.posts = docs.data
             })
             localStorage.removeItem('sort')
-            this.emptyownpost = true
+            this.emptylike = true
             setTimeout(() => {
-              this.emptyownpost = false
+              this.emptylike = false
             }, 5000);
+          }else{
+          localStorage.setItem('sort', 'Own');
+            return this.posts
           }
-           else {
-            localStorage.setItem('sort', 'Own');
-           return this.posts
-          }
-        })
-        .catch((err) => { console.log(err); });
+        }).catch((err) => { console.log(err); });
+
+      // this.posts = []
+      // axios.get("http://localhost:5000/api/post")
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       if (doc.posterId === this.userid) {
+      //         // this.postsown = doc
+      //         this.posts.push(doc)
+      //       }
+      //     })
+      //   }).then(() => {
+      //     if (this.posts[0] == undefined) {
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptyownpost = true
+      //       setTimeout(() => {
+      //         this.emptyownpost = false
+      //       }, 5000);
+      //     }
+      //      else {
+      //       localStorage.setItem('sort', 'Own');
+      //      return this.posts
+      //     }
+      //   })
+      //   .catch((err) => { console.log(err); });
     },
 
 
@@ -407,6 +545,23 @@ export default {
     //     .catch((err) => { console.log(err); });
     // },
 
+    getPosts() {
+      localStorage.removeItem('sort')
+      axios.get("http://localhost:5000/api/post")
+        .then((docs) => {
+          this.posts = docs.data
+        })
+        .catch((err) => { console.log(err); });
+    },
+    getPostsRefresh() {
+      // localStorage.removeItem('sort')
+      axios.get("http://localhost:5000/api/post")
+        .then((docs) => {
+          this.posts = docs.data
+        })
+        .catch((err) => { console.log(err); });
+    },
+
     getRefresh(){
       this.sortPosts = localStorage.getItem('sort')
       // this.sortPosts = JSON.parse(localStorage.getItem('sort'))
@@ -414,7 +569,9 @@ export default {
       switch (this.sortPosts){
         case 'Own': this.getPostOwn() ;
         break;
-        case 'Friend' : this.getPostFriend();
+        case 'Following' : this.getPostFollowing();
+        break;
+        case 'Follower' : this.getPostFollower();
         break;
         case 'Like' : this.getPostIlike();
         break;
@@ -468,14 +625,6 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    getPosts() {
-      localStorage.removeItem('sort')
-      axios.get("http://localhost:5000/api/post")
-        .then((docs) => {
-          this.posts = docs.data
-        })
-        .catch((err) => { console.log(err); });
-    },
 
     async deletePost(postId) {
       await axios.delete(`http://localhost:5000/api/post/${postId}`)
@@ -487,7 +636,7 @@ export default {
 
     getcolor() {
       if (this.urlpic === '' || this.urlpic === undefined) {
-        this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+        this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
         // console.log(this.avatarpicempty);
         // this.avatarpicemptyNone = this.posterlastname.split('')[0].toLocaleUpperCase();
         // console.log(this.avatarpicemptyNone);
@@ -558,6 +707,8 @@ export default {
 
 
   async mounted() {
+    // this.userFollowerId = []
+    // this.userFollowingId = []
     axios.defaults.withCredentials = true;
     await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
@@ -579,7 +730,9 @@ export default {
         this.urlpic = docs.data.photo
         this.userLikePostId = docs.data.likes
         this.userFollowingId = docs.data.following
-        console.log(this.userFollowingId);
+        this.userFollowerId = docs.data.followers
+        // console.log(this.userFollowingId);
+        // console.log(this.userFollowerId);
       }).then(() => {
         this.getRefresh()
         // axios.get("http://localhost:5000/api/post")

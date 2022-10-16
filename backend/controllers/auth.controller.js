@@ -2,6 +2,7 @@ const UserModel = require("../models/user.model");
 const EmployeesModel = require("../models/employee.model");
 const jwt = require("jsonwebtoken");
 const { signUpErrors, signInErrors } = require("../utils/errors.utils");
+const { log } = require("console");
 
 // valid token jwt duration \\
 
@@ -20,7 +21,7 @@ const createToken = (id) => {
 // signup end point \\
 
 exports.signUp = async (req, res, next) => {
-  // console.log(req.body);
+  
   const { lastname, firstname, email, badge, password } = req.body;
   const find = await EmployeesModel.find({
     lastname: lastname,
@@ -28,22 +29,35 @@ exports.signUp = async (req, res, next) => {
     email: email,
     badge: badge,
   }).count();
-// console.log(find);
+console.log(find);
   if (find != 1) {
-    return res.status(401).json({
-      error:
-        "echec veuillez réessayer, si le probleme persiste contacter un administrateur",
-    });
-  }
-// console.log(req.body);
-  const user = new UserModel({lastname: lastname,firstname: firstname,email: email,badge: badge,password: password });
-  user.save()
-  .then((docs)=>{
-    return res.status(201).json(docs);
-  }).catch((err) => {
-    const errors = signUpErrors(err);
-    res.status(400).send(errors);
-  })
+    return res.status(401).json({ error: "echec veuillez réessayer, si le probleme persiste contacter un administrateur",
+});
+  }else{
+
+
+ try {
+  const userNew =  new UserModel({lastname: lastname,firstname: firstname,email: email,badge: badge,password: password })
+  console.log( userNew);
+ 
+  await userNew.save();
+
+  return res.status(201).json(userNew);
+} catch (err) {
+console.log(err);
+
+      const errors = signUpErrors(err);
+  //  return res.status(400).send(errors);
+
+}}
+  // .then(()=>{
+  //   // console.log(docs);
+  //   return res.status(201).json(test);
+  //   // next()
+  // }).catch((err) => {
+  //   const errors = signUpErrors(err);
+  //   res.status(400).send(errors);
+  // })
 };
 
 

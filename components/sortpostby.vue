@@ -8,9 +8,10 @@
                 </p>
                 <p id="span-del-bio">Trier les publications par : </p>
                 <div class="btn-sortby">
-                <li ><button class="friend-btn" @click="$emit('close-modale-sort-friend')" >Amis</button></li>
                 <li ><button class="mypost-btn" @click="$emit('close-modale-sort-mypost')" >Mes posts</button></li>
-                <li ><button class="postlike-btn" @click="$emit('close-modale-sort-like')" >Publications liker</button></li>
+                <li ><button class="friend-btn" @click="$emit('close-modale-sort-follower')" >Mes Abonnées</button></li>
+                <li ><button class="friend-btn" @click="$emit('close-modale-sort-following')" >Mes Aboonements</button></li>
+                <li ><button class="postlike-btn" @click="$emit('close-modale-sort-like')" >Mes Likes</button></li>
                 <li ><button class="postall-btn" @click="$emit('close-modale-sort-all')" >Toutes les publications</button></li>
 
                </div>

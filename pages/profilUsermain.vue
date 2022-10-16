@@ -50,6 +50,7 @@
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Ces abonnements</h2>
       </div>
+      
       <div class="btn-profil-follow">
       <!-- <p class="card-profil-friend-p">{{ friendAbo }}</p> -->
       <p class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
@@ -65,21 +66,14 @@
         <h2 class="h2-friend">Ces abonnés&nbsp({{info.length}})</h2>
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
+        <p v-if="p[0]._id !== userjwtid" class="card-profil-friend-p">{{p[1].name}}</p>
         <p v-if="p[0]._id === userjwtid" class="card-profiluser-friend">Vous êtes abonné(e) à {{fullname}}</p>
-        <p v-else class="card-profil-friend-p">{{p[1].name}}</p>
-        <button v-if="p[0]._id.includes(userjwtid)  " class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
+        <button v-if="p[0]._id.includes(userjwtid)" class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
       </div>
-      <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="pi[0]._id !== userjwtid && newfollow " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="pi[0]._id !== userjwtid && newfollow" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
-        <!-- <p v-if="pi[0]._id !== userjwtid " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="pi[0]._id !== userjwtid " class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button> -->
-      </div>
-      <div v-for="(p, index) in info" class="btn-profil-follow">
-        <p v-if="p[0]._id !== userjwtid && newfollow " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="p[0]._id !== userjwtid && newfollow" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
-        <!-- <p v-if="pi[0]._id !== userjwtid " class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="pi[0]._id !== userjwtid " class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button> -->
+
+      <div class="btn-profil-follow">
+        <p v-if="newfollow && !following.includes(userjwtid)" class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button v-if="newfollow && !following.includes(userjwtid)" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
       </div>
 
     </v-card-text>
@@ -261,31 +255,6 @@ export default {
       this.picutername = namereg;
     },
 
-    // async getPosts() {
-    //   this.pub = []
-    //   // this.date = []
-    //   await axios.get(`http://localhost:5000/api/post`)
-    //     .then((docs) => {
-    //       docs.data.forEach((doc) => {
-    //         if (doc.posterId === this.userid) {
-    //           const id = [];
-    //           id.push(doc._id);
-    //           id.forEach((postid) => {
-    //             axios.get(`http://localhost:5000/api/post/${postid}`)
-    //               .then((doc) => {
-    //                 this.pub.push(doc.data);
-    //                 this.pub.sort(function (a, b) {
-    //                   return new Date(b.createdAt) - new Date(a.createdAt);
-    //                 });
-    //               });
-    //           });
-    //         }
-    //       });
-    //     }).catch((error) => {
-    //       console.log(error);
-    //     })
-    // },
-
     // getPosts() {
       
     //   this.pub = []
@@ -305,7 +274,6 @@ export default {
     // },
 
     getPosts() { 
-      // this.pub = []
       axios.get(`http://localhost:5000/api/post/postby/${this.id}`)
         .then((doc)=>{
           this.pub= doc.data
@@ -334,11 +302,9 @@ export default {
               // console.log(this.follower);
             })
             .catch((error) => {
-              console.log(error);
-            })
+              console.log(error); })
             .then((test) => {
               this.follower.forEach((i, u, l) => {
-
                 axios.get(`http://localhost:5000/api/user/${i}`)
                   .then((docs) => {
                     // console.log(docs);
@@ -353,15 +319,12 @@ export default {
                       this.followBack = true
                       this.newfollow = false
                     }
-
-
                   });
               });
             }).catch((error) => {
               console.log(error);
             }).then(() => {
               this.following.forEach((i) => {
-
                 axios.get(`http://localhost:5000/api/user/${i}`)
                   .then((docs) => {
                     console.log(docs);
@@ -373,10 +336,8 @@ export default {
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
                     if (this.followingId === this.userjwtid) {
-
                       this.newfollow = false
                     }
-
                   })
               })
             }).catch((error) => {
@@ -425,7 +386,7 @@ export default {
                     this.info.push(this.followInfo)
                     if (this.followId === this.userjwtid) {
                       this.followBack = true
-
+                      this.newfollow = false
                     } else {
                       this.followBack = false
                       this.newfollow = true
@@ -522,6 +483,7 @@ export default {
                 this.followBack = true
                 this.newfollow = false
               }
+              
 
             });
         });
@@ -562,14 +524,11 @@ export default {
       //   })
       //   .catch((err) => { console.log(err); });
 
-
         axios.get(`http://localhost:5000/api/post/postby/${this.id}`)
         .then((doc)=>{
           this.pub= doc.data
           console.log(doc.data);
         })
-
-
     this.getcolor();
   },
 };
@@ -928,6 +887,8 @@ p.card-profiluser-friend-new {
 
 .message-profil {
   padding: 2%;
+  margin-top: 1%;
+
   text-align: center;
   max-width: 500px;
   width: 100%;

@@ -4,6 +4,7 @@ const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require('fs');
 let path = require('path');
+const { log } = require("console");
 
 // read post end point \\
 
@@ -18,14 +19,32 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-  //  console.log(req.user);
-  //  console.log(req.file);
+//  const followingIdArray = []
+//  const followerIdArray = []
+//  let test = ""
+//  UserModel.find({following : req.body.posterId})
+//   .then((post)=>{
+//     post.forEach(id=> {
+//       const IdFollowing = id._id.toString()
+//       followingIdArray.push(IdFollowing)     
+//     });  
+//   })
+// UserModel.find({followers : req.body.posterId})
+//   .then((post)=>{
+//     post.forEach(id=> {     
+//       //  test = id._id.toString() 
+//       // followerIdArray.push(IdFollower)     
+//     });  
+//   })
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const finalDate = `posté le ${days} à ${hours}h${minutes}`
 
+  const followerIdArray = req.body.posterFollower.split(",")
+  const followingIdArray = req.body.posterFollowing.split(",")
+ 
   const newPost = new PostModel({
     posterId: req.body.posterId,
     posterfirstname : req.body.posterfirstname,
@@ -34,14 +53,17 @@ exports.createPost = async (req, res) => {
     posterpicture : req.body.posterpicture,
     posterrole : req.body.role,
     message: req.body.message,
-    picture:
-      req.file != null
-        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        : "",
+    picture: req.file != null ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : "",
     video: req.body.video,
     likers: [],
     comments: [],
     date : finalDate,
+    posterfollower : followerIdArray,
+    posterfollowing : followingIdArray ,
+    
+    // posterfollower : req.body.posterFollower
+   
+    
   });
   try {
     post = await newPost.save();
@@ -133,11 +155,85 @@ exports.getOnePost = (req, res) => {
     res.status(401).json(err);
    })
 };
+
 exports.getPostByPosterid= (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   PostModel.find({posterId : req.params.id})
+   .then((post)=>{
+    console.log(req.params)
+    res.status(200).json(post);
+   }).catch((err)=>{
+    res.status(401).json(err);
+   })
+};
+
+exports.getPostLike= (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  PostModel.find({likers :  req.params.id} )
+   .then((post)=>{
+    console.log(req.params)
+    res.status(200).json(post);
+   }).catch((err)=>{
+    res.status(401).json(err);
+   })
+};
+
+exports.getPostFollowing= async (req, res) => {
+ const Array = []
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+ await PostModel.find({posterfollower : req.params.id}) 
+ .then((post)=>{
+  console.log(post);
+  res.status(200).json(post);
+ })
   
+
+
+
+
+
+
+
+   .catch((err)=>{ res.status(401).json(err);})
+//  await UserModel.find({followers : req.params.id}) 
+//    .then((post)=>{
+//     // console.log(post);
+  
+//     post.forEach((idpost)=>{
+//         // console.log(idpost);
+//       let id = idpost._id.toString()
+//           // console.log(id); 
+//         PostModel.find({posterId : id})
+//           .then((test)=>{ Array.push(test)
+//         // console.log(Array)
+//         res.status(201).json(Array)
+//     })
+   
+//     })
+    
+//    })
+//    .catch((err)=>{ res.status(401).json(err);})
+};
+
+exports.getPostFollower= (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  PostModel.find({posterfollower : req.params.id})  
+   .then((post)=>{
+    console.log(req.params)
+    res.status(200).json(post);
+   }).catch((err)=>{
+    res.status(401).json(err);
+   })
+};
+
+exports.getPostSignal= (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  PostModel.find({posterId : req.params.id}) 
    .then((post)=>{
     console.log(req.params)
     res.status(200).json(post);

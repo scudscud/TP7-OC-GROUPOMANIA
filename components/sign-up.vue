@@ -166,7 +166,7 @@
                 <button
                   class="btn"
                   id="link-sign"
-                  @click="$emit('close-modal')">
+                  @click="$emit('close-modal'), reset()">
                   retour a l'acceuil &nbsp<v-icon>mdi-arrow-left-circle</v-icon>
                 </button>
               </button>
@@ -197,10 +197,7 @@ export default {
         { message: "1 majuscule,", regex: /[A-Z]+/ },
         { message: "1 caractere speciale", regex: /[!@#$%^&]+/ },
         { message: "8 caracteres minimun", regex: /.{8,}/ },
-    
-
       ],
-
       // testpsw:true,
       // passwordValidation.valid :false,
       termofuse: false,
@@ -216,7 +213,7 @@ export default {
       badge: "",
       check: "",
       mailValid:false
-    };
+    }
   },
   computed: {
        mailValidation(){
@@ -282,21 +279,45 @@ export default {
           password: this.psw,
         })
         .then(() => {
-        
+         
           this.successreg = "Compte creer avec succée, Bienvenue";
           window.prompt("entrer la clé reçu par mail ( n'importe quel touche)")
           setTimeout(() => {
+            this.firstname=""
+          this.lastname="",
+          this.badge="",
+          this.email="",
+          this.psw="",
             window.location.href = "./";
           }, 2000);
         })
         .catch((error) => {
+          this.firstname=""
+          this.lastname="",
+           this.badge="",
+          this.email="",
+         this.psw="",
           this.infomsg = error.response.data.error;
             setTimeout(() => {
             this.infomsg = "";
           }, 3000);
         });
     },
+  
+ reset(){
+         this.firstname=""
+          this.lastname=""
+           this.badge=""
+          this.email=""
+         this.psw=""
+         this.termofuse= false
+         this.pswcom = ""
+         this.password= ""
+
   },
+
+  },
+
 };
 // console.log(this.psw);
 </script>

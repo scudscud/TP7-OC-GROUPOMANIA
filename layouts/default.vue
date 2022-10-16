@@ -153,6 +153,7 @@ export default {
       rightDrawer: false,
       clipped: false,
       fixed: false,
+      log: false,
       // showpost: false,
       showbtn: true,
       hoverbtn: false,
@@ -216,13 +217,16 @@ export default {
 
     await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
-        // console.log(res.data);
+        if(res === null){
+          console.log(res);
+          this.show = true
+        }else{
         this.userjwtid = res.data
         this.show = false
-        // this.log = true
         // TODO => Insert loader \\ 
         // }).catch((error)=>{
         //   console.log(error);
+      }
       })
     await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
       .then((data) => {

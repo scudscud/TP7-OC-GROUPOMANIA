@@ -137,14 +137,14 @@ export default {
           //  console.log(Cookie);
           //  this.$cookie.set('token',res.data.token);
           const userId = user.data.user;
-          window.prompt("entrer la clé reçu par mail (n'importe lequel)");
+          // window.prompt("entrer la clé reçu par mail (n'importe lequel)");
           // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
 
           this.show = false;
           setTimeout(() => {
             this.$emit("close-modale", true);
-               window.location.reload()  
+              //  window.location.reload()  
           }, 1000);
           this.userid = userId;
         })

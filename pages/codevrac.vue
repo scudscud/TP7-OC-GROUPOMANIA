@@ -19,6 +19,37 @@
 </template>
 <script>
 
+// refresh ok without reload page \\
+      // this.posts = []
+      // axios.get("http://localhost:5000/api/post")
+      //   .then((docs) => {
+      //     docs.data.forEach((doc) => {
+      //       this.userLikePostId.forEach((idlike) => {
+      //         if (doc._id === idlike) {
+      //           // this.postsILike = doc
+      //           this.posts.push(doc)
+      //         }
+      //       })
+      //     })
+      //   }).then(() => {
+      //     if (this.posts[0] == undefined) {
+      //       axios.get("http://localhost:5000/api/post").then((docs) => {
+      //         this.posts = docs.data
+      //       })
+      //       localStorage.removeItem('sort')
+      //       this.emptylike = true
+      //       setTimeout(() => {
+      //         this.emptylike = false
+      //       }, 5000);
+      //     } 
+      //     else {
+      //       localStorage.setItem('sort', 'Like');
+      //       return this.posts
+      //     }
+      //   })
+      //   .catch((err) => { console.log(err); });
+
+//================================================================================================\\
 
 // test likes profilusermain sans refresh\\
 // <v-card-text class="card-profil-post" v-if="pub[0] != undefined && this.mypost ">
