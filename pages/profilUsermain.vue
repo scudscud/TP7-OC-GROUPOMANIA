@@ -37,7 +37,7 @@
     <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnements&nbsp({{infoAbo.length}})</h2>
+        <h2 class="h2-friend">Les abonnements de {{ fullname }}&nbsp({{infoAbo.length}})</h2>
       </div>
       <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
         <p v-if="pi[0]._id === userjwtid" class="card-profiluser-friend">{{fullname}} est un(e) de vos abonné(e) </p>
@@ -48,7 +48,7 @@
     <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnements</h2>
+        <h2 class="h2-friend">Les abonnements de {{ fullname }}</h2>
       </div>
       
       <div class="btn-profil-follow">
@@ -63,7 +63,7 @@
     <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnés&nbsp({{info.length}})</h2>
+        <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}&nbsp({{info.length}})</h2>
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p v-if="p[0]._id !== userjwtid" class="card-profil-friend-p">{{p[1].name}}</p>
@@ -80,7 +80,7 @@
     <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Ces abonnés</h2>
+        <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}</h2>
       </div>
       <div class="btn-profil-follow">
         <p class="card-profiluser-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
@@ -91,7 +91,7 @@
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
       <div class="card-profil-friend-pub">
         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
-        <h2 class="h2-post">Ces publications&nbsp({{pub.length}})</h2>
+        <h2 class="h2-post">Les publications de {{ fullname }}&nbsp({{infoAbo.length}})</h2>
       </div>
       <div class="align-pub-user">
         <div class="profilusermain-post" v-for="(p, index) in pub">
@@ -122,7 +122,7 @@
     <v-card-text class="card-profilusermain-post" v-else>
       <div class="card-profil-friend-pub">
         <v-icon class="icon-post">mdi-newspaper-variant-multiple-outline</v-icon>
-        <h2 class="h2-post">Ces publications</h2>
+        <h2 class="h2-post">Les publications de {{ fullname }}&nbsp({{pub.length}})</h2>
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>

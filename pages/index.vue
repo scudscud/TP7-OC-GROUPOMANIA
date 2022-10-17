@@ -354,54 +354,7 @@ export default {
             return this.posts
           }
         }).catch((err) => { console.log(err); });
-      // this.Followers = true
-      // localStorage.setItem('sort', 'Follower');
-      //     this.getPostsRefresh()
-      // axios.get(`http://localhost:5000/api/post/postfollower/${this.userid}`)
-      //   .then((doc)=>{
-      //     this.posts = doc.data
-      //     console.log(doc.data);
-      //     if(doc.data[0]=== undefined){
-      //       axios.get("http://localhost:5000/api/post").then((docs) => {
-      //         this.posts = docs.data
-      //       })
-      //       localStorage.removeItem('sort')
-      //       this.emptylike = true
-      //       setTimeout(() => {
-      //         this.emptylike = false
-      //       }, 5000);
-      //     }else{
-      //     localStorage.setItem('sort', 'Follower');
-      //       return this.posts
-      //     }
-      //   }).catch((err) => { console.log(err); });
-      //  this.userFollowerId.forEach( (docs) => {
-      //   // console.log(docs);
-      //   axios.get(`http://localhost:5000/api/post/postby/${docs}`)
-      //   .then((doc)=>{
-      //     //  let test = []
-      //     //  test.push(doc)
-       
-      //     // this.posts  = doc.concat(doc)
-      //     // // this.posts.push(doc.data)
-      //     // console.log(this.posts);
-      
-      //     if(this.posts[0] === undefined){
-      //       axios.get("http://localhost:5000/api/post").then((docs) => {
-      //         this.posts = docs.data
-      //       })
-      //       localStorage.removeItem('sort')
-      //       this.emptylike = true
-      //       setTimeout(() => {
-      //         this.emptylike = false
-      //       }, 5000);
-      //     }else{
-      //     localStorage.setItem('sort', 'Follower');
-      //       return this.posts
-      //     }
-      //   }).catch((err) => { console.log(err); })
-      // });
-      // console.log(test);
+   
       },
 
     getPostIlike() {
@@ -423,35 +376,6 @@ export default {
             return this.posts
           }
         }).catch((err) => { console.log(err); });
-
-      // this.posts = []
-      // axios.get("http://localhost:5000/api/post")
-      //   .then((docs) => {
-      //     docs.data.forEach((doc) => {
-      //       this.userLikePostId.forEach((idlike) => {
-      //         if (doc._id === idlike) {
-      //           // this.postsILike = doc
-      //           this.posts.push(doc)
-      //         }
-      //       })
-      //     })
-      //   }).then(() => {
-      //     if (this.posts[0] == undefined) {
-      //       axios.get("http://localhost:5000/api/post").then((docs) => {
-      //         this.posts = docs.data
-      //       })
-      //       localStorage.removeItem('sort')
-      //       this.emptylike = true
-      //       setTimeout(() => {
-      //         this.emptylike = false
-      //       }, 5000);
-      //     } 
-      //     else {
-      //       localStorage.setItem('sort', 'Like');
-      //       return this.posts
-      //     }
-      //   })
-      //   .catch((err) => { console.log(err); });
     },
 
     getPostOwn() {
@@ -473,43 +397,7 @@ export default {
           }
         }).catch((err) => { console.log(err); });
 
-      // this.posts = []
-      // axios.get("http://localhost:5000/api/post")
-      //   .then((docs) => {
-      //     docs.data.forEach((doc) => {
-      //       if (doc.posterId === this.userid) {
-      //         // this.postsown = doc
-      //         this.posts.push(doc)
-      //       }
-      //     })
-      //   }).then(() => {
-      //     if (this.posts[0] == undefined) {
-      //       axios.get("http://localhost:5000/api/post").then((docs) => {
-      //         this.posts = docs.data
-      //       })
-      //       localStorage.removeItem('sort')
-      //       this.emptyownpost = true
-      //       setTimeout(() => {
-      //         this.emptyownpost = false
-      //       }, 5000);
-      //     }
-      //      else {
-      //       localStorage.setItem('sort', 'Own');
-      //      return this.posts
-      //     }
-      //   })
-      //   .catch((err) => { console.log(err); });
     },
-
-
-    // getPostsAll() {
-    //   localStorage.setItem('sort', 'All');
-    //   axios.get("http://localhost:5000/api/post")
-    //     .then((docs) => {
-    //       this.posts = docs.data
-    //     })
-    //     .catch((err) => { console.log(err); });
-    // },
 
     getPosts() {
       localStorage.removeItem('sort')
@@ -591,7 +479,6 @@ export default {
         .catch((err) => console.log(err));
     },
 
-
     async deletePost(postId) {
       await axios.delete(`http://localhost:5000/api/post/${postId}`)
         .then((post) => {
@@ -603,46 +490,8 @@ export default {
     getcolor() {
       if (this.urlpic === '' || this.urlpic === undefined) {
         this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
-        // console.log(this.avatarpicempty);
-        // this.avatarpicemptyNone = this.posterlastname.split('')[0].toLocaleUpperCase();
-        // console.log(this.avatarpicemptyNone);
-        // let randomColor = Math.floor(Math.random()*16777215).toString(16)
-        // document.getElementById('avatar-empty-book-book').style.backgroundColor = '#' + randomColor
-        //  document.getElementById('avatar-empty-book-top').style.backgroundColor = '#' + randomColor
-        //  document.querySelectorAll("#avatar-empty-book").style.backgroundColor = randomColor
-        //  document.getElementById("avatar-empty-book").style.backgroundColor = "green"
       }
     },
-
-    // clickFollow(posterId,index){
-    //   const followBtn = document.querySelectorAll('.classfollowbtn')
-    //   if(followBtn[index].classList.contains('btn-att-follow')){
-    //     axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`,{idToFollow :posterId})
-    //     // .then(()=>{
-    //     //   axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    //     //   .then((docs)=>{ 
-    //     //     this.userFollowingId = docs.data.following
-    //     //     console.log(this.userFollowingId);          
-    //     //   })
-    //     // })
-    //     .catch((err)=>{ console.log(err);})
-    //     followBtn[index].classList.replace('btn-att-follow' ,'btn-att-unfollow')
-
-    //   }else{
-    //     axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`,{idToUnFollow :posterId})
-    //     // .then(()=>{
-    //     //   axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    //     //   .then((docs)=>{this.userFollowingId = docs.data.following
-    //     //     console.log(this.userFollowingId);
-    //     //   })
-    //     // })
-    //     .catch((err)=>{ console.log(err);})
-    //     followBtn[index].classList.replace('btn-att-unfollow' ,'btn-att-follow')
-
-    //   }
-
-    // },
-
 
     addFollow(posterId, index) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`, { idToFollow: posterId })
@@ -701,16 +550,6 @@ export default {
         // console.log(this.userFollowerId);
       }).then(() => {
         this.getRefresh()
-        // axios.get("http://localhost:5000/api/post")
-        //   .then((docs) => {
-        //     this.posts = docs.data
-            // this.avatarpicemptyNone = docs.data.posterlastname.split('')[0].toLocaleUpperCase();
-            // this.posts.forEach(elt => {
-            //   console.log(elt.posterlastname);
-            //   
-            //   // console.log(this.avatarpicemptyNone);
-            // });
-          // }).catch((err) => { console.log(err); });
       }).catch((error) => {
         console.log(error);
       });

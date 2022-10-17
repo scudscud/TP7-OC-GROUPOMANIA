@@ -149,8 +149,9 @@
                 me.url = ''
                 me.posted = false
                 me.file = []
+                localStorage.removeItem('sort')
                 // window.location.reload()            
-                }, 2500);         
+                }, 1500);         
               })
               .catch((errors,test)=>{
                  test = this.delPicPreview()

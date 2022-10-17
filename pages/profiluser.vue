@@ -102,6 +102,9 @@
       </div>
       <p class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
+
+
+
     <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
@@ -109,7 +112,7 @@
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0].followers.includes(userid) " class="btn-unfollow " @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
+        <button :key="followkey " v-if="p[0].followers.includes(userjwtid) " class="btn-unfollow " @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
 
       </div>
@@ -120,10 +123,10 @@
         <h2 class="h2-friend">Mes abonnements</h2>
       </div>
       <div  class="btn-profil-follow">
-      <p v-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{follower.length}} est abonné(e)s n'hésitez pas à vous abonnez en retour</p>
-      <!-- <p v-else-if="follower[0] != undefined " class="card-profil-friend-p">Ne faite votre timide {{followers.lastname}} est abonné(e)</p> -->
-      <p v-else class="card-profil-friend-p">{{ friend }}</p>
-      <!-- <button v-if="follower[0] != undefined && info.length != 1" class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">S'abonné</button> -->
+      <p v-if="follower[0] != undefined && follower.length == 0 " class="card-profil-friend-solo">Ne faite votre timide {{followInfo[1].name}} {{follower.length}} est abonné(e) n'hésitez pas à vous abonner en retour</p>
+      <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
+      <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
+   
     </div>
     </v-card-text>
 
@@ -140,14 +143,14 @@
             <v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span>
           </div>
           <!-- <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span> -->
-          <div class="btn-post-profil">
+          <div class="btn-post-profil-user">
             <button class="btn-post-modify-profil" type="submit"
               @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button>
             <button class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)">supprimer</button>
           </div>
           <div v-if='p.picture !="" ' class="image-card-profil"><img class="card-img-profil" :src="p.picture"
               alt="photo" /></div>
-          <div v-if="p.message != ''" class="message-profil"> {{p.message}}</div>
+          <div v-if="p.message != ''" class="message-profil-user"> {{p.message}}</div>
         </div>
       </div>
     </v-card-text>
@@ -1200,6 +1203,16 @@ p.card-profil-friend-p {
   // border: 2px solid $primary;
   cursor: default;
 }
+p.card-profil-friend-solo {
+
+  margin: 0;
+  color: $primary;
+
+  cursor: default;
+}
+
+
+
 p.card-profil-friend-abo {
   // display: flex;
   // justify-content:center;
@@ -1237,13 +1250,13 @@ p.card-profil-friend-abo {
   padding-right: 1%;
 }
 
-.btn-post-profil {
+.btn-post-profil-user {
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 50%;
-
-
+  margin-bottom: 1%;
+  margin-top: 1%;
 
 }
 
@@ -1316,18 +1329,22 @@ p.card-profil-friend-abo {
   display: flex;
   width: 100%;
   height: 100%;
+  margin-top: 1%;
   padding: 1% 1%;
-  // border-top: solid 2px $secondary;
+  border-top: solid 2px $secondary;
+  border-radius: 2%;
   justify-content: center;
   align-items: center;
 }
 
 
-.message-profil {
+.message-profil-user {
   padding: 2%;
   text-align: center;
   max-width: 450px;
   width: 100%;
+  border-top: solid 2px white;
+  border-radius: 5%;
 
 }
 
