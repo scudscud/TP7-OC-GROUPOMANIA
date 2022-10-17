@@ -17,10 +17,10 @@
         </button>
       </div>
 
-      <div class="empty-sort" v-if="emptyfollowing"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
+      <div class="empty-sort" v-if="emptyfollower"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
       <div class="empty-sort" v-if="emptylike"> 😭 vous n'avais aimer aucune publication 😭 liker une publication </div>
       <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !! </div>
-      <div class="empty-sort" v-if="emptyfollower"> 😭 Essayer de vous faire des Amis 😭 </div>
+      <div class="empty-sort" v-if="emptyfollowing"> 😭 Essayer de vous faire des Amis 😭 likers des publications </div>
 
      
       <div class="center-main" v-if="this.posts[0] != undefined">
@@ -328,7 +328,7 @@ export default {
               this.emptyfollowing = false
             }, 5000);
           }else{
-          localStorage.setItem('sort', 'Following');
+          localStorage.setItem('sort', 'Follower');
             return this.posts
           }
         }).catch((err) => { console.log(err); });
@@ -350,7 +350,7 @@ export default {
               this.emptyfollower = false
             }, 5000);
           }else{
-          localStorage.setItem('sort', 'Follower');
+          localStorage.setItem('sort', 'Following');
             return this.posts
           }
         }).catch((err) => { console.log(err); });
