@@ -123,7 +123,7 @@
         <h2 class="h2-friend">Mes abonnements</h2>
       </div>
       <div  class="btn-profil-follow">
-      <p v-if="follower[0] != undefined && follower.length == 0 " class="card-profil-friend-solo">Ne faite votre timide {{followInfo[1].name}} {{follower.length}} est abonné(e) n'hésitez pas à vous abonner en retour</p>
+      <p v-if="follower[0] != undefined && follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
       <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
       <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
    
@@ -197,18 +197,14 @@ export default {
       biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       friend: "Aie c'est vide ",
       follower: [],
+      following: [],
       followBack: false,
       followBackId: [],
       followInfo: [],
+      followingInfo: [],
       newfollowInfo: [],
       info: [],
       followId: '',
-
-      following: [],
-      followingBack: false,
-      followingBackId: [],
-      followingInfo: [],
-      newfollowingInfo: [],
       followingId: '',
       infoAbo: [],
 
@@ -218,6 +214,8 @@ export default {
 
       lastname: "",
       firstname: "",
+      followLastname:"",
+      followFirstname:"",
       photo: [],
       userid: "",
       posted: "",
@@ -244,6 +242,15 @@ export default {
         [this.firstname, this.lastname] = newValue.split(" ");
       },
     },
+
+    fullnamefollow:{
+      get() {
+        return  this.followFirstname + " " + this.followLastname;
+      },
+      set(newValue) {
+        [this.followFirstname,this.followLastname] = newValue.split(" ");
+      },
+    }
   },
 
   methods: {
