@@ -40,7 +40,6 @@ exports.createPost = async (req, res) => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const finalDate = `posté le ${days} à ${hours}h${minutes}`
-
   const followerIdArray = req.body.posterFollower.split(",")
   const followingIdArray = req.body.posterFollowing.split(",")
  

@@ -114,11 +114,10 @@ exports.userDelete = async (req, res) => {
 // follow user  end point \\
 
 exports.follow = async (req, res) => {
-  // if ( 
-  //   !ObjectID.isValid(req.params.id) ||
-  //   !ObjectID.isValid(req.body.idToFollow)
-  // )
-  //   return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  if ( !ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.idToFollow) )
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    console.log(req.params.id);
+    console.log(req.body.idToFollow);
   try {
     await UserModel.findByIdAndUpdate(
       req.params.id,
@@ -134,36 +133,26 @@ exports.follow = async (req, res) => {
       { new: true, upsert: true }
     ).catch((err) => res.status(400).json({ message: err }));
 
-    await PostModel.updateMany({posterId : req.body.idToFollow},
-      {$addToSet :{ posterfollower : req.params.id } },
-      { multi: true, upsert: true }
-
-
+    await PostModel.findOneAndUpdate({posterId : req.body.idToFollow},
+      {$push :{ posterfollower : req.params.id } },
+      // { new: true, upsert: true }
       )
-  //   .then((doc)=>{
-    
-        
+      .catch((err) => res.status(400).json({ message: err }));
+    await PostModel.findOneAndUpdate({posterId : req.params.id},
+      {$push :{ posterfollowing : req.body.idToFollow}},
+      // { new: true, upsert: true }
+      )
+      .catch((err) => res.status(400).json({ message: err }));
+  } catch (err) {
+    res.status(500).json({ message: err });}
+    //   .then((doc)=>{
   //     PostModel.updateMany(req.body.idToFollow,
   //  {$addToSet :{ posterfollower : req.params.id } },
   //     { multi: true, upsert: true }
-
   //     )
   //     console.log(doc)
   //   }) 
     // .then((docs) => res.status(201).json(docs))
-      .catch((err) => res.status(400).json({ message: err }));
-
-    await PostModel.updateMany({posterId : req.params.id},
-      {$addToSet :{ posterfollowing : req.body.id  }},
-      { multi: true, upsert: true }
-      )
-      .catch((err) => res.status(400).json({ message: err }));
-
-
- 
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
 };
 
 // unfollow user end point \\
@@ -174,25 +163,25 @@ exports.unfollow = async (req, res) => {
     !ObjectID.isValid(req.body.idToUnFollow)
   )
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    console.log(req.params.id);
+    console.log(req.body.idToUnFollow);
   try {
-    await UserModel.findByIdAndUpdate(
-      req.params.id,
+    await UserModel.findByIdAndUpdate(req.params.id,
       { $pull: { following: req.body.idToUnFollow } },
-      { new: true, upsert: true }
+      // { new: true, upsert: true }
     ).then((docs) =>  res.status(201).json(docs))
       .catch((err) => res.status(400).json({ message: err }));
-    await UserModel.findByIdAndUpdate(
-      req.body.idToUnFollow,
+    await UserModel.findByIdAndUpdate( req.body.idToUnFollow,
       { $pull: { followers: req.params.id } },
-      { new: true, upsert: true }
+      // { new: true, upsert: true }
     ).catch((err) => res.status(400).json({ message: err }));
-    await PostModel.updateMany({posterId : req.body.idToFollow},
+    await PostModel.findOneAndUpdate({posterId : req.body.idToUnFollow},
       {$pull:{ posterfollower : req.params.id } },
-      { multi: true, upsert: true }
+      // { multi: true, upsert: true }
       ).catch((err) => res.status(400).json({ message: err }));
-    await PostModel.updateMany({posterId : req.params.id},
-      {$pull:{ posterfollowing : req.body.id  }},
-      { multi: true, upsert: true }
+    await PostModel.findOneAndUpdate({posterId : req.params.id},
+      {$pull:{ posterfollowing : req.body.idToUnFollow}},
+      // { multi: true, upsert: true }
       ).catch((err) => res.status(400).json({ message: err }));
   } catch (err) {
     res.status(500).json({ message: err });
