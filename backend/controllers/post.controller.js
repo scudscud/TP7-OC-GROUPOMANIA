@@ -1,16 +1,15 @@
-const postModel = require("../models/post.model");
+// const postModel = require("../models/post.model");
 const PostModel = require("../models/post.model");
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require('fs');
 let path = require('path');
-const { log } = require("console");
+// const { log } = require("console");
 
 // read post end point \\
 
 exports.readPost = (req, res) => {
-  postModel
-    .find((err, docs) => {
+  PostModel.find((err, docs) => {
       if (!err) res.send(docs);
       else console.log("Error to get data:" + err);
     })
@@ -58,8 +57,8 @@ exports.createPost = async (req, res) => {
     likers: [],
     comments: [],
     date : finalDate,
-    posterfollower : followerIdArray,
-    posterfollowing : followingIdArray ,
+    posterfollower : followerIdArray != null ? followerIdArray : [],
+    posterfollowing : followingIdArray != null ? followingIdArray : [],
     
     // posterfollower : req.body.posterFollower
    
@@ -162,6 +161,7 @@ exports.getPostByPosterid= (req, res) => {
   PostModel.find({posterId : req.params.id})
    .then((post)=>{
     console.log(req.params)
+    // post.sort({ createdAt: -1 })
     res.status(200).json(post);
    }).catch((err)=>{
     res.status(401).json(err);
@@ -174,6 +174,7 @@ exports.getPostLike= (req, res) => {
   PostModel.find({likers :  req.params.id} )
    .then((post)=>{
     console.log(req.params)
+    // post.sort({ createdAt: -1 })
     res.status(200).json(post);
    }).catch((err)=>{
     res.status(401).json(err);
@@ -181,11 +182,12 @@ exports.getPostLike= (req, res) => {
 };
 
 exports.getPostFollowing= async (req, res) => {
- const Array = []
+ 
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
- await PostModel.find({posterfollower : req.params.id}) 
+ await PostModel.find({posterfollowing : req.params.id}) 
  .then((post)=>{
+  // post.sort({ createdAt: -1 })
   console.log(post);
   res.status(200).json(post);
  })
@@ -223,6 +225,7 @@ exports.getPostFollower= (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   PostModel.find({posterfollower : req.params.id})  
    .then((post)=>{
+    // post.sort({ createdAt: -1 })
     console.log(req.params)
     res.status(200).json(post);
    }).catch((err)=>{
@@ -455,7 +458,7 @@ exports.deleteCommentPost = (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
 
   try {
-    return postModel.findByIdAndUpdate(
+    return PostModel.findByIdAndUpdate(
       req.params.id,
       {
         $pull: {

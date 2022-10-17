@@ -17,10 +17,10 @@
         </button>
       </div>
 
-      <div class="empty-sort" v-if="emptyfollow"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
+      <div class="empty-sort" v-if="emptyfollowing"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
       <div class="empty-sort" v-if="emptylike"> 😭 vous n'avais aimer aucune publication 😭 liker une publication </div>
-      <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !!
-      </div>
+      <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !! </div>
+      <div class="empty-sort" v-if="emptyfollower"> 😭 Essayer de vous faire des Amis 😭 </div>
 
      
       <div class="center-main" v-if="this.posts[0] != undefined">
@@ -32,7 +32,7 @@
               <div class="name-date-book"  >
                 <nuxt-link class="link" :to="{name:'profiluser'}">
                 <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user"
-                  :src='post.posterpicture' alt="phtot de l'utilisateur"  /> 
+                  :src='post.posterpicture' alt="photo de l'utilisateur"  /> 
                 <div v-else id="avatar-empty-book" >{{avatarpicempty}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
@@ -50,7 +50,7 @@
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book" >
-                <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user"
+                <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-admin"
                   :src='post.posterpicture' alt="phtot de l'utilisateur" />
                 <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
@@ -235,7 +235,8 @@ export default {
       userFollowerId:[],
       follow: false,
       emptylike: false,
-      emptyfollow: false,
+      emptyfollower: false,
+      emptyfollowing: false,
       emptyownpost: false,
       postsfollow: false,
       postsILike: false,
@@ -310,87 +311,52 @@ export default {
       window.location.href = `./profiluser`
     },
 
-  getPostFollowing() {
-      // let p = {}
-      // this.userFollowingId.forEach((docs)  => {
-      //   axios.get(`http://localhost:5000/api/post/postby/${docs}`)
-      //   .then((doc)=>{
-      //    doc.data.forEach((y)=>{ 
-      //     p = y          
-      //    })
-     
-      //   //  test.sort(function (a, b) {
-      //   //               return new Date(b.createdAt) - new Date(a.createdAt);
-      //               })
+  getPostFollower() {
 
-
-          // this.posts = doc.data
-          // this.posts.push(doc.data)
    
             axios.get(`http://localhost:5000/api/post/postfollowing/${this.userid}`)
-                 .then((doc)=>{
-                  console.log(doc);
-                //  this.posts = doc.data
+                 .then((docs)=>{
+                  console.log(docs);
+                 this.posts = docs.data
+                 if(docs.data[0] === undefined){
+            axios.get("http://localhost:5000/api/post").then((docs) => {
+              this.posts = docs.data
+            })
+            localStorage.removeItem('sort')
+            this.emptyfollowing = true
+            setTimeout(() => {
+              this.emptyfollowing = false
+            }, 5000);
+          }else{
+          localStorage.setItem('sort', 'Following');
+            return this.posts
+          }
+        }).catch((err) => { console.log(err); });
 
-
-
-
-          })
-       
-       
-          // if(this.posts[0] === undefined){
-          //   axios.get("http://localhost:5000/api/post").then((docs) => {
-          //     this.posts = docs.data
-          //   })
-          //   localStorage.removeItem('sort')
-          //   this.emptyfollow = true
-          //   setTimeout(() => {
-          //     this.emptyfollow = false
-          //   }, 5000);
-          // }else{
-          // localStorage.setItem('sort', 'Following');
-          //   return this.posts
-          // }
-
-          // }).catch((err) => { console.log(err); })
-        // })
-
-     
-      // this.posts = []
-      // axios.get("http://localhost:5000/api/post")
-      //   .then((docs) => {
-      //     docs.data.forEach((doc) => {
-      //       this.userFollowingId.forEach((idfollow) => {
-      //         if (doc.posterId === idfollow) {
-      //           // this.postsfollow = doc
-      //           this.posts.push(doc)
-      //         }
-      //       })
-      //     })
-      //   })
-      //   .then(() => {
-      //     if (this.posts[0] == undefined) {
-      //       axios.get("http://localhost:5000/api/post").then((docs) => {
-      //         this.posts = docs.data
-      //       })
-      //       localStorage.removeItem('sort')
-      //       this.emptyfollow = true
-      //       setTimeout(() => {
-      //         this.emptyfollow = false
-      //       }, 4000);
-      //     }
-      //     else {
-      //       localStorage.setItem('sort', 'Friend');
-      //       return this.posts          
-      //     }
-      //   })
-      //   .catch((err) => { console.log(err); });
     },
 
-    getPostFollower() {
+    getPostFollowing() {
+      axios.get(`http://localhost:5000/api/post/postfollower/${this.userid}`)
+                 .then((docs)=>{
+                  console.log(docs);
+                 this.posts = docs.data
+                 if(docs.data[0]=== undefined){
+            axios.get("http://localhost:5000/api/post").then((docs) => {
+              this.posts = docs.data
+            })
+            localStorage.removeItem('sort')
+            this.emptyfollower = true
+            setTimeout(() => {
+              this.emptyfollower = false
+            }, 5000);
+          }else{
+          localStorage.setItem('sort', 'Follower');
+            return this.posts
+          }
+        }).catch((err) => { console.log(err); });
       // this.Followers = true
-      localStorage.setItem('sort', 'Follower');
-          this.getPostsRefresh()
+      // localStorage.setItem('sort', 'Follower');
+      //     this.getPostsRefresh()
       // axios.get(`http://localhost:5000/api/post/postfollower/${this.userid}`)
       //   .then((doc)=>{
       //     this.posts = doc.data
@@ -967,6 +933,25 @@ div.v-main__wrap {
   border: solid 2px $secondary;
   border-radius: 50%;
   border-color: $primary;
+  &:hover {
+    // border-color:green;
+
+    transform: scale(1.05);
+    transition: ease 0.5s ;
+
+  }
+}
+.picture-user-admin {
+  margin-top: 1.5%;
+  margin-right: 1%;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px rgb(42, 168, 42);
+  border-radius: 50%;
+  border-color:  rgb(42, 168, 42);
   &:hover {
     // border-color:green;
 

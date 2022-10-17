@@ -285,7 +285,7 @@
             this.urlpic = docs.data.photo
             this.userFollowingId = docs.data.following
             this.userFollowerId = docs.data.followers
-            // console.log(this.userFollowingId);
+            console.log(this.userFollowingId);
            
         }).catch((error)=>{
           console.log(error);

@@ -88,8 +88,7 @@
         <h2 class="h2-friend">Mes abonnés&nbsp({{info.length}})</h2>
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
-        <p class="card-profil-friend-p">{{p[1].name}}</p>
-      
+        <p class="card-profil-friend-abo">{{p[1].name}} est un(e) de vos abonné(e)</p>
         <button v-if="!p[0].followers.includes(userid)  " class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">
           S'abonné</button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
@@ -110,8 +109,7 @@
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0].followers.includes(userid) " class="btn-unfollow "
-          @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
+        <button :key="followkey " v-if="p[0].followers.includes(userid) " class="btn-unfollow " @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
 
       </div>
@@ -1197,6 +1195,19 @@ p.card-profil-friend-p {
   // justify-content:center;
   // align-items: center;
   margin: 0;
+  // padding-left: 1%;
+  // padding-bottom: 2%;
+  // border: 2px solid $primary;
+  cursor: default;
+}
+p.card-profil-friend-abo {
+  // display: flex;
+  // justify-content:center;
+  // align-items: center;
+  margin: 0;
+  color: rgb(12, 164, 12);
+  font-style: italic;
+  font-weight:bold;
   // padding-left: 1%;
   // padding-bottom: 2%;
   // border: 2px solid $primary;
