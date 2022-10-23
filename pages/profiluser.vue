@@ -90,11 +90,9 @@
         <h2 v-else class="h2-friend">Mes abonnés</h2>
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
-        <p class="card-profil-friend-abo">{{p[1].name}} est un(e) de vos abonné(e)</p>
-        <button v-if="!p[0].followers.includes(userid)  " class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">
-          S'abonné</button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-      
+        <p v-if="following.includes(p._id)" class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
+        <p  v-else class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
+        <button v-if="!following.includes(p._id)" class="btn-followback-profil-user" @click="getFollowBack(p._id)">S'abonné</button>
       </div>
       <p v-if="follower[0] === undefined" class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
@@ -116,8 +114,9 @@
         <h2 v-else class="h2-friend">Mes abonnements</h2>
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p class="card-profil-friend-p">{{p[1].name}} </p>
-        <button :key="followkey " v-if="p[0].followers.includes(userjwtid) " class="btn-unfollow " @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
+        <p v-if="follower.includes(p._id)" class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
+        <!-- <p v-else class="card-profil-friend-p">{{p[1].name}} </p> -->
+        <button :key="followkey " v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
       </div>
       <div v-if="following[0] === undefined" class="btn-profil-follow">
@@ -230,6 +229,8 @@ export default {
       firstname: "",
       followLastname:"",
       followFirstname:"",
+      followingLastname:"", 
+      followingFirstname:"",
       photo: [],
       userid: "",
       posted: "",
@@ -265,7 +266,17 @@ export default {
       set(newValue) {
         [this.followFirstname,this.followLastname] = newValue.split(" ");
       },
-    }
+    },
+    fullnamefollowing:{
+      get(){
+       return this.followingLastname +" "+  this.followingFirstname
+      },
+      set(newValue) {
+        [this.this.followingLastname, this.followingFirstname] = newValue.split(" ");
+      },
+
+    },
+
   },
 
   methods: {
@@ -502,72 +513,8 @@ export default {
 
     getFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`, { idToFollow: id })
-        .then(() => {
-          this.info = []
-          this.infoAbo = []
-          axios
-            .get(`http://localhost:5000/api/user/${this.userjwtid}`)
-            .then((docs) => {
-              // console.log(docs.data.photo);
-              this.role = docs.data.role;
-              this.userid = docs.data._id;
-              this.firstname = docs.data.firstname;
-              this.lastname = docs.data.lastname;
-              this.urlpic = docs.data.photo;
-              // this.userpicture = docs.data.pictureprofil;
-              this.follower = docs.data.followers;
-              this.following = docs.data.following;
-              // console.log(this.follower);
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-            .then((test) => {
-              this.follower.forEach((i, u, l) => {
-                axios.get(`http://localhost:5000/api/user/${i}`)
-                  .then((docs) => {
-                    // console.log(docs);
-                    this.followId = docs.data._id
-                    this.followLastname = docs.data.lastname;
-                    this.followFirstname = docs.data.firstname;
-                    this.followBackId = docs.data.followers;
-                    let name = this.followFirstname + " " + this.followLastname;
-                    this.followInfo = [docs.data, { "name": name }]
-                    this.info.push(this.followInfo)
-               
-                
-                  });
-              });
-            }).catch((error) => {
-              console.log(error);
-            }).then(() => {
-              this.following.forEach((i) => {
-                axios.get(`http://localhost:5000/api/user/${i}`)
-                  .then((docs) => {
-                    console.log(docs);
-                    this.followingId = docs.data._id
-                    this.followingLastname = docs.data.lastname;
-                    this.followingFirstname = docs.data.firstname;
-                    this.followingBackId = docs.data.followers;
-                    let name = this.followingFirstname + " " + this.followingLastname;
-                    this.followingInfo = [docs.data, { "name": name }]
-                    this.infoAbo.push(this.followingInfo)
-              
-                 
-                  })
-              })
-            }).catch((error) => {
-              console.log(error);
-            })
-        })
-    },
-
-    getUnFollowBack(id) {
-      axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`, { idToUnFollow: id })
-        .then(() => {
-          this.info = []
-          this.infoAbo = []
-          axios
+      .then(()=>{
+        axios
             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
             .then((docs) => {
               // console.log(docs.data.photo);
@@ -583,43 +530,181 @@ export default {
             })
             .catch((error) => {
               console.log(error);
-            }).catch((error) => {
-              console.log(error);
             })
-            .then((test) => {
-              this.follower.forEach((i, u, l) => {
-                axios.get(`http://localhost:5000/api/user/${i}`)
-                  .then((docs) => {
-                    // console.log(docs);
-                    this.followId = docs.data._id
-                    this.followLastname = docs.data.lastname;
-                    this.followFirstname = docs.data.firstname;
-                    this.followBackId = docs.data.followers;
-                    let name = this.followFirstname + " " + this.followLastname;
-                    this.followInfo = [docs.data, { "name": name }]
-                    this.info.push(this.followInfo)
+        })
+        .then(() => {
+            axios.get(`http://localhost:5000/api/user/${id}`)
+            .then((docs)=>{
+              this.followId = docs.data._id
+              this.followLastname = docs.data.lastname;
+              this.followFirstname = docs.data.firstname;
+              this.followBackId = docs.data.followers;
+              let name = this.followFirstname + " " + this.followLastname;
+              this.followInfo = docs.data
+              this.info
+              this.infoAbo.push(this.followInfo)
+
+            })
+
+
+
+
+
+
+
+          // this.info = []
+          // this.infoAbo = []
+          // axios
+          //   .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+          //   .then((docs) => {
+          //     // console.log(docs.data.photo);
+          //     this.role = docs.data.role;
+          //     this.userid = docs.data._id;
+          //     this.firstname = docs.data.firstname;
+          //     this.lastname = docs.data.lastname;
+          //     this.urlpic = docs.data.photo;
+          //     // this.userpicture = docs.data.pictureprofil;
+          //     this.follower = docs.data.followers;
+          //     this.following = docs.data.following;
+          //     // console.log(this.follower);
+          //   })
+          //   .catch((error) => {
+          //     console.log(error);
+          //   })
+          //   .then((test) => {
+          //     this.follower.forEach((i, u, l) => {
+          //       axios.get(`http://localhost:5000/api/user/${i}`)
+          //         .then((docs) => {
+          //           // console.log(docs);
+          //           this.followId = docs.data._id
+          //           this.followLastname = docs.data.lastname;
+          //           this.followFirstname = docs.data.firstname;
+          //           this.followBackId = docs.data.followers;
+          //           let name = this.followFirstname + " " + this.followLastname;
+          //           this.followInfo = [docs.data, { "name": name }]
+          //           this.info.push(this.followInfo)
+               
+                
+          //         });
+          //     });
+          //   }).catch((error) => {
+          //     console.log(error);
+          //   }).then(() => {
+          //     this.following.forEach((i) => {
+          //       axios.get(`http://localhost:5000/api/user/${i}`)
+          //         .then((docs) => {
+          //           console.log(docs);
+          //           this.followingId = docs.data._id
+          //           this.followingLastname = docs.data.lastname;
+          //           this.followingFirstname = docs.data.firstname;
+          //           this.followingBackId = docs.data.followers;
+          //           let name = this.followingFirstname + " " + this.followingLastname;
+          //           this.followingInfo = [docs.data, { "name": name }]
+          //           this.infoAbo.push(this.followingInfo)
+              
                  
-                  });
-              });
-            }).catch((error) => {
-              console.log(error);
+          //         })
+          //     })
+          //   }).catch((error) => {
+          //     console.log(error);
+          //   })
+        })
+    },
+
+    getUnFollowBack(id) {
+      axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`, { idToUnFollow: id })
+        .then(() => {
+          // this.info = []
+          // this.infoAbo = []
+          axios
+            .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+            .then((docs) => {
+              // console.log(docs.data.photo);
+              // this.role = docs.data.role;
+              // this.userid = docs.data._id;
+              // this.firstname = docs.data.firstname;
+              // this.lastname = docs.data.lastname;
+              // this.urlpic = docs.data.photo;
+              // this.userpicture = docs.data.pictureprofil;
+              this.follower = docs.data.followers;
+              this.following = docs.data.following;
+              // console.log(this.follower);
+            }).catch((error) => {console.log(error);
+            }).then(() => {
+            axios.get(`http://localhost:5000/api/user/${id}`)
+            .then((docs)=>{
+              this.followId = docs.data._id
+              this.followLastname = docs.data.lastname;
+              this.followFirstname = docs.data.firstname;
+              this.followBackId = docs.data.followers;
+              let name = this.followFirstname + " " + this.followLastname;
+              this.followInfo = docs.data,
+              this.info
+              // const index  = this.infoAbo.index(this.followInfo)
+              // if (index > -1 ){
+              //   this.infoAbo.splice(index,1)
+              // }
+              console.log(this.following);
+              console.log(this.infoAbo);
+              console.log(this.followInfo);
+              const index =  this.infoAbo.indexOf(this.followingInfo)
+            this.infoAbo.splice(index,1)
+              console.log( this.infoAbo.indexOf(this.followingInfo));
+             
+              // if(this.infoAbo = this.followInfo){
+              //   console.log(this.infoAbo)
+             
+              //   // this.infoAbo.filter(this.followInfo)
+              // }
+            //   this.infoAbo.forEach((info)=>{
+            //     console.log(info);
+            //     if(info._id === this.followInfo._id){
+            //       console.log(this.followingInfo);
+            //               this.infoAbo.filter(this.followInfo)
+            //   return this.infoAbo
+
+            //     }
+              
+            // })
+              // this.infoAbo.pull(this.followInfo)
+              // return this.infoAbo
+
             })
-            .then(() => {
-              this.following.forEach((i) => {
-                axios.get(`http://localhost:5000/api/user/${i}`)
-                  .then((docs) => {
-                    console.log(docs);
-                    this.followingId = docs.data._id
-                    this.followingLastname = docs.data.lastname;
-                    this.followingFirstname = docs.data.firstname;
-                    this.followingBackId = docs.data.followers;
-                    let name = this.followingFirstname + " " + this.followingLastname;
-                    this.followingInfo = [docs.data, { "name": name }]
-                    this.infoAbo.push(this.followingInfo)
+
+            // .then((test) => {
+            //   this.follower.forEach((i, u, l) => {
+            //     axios.get(`http://localhost:5000/api/user/${i}`)
+            //       .then((docs) => {
+            //         // console.log(docs);
+            //         this.followId = docs.data._id
+            //         this.followLastname = docs.data.lastname;
+            //         this.followFirstname = docs.data.firstname;
+            //         this.followBackId = docs.data.followers;
+            //         let name = this.followFirstname + " " + this.followLastname;
+            //         this.followInfo = [docs.data, { "name": name }]
+            //         this.info.push(this.followInfo)
+                 
+            //       });
+            //   });
+            // }).catch((error) => {
+            //   console.log(error);
+            // })
+            // .then(() => {
+            //   this.following.forEach((i) => {
+            //     axios.get(`http://localhost:5000/api/user/${i}`)
+            //       .then((docs) => {
+            //         console.log(docs);
+            //         this.followingId = docs.data._id
+            //         this.followingLastname = docs.data.lastname;
+            //         this.followingFirstname = docs.data.firstname;
+            //         this.followingBackId = docs.data.followers;
+            //         let name = this.followingFirstname + " " + this.followingLastname;
+            //         this.followingInfo = [docs.data, { "name": name }]
+            //         this.infoAbo.push(this.followingInfo)
                  
               
-                  })
-              })
+            //       })
+            //   })
             }).catch((error) => {
               console.log(error);
             })
@@ -676,7 +761,8 @@ export default {
               this.followFirstname = docs.data.firstname;
               this.followBackId = docs.data.followers;
               let name = this.followFirstname + " " + this.followLastname;
-              this.followInfo = [docs.data, { "name": name }]
+              // this.followInfo = [docs.data, { "name": name }]
+              this.followInfo = docs.data
               this.info.push(this.followInfo)
               console.log(this.info);
             });
@@ -694,7 +780,8 @@ export default {
               this.followingFirstname = docs.data.firstname;
               this.followingBackId = docs.data.followers;
               let name = this.followingFirstname + " " + this.followingLastname;
-              this.followingInfo = [docs.data, { "name": name }]
+              // this.followingInfo = [docs.data, { "name": name }]
+              this.followingInfo = docs.data
               this.infoAbo.push(this.followingInfo)
               // console.log(this.infoAbo);
             })
