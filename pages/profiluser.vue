@@ -114,7 +114,7 @@
         <h2 v-else class="h2-friend">Mes abonnements</h2>
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
-        <p v-if="follower.includes(p._id)" class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
+        <p  class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
         <!-- <p v-else class="card-profil-friend-p">{{p[1].name}} </p> -->
         <button :key="followkey " v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
