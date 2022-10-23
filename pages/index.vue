@@ -531,15 +531,15 @@ export default {
       .then((res) => {
         
         // TODO => Insert loader \\ 
-        if(res.status === 200){
+        // if(res.status === 200){
        
           this.userjwtid = res.data
         // this.show = false
         // this.show = true 
-        }
-    //     else{
+        // }
+        // else{
     //       // this.showloader = false
-    //       this.show = true 
+          // this.show = true 
     //       console.log("test2"+res);
     // //       setTimeout(() => {
 

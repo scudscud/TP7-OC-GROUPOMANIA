@@ -2,9 +2,9 @@
   <v-app dark>
     <div>
 
-      <Loader v-show="showloader" @close-modale="showloader = false" />
-
-      <SignIn id="modal-signin" v-show="show" @close-modale="show = false" />
+      <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+<!-- 
+      <SignIn id="modal-signin" v-show="show" @close-modale-signin="show = false" /> -->
     </div>
 
     <!-- <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app >
@@ -77,7 +77,7 @@
 
 
 
-<SignIn id="modal-signin" v-show="show" @close-modale="show = false" />
+<SignIn id="modal-signin" v-show="show" @close-modale-signin="show = false" />
 
 
         <Nuxt :key="componentKey" />
@@ -234,7 +234,7 @@ export default {
    await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
         console.log(res.status);
-        if(res.status === 201){
+        if(res.status === 204){
           console.log("1"+this.show);
           console.log(res);
           this.showloader = false

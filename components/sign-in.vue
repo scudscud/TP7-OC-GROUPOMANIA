@@ -123,17 +123,20 @@ export default {
           badge: this.badge,
         })
         .then((user) => {
-          //  console.log(Cookie);
-          //  this.$cookie.set('token',res.data.token);
           const userId = user.data.user;
-          // window.prompt("entrer la clé reçu par mail (n'importe lequel)");
           // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
-
-          this.show = false;
+      //     axios.get(`http://localhost:5000/jwtid`)
+      // .then((res) => { this.userjwtid = res.data
+      //     }).catch((error) => {
+      //     console.log(error);
+      //       })
+            window.location.reload()  
           setTimeout(() => {
-            this.$emit("close-modale", true);
-              //  window.location.reload()  
+    
+            this.$emit("close-modale-signin");
+            this.$emit('open-modale-loader')
+             
           }, 1000);
           this.userid = userId;
         })
