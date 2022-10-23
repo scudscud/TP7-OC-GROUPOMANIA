@@ -1,10 +1,13 @@
 <template>
   <v-app dark>
     <div>
-      <sign-in id="modal-signin" v-show="show" @close-modale="show = false" />
+
+      <Loader v-show="showloader" @close-modale="showloader = false" />
+
+      <SignIn id="modal-signin" v-show="show" @close-modale="show = false" />
     </div>
 
-    <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
+    <!-- <v-navigation-drawer class="drawer-left" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app >
       <v-list class="temp">
         <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
@@ -15,24 +18,24 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer">
+      <!-- <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer">
         <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      </v-btn> -->
 
-      <router-link id="btn-post-router" to="/" test>
-        <v-btn  id="btn-post-nav" alt="menu">
+      <router-link id="btn-post-router" to="/" >
+        <!-- <v-btn  id="btn-post-nav" alt="menu"> -->
           <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
-        </v-btn>
+        <!-- </v-btn> -->
         <!-- <v-btn v-else @click="url" active id="btn-post-nav-select" alt="menu">
           <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
         </v-btn> -->
       </router-link>
       <router-link class="btn-post-router-plus" to="/postpage">
-        <v-btn id="btn-post-nav" alt="menu">
-          <v-icon>mdi-chat </v-icon>
-        </v-btn>
+        <!-- <v-btn id="btn-post-nav" alt="menu"> -->
+          <v-icon class="icon-btn-default">mdi-chat </v-icon>
+        <!-- </v-btn> -->
         <!-- <v-btn v-else active @click="url" id="btn-post-nav-select" alt="menu">
           <v-icon>mdi-chat </v-icon>
         </v-btn> -->
@@ -70,6 +73,13 @@
     </v-app-bar>
     <v-main>
       <v-container>
+        
+
+
+
+<SignIn id="modal-signin" v-show="show" @close-modale="show = false" />
+
+
         <Nuxt :key="componentKey" />
       </v-container>
     </v-main>
@@ -94,13 +104,16 @@
 
 <script>
 import axios from "axios";
-// import disconnect from '../components/disconnect.vue';
+import Loader from "../components/Loader.vue";
+// // import disconnect from '../components/disconnect.vue';
 import SignIn from "../components/sign-in.vue";
 // import Post from "../components/postcomponent.vue";
 // import indexVue from "../pages/index.vue";
 
 export default {
   components: {
+    Loader,
+      // Loader: () => import(/* webpackPrefetch: true */"../components/Loader.vue"),
     SignIn,
     // indexVue,
     // modify: () => import(/* webpackPrefetch: true */"./index/modifytest.vue"),
@@ -139,6 +152,8 @@ export default {
 
   data() {
     return {
+      show: false,
+      showloader: true,
       urlbtn: "",
       postbtn: false,
       componentKey: 0,
@@ -146,7 +161,6 @@ export default {
       avatarpicempty: '',
       userjwtid: '',
       urlpic: '',
-      show: true,
       right: true,
       drawer: false,
       miniVariant: false,
@@ -154,7 +168,6 @@ export default {
       clipped: false,
       fixed: false,
       log: false,
-      // showpost: false,
       showbtn: true,
       hoverbtn: false,
       itemsuser: [
@@ -214,21 +227,38 @@ export default {
 
 
   async mounted() {
+    // setTimeout(() => {
+    //   this.showloader = false
+    // },3000);
 
-    await axios.get(`http://localhost:5000/jwtid`)
+   await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
-        if(res === null){
+        console.log(res.status);
+        if(res.status === 201){
+          console.log("1"+this.show);
           console.log(res);
+          this.showloader = false
           this.show = true
+      
         }else{
         this.userjwtid = res.data
-        this.show = false
+        console.log(typeof res.status);
+        console.log("test1"+res);
+        console.log("2"+this.show);
+            setTimeout(() => {
+      this.showloader = false
+    },1500);
+
         // TODO => Insert loader \\ 
         // }).catch((error)=>{
         //   console.log(error);
       }
       })
-    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+
+
+
+
+     await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
       .then((data) => {
         this.name = data.data.firstname
         this.urlpic = data.data.photo
@@ -240,6 +270,7 @@ export default {
         )
       })
     this.getcolor()
+
 
 
   },
@@ -339,61 +370,98 @@ html {
   }
 }
 
-#btn-post-nav {
+
+
+
+// #btn-post-nav {
+//   background-color: $tertiary;
+//   height: 35px;
+//   width: auto;
+//   border: solid $secondary;
+//   color: $secondary;
+//   border-radius: 30%;
+
+//   &:hover {
+//     background-color: $secondary;
+//     border: solid $tertiary;
+//     color: $tertiary;
+//     border-radius: 20%;
+//   }
+// }
+
+
+a#btn-post-router {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-left: 1%;
   background-color: $tertiary;
+  width: 50px;
   height: 35px;
-  width: auto;
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
-
   &:hover {
     background-color: $secondary;
     border: solid $tertiary;
     color: $tertiary;
     border-radius: 20%;
+    &#btn-post-router>i{
+    color:$tertiary;
+    }
   }
 }
 
-#btn-post-nav-select {
-  background-color: $secondary;
-  border: solid $tertiary;
-  color: $tertiary;
-  border-radius: 20%;
-  height: 35px;
-  width: auto;
-
-  &:hover {
-    background-color: $tertiary;
-    border: solid $secondary;
-    color: $secondary;
+a#btn-post-router.nuxt-link-exact-active {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: $tertiary;
     border-radius: 30%;
+    &#btn-post-router>i{
+    color:$tertiary;
+    }
+    &:hover{
+      border-radius: 20%;
+    }
   }
-}
 
-#btn-post-router {
-  text-decoration: none;
-  color: $secondary;
-  font-weight: bold;
-  margin-left: 0.5%;
-  margin-right: 0.5%;
-  // &:active{
-  //   background-color: red;
-  // }
-}
+a.btn-post-router-plus.nuxt-link-exact-active {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: $tertiary;
+    border-radius: 30%;
+    &.btn-post-router-plus>i{
+    color:$tertiary;
+    }
+  }
 
-#btn-post-router-plus {
+a.btn-post-router-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
+  margin-left: 1%;
+  background-color: $tertiary;
+  height: 35px;
+  width: 50px;
+  border: solid $secondary ;
   color: $secondary;
-  font-weight: bold;
-  margin-right: 0.5%;
-  // &:active{
-  //   background-color: red;
-  // }
+  border-radius: 30%;
+  &:hover {
+    background-color: $secondary;
+    border: solid $tertiary;
+    color: $tertiary;
+    border-radius: 20%;
+    &.btn-post-router-plus>i{
+    color:$tertiary;
+    }
+  }
 }
 
 
 #temp-title {
+  margin-right: 10%;
   font-family: Lato, sans-serif;
   font-size: 35px;
   letter-spacing: 2px;
@@ -483,4 +551,20 @@ html {
 .v-list-item__action {
   color: $secondary;
 }
+
+// #btn-post-nav-select {
+//   background-color: $secondary;
+//   border: solid $tertiary;
+//   color: $tertiary;
+//   border-radius: 20%;
+//   height: 35px;
+//   width: auto;
+
+//   &:hover {
+//     background-color: $tertiary;
+//     border: solid $secondary;
+//     color: $secondary;
+//     border-radius: 30%;
+//   }
+// }
 </style>

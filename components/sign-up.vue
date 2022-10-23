@@ -1,9 +1,9 @@
 <template>
-  <div id="test" class="overlay">
+  <div id="test" class="overlay-sign-up ">
     <div>
       <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
     </div>
-    <v-col class="main d-flex justify-center align-center overlaybis">
+    <v-col class="overlaybis-sign-up">
       <v-col class="form-sign">
         <v-card id="logo-form" class="logo py-4 d-flex justify-center"
           ><h1><span id="form-span1">Vous inscrire </span></h1></v-card
@@ -192,7 +192,7 @@ export default {
   data() {
     return {
       rules: [
-        { message: "le mot de passe doit contenir : 1 chiffre,",regex: /[0-9]+/,},
+        { message: "1 chiffre,",regex: /[0-9]+/,},
         { message: "1 miniscule,", regex: /[a-z]+/ },
         { message: "1 majuscule,", regex: /[A-Z]+/ },
         { message: "1 caractere speciale", regex: /[!@#$%^&]+/ },
@@ -323,7 +323,7 @@ export default {
 </script>
 
 <style lang="scss">
-.overlay {
+.overlay-sign-up {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -358,7 +358,10 @@ export default {
   padding-right: 3px;
 }
 
-div.overlaybis {
+.overlaybis-sign-up {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   // height: 100%;
   // width: 50%;
   padding-left: 10%;

@@ -1,4 +1,5 @@
 <template >
+ 
 
   <div>
 
@@ -158,7 +159,9 @@
 
         </v-card>
       </div>
-    </div>
+    </div> 
+    <!-- <Loader v-show="showloader" @close-modale="showloader = false" />    -->
+      <!-- <SignIn v-show="show" @close-modale="show = false" />  -->
     <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-following="showsort = false,getPostFollowing()"
@@ -177,29 +180,22 @@
 <script>
 
 import axios from "axios"
-// import { trusted } from "mongoose";
-// import { ref } from 'vue';
-// const componentKey = ref(0);
-// const forceRerender = () => {
-//   componentKey.value += 1
-// }
+// import SignIn from "../components/sign-in.vue";
+// import Loader from "../components/Loader.vue";
 
 export default {
   name: "Book",
 
   components: {
-    report:() => import(/* webpackChunkName:"report"*/"../components/warningReportPost.vue"),
+    // Loader,
+    //  SignIn,
+    report: () => import(/* webpackChunkName:"report"*/ "../components/warningReportPost.vue"),
     sortPost: () => import("../components/sortpostby.vue"),
-    Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
+    Postcreate: () => import(/* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
     modify: () => import("./index/modifytest.vue"),
-    //  deletepost: () => import(/* webpackPrefetch: true */"./index/deletetest.vue")
-    //  Modify: () => import(  /* webpackMode: "lazy" */"../components/modifypost.vue"),
-    //  Modify: () => import(  /* webpackChunkName:"modify"*/"../components/modifypost.vue"),
-    deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
-    //  Deletepost ,
-    //  Modify
+    deletepost: () => import(/* webpackChunkName:"deletepost"*/ "./index/deletetest.vue"),
 
-  },
+},
   props: {
     // keytest : ['post._id']
   },
@@ -254,6 +250,8 @@ export default {
       // userphoto:'',
       // match:[],
       // liked: "",
+      // show:false,
+      // showloader :true,
     };
   },
   computed: {
@@ -522,16 +520,39 @@ export default {
 
 
   async mounted() {
-    // this.userFollowerId = []
-    // this.userFollowingId = []
+    // setTimeout(() => {
+    //   // this.show = true
+    //   this.showloader = false
+    // },3000);
+
+    // this.showloader = true
     axios.defaults.withCredentials = true;
     await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
-        // console.log(this.userjwtid);
-        this.userjwtid = res.data
-        this.show = true
-        this.log = true
+        
         // TODO => Insert loader \\ 
+        if(res.status === 200){
+       
+          this.userjwtid = res.data
+        // this.show = false
+        // this.show = true 
+        }
+    //     else{
+    //       // this.showloader = false
+    //       this.show = true 
+    //       console.log("test2"+res);
+    // //       setTimeout(() => {
+
+    // //   // this.show = true
+    // //   this.show = true 
+    // // },4000);
+       
+       
+    //     // this.userjwtid = res.data
+    //     // this.show = false
+    
+    //     // TODO => Insert loader \\ 
+    //   }
       }).catch((error) => {
         console.log(error);
       })
