@@ -160,8 +160,7 @@
         </v-card>
       </div>
     </div> 
-    <!-- <Loader v-show="showloader" @close-modale="showloader = false" />    -->
-      <!-- <SignIn v-show="show" @close-modale="show = false" />  -->
+    <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-following="showsort = false,getPostFollowing()"
@@ -181,13 +180,13 @@
 
 import axios from "axios"
 // import SignIn from "../components/sign-in.vue";
-// import Loader from "../components/Loader.vue";
+import Loader from "../components/Loader.vue";
 
 export default {
   name: "Book",
 
   components: {
-    // Loader,
+    Loader,
     //  SignIn,
     report: () => import(/* webpackChunkName:"report"*/ "../components/warningReportPost.vue"),
     sortPost: () => import("../components/sortpostby.vue"),
@@ -251,7 +250,7 @@ export default {
       // match:[],
       // liked: "",
       // show:false,
-      // showloader :true,
+      showloader :true,
     };
   },
   computed: {
@@ -520,10 +519,10 @@ export default {
 
 
   async mounted() {
-    // setTimeout(() => {
-    //   // this.show = true
-    //   this.showloader = false
-    // },3000);
+    setTimeout(() => {
+      this.showloader = false
+    },1000);
+   
 
     // this.showloader = true
     axios.defaults.withCredentials = true;

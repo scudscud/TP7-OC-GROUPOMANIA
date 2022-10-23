@@ -82,42 +82,53 @@
         </div>
       </form>
     </v-card-text>
-    <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend">
+    <!-- <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend"> -->
+    <v-card-text  class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Mes abonnés&nbsp({{info.length}})</h2>
+        <h2 v-if="follower[0] !== undefined" class="h2-friend">Mes abonnés&nbsp({{info.length}})</h2>
+        <h2 v-else class="h2-friend">Mes abonnés</h2>
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p class="card-profil-friend-abo">{{p[1].name}} est un(e) de vos abonné(e)</p>
         <button v-if="!p[0].followers.includes(userid)  " class="btn-followback-profil-user" @click="getFollowBack(p[0]._id)">
           S'abonné</button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-
+      
       </div>
+      <p v-if="follower[0] === undefined" class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
-    <v-card-text v-else class="card-profil-friend">
+    <!-- <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnés</h2>
       </div>
       <p class="card-profil-friend-p">{{ friend }}</p>
-    </v-card-text>
+    </v-card-text> -->
 
 
 
-    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
+    <!-- <v-card-text v-if="following[0] != undefined" class="card-profil-friend"> -->
+    <v-card-text class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Mes abonnements&nbsp({{infoAbo.length}})</h2>
+        <h2 v-if="following[0] != undefined" class="h2-friend">Mes abonnements&nbsp({{infoAbo.length}})</h2>
+        <h2 v-else class="h2-friend">Mes abonnements</h2>
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p class="card-profil-friend-p">{{p[1].name}} </p>
         <button :key="followkey " v-if="p[0].followers.includes(userjwtid) " class="btn-unfollow " @click="getUnFollowBack(p[0]._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
-
       </div>
+      <div v-if="following[0] === undefined" class="btn-profil-follow">
+      <p v-if="follower[0] != undefined && follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
+      <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
+      <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
+   
+    </div>
+
     </v-card-text>
-    <v-card-text v-else class="card-profil-friend">
+    <!-- <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnements</h2>
@@ -128,7 +139,7 @@
       <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
    
     </div>
-    </v-card-text>
+    </v-card-text> -->
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
       <div class="card-profil-friend-pub">
@@ -161,6 +172,7 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
+    <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
     <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
     <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
@@ -173,6 +185,7 @@
 <script>
 import axios from "axios";
 
+
 export default {
   name: "Profil",
   components: {
@@ -181,6 +194,7 @@ export default {
     WarningRecord: () => import("../components/warningrecord.vue"),
     modify: () => import("./index/modifytest.vue"),
     deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
+    Loader:()=> import("../components/Loader.vue"),
   },
 
   data() {
@@ -229,6 +243,7 @@ export default {
       warningDelete :false,
 
       bioValid:false,
+      showloader:true,
 
 
     };
@@ -519,6 +534,8 @@ export default {
                     let name = this.followFirstname + " " + this.followLastname;
                     this.followInfo = [docs.data, { "name": name }]
                     this.info.push(this.followInfo)
+               
+                
                   });
               });
             }).catch((error) => {
@@ -535,6 +552,8 @@ export default {
                     let name = this.followingFirstname + " " + this.followingLastname;
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
+              
+                 
                   })
               })
             }).catch((error) => {
@@ -579,6 +598,7 @@ export default {
                     let name = this.followFirstname + " " + this.followLastname;
                     this.followInfo = [docs.data, { "name": name }]
                     this.info.push(this.followInfo)
+                 
                   });
               });
             }).catch((error) => {
@@ -596,6 +616,8 @@ export default {
                     let name = this.followingFirstname + " " + this.followingLastname;
                     this.followingInfo = [docs.data, { "name": name }]
                     this.infoAbo.push(this.followingInfo)
+                 
+              
                   })
               })
             }).catch((error) => {
@@ -606,6 +628,9 @@ export default {
   },
 
   async mounted() {
+    setTimeout(() => {
+      this.showloader = false
+    }, 1500);
     axios.defaults.withCredentials = true;
     // console.log($refs.deletepost.$el)
 

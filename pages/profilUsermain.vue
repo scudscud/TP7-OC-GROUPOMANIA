@@ -126,6 +126,9 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
+    <div>
+      <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+    </div>
 
   </v-card>
 
@@ -133,11 +136,12 @@
   
 <script>
 import axios from "axios";
+import Loader from "../components/Loader.vue"
 
 export default {
   name: "Profil",
   components: {
-
+ Loader
   },
 
   data() {
@@ -197,6 +201,7 @@ export default {
       warningDelete: false,
 
       bioValid: false,
+      showloader:true,
 
 
     };
@@ -423,6 +428,9 @@ export default {
   },
 
   async mounted() {
+    setTimeout(() => {
+      this.showloader = false
+    }, 1500);
     axios.defaults.withCredentials = true;
     //   let params = new URLSearchParams(window.location.search);
     //   console.log(params);

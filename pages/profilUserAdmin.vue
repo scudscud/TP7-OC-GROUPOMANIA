@@ -147,6 +147,7 @@
         </div>
         <div class="card-profil-post-p">{{ publication }}</div>
       </v-card-text>
+      <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
       <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
       <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
       <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
@@ -167,6 +168,7 @@
       WarningRecord: () => import("../components/warningrecord.vue"),
       modify: () => import("./index/modifytest.vue"),
       deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
+      Loader:()=> import("../components/Loader.vue"),
     },
   
     data() {
@@ -524,17 +526,13 @@
     },
   
     async mounted() {
+      setTimeout(() => {
+      this.showloader = false
+    }, 1500);
       axios.defaults.withCredentials = true;
-    
-    //   let params = new URLSearchParams(window.location.search);
-    //   console.log(params);
-    //   const idUserURL = params.get('id')
-    //   const idUserURL = window.location.search.split('=')[0]
      let params = window.location.toString()
      let idUserURL = params.split('=')[1]
-
       this.id = idUserURL
-      // console.log(this.id);
   
       await axios
         .get(`http://localhost:5000/jwtid`)
