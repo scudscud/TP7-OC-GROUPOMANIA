@@ -517,16 +517,9 @@ export default {
         axios
             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
             .then((docs) => {
-              // console.log(docs.data.photo);
-              // this.role = docs.data.role;
-              // this.userid = docs.data._id;
-              // this.firstname = docs.data.firstname;
-              // this.lastname = docs.data.lastname;
-              // this.urlpic = docs.data.photo;
-              // this.userpicture = docs.data.pictureprofil;
               this.follower = docs.data.followers;
               this.following = docs.data.following;
-              // console.log(this.follower);
+           
             })
             .catch((error) => {
               console.log(error);
@@ -539,19 +532,9 @@ export default {
               this.followLastname = docs.data.lastname;
               this.followFirstname = docs.data.firstname;
               this.followBackId = docs.data.followers;
-              let name = this.followFirstname + " " + this.followLastname;
               this.followInfo = docs.data
-              this.info
               this.infoAbo.push(this.followInfo)
-
             })
-
-
-
-
-
-
-
           // this.info = []
           // this.infoAbo = []
           // axios
@@ -583,8 +566,6 @@ export default {
           //           let name = this.followFirstname + " " + this.followLastname;
           //           this.followInfo = [docs.data, { "name": name }]
           //           this.info.push(this.followInfo)
-               
-                
           //         });
           //     });
           //   }).catch((error) => {
@@ -601,8 +582,6 @@ export default {
           //           let name = this.followingFirstname + " " + this.followingLastname;
           //           this.followingInfo = [docs.data, { "name": name }]
           //           this.infoAbo.push(this.followingInfo)
-              
-                 
           //         })
           //     })
           //   }).catch((error) => {
@@ -619,13 +598,6 @@ export default {
           axios
             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
             .then((docs) => {
-              // console.log(docs.data.photo);
-              // this.role = docs.data.role;
-              // this.userid = docs.data._id;
-              // this.firstname = docs.data.firstname;
-              // this.lastname = docs.data.lastname;
-              // this.urlpic = docs.data.photo;
-              // this.userpicture = docs.data.pictureprofil;
               this.follower = docs.data.followers;
               this.following = docs.data.following;
               // console.log(this.follower);
@@ -637,23 +609,12 @@ export default {
               this.followLastname = docs.data.lastname;
               this.followFirstname = docs.data.firstname;
               this.followBackId = docs.data.followers;
-              let name = this.followFirstname + " " + this.followLastname;
-              this.followInfo = docs.data,
-              this.info
-              // const index  = this.infoAbo.index(this.followInfo)
-              // if (index > -1 ){
-              //   this.infoAbo.splice(index,1)
-              // }
-              console.log(this.following);
-              console.log(this.infoAbo);
-              console.log(this.followInfo);
-              const index =  this.infoAbo.indexOf(this.followingInfo)
-            this.infoAbo.splice(index,1)
-              console.log( this.infoAbo.indexOf(this.followingInfo));
-             
+              this.followInfo = docs.data;
+              const newarr  = this.infoAbo.filter(data=> data._id != this.followId)
+              this.infoAbo = newarr
+            })
               // if(this.infoAbo = this.followInfo){
-              //   console.log(this.infoAbo)
-             
+              //   console.log(this.infoAbo)          
               //   // this.infoAbo.filter(this.followInfo)
               // }
             //   this.infoAbo.forEach((info)=>{
@@ -662,15 +623,11 @@ export default {
             //       console.log(this.followingInfo);
             //               this.infoAbo.filter(this.followInfo)
             //   return this.infoAbo
-
-            //     }
-              
+            //     }   
             // })
               // this.infoAbo.pull(this.followInfo)
               // return this.infoAbo
-
-            })
-
+            // })
             // .then((test) => {
             //   this.follower.forEach((i, u, l) => {
             //     axios.get(`http://localhost:5000/api/user/${i}`)
@@ -682,8 +639,7 @@ export default {
             //         this.followBackId = docs.data.followers;
             //         let name = this.followFirstname + " " + this.followLastname;
             //         this.followInfo = [docs.data, { "name": name }]
-            //         this.info.push(this.followInfo)
-                 
+            //         this.info.push(this.followInfo)             
             //       });
             //   });
             // }).catch((error) => {
