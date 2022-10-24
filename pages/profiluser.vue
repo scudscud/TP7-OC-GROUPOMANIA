@@ -3,7 +3,6 @@
     <v-card-text class="card-profil-title">
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
-
     <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
@@ -91,7 +90,7 @@
       </div>
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p v-if="following.includes(p._id)" class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
-        <p  v-else class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
+        <p v-else class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
         <button v-if="!following.includes(p._id)" class="btn-followback-profil-user" @click="getFollowBack(p._id)">S'abonné</button>
       </div>
       <p v-if="follower[0] === undefined" class="card-profil-friend-p">{{ friend }}</p>
