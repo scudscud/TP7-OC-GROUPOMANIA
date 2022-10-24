@@ -34,7 +34,7 @@
     </v-card-text>
 
 
-    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
+    <v-card-textclass="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Les abonnements de {{ fullname }}&nbsp({{infoAbo.length}})</h2>
@@ -44,6 +44,11 @@
         <p v-else class="card-profil-friend-p">{{pi[1].name}} </p>
         <button :key="followkey " v-if="pi[0]._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné </button>       
       </div>
+      <div  v-if="following[0] === undefined"   class="card-profil-friend-t">
+        <v-icon class="icon-friend">mdi-account-group</v-icon>
+        <h2 class="h2-friend">Les abonnements de {{ fullname }}</h2>
+      </div>
+      
     </v-card-text>
     <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
