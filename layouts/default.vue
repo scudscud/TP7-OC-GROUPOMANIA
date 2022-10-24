@@ -1,5 +1,7 @@
 <template>
   <v-app dark>
+   
+
     <div>
 
       <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
@@ -75,10 +77,10 @@
       <v-container>
         
 
-
-
+        <transition name="test" mode="out-in">
+      
 <SignIn id="modal-signin" v-show="show" @close-modale-signin="show = false" />
-
+</transition>
 
         <Nuxt :key="componentKey" />
       </v-container>
@@ -99,6 +101,7 @@
     <v-footer :absolute="!fixed" app>
       <span>&copy; Groupomania socialNetwork res dev by scud </span>
     </v-footer>
+ 
   </v-app>
 </template>
 
@@ -111,6 +114,16 @@ import SignIn from "../components/sign-in.vue";
 // import indexVue from "../pages/index.vue";
 
 export default {
+  // transition(to, from) {
+  //   if (!from) {
+  //     return 'slide-left'
+  //   }
+  //   return +to.query.page < +from.query.page ? 'slide-right' : 'slide-left'
+  // },
+  transition: {
+    name: 'test',
+    mode: 'out-in'
+  },
   components: {
     Loader,
       // Loader: () => import(/* webpackPrefetch: true */"../components/Loader.vue"),

@@ -70,9 +70,12 @@
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none" >
+                <!-- <transition name="test" mode="out-in"> -->
+
                <nuxt-link class="link" :to="{name:'profilUsermain-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
                   :src='post.posterpicture' alt="phtot de l'utilisateur"  />
                 <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
+              <!-- </transition> -->
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
@@ -173,8 +176,30 @@
     <modify v-if="showmodify"  v-show="showmodify"
       @close-modale-modify=" showmodify=false,getRefresh()" />
     <Postcreate v-show="showpost" @close-modale-post="showpost = false,getRefresh()" />
-
+    <transition name="fade" bottom right  fixed >
+    <div id="pagetopscroll" v-show="scY > 300" @click="toTop" >
+      <svg id="arrowscroll" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+           stroke="#4a5568"
+           stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </div>
+  </transition>
+  <!-- <v-btn
+            v-scroll="onScroll"
+            v-show="fab"
+            fab
+            dark
+            fixed
+            bottom
+            right
+            color="primary"
+            @click="toTop"
+          >
+            <v-icon>mdi-keyboard-arrow-up</v-icon>
+          </v-btn> -->
   </div>
+
 </template>
 <script>
 
@@ -184,7 +209,16 @@ import Loader from "../components/Loader.vue";
 
 export default {
   name: "Book",
-
+  // transition(to, from) {
+  //   if (!from) {
+  //     return 'slide-left'
+  //   }
+  //   return +to.query.page < +from.query.page ? 'slide-right' : 'slide-left'
+  // },
+  // transition: {
+  //   name: 'fade',
+  //   mode: ''
+  // },
   components: {
     Loader,
     //  SignIn,
@@ -251,6 +285,9 @@ export default {
       // liked: "",
       // show:false,
       showloader :true,
+      scTimer: 0,
+      scY: 0,
+      fab:false,
     };
   },
   computed: {
@@ -299,6 +336,28 @@ export default {
   events: {
   },
   methods: {
+    onScroll (e) {
+      if (typeof window === 'undefined') return
+      const top = window.pageYOffset ||   e.target.scrollTop || 0
+      this.fab = top > 20
+    },
+    toTop () {
+      this.$vuetify.goTo(0)
+    },
+    handleScroll: function () {
+        if (this.scTimer) return;
+        this.scTimer = setTimeout(() => {
+          this.scY = window.scrollY;
+          clearTimeout(this.scTimer);
+          this.scTimer = 0;
+        }, 100);
+      },
+      toTop: function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      },
 
     goProfilUser(id){
       window.location.href = `./profilUsermain?id=${id}`
@@ -523,6 +582,7 @@ export default {
       this.showloader = false
     },1000);
    
+    window.addEventListener('scroll', this.handleScroll);
 
     // this.showloader = true
     axios.defaults.withCredentials = true;
@@ -580,6 +640,20 @@ export default {
 </script>
 
 <style lang="scss">
+
+#pagetopscroll{
+  position: fixed;
+  right: 3%;
+  bottom: 5%;
+  border: solid 1px ;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: rgb(13, 158, 158);
+  background: rgb(13, 158, 158);
+}
+
+
 div.v-main__wrap {
   background-color:  rgb(18, 7, 48);
 
