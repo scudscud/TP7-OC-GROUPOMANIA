@@ -106,7 +106,7 @@
 
 
     <!-- <v-card-text v-if="following[0] != undefined" class="card-profil-friend"> -->
-    <v-card-text class="card-profil-friend">
+    <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 v-if="following[0] != undefined" class="h2-friend">Mes abonnements&nbsp({{infoAbo.length}})</h2>
@@ -118,26 +118,26 @@
         <button :key="followkey " v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
         <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
       </div>
-      <div v-if="following[0] === undefined" class="btn-profil-follow">
+      <!-- <div v-if="following[0] == undefined" class="btn-profil-follow">
       <p v-if="follower[0] != undefined && follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
       <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
       <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
    
-    </div>
+    </div> -->
 
     </v-card-text>
-    <!-- <v-card-text v-else class="card-profil-friend">
+    <v-card-text  v-if="following[0] === undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Mes abonnements</h2>
       </div>
       <div  class="btn-profil-follow">
-      <p v-if="follower[0] != undefined && follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
-      <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
-      <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
+      <p v-if="follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
+      <p v-if="follower.length == 0" class="card-profil-friend-solo">Ne faite le premier pas Abonnez-vous à quelqu'un</p>
+      <p v-if=" follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
    
     </div>
-    </v-card-text> -->
+    </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
       <div class="card-profil-friend-pub">

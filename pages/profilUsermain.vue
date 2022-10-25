@@ -67,23 +67,27 @@
 
 
 
-    <v-card-text  class="card-profil-friend">
-      <div class="card-profil-friend-t">
+    <v-card-text  v-if="follower[0] != undefined"  class="card-profil-friend">
+      <div  class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}&nbsp({{info.length}})</h2>
       </div>
-      <div v-for="(p, index) in info" class="btn-profil-follow">
+      <div v-for="(p, index) in info"  class="btn-profil-follow">
         <!-- <p v-if="p[0]._id !== userjwtid" class="card-profil-friend-p">{{p[1].name}}</p> -->
         <p v-if="p._id !== userjwtid" class="card-profil-friend-p">{{p.firstname +" "+p.lastname }} </p>
         <p v-if="p._id === userjwtid" class="card-profiluser-friend">Vous êtes abonné(e) à {{fullname}}</p>
         <button v-if="p._id.includes(userjwtid)" class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
       </div>
 
-      <div v-if="newfollow && !followBack && !following.includes(userid)" class="btn-profil-follow">
+      <div v-if="newfollow && !followBack && following.includes(userjwtid)" class="btn-profil-follow">
+        <p class="card-profiluser-friend-new">Abonnez-vous à {{fullname}}</p>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+      </div>
+      <div v-if="newfollow && !followBack && !following.includes(userjwtid)" class="btn-profil-follow">
         <p class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
         <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
       </div>
-      <div v-if="follower[0] == undefined" class="card-profil-friend">
+      <!-- <div v-if="follower[0] == undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}</h2>
@@ -92,10 +96,10 @@
         <p class="card-profiluser-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
         <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
       </div>
-    </div>
+    </div> -->
 
     </v-card-text>
-    <!-- <v-card-text v-else class="card-profil-friend">
+    <v-card-text v-else class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
         <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}</h2>
@@ -104,7 +108,7 @@
         <p class="card-profiluser-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
         <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
       </div>
-    </v-card-text> -->
+    </v-card-text>
 
     <v-card-text class="card-profil-post" v-if="pub[0] != undefined">
       <div class="card-profil-friend-pub">
