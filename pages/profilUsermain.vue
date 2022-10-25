@@ -79,9 +79,9 @@
         <button v-if="p._id.includes(userjwtid)" class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
       </div>
 
-      <div class="btn-profil-follow">
-        <p v-if="newfollow && !following.includes(userid)" class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button v-if="newfollow && !following.includes(userid)" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+      <div v-if="newfollow && !followBack && !following.includes(userid)" class="btn-profil-follow">
+        <p class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
       </div>
       <div v-if="follower[0] == undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
@@ -326,7 +326,7 @@ export default {
                     this.followBackId = docs.data.followers;
                     this.followInfo = docs.data
                   
-                    if (this.following.includes(this.userjwtid)) {
+                    if (this.follower.includes(this.userjwtid)) {
                       this.followBack = true
                       this.newfollow = false
                     }
@@ -424,8 +424,9 @@ export default {
                     this.followInfo = docs.data
                     const newarr  = this.info.filter(data=> data._id != this.followId)
                     this.info = newarr
-                      this.followBack = false
-                      if(!this.followBackId.includes(this.id)){
+                     
+                      if(!this.follower.includes(this.id)){
+                        this.followBack = false
                       this.newfollow = true}
                     
                   });
