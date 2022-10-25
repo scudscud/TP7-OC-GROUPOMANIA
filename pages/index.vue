@@ -103,7 +103,7 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att">Like</p>
+                <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
@@ -126,7 +126,7 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att">Like</p>
+                <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
@@ -1338,7 +1338,7 @@ p.firstpost {
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.btn-att-follow.img-att:before {
+    &.btn-att-follow>.img-att:before {
       color: $secondary;
     }
   }
@@ -1480,17 +1480,106 @@ button.class-btn-att-like {
   width: auto;
   cursor: pointer;
   padding: 2%;
+  animation-name: like;
+  animation-duration: 5s;
+
 
   &.class-btn-att-like>.img-att:before {
     color: $secondary;
+    animation: btn-like;
+    animation-duration: 4s;
   }
+  &.class-btn-att-like>.text-att-like {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  animation-name: text-like;
+  animation-duration: 4s;
+
+  // padding-right: 20%;
+}
 
   &:hover {
     background-color: rgb(27, 108, 17);
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
+    
   }
+}
+
+@keyframes btn-like {
+  0% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: scale(1.1);
+    animation-duration: 0.5s;
+    animation-iteration-count: 2;
+  }
+}
+
+@keyframes like {
+0% {
+
+background-origin: left;
+background-clip: 0%;
+backface-visibility: hidden;
+
+}
+50%{
+  background-clip: 0%;
+
+}
+100% {
+  backface-visibility: visible;
+  // background: 100%;
+  // background-position: 100%;
+  background-clip:100%;
+
+
+}
+}
+
+p.text-att-like {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+
+
+  // padding-right: 20%;
+}
+
+@keyframes text-like {
+  0% {
+    transform: scale(1);
+  }
+  10%{
+    transform: scale(0.01);
+  }
+  20%{
+    transform: scale(1.2);
+  }
+  40%{
+    transform: scale(0.8);
+  }
+  60%{
+    transform: scale(1.2);
+  }
+80%{
+  transform: scale(1);
+}
+100%{
+  transform: scale(1.3);
+}
+
 }
 
 .buble-like {
@@ -1511,8 +1600,6 @@ button.class-btn-att-like {
 
 
 }
-
-
 
 
 
