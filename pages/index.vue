@@ -443,9 +443,9 @@ export default {
               this.posts = docs.data
             })
             localStorage.removeItem('sort')
-            this.emptylike = true
+            this.emptyownpost= true
             setTimeout(() => {
-              this.emptylike = false
+              this.emptyownpost = false
             }, 5000);
           }else{
           localStorage.setItem('sort', 'Own');
@@ -574,6 +574,15 @@ export default {
         })
         .catch((err) => { err.message })
     },
+
+    
+
+
+
+
+
+
+
   },
 
 
@@ -1487,7 +1496,7 @@ button.class-btn-att-like {
   &.class-btn-att-like>.img-att:before {
     color: $secondary;
     animation: btn-like;
-    animation-duration: 4s;
+    animation-duration: 3s;
   }
   &.class-btn-att-like>.text-att-like {
   width: auto;
@@ -1496,7 +1505,7 @@ button.class-btn-att-like {
   align-items: center;
   margin-bottom: 0px;
   animation-name: text-like;
-  animation-duration: 4s;
+  animation-duration: 3s;
 
   // padding-right: 20%;
 }

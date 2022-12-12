@@ -32,9 +32,9 @@ export default {
 return{
 deleteconfirm: false ,
 click: true,
-// userid:'',
-// userjwtid:'',
-// postId:'',
+userid:'',
+userjwtid:'',
+postId:'',
 
 
 }

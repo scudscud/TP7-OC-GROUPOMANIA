@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+ 
 
 //jwt check user id \\
 app.get('*', checkUser
@@ -83,3 +83,4 @@ app.listen(process.env.PORT, (port) =>
 // }
 
 // app.use(session(sessionOption))
+ 

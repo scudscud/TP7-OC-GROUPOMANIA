@@ -30,9 +30,9 @@ router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) 
 
 router.put('/photo/:id',requireAuth,(req, res, next) => {photo(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}});},postController.updatePictureUserPost )
-
+ 
 // gestion des commentaire\\
-
+ 
 router.patch('/comment-post/:id', postController.commentPost);
 router.patch('/edit-comment-post/:id', postController.editCommentPost);
 router.patch('/delete-comment-post/:id', postController.deleteCommentPost );

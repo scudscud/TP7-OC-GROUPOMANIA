@@ -64,7 +64,9 @@
     </div>
     </template>
     <script>
+ 
     import axios from "axios";
+    import FormData from 'form-data';
     // import { multerErrors } from "../backend/utils/errors.utils";
     export default{
       name: "postcreate",
@@ -126,8 +128,7 @@
       createPost(){
         if(this.message != '' || this.url != ''){
             const full= document.querySelector('.fullname-create').textContent;
-          console.log(full);
-          let formData = new FormData()
+         let formData = new FormData()
               formData.append('posterId', this.userid)
               formData.append('posterfirstname', this.firstname)
               formData.append('posterlastname', this.lastname)
@@ -138,6 +139,7 @@
               formData.append('role',this.role)
               formData.append('posterFollower',this.userFollowerId)
               formData.append('posterFollowing',this.userFollowingId)
+              console.log(formData);
               axios.post(`http://localhost:5000/api/post`,formData)
               .then(() => {
                 this.posted= true
@@ -155,10 +157,11 @@
               })
               .catch((errors,test)=>{
                  test = this.delPicPreview()
-               console.log(this.maxsize);
+               console.log(errors.response.data);
+              //  console.log(test);
                 this.maxsize = errors.response.data.errors.maxsize
                 this.format = errors.response.data.errors.format
-                test
+                test()
                setTimeout(() => {
                  this.maxsize = ''
                 this.format =''

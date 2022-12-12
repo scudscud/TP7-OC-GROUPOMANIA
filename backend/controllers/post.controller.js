@@ -18,7 +18,14 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-//  const followingIdArray = []
+  console.log(req);
+  console.log(req.body);
+  console.log(req.data);
+
+
+  // console.log(req.params);
+  // console.log(req.body);
+  //  const followingIdArray = []
 //  const followerIdArray = []
 //  let test = ""
 //  UserModel.find({following : req.body.posterId})
@@ -33,15 +40,15 @@ exports.createPost = async (req, res) => {
 //     post.forEach(id=> {     
 //       //  test = id._id.toString() 
 //       // followerIdArray.push(IdFollower)     
-//     });  
-//   })
+//     });   
+//   }) 
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const finalDate = `posté le ${days} à ${hours}h${minutes}`
-  const followerIdArray = req.body.posterFollower.split(",")
-  const followingIdArray = req.body.posterFollowing.split(",")
+  // const followerIdArray = req.body.posterFollower.split(",")
+  // const followingIdArray = req.body.posterFollowing.split(",")
  
   const newPost = new PostModel({
     posterId: req.body.posterId,
@@ -56,12 +63,12 @@ exports.createPost = async (req, res) => {
     likers: [],
     comments: [],
     date : finalDate,
-    posterfollower : followerIdArray != null ? followerIdArray : [],
+    // posterfollower : followerIdArray != null ? followerIdArray : [],
     posterfollowing : followingIdArray != null ? followingIdArray : [],
     
-    // posterfollower : req.body.posterFollower
-   
+  //   // posterfollower : req.body.posterFollower
     
+     
   });
   try {
     post = await newPost.save();
@@ -75,16 +82,15 @@ exports.createPost = async (req, res) => {
 
 // update post end point \\
 exports.updatePost = (req, res) => {
-  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
+
+  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconu:" + req.params.id);}
   PostModel.findById(req.params.id)
   .then((post) => {
-    // console.log(req);
     const postedBy = post.posterId
     const connectedUser = req.user
-    // console.log( "up"+post.posterId);
-    // console.log("up"+ req.user);
+
     if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
-      // res.cookie('jwt','', { session:false, maxAge: 1 }) 
+      res.cookie('jwt','', { session:false, maxAge: 1 }) 
       res.status(400).json('delete')
 }else{
   const date = new Date(Date.now())
@@ -102,6 +108,7 @@ const updatedRecord = {
       : `${req.body.file}`,
       date : finalDate,
 }
+
 PostModel.findByIdAndUpdate(req.params.id,
   { $set: updatedRecord },
   { new: true },
@@ -192,7 +199,7 @@ exports.getPostFollowing= async (req, res) => {
  })
   
 
-
+ 
 
 
 
@@ -246,11 +253,17 @@ exports.getPostSignal= (req, res) => {
 
 // delete post end point \\
 exports.deletePost = (req, res) => {
+
+  console.log(req.params);
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    return res.status(400).send("publication inconu :" + req.params.id);
+  
     PostModel.findById(req.params.id)
-    .then((post)=>{
-      // console.log(req.user);
+    .then((post)=>{  
+
+      console.log(post);
+      console.log(req.user);
+      // console.log(post.posterId);
       const postedBy = post.posterId
       const connectedUser = req.user
       // console.log("del"+postedBy);
@@ -258,21 +271,23 @@ exports.deletePost = (req, res) => {
       if(connectedUser !== '62f8f745c348ae5b9f081062' && postedBy !== connectedUser){
         res.cookie('jwt','', { session:false, maxAge: 1 }) 
         res.status(400).json('nocookie')
-  }else{
+      }else{
       let delimg = post.picture.split('images/')[1]
       fs.unlink(`images/${delimg}`,()=> {
-        PostModel.findByIdAndRemove(req.params.id, (err, docs)=> {
+        console.log(post.picture);
+        console.log(post.id);  
+        // console.log(req.body.id);
+        PostModel.findByIdAndRemove(post.id, (err, docs)=> {
           // console.log(req);
       if(!err){
         res.status(200).json(docs);
-      }else{
-        res.status(400).send(err);}
-        })
-      })
-    }
-    }).catch((err)=>{err})
+      }
+        }) 
+      }) 
+    } 
+    }).catch((err)=>(console.log(err))) 
 }; 
-
+ 
 // delete picture end point \\
 
 exports.deleteOnePicture = (req, res) => {
