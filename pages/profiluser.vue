@@ -73,7 +73,6 @@
 
         <div class="btn-bio"  >
           <button id="btn-bio-send" type="submit" @click="controlePostBio">Enregistrer</button>
-          <!-- <button v-else id="btn-bio-send" type="submit" @click="controlePostBio">c'est Vide</button> -->
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
           <button id="btn-bio-close" @click="(warningRecord = !warningRecord)">
             Fermer
@@ -81,7 +80,6 @@
         </div>
       </form>
     </v-card-text>
-    <!-- <v-card-text v-if="follower[0] !== undefined" class="card-profil-friend"> -->
     <v-card-text  class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
@@ -95,17 +93,7 @@
       </div>
       <p v-if="follower[0] === undefined" class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
-    <!-- <v-card-text v-else class="card-profil-friend">
-      <div class="card-profil-friend-t">
-        <v-icon class="icon-friend">mdi-account-group</v-icon>
-        <h2 class="h2-friend">Mes abonnés</h2>
-      </div>
-      <p class="card-profil-friend-p">{{ friend }}</p>
-    </v-card-text> -->
 
-
-
-    <!-- <v-card-text v-if="following[0] != undefined" class="card-profil-friend"> -->
     <v-card-text v-if="following[0] != undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
         <v-icon class="icon-friend">mdi-account-group</v-icon>
@@ -114,17 +102,8 @@
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p  class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
-        <!-- <p v-else class="card-profil-friend-p">{{p[1].name}} </p> -->
         <button :key="followkey " v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
-        <!-- <button v-else class="btn-follow" @click="refresh(),getFollowBack(p[0]._id)" > S'abonné </button> -->
       </div>
-      <!-- <div v-if="following[0] == undefined" class="btn-profil-follow">
-      <p v-if="follower[0] != undefined && follower.length == 1 " class="card-profil-friend-solo">Ne faite votre timide {{ fullnamefollow}}  est abonné(e) n'hésitez pas à vous abonner en retour</p>
-      <p v-if="follower[0] != undefined && follower.length == 0" class="card-profil-friend-solo"> Faite le premier pas Abonnez-vous à quelqu'un</p>
-      <p v-if="follower[0] != undefined && follower.length > 1 " class="card-profil-friend-solo">Ne faite votre timide {{follower.length}} personnes sont abonné(e)s n'hésitez pas à vous abonner en retour</p>
-   
-    </div> -->
-
     </v-card-text>
     <v-card-text  v-if="following[0] === undefined" class="card-profil-friend">
       <div class="card-profil-friend-t">
@@ -151,7 +130,6 @@
           <div v-if="p.likers.length != 0" class="like-profilmain-user" >
             <v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span>
           </div>
-          <!-- <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span> -->
           <div class="btn-post-profil-user">
             <button class="btn-post-modify-profil" type="submit"
               @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button>
@@ -170,7 +148,7 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
-    <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+    <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
     <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
     <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
@@ -182,17 +160,19 @@
 
 <script>
 import axios from "axios";
+import Load from "../components/Waitload.vue";
 
 
 export default {
   name: "Profil",
   components: {
+    Load,
     WarningDelete: () => import ("../components/warnindelete.vue"),
     WarningEmpty: ()=> import ("../components/warningempty.vue"),
     WarningRecord: () => import("../components/warningrecord.vue"),
     modify: () => import("./index/modifytest.vue"),
     deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
-    Loader:()=> import("../components/Loader.vue"),
+ 
   },
 
   data() {
@@ -291,26 +271,6 @@ export default {
       })
     },
 
-    // getRefreshBio(){
-    //   axios
-    //   .get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    //   .then((docs) => {
-    //     this.bioUser = docs.data.bio
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // },
-
-    // postBio(){
-    //   let formData = new FormData();
-    //   formData.append("bio", this.newBioUser);
-    //   axios
-    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //     .then(()=>{
-    //       this.newBioUser = ''
-    //     }).catch((err)=>{console.log(err);})
-    // },
     deleteUserBio(){
       let formData = new FormData();
       formData.append("bio", this.bio);
@@ -327,8 +287,6 @@ export default {
         console.log(error);
       })
         })  
-
-
     },
 
 
@@ -356,7 +314,6 @@ export default {
           .then(()=>{
             this.newBioUser = ''
           this.modifbio = !this.modifbio
-      
         }).then(()=>{
           axios
       .get(`http://localhost:5000/api/user/${this.userjwtid}`)
@@ -406,9 +363,6 @@ export default {
     getcolor() {
       if (this.urlpic === "" || this.urlpic === undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
-        // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        // document.getElementById("avatar-empty-profil").style.backgroundColor =
-        //   "#" + randomColor;
       }
     },
 
@@ -434,41 +388,13 @@ export default {
           this.pub= doc.data
           console.log(doc.data);
         })
-      // this.pub = []
-      // axios.get(`http://localhost:5000/api/post`)
-      //   .then((docs) => {
-      //     docs.data.forEach((doc) => {
-      //       if (doc.posterId === this.userid) {
-      //         const id = [];
-      //         id.push(doc._id);
-      //         id.forEach((postid) => {
-      //           axios
-      //             .get(`http://localhost:5000/api/post/${postid}`)
-      //             .then((doc) => {
-      //               console.log(doc.data._id);
-      //               this.pub.push(doc.data);
-      //               this.pub.sort(function (a, b) {
-      //                 return new Date(b.createdAt) - new Date(a.createdAt);
-      //               });
-      //             });
-      //         });
-      //       }
-      //     });
-      //   }).catch((error) => {
-      //     console.log(error);
-      //   })
     },
 
     async profilUpdate() {
-      // photoName = this.fullname.split(' ')
-      // console.log(photoName);
       let formData = new FormData();
-      // formData.append('posterpicture', this.photo)
       formData.append("fullname", this.fullname);
       formData.append("photo", this.photo);
-      // formData.append("bio", this.bio);
-      // console.log(this.photo.filename);
-      // console.log(this.bio);
+
       await axios
         .put(`http://localhost:5000/api/user/${this.userid}`, formData)
         .then(() => {
@@ -534,66 +460,12 @@ export default {
               this.followInfo = docs.data
               this.infoAbo.push(this.followInfo)
             })
-          // this.info = []
-          // this.infoAbo = []
-          // axios
-          //   .get(`http://localhost:5000/api/user/${this.userjwtid}`)
-          //   .then((docs) => {
-          //     // console.log(docs.data.photo);
-          //     this.role = docs.data.role;
-          //     this.userid = docs.data._id;
-          //     this.firstname = docs.data.firstname;
-          //     this.lastname = docs.data.lastname;
-          //     this.urlpic = docs.data.photo;
-          //     // this.userpicture = docs.data.pictureprofil;
-          //     this.follower = docs.data.followers;
-          //     this.following = docs.data.following;
-          //     // console.log(this.follower);
-          //   })
-          //   .catch((error) => {
-          //     console.log(error);
-          //   })
-          //   .then((test) => {
-          //     this.follower.forEach((i, u, l) => {
-          //       axios.get(`http://localhost:5000/api/user/${i}`)
-          //         .then((docs) => {
-          //           // console.log(docs);
-          //           this.followId = docs.data._id
-          //           this.followLastname = docs.data.lastname;
-          //           this.followFirstname = docs.data.firstname;
-          //           this.followBackId = docs.data.followers;
-          //           let name = this.followFirstname + " " + this.followLastname;
-          //           this.followInfo = [docs.data, { "name": name }]
-          //           this.info.push(this.followInfo)
-          //         });
-          //     });
-          //   }).catch((error) => {
-          //     console.log(error);
-          //   }).then(() => {
-          //     this.following.forEach((i) => {
-          //       axios.get(`http://localhost:5000/api/user/${i}`)
-          //         .then((docs) => {
-          //           console.log(docs);
-          //           this.followingId = docs.data._id
-          //           this.followingLastname = docs.data.lastname;
-          //           this.followingFirstname = docs.data.firstname;
-          //           this.followingBackId = docs.data.followers;
-          //           let name = this.followingFirstname + " " + this.followingLastname;
-          //           this.followingInfo = [docs.data, { "name": name }]
-          //           this.infoAbo.push(this.followingInfo)
-          //         })
-          //     })
-          //   }).catch((error) => {
-          //     console.log(error);
-          //   })
         })
     },
 
     getUnFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/unfollow/${this.userid}`, { idToUnFollow: id })
         .then(() => {
-          // this.info = []
-          // this.infoAbo = []
           axios
             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
             .then((docs) => {
@@ -612,54 +484,6 @@ export default {
               const newarr  = this.infoAbo.filter(data=> data._id != this.followId)
               this.infoAbo = newarr
             })
-              // if(this.infoAbo = this.followInfo){
-              //   console.log(this.infoAbo)          
-              //   // this.infoAbo.filter(this.followInfo)
-              // }
-            //   this.infoAbo.forEach((info)=>{
-            //     console.log(info);
-            //     if(info._id === this.followInfo._id){
-            //       console.log(this.followingInfo);
-            //               this.infoAbo.filter(this.followInfo)
-            //   return this.infoAbo
-            //     }   
-            // })
-              // this.infoAbo.pull(this.followInfo)
-              // return this.infoAbo
-            // })
-            // .then((test) => {
-            //   this.follower.forEach((i, u, l) => {
-            //     axios.get(`http://localhost:5000/api/user/${i}`)
-            //       .then((docs) => {
-            //         // console.log(docs);
-            //         this.followId = docs.data._id
-            //         this.followLastname = docs.data.lastname;
-            //         this.followFirstname = docs.data.firstname;
-            //         this.followBackId = docs.data.followers;
-            //         let name = this.followFirstname + " " + this.followLastname;
-            //         this.followInfo = [docs.data, { "name": name }]
-            //         this.info.push(this.followInfo)             
-            //       });
-            //   });
-            // }).catch((error) => {
-            //   console.log(error);
-            // })
-            // .then(() => {
-            //   this.following.forEach((i) => {
-            //     axios.get(`http://localhost:5000/api/user/${i}`)
-            //       .then((docs) => {
-            //         console.log(docs);
-            //         this.followingId = docs.data._id
-            //         this.followingLastname = docs.data.lastname;
-            //         this.followingFirstname = docs.data.firstname;
-            //         this.followingBackId = docs.data.followers;
-            //         let name = this.followingFirstname + " " + this.followingLastname;
-            //         this.followingInfo = [docs.data, { "name": name }]
-            //         this.infoAbo.push(this.followingInfo)
-                 
-              
-            //       })
-            //   })
             }).catch((error) => {
               console.log(error);
             })
@@ -672,16 +496,13 @@ export default {
       this.showloader = false
     }, 1500);
     axios.defaults.withCredentials = true;
-    // console.log($refs.deletepost.$el)
 
     await axios
       .get(`http://localhost:5000/jwtid`)
       .then((res) => {
-        // console.log(this.userjwtid);
         this.userjwtid = res.data;
         this.show = true;
         this.log = true;
-        // TODO => Insert loader \\
       })
       .catch((error) => {
         console.log(error);
@@ -690,18 +511,13 @@ export default {
     await axios
       .get(`http://localhost:5000/api/user/${this.userjwtid}`)
       .then((docs) => {
-        // console.log(docs.data.photo);
-        // this.role = docs.data.role;
         this.userid = docs.data._id;
         this.firstname = docs.data.firstname;
         this.lastname = docs.data.lastname;
         this.urlpic = docs.data.photo;
         this.bioUser = docs.data.bio
-        // this.userpicture = docs.data.pictureprofil;
         this.follower = docs.data.followers;
         this.following = docs.data.following;
-        // console.log(this.follower);
-        // console.log(this.urlpic);
       })
       .catch((error) => {
         console.log(error);
@@ -710,13 +526,11 @@ export default {
         this.follower.forEach((i, u, l) => {
           axios.get(`http://localhost:5000/api/user/${i}`)
             .then((docs) => {
-              // console.log(docs);
               this.followId = docs.data._id
               this.followLastname = docs.data.lastname;
               this.followFirstname = docs.data.firstname;
               this.followBackId = docs.data.followers;
               let name = this.followFirstname + " " + this.followLastname;
-              // this.followInfo = [docs.data, { "name": name }]
               this.followInfo = docs.data
               this.info.push(this.followInfo)
               console.log(this.info);
@@ -735,10 +549,8 @@ export default {
               this.followingFirstname = docs.data.firstname;
               this.followingBackId = docs.data.followers;
               let name = this.followingFirstname + " " + this.followingLastname;
-              // this.followingInfo = [docs.data, { "name": name }]
               this.followingInfo = docs.data
               this.infoAbo.push(this.followingInfo)
-              // console.log(this.infoAbo);
             })
         })
       }).catch((error) => {
@@ -751,28 +563,6 @@ export default {
           this.pub= doc.data
           console.log(doc.data);
         })
-
-    // await axios.get(`http://localhost:5000/api/post`)
-    //   .then((docs) => {
-    //     docs.data.forEach((doc) => {
-    //       if (doc.posterId === this.userid) {
-    //         const id = [];
-    //         id.push(doc._id);
-    //         id.forEach((postid) => {
-    //           axios
-    //             .get(`http://localhost:5000/api/post/${postid}`)
-    //             .then((doc) => {
-    //               console.log(doc.data._id);
-    //               this.pub.push(doc.data);
-    //               this.pub.sort(function (a, b) {
-    //                   return new Date(b.createdAt) - new Date(a.createdAt);
-    //                 });
-    //             }).catch((err) => { err })
-    //         });
-    //       }
-    //     });
-    //   }).catch((err) => { err })
-
     this.getcolor();
   },
 };
@@ -787,10 +577,7 @@ label.lab-pic {
 .lab-pic-del {
   display: flex;
   justify-content: center;
-  // margin-right: 10%;
-  // width: 100%;
-  // width: 20%;
-  // flex-direction: column;
+
 }
 
 .lab-pic-custom {
@@ -813,7 +600,7 @@ label.lab-pic {
 .form-avatar-profil {
   padding-top: 2%;
   display: none;
-  visibility: none;
+  // visibility: none;
 
   &:hover {
     cursor: pointer;
@@ -1014,7 +801,7 @@ button#btn-confirm-pic-profil-post {
 .form-avatar-profil-url {
   padding-top: 2%;
   display: none;
-  visibility: none;
+  // visibility: none;
 
   &:hover {
     cursor: pointer;

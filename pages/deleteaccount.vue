@@ -18,7 +18,7 @@
           compte</span></v-btn>
       <div v-else id="block-btn-confirm-delacc">
         <span id="span-btn-confirm-delacc">Veuillez confirmer la suppression de votre compte</span>
-        <v-btn id="btn-deco-delacc" @click="delAccount" type="text"><span>Confirmer la suppression</span></v-btn>
+        <v-btn id="btn-deco-delacc" @click="window.location.href" type="text"><span>Confirmer la suppression</span></v-btn>
       </div>
     </v-card>
   </v-col>

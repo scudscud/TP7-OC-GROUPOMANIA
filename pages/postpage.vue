@@ -1,74 +1,69 @@
 
 <template>
-
-  <v-card id="card-post">
-    <div>
-      <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+<!-- <div ></div> -->
+<v-card id="card-post"  >
+  <div>
+      <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     </div>
-
-    <v-card-text class="card-profil-title">
-      <h1 class="card-profil-title-h1">work in progress</h1>
-    </v-card-text>
-
-    <v-card-text id="card-chat">
-      <img class="card-img-chat-perso " src="../client\public\uploads\posts\pexels-ekaterina-bolovtsova-4049788.jpg"
-        alt="photo" />
-
-      <h2 class="h2-chat">Le chat arrive un peu de patience !!! </h2>
-      <img class="card-img-chat " src="../client/public/uploads/posts/chat3.jpg" alt="photo" />
-
-    </v-card-text>
-
-  </v-card>
-
+  
+   <v-card-text class="card-profil-title"><h1 class="card-profil-title-h1">work in progress</h1></v-card-text>
+ 
+      <v-card-text id="card-chat">
+        <img class="card-img-chat-perso " src="../client\public\uploads\posts\pexels-ekaterina-bolovtsova-4049788.jpg"
+                alt="photo" />
+        
+              <h2 class="h2-chat">Le chat arrive un peu de patience !!! </h2>
+              <img class="card-img-chat " src="../client/public/uploads/posts/chat3.jpg"
+                alt="photo" />
+               
+        </v-card-text>
+     
+    </v-card>
+ 
 
 </template>
 <script>
-import Loader from "../components/Loader.vue";
+import Load from "../components/Waitload.vue";
 
-export default {
+
+export default{
   name: "IndexPage",
   components: {
-    Loader
+    Load
   },
-  data() {
+
+  data(){
     return {
       showloader: true,
     }
-  },
-  methods: {
-
-  },
-  computed: {
-  },
-
-  async mounted() {
+    },
+    async mounted() {
     setTimeout(() => {
       this.showloader = false
     }, 1000);
 
   }
+
+
 }
 
 </script>
 
 <style lang="scss">
-#card-post {
-  align-items: center;
-  justify-content: center;
-  background-color: $tertiary;
-  border: solid;
-  border-color: $secondary;
-}
 
-;
+#card-post{
+align-items: center;
+justify-content: center;
+background-color: $tertiary;
+border: solid;
+border-color: $secondary;
+};
 
 .card-profil-title {
-  // border-radius: 5%;
+// border-radius: 5%;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
 }
-
 .card-profil-title-h1 {
   padding-top: 2%;
   padding-bottom: 1%;
@@ -77,17 +72,14 @@ export default {
   font-style: italic;
   color: $primary;
 }
-
-#card-chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding-top: 0.5%;
-}
-
-;
+#card-chat{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100%;
+padding-top: 0.5%;
+};
 
 .card-img-chat {
   display: flex;
@@ -104,7 +96,6 @@ export default {
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
-
 .card-img-chat-perso {
   display: flex;
   justify-content: center;
@@ -120,6 +111,15 @@ export default {
   // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
+
+
+
+
+
+
+
+
+
 </style>
 
 

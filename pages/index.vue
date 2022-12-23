@@ -1,5 +1,4 @@
 <template >
- 
 
   <div>
 
@@ -60,7 +59,7 @@
               <div class="btn-book-main">
                 <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
                 <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">
-                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> Bannir
+                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> Modifier
                 </button>
                 <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
                 <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)">
@@ -70,12 +69,9 @@
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none" >
-                <!-- <transition name="test" mode="out-in"> -->
-
                <nuxt-link class="link" :to="{name:'profilUsermain-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
                   :src='post.posterpicture' alt="phtot de l'utilisateur"  />
                 <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
-              <!-- </transition> -->
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
@@ -103,7 +99,7 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att-like">Like</p>
+                <p class="text-att">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
@@ -126,7 +122,7 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att-like">Like</p>
+                <p class="text-att">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
@@ -162,8 +158,17 @@
 
         </v-card>
       </div>
-    </div> 
-    <Loader v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+      <transition name="fade" bottom right  fixed >
+    <div id="pagetopscroll" v-show="scY > 300" @click="toTop" >
+      <svg id="arrowscroll" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+           stroke="#4a5568"
+           stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </div>
+  </transition>
+    </div>
+    <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-following="showsort = false,getPostFollowing()"
@@ -176,59 +181,26 @@
     <modify v-if="showmodify"  v-show="showmodify"
       @close-modale-modify=" showmodify=false,getRefresh()" />
     <Postcreate v-show="showpost" @close-modale-post="showpost = false,getRefresh()" />
-    <transition name="fade" bottom right  fixed >
-    <div id="pagetopscroll" v-show="scY > 300" @click="toTop" >
-      <svg id="arrowscroll" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-           stroke="#4a5568"
-           stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
-        <path d="M18 15l-6-6-6 6"/>
-      </svg>
-    </div>
-  </transition>
-  <!-- <v-btn
-            v-scroll="onScroll"
-            v-show="fab"
-            fab
-            dark
-            fixed
-            bottom
-            right
-            color="primary"
-            @click="toTop"
-          >
-            <v-icon>mdi-keyboard-arrow-up</v-icon>
-          </v-btn> -->
   </div>
 
 </template>
 <script>
 
 import axios from "axios"
-// import SignIn from "../components/sign-in.vue";
-import Loader from "../components/Loader.vue";
+import Load from "../components/Waitload.vue";
 
 export default {
   name: "Book",
-  // transition(to, from) {
-  //   if (!from) {
-  //     return 'slide-left'
-  //   }
-  //   return +to.query.page < +from.query.page ? 'slide-right' : 'slide-left'
-  // },
-  // transition: {
-  //   name: 'fade',
-  //   mode: ''
-  // },
-  components: {
-    Loader,
-    //  SignIn,
-    report: () => import(/* webpackChunkName:"report"*/ "../components/warningReportPost.vue"),
-    sortPost: () => import("../components/sortpostby.vue"),
-    Postcreate: () => import(/* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
-    modify: () => import("./index/modifytest.vue"),
-    deletepost: () => import(/* webpackChunkName:"deletepost"*/ "./index/deletetest.vue"),
 
-},
+  components: {
+    Load,
+    report:() => import(/* webpackChunkName:"report"*/"../components/warningReportPost.vue"),
+    sortPost: () => import("../components/sortpostby.vue"),
+    Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
+    modify: () => import("./index/modifytest.vue"),
+    deletepost: () => import(  /* webpackChunkName:"deletepost"*/"./index/deletetest.vue"),
+
+  },
   props: {
     // keytest : ['post._id']
   },
@@ -274,6 +246,9 @@ export default {
       sortPosts : '',
       showReport : false,
       Followers : false,
+      showloader :true,
+      scTimer: 0,
+      scY: 0,
       // userlike:[],
       // numberlike:[],
       // likeby:'',
@@ -283,11 +258,6 @@ export default {
       // userphoto:'',
       // match:[],
       // liked: "",
-      // show:false,
-      showloader :true,
-      scTimer: 0,
-      scY: 0,
-      fab:false,
     };
   },
   computed: {
@@ -336,14 +306,6 @@ export default {
   events: {
   },
   methods: {
-    onScroll (e) {
-      if (typeof window === 'undefined') return
-      const top = window.pageYOffset ||   e.target.scrollTop || 0
-      this.fab = top > 20
-    },
-    toTop () {
-      this.$vuetify.goTo(0)
-    },
     handleScroll: function () {
         if (this.scTimer) return;
         this.scTimer = setTimeout(() => {
@@ -443,7 +405,7 @@ export default {
               this.posts = docs.data
             })
             localStorage.removeItem('sort')
-            this.emptyownpost= true
+            this.emptyownpost = true
             setTimeout(() => {
               this.emptyownpost = false
             }, 5000);
@@ -574,53 +536,25 @@ export default {
         })
         .catch((err) => { err.message })
     },
-
-    
-
-
-
-
-
-
-
   },
 
 
   async mounted() {
+    axios.defaults.withCredentials = true;
+    window.addEventListener('scroll', this.handleScroll);
     setTimeout(() => {
       this.showloader = false
-    },1000);
+    },2000);
+    this.userFollowerId = []
+    this.userFollowingId = []
    
-    window.addEventListener('scroll', this.handleScroll);
-
-    // this.showloader = true
-    axios.defaults.withCredentials = true;
     await axios.get(`http://localhost:5000/jwtid`)
       .then((res) => {
-        
+        // console.log(this.userjwtid);
+        this.userjwtid = res.data
+        this.show = true
+        this.log = true
         // TODO => Insert loader \\ 
-        // if(res.status === 200){
-       
-          this.userjwtid = res.data
-        // this.show = false
-        // this.show = true 
-        // }
-        // else{
-    //       // this.showloader = false
-          // this.show = true 
-    //       console.log("test2"+res);
-    // //       setTimeout(() => {
-
-    // //   // this.show = true
-    // //   this.show = true 
-    // // },4000);
-       
-       
-    //     // this.userjwtid = res.data
-    //     // this.show = false
-    
-    //     // TODO => Insert loader \\ 
-    //   }
       }).catch((error) => {
         console.log(error);
       })
@@ -649,7 +583,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 #pagetopscroll{
   position: fixed;
   right: 3%;
@@ -661,6 +594,9 @@ export default {
   color: rgb(13, 158, 158);
   background: rgb(13, 158, 158);
 }
+
+
+
 
 
 div.v-main__wrap {
@@ -1489,106 +1425,17 @@ button.class-btn-att-like {
   width: auto;
   cursor: pointer;
   padding: 2%;
-  animation-name: like;
-  animation-duration: 5s;
-
 
   &.class-btn-att-like>.img-att:before {
     color: $secondary;
-    animation: btn-like;
-    animation-duration: 3s;
   }
-  &.class-btn-att-like>.text-att-like {
-  width: auto;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0px;
-  animation-name: text-like;
-  animation-duration: 3s;
-
-  // padding-right: 20%;
-}
 
   &:hover {
     background-color: rgb(27, 108, 17);
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
-    
   }
-}
-
-@keyframes btn-like {
-  0% {
-    transform: rotate(0deg);
-  }
-  80% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: scale(1.1);
-    animation-duration: 0.5s;
-    animation-iteration-count: 2;
-  }
-}
-
-@keyframes like {
-0% {
-
-background-origin: left;
-background-clip: 0%;
-backface-visibility: hidden;
-
-}
-50%{
-  background-clip: 0%;
-
-}
-100% {
-  backface-visibility: visible;
-  // background: 100%;
-  // background-position: 100%;
-  background-clip:100%;
-
-
-}
-}
-
-p.text-att-like {
-  width: auto;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0px;
-
-
-  // padding-right: 20%;
-}
-
-@keyframes text-like {
-  0% {
-    transform: scale(1);
-  }
-  10%{
-    transform: scale(0.01);
-  }
-  20%{
-    transform: scale(1.2);
-  }
-  40%{
-    transform: scale(0.8);
-  }
-  60%{
-    transform: scale(1.2);
-  }
-80%{
-  transform: scale(1);
-}
-100%{
-  transform: scale(1.3);
-}
-
 }
 
 .buble-like {
@@ -1609,6 +1456,8 @@ p.text-att-like {
 
 
 }
+
+
 
 
 

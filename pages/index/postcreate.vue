@@ -64,9 +64,7 @@
     </div>
     </template>
     <script>
- 
     import axios from "axios";
-    import FormData from 'form-data';
     // import { multerErrors } from "../backend/utils/errors.utils";
     export default{
       name: "postcreate",
@@ -127,19 +125,20 @@
     
       createPost(){
         if(this.message != '' || this.url != ''){
-            const full= document.querySelector('.fullname-create').textContent;
-         let formData = new FormData()
+            // const full= document.querySelector('.fullname-create').textContent;
+          // console.log(full);
+          // console.log(this.fullname);
+          let formData = new FormData()
               formData.append('posterId', this.userid)
               formData.append('posterfirstname', this.firstname)
               formData.append('posterlastname', this.lastname)
-              formData.append('posterfullname', full)
+              formData.append('posterfullname', this.fullname)
               formData.append('posterpicture', this.urlpic)
               formData.append('message', this.message)
               formData.append('file', this.file)
               formData.append('role',this.role)
               formData.append('posterFollower',this.userFollowerId)
               formData.append('posterFollowing',this.userFollowingId)
-              console.log(formData);
               axios.post(`http://localhost:5000/api/post`,formData)
               .then(() => {
                 this.posted= true
@@ -157,11 +156,10 @@
               })
               .catch((errors,test)=>{
                  test = this.delPicPreview()
-               console.log(errors.response.data);
-              //  console.log(test);
+               console.log(this.maxsize);
                 this.maxsize = errors.response.data.errors.maxsize
                 this.format = errors.response.data.errors.format
-                test()
+                test
                setTimeout(() => {
                  this.maxsize = ''
                 this.format =''
@@ -175,9 +173,10 @@
       },
       getcolor(){
         if(this.urlpic === '' || this.urlpic === undefined  ){
-       this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+       this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
         // let randomColor = Math.floor(Math.random()*16777215).toString(16);
-       document.getElementById('avatar-empty-post').style.backgroundColor = '#' }
+      //  document.getElementById('avatar-empty-post').style.backgroundColor = '#'
+       }
       }
       
     },
@@ -330,7 +329,7 @@
       left: 0;
       right: 0;
       position: fixed;
-      visibility: visible;
+      // visibility: visible;
       opacity: 1;
       background-color: rgba(0, 0, 0, 0.7);
       transition: opacity 0.4s;
@@ -465,7 +464,7 @@
     .form-avatar-profil {
       padding-top: 3%;
       display: none;
-      visibility: none;
+      // visibility: none;
       &:hover {
         cursor: pointer;
       }

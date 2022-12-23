@@ -36,20 +36,20 @@ app.use(cookieParser());
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
- 
+
 
 //jwt check user id \\
 app.get('*', checkUser
 // ,(req,res)=>{ console.log(res.locals.user._id);res.send(res.locals.user._id)}
 ); // TODO 
 app.get('/jwtid', requireAuth, (req,res)=>{
-  // console.log(res.user);
-  // console.log(req.user);
-  if(req.user === 'erreur'){
-    res.status(204).send('invalid')
+  console.log(req);
+  if(req.user === ''){
+    res.status(201).json(res.data = 'notoken')
   }else{
-
-  res.status(200).send(res.locals.user._id)}});
+  res.status(200).send(res.locals.user._id)
+}
+});
 
 
 
@@ -83,4 +83,3 @@ app.listen(process.env.PORT, (port) =>
 // }
 
 // app.use(session(sessionOption))
- 

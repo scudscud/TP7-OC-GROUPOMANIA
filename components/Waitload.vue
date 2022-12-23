@@ -1,7 +1,7 @@
 <template>
-   <div class="overlay-signin">
+   <div class="overlay-load">
     test
-    <v-col class="overlaybis-signin" justify="center" align="center"> test</v-col>
+    <!-- <v-col class="overlaybis-load" justify="center" align="center"> test</v-col> -->
   
    </div>
    
@@ -10,33 +10,34 @@
 
 <script>
 export default {
-name : "Loadertest",
+name : "load",
 
 
 }
 
 </script>
 
-<style>
-.overlay-sign-in {
+<style lang ="scss">
+.overlay-load {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  height: auto;
+  // flex-direction: column;
+  width: 100%;
   top: 0px;
   bottom: 0;
   left: 0;
   right: 0;
   position: fixed;
   visibility: visible;
-  opacity: 1;
-  background-color: rgba(0, 0, 0, 0.7);
-  transition: opacity 0.4s;
-  z-index: 300;
+  opacity: 1.5;
+  background: linear-gradient(to left ,$primary,$secondary);
+  transition: opacity 0.5s;
+  z-index: 10;
 }
 
-.overlaybis {
+
+.overlaybis-load {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +47,7 @@ name : "Loadertest",
   padding-right: 10%;
 }
 
-.nuxt-logo {
-  height: 180px;
-}
+// .nuxt-logo {
+//   height: 180px;
+// }
 </style>

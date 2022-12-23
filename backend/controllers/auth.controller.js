@@ -28,7 +28,7 @@ exports.signUp = async (req, res, next) => {
     firstname: firstname,
     email: email,
     badge: badge,
-  }).count(); 
+  }).count();
 console.log(find);
   if (find != 1) {
     return res.status(401).json({ error: "echec veuillez réessayer, si le probleme persiste contacter un administrateur",

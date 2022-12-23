@@ -18,8 +18,8 @@ router.get('/postfollower/:id',postController.getPostFollower);
 router.get('/postsignal/:id',postController.getPostSignal);
 router.put('/:id',requireAuth,(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });} else {next();}});}, postController.updatePost);
 router.delete('/:id',requireAuth, postController.deletePost);
-router.patch('/like-post/:id', postController.likePost);
-router.patch('/unlike-post/:id', postController.unLikePost);
+router.patch('/like-post/:id',requireAuth, postController.likePost);
+router.patch('/unlike-post/:id',requireAuth, postController.unLikePost);
 
 // router manage picture post + multer errors \\
 
@@ -30,9 +30,9 @@ router.post('/',requireAuth,(req, res, next) => {image(req, res, function (err) 
 
 router.put('/photo/:id',requireAuth,(req, res, next) => {photo(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}});},postController.updatePictureUserPost )
- 
+
 // gestion des commentaire\\
- 
+
 router.patch('/comment-post/:id', postController.commentPost);
 router.patch('/edit-comment-post/:id', postController.editCommentPost);
 router.patch('/delete-comment-post/:id', postController.deleteCommentPost );

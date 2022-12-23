@@ -1,15 +1,26 @@
 <template>
-  <div class="overlay-signin">
-    <v-col class="overlaybis-signin" justify="center" align="center">
+  <div class="overlay">
+    <v-col class="overlaybis" justify="center" align="center">
       <div>
         <SignUp v-show="showSignUp" @close-modal="showSignUp = false" />
       </div>
 
-      <v-card id="header-index"  >
-        <h2 class="h2-sign-in"><button class="btn-login"> connexion </button></h2>
+      <v-card
+        id="header-index"
+        class="logo py-4 d-flex justify-center align-center"
+      >
+        <h2 class="h2-sign-in">
+          <button class="btn-login" @click.stop="$emit('close-modale')">
+            connexion
+          </button>
+        </h2>
         <v-card-text class="sign-up-link">
-          <span class="span-instruction">Vous n'avez pas encore de compte ?</span>
-          <span class="span-sign-up" @click.stop="showSignUp = true">Créer un compte</span>
+          <span class="span-instruction"
+            >Vous n'avez pas encore de compte ?</span
+          >
+          <span class="span-sign-up" @click.stop="showSignUp = true">
+            Créer un compte
+          </span>
         </v-card-text>
       </v-card>
       <v-card id="body-index">
@@ -56,7 +67,7 @@
                 />
                 <v-spacer />
                 <div class="errormsg">{{ infomsg }}</div>
-                <div v-if="!successreg" class="successmsg">{{ successreg }}</div>
+                <div v-if="successreg" class="successmsg">{{ successreg }}</div>
                 <button
                   class="btn-valid"
                   @click="verifyUser"
@@ -123,21 +134,18 @@ export default {
           badge: this.badge,
         })
         .then((user) => {
+          //  console.log(Cookie);
+          //  this.$cookie.set('token',res.data.token);
           const userId = user.data.user;
+          // window.prompt("entrer la clé reçu par mail (n'importe lequel)");
           // => *TODO capcha ou systeme de mail comfirmation register <= \\
           this.successreg = "Connexion reussit, Bienvenue";
-      //     axios.get(`http://localhost:5000/jwtid`)
-      // .then((res) => { this.userjwtid = res.data
-      //     }).catch((error) => {
-      //     console.log(error);
-      //       })
-            window.location.reload()  
+
+          this.show = false;
           setTimeout(() => {
-    
-            this.$emit("close-modale-signin");
-            this.$emit('open-modale-loader')
-             
-          }, 1000);
+            this.$emit("close-modale", true);
+               window.location.reload()  
+          }, 1500);
           this.userid = userId;
         })
         .catch((error) => {
@@ -202,11 +210,10 @@ export default {
 </script>
 
 <style lang="scss">
-.overlay-signin {
+.overlay {
   display: flex;
   justify-content: center;
   align-items: center;
-  // flex-direction: column;
   width: 100%;
   top: 0px;
   bottom: 0;
@@ -214,18 +221,10 @@ export default {
   right: 0;
   position: fixed;
   visibility: visible;
-  opacity: 1.5;
-  background: linear-gradient(to left ,$primary,$secondary);
-  transition: opacity 0.5s;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: opacity 0.4s;
   z-index: 10;
-}
-
-
-div.overlaybis-signin {
-  height: 50%;
-  width: 50%;
-  padding-left: 10%;
-  padding-right: 10%;
 }
 
 #header-index {
@@ -244,7 +243,6 @@ div.overlaybis-signin {
 }
 
 h2.h2-sign-in {
-  margin-top: 5px;
   padding-bottom: 0.5%;
   padding-top: 0;
 }

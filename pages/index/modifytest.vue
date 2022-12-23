@@ -84,9 +84,9 @@ export default{
     },
     getcolor(){
       if(this.urlpic === '' || this.urlpic === undefined  ){
-   this.avatarpicempty = this.lastname.split('')[0].toLocaleUpperCase()
+   this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
     // let randomColor = Math.floor(Math.random()*16777215).toString(16)
-    document.getElementById('avatar-empty-modify').style.backgroundColor = '#' 
+    // document.getElementById('avatar-empty-modify').style.backgroundColor = '#' 
   //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
       }
 },
@@ -381,7 +381,7 @@ if(localStorage.getItem('categories')) {
   left: 0;
   right: 0;
   position: fixed;
-  visibility: visible;
+  // visibility: visible;
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.7);
   transition: opacity 0.4s;

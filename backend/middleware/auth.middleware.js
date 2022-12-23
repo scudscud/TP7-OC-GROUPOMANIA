@@ -12,9 +12,8 @@ exports.requireAuth = (req,res,next)=>{
    if (token){
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken)=>{
         if(err){
-        
-            console.log('no token');
-            // res.status(401).send('token not found');
+            // console.log('no token');
+            res.status(401).send('token not found');
         }else{
             req.user = decodedToken.id;
             // console.log("mid"+req.user);
@@ -23,11 +22,11 @@ exports.requireAuth = (req,res,next)=>{
         }
     })
    }else{
-    req.user = "erreur"
+    req.user = ''
     console.log('access denied invalid token ');
-    // res.json('erreur')
+    // res.status(401).json('erreur')
+    next()
    }
-   next()
 };
 
 
