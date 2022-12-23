@@ -817,10 +817,11 @@ button#btn-confirm-pic-profil-post {
 }
 
 .fullname {
-  padding-top: 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-left: 1%;
   font-size: 1.8rem;
-  padding-top: 4%;
 }
 
 .firstname {

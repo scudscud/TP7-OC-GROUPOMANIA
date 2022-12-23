@@ -433,10 +433,13 @@ div.v-card__text.card-profiluser {
 }
 
 .fullname-profilusermain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   // padding-top: 1%;
   padding-left: 1%;
   font-size: 1.8rem;
-  padding-top: 6%;
+  // padding-top: 6%;
 }
 
 span.fullname-usermain {
