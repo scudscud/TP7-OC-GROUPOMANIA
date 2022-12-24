@@ -26,9 +26,9 @@
               </label>
                           
           <div class="preview-pic-size" @change="postValid()" > 
-            <img id="pic-size" v-if="url == ''" :src="oldpic" @change="postValid()" alt="photo de publication" >
-            <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" alt="photo de publication"  >
-             <div  id="pic-size"  v-if="url == '' && oldpic == ''" @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </div>
+            <img id="pic-size" v-if="url == '' && oldpic !== ''" :src="oldpic" @change="postValid()" alt="photo de publication"  >
+            <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" alt="photo de publication"   >
+             <div  id="pic-size"  v-if="url == '' && oldpic == ''" @change="postValid()"> c'est vide .... vous n'avez aucune photo à partager ?  😪 </div>
           </div>
          
           </div>

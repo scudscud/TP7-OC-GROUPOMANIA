@@ -4,20 +4,20 @@
       <h1 class="card-profil-title-h1">Profil Admin</h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined" class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
-          <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
+          <!-- <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
           <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
+            placeholder="votre photo/avatar" @change="picPreview" /> -->
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
     <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
       <div class="block-picture">
-        <label class="lab-pic" for="avatar">
+        <!-- <label class="lab-pic" for="avatar">
           <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
 
           <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
@@ -26,20 +26,20 @@
           </button>
           <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
             placeholder="votre photo/avatar" @change="picPreview" />
-        </label>
+        </label> -->
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
     <v-card-text v-else class="card-profil-name">
-      <div class="block-picture-url">
-        <label class="lab-pic-del" for="avatar">
+      <!-- <div class="block-picture-url"> -->
+        <!-- <label class="lab-pic-del" for="avatar">
           <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
           <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
             placeholder="votre photo/avatar" @change="picPreview" />
-        </label>
-        <div class="block-btn-pic-profil">
+        </label> -->
+        <!-- <div class="block-btn-pic-profil">
           <button id="btn-del-pic-profil" @click="delPicPreview">
             Annuler
           </button>
@@ -48,8 +48,8 @@
             Valider
           </button>
           <button v-else id="btn-confirm-pic-profil-post">Valider</button>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
       <span class="fullname-url">{{ fullname }}</span>
     </v-card-text>
 
@@ -148,12 +148,12 @@
         <div class="btn-profil-post-del" v-for="(p, index) in pub">
 
           <p class="card-profil-post-p"> publication&nbsp:&nbsp{{p.date}}</p>
-          <div class="like-profilmain-user"><v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span>{{p.likers.length}}</span></div>
+          <div v-if="p.likers.length > 0" class="like-profilmain-user"><v-icon class="img-like-profilmain">mdi-thumb-up-outline</v-icon><span id="span-img-like-profilmain">{{p.likers.length}}</span></div>
           <!-- <span class="like-profil-user">&nbspLIKE&nbsp:&nbsp {{p.likers.length}}</span> -->
           <div class="btn-post-profil-admin">
             <button class="btn-post-modify-profil" type="submit"
               @click=" showmodify = !showmodify,postIdDel(p._id)">Modifier </button>
-            <button class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)">supprimer</button>
+            <button class="btn-post-delete-profil" @click="showdel =!showdel,postIdDel(p._id)">Supprimer</button>
           </div>
           <div v-if='p.picture !="" ' class="image-card-profil"><img class="card-img-profil" :src="p.picture"
               alt="photo" /></div>
@@ -308,10 +308,11 @@ export default {
       this.photo = pic;
       this.url = URL.createObjectURL(pic);
       this.validPost = !this.validPost;
+      window.location.reload();
     },
 
     getcolor() {
-      if (this.urlpic === "" ) {
+      if (this.urlpic === "" || this.url === ""  || this.urlpic=== undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
         // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
         // document.getElementById("avatar-empty-profil").style.backgroundColor =
@@ -675,11 +676,11 @@ button#btn-del-pic-profil {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius:15px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -743,11 +744,11 @@ button#btn-confirm-pic-profil {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius:10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -760,11 +761,11 @@ button#btn-confirm-pic-profil-post {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: green;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: green;
   }
@@ -874,7 +875,7 @@ p.card-profil-biographie-p {
 
 #btn-bio-delete {
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   margin-right: auto;
   margin-top: 1%;
   padding-left: 5px;
@@ -892,7 +893,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -907,7 +908,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   background-color:  #ccc;
@@ -921,7 +922,7 @@ p.card-profil-biographie-p {
   //   margin-left: 80%;
   // flex-grow: 80%;
   // flex-shrink: 100%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -935,7 +936,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -953,7 +954,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -974,7 +975,7 @@ p.card-profil-biographie-p {
   // margin-top: 1%;
   // margin-right: 1%;
   // margin-left: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -991,7 +992,7 @@ p.card-profil-biographie-p {
 .btn-followback-profil-user {
 width: 100px;
 border: solid 2px rgb(16, 148, 13);
-border-radius: 30%;
+border-radius: 10px;
 padding-left: 5px;
 padding-right: 5px;
 &:hover {
@@ -1098,6 +1099,10 @@ margin-top: 1%;
 
 }
 
+#span-img-like-profilmain{
+  margin-left: 2px;
+}
+
 .btn-post-delete-profil {
   width: 100px;
   border: solid 2px $secondary;
@@ -1105,7 +1110,7 @@ margin-top: 1%;
   // margin-right: 1%;
   // margin-left: 1%;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1126,7 +1131,7 @@ margin-top: 1%;
   // margin-right: 1%;
   // margin-left: 1%;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1152,7 +1157,7 @@ margin-top: 1%;
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
-  border-radius: 2%;
+  border-radius: 2px;
 }
 
 .align-pub-user {
@@ -1181,7 +1186,7 @@ text-align: center;
 max-width: 450px;
 width: 100%;
 border-top: solid 2px white;
-border-radius: 5%;
+border-radius: 5px;
 
 }
 
@@ -1193,7 +1198,7 @@ border-radius: 5%;
   flex-direction: column;
   margin-bottom: 1%;
   border: solid 2px;
-  border-radius: 2%;
+  border-radius: 2px;
   justify-content: center;
   align-items: center;
 }

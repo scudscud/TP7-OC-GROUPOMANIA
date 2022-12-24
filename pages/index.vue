@@ -5,14 +5,14 @@
     <div id="Book" :key="componentKey">
 
       <div id="fix-top">
-        <div id="fix-top-bis" @click="showpost = !showpost">
-          <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' alt="phtot de l'utilisateur"  />
+        <div id="fix-top-bis" @click="showpost = !showpost" title="creer votre publication">
+          <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' alt="photo de l'utilisateur"  />
           <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
           <button class="new-top">
             <p class="new-top-span"> Envie de partager, {{firstname}} ? </p>
           </button>
         </div>
-        <button class="post-option" @focusin="showsort = !showsort">
+        <button class="post-option" @focusin="showsort = !showsort" title="trier les publications">
           <v-icon class="post-option-dot">mdi-dots-horizontal </v-icon>
         </button>
       </div>
@@ -29,20 +29,20 @@
           <div class="border-card"  >
             <div id="card-autor-book" v-if="post.posterId === userid " >
               <!-- <nuxt-link :to="{name: 'profilUsermain', params: { id : post.posterId} }" class="name-date-book"  > -->
-              <div class="name-date-book"  >
-                <nuxt-link class="link" :to="{name:'profiluser'}">
+              <div class="name-date-book" >
+                <nuxt-link class="link" :to="{name:'profiluser'}" title="lien vers le profil de l'utilisateur" >
                 <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user"
-                  :src='post.posterpicture' alt="photo de l'utilisateur"  /> 
-                <div v-else id="avatar-empty-book" >{{avatarpicempty}}</div></nuxt-link>
+                  :src='post.posterpicture' alt="photo de l'utilisateur" title="lien vers le profil de l'utilisateur"  /> 
+                <div v-else id="avatar-empty-book" title="lien vers le profil de l'utilisateur"  >{{avatarpicempty}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
               <!-- </nuxt-link> -->
               </div>
               <div class="btn-book-main">
-                <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">
+                <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)" title=" modifier votre publication " >
                   <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier
                 </button>
-                <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)">
+                <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)" title=" supprimer votre publication ">
                   <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
                 </button>
               </div>
@@ -50,19 +50,19 @@
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book" >
-                <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-admin"
-                  :src='post.posterpicture' alt="phtot de l'utilisateur" />
-                <div v-else id="avatar-empty-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link>
+                <nuxt-link class="link" :to="{name:'profilUserAdmin-id', params : {id: `?id=${post.posterId}`}}" title="lien vers le profil de l'utilisateur" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-admin"
+                  :src='post.posterpicture' alt="phtot de l'utilisateur" title="lien vers le profil de l'utilisateur"  />
+                <div v-else id="avatar-empty-book" title="lien vers le profil de l'utilisateur" >{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link>
                 <span id="fullname-main">{{post.posterfullname}} à {{post.date}}</span>
                 <!-- <p class="full-date">{{post.date}}</p> -->
               </div>
               <div class="btn-book-main">
                 <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
-                <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)">
+                <button id="btn-post-modify" type="submit" @click=" showmodify = !showmodify,postIdDel(post._id)" title="modifier votre publication">
                   <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> Modifier
                 </button>
                 <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
-                <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)">
+                <button id="btn-post-delete" @click="showdel =!showdel,postIdDel(post._id)" title="supprimer votre publication">
                   <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
                 </button>
               </div>
@@ -70,23 +70,23 @@
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none" >
                <nuxt-link class="link" :to="{name:'profilUsermain-id', params : {id: `?id=${post.posterId}`}}" ><img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined'" class="picture-user-none"
-                  :src='post.posterpicture' alt="phtot de l'utilisateur"  />
-                <div v-else id="avatar-empty-book-book">{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
+                  :src='post.posterpicture' alt="phtot de l'utilisateur" title="lien vers le profil de l'utilisateur"  />
+                <div v-else id="avatar-empty-book-book" title="lien vers le profil de l'utilisateur" >{{post.posterlastname.split('')[0].toLocaleUpperCase()}}</div></nuxt-link> 
                 <p class="fullname-none">{{post.posterfullname}} à {{post.date}}</p>
               </div>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
-                @click="addUnFollow(post.posterId,index)" type="submit" class="btn-main-follow">
+                @click="addUnFollow(post.posterId,index)" type="submit" class="btn-main-follow" title="se désabonner">
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">abonné</p>
               </button>
-              <button v-else @click="addFollow(post.posterId,index)" type="submit" class="btn-main-unfollow">
+              <button v-else @click="addFollow(post.posterId,index)" type="submit" class="btn-main-unfollow" title="s'abonner">
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">S'abonner</p>
               </button>
              
             </div>
             <!-- <div id="card-autor-book-none" v-else>
-        <div class="user-book-main-none">
+            <div class="user-book-main-none">
               <img v-if="post.posterpicture !==''" class="picture-user-none" :src='post.posterpicture' />
               <div v-else id="avatar-empty-book-book">{{avatarpicemptyNone}}</div><span class="fullname-none">{{post.posterfullname}} à {{post.date}}</span>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) " :class="userFollowingId.includes(post.posterId) ? 'btn-att-unfollow' : 'btn-att-follow'"  @click="clickFollow(post.posterId,index)" type="submit" class="classfollowbtn"><v-icon class="img-att"> mdi-account-group </v-icon><p class="text-att">Follow</p></button >
@@ -97,7 +97,7 @@
             <div v-if="post.message != ''" class="message-main"> {{post.message}}</div>
             <div v-if="role !== undefined" class="btn-card" id="card-att">
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
-                @click="clickLike(post._id,index)" class="classlikebtn">
+                @click="clickLike(post._id,index)" class="classlikebtn" title="liker la publication">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                 <p class="text-att">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
@@ -108,19 +108,19 @@
                 <p class="text-att">Commenter</p>
               </button>
               <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) "
-                @click="addUnFollow(post.posterId,index)" type="submit" class="btn-att-follow">
+                @click="addUnFollow(post.posterId,index)" type="submit" class="btn-att-follow"  title="se désabonner">
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">abonné</p>
               </button>
               <button v-else-if="post.posterId != userid && !userFollowingId.includes(post.posterId) "
-                @click="addFollow(post.posterId,index)" type="submit" class="btn-att-unfollow">
+                @click="addFollow(post.posterId,index)" type="submit" class="btn-att-unfollow"  title="s'abonner">
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">S'abonné</p>
               </button>
             </div>
             <div v-else class="btn-card" id="card-att">
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
-                @click="clickLike(post._id,index)" class="classlikebtn">
+                @click="clickLike(post._id,index)" class="classlikebtn" title="liker la publication">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                 <p class="text-att">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>

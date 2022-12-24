@@ -25,16 +25,14 @@
       <!-- <v-btn id="temp-menu" alt="menu" @click.stop="drawer = !drawer">
         <v-icon>mdi-menu</v-icon>
       </v-btn> -->
-
-      <router-link id="btn-post-router" to="/">
-        <!-- <v-btn  id="btn-post-nav" alt="menu"> -->
+     
+      <router-link id="btn-post-router" to="/" title="page des publications">
+     
         <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
-        <!-- </v-btn> -->
-        <!-- <v-btn v-else @click="url" active id="btn-post-nav-select" alt="menu">
-          <v-icon>mdi-newspaper-variant-multiple-outline</v-icon>
-        </v-btn> -->
+ 
       </router-link>
-      <router-link class="btn-post-router-plus" to="/postpage">
+ 
+      <router-link class="btn-post-router-plus" to="/postpage" title="page du chat">
         <!-- <v-btn id="btn-post-nav" alt="menu"> -->
         <v-icon>mdi-chat </v-icon>
         <!-- </v-btn> -->
@@ -62,12 +60,12 @@
       </v-btn> -->
 
       <v-spacer />
-      <router-link id="router-main" to="/">
+      <router-link id="router-main" to="/" title="page des publications">
         <img class="logo-white" src="../logo/logo.png" to="/" />
         <v-toolbar-title v-text="title" id="temp-title" alt="logo" />
       </router-link>
       <v-spacer />
-      <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user">
+      <v-btn @click.stop="rightDrawer = !rightDrawer" id="temp-user" title="Votre profil">
         <img
           v-if="urlpic !== '' && urlpic !== undefined"
           class="avatar"
@@ -354,7 +352,7 @@ a#btn-post-router {
   margin-left: 1%;
   background-color: $tertiary;
   width: 50px;
-  height: 35px;
+  height: 45px;
   border: solid $secondary;
   color: $secondary;
   border-radius: 30%;
@@ -404,7 +402,7 @@ a.btn-post-router-plus {
   text-decoration: none;
   margin-left: 1%;
   background-color: $tertiary;
-  height: 35px;
+  height: 45px;
   width: 50px;
   border: solid $secondary;
   color: $secondary;
@@ -525,11 +523,20 @@ a.btn-post-router-plus {
   #temp-title {
     display: none;
   }
+  a#router-main {
+  display: flex;
+   width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 }
 
 #router-main {
   display: flex;
-  width: 100%;
+  width: 300px;
   align-items: center;
   justify-content: center;
   text-decoration: none;

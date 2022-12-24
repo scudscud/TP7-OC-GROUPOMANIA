@@ -4,7 +4,7 @@
       <h1 class="card-profil-title-h1">Son profil </h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == ''" class="card-profiluser">
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  " class="card-profiluser">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profiluser">{{ avatarpicempty }}</div>
@@ -238,7 +238,7 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === "") {
+      if (this.urlpic === "" || this.url === ""  || this.urlpic===undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
       }
     },
@@ -521,11 +521,11 @@ button#btn-confirm-pic-profil {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius:10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -538,11 +538,11 @@ button#btn-confirm-pic-profil-post {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: green;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: green;
   }
@@ -578,7 +578,7 @@ p.card-profilusermain-biographie-p {
   // margin-top: 1%;
   // margin-right: 1%;
   // margin-left: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -594,7 +594,7 @@ p.card-profilusermain-biographie-p {
 .btn-followback-profil-user {
   width: 100px;
   border: solid 2px rgb(16, 148, 13);
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
   &:hover {
@@ -695,7 +695,7 @@ p.card-profiluser-friend-new {
   // margin-right: 1%;
   // margin-left: 1%;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -713,7 +713,7 @@ p.card-profiluser-friend-new {
   width: 100px;
   border: solid 2px $secondary;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -745,7 +745,7 @@ p.card-profiluser-friend-new {
   max-width: 500px;
   min-width: 300px;
   border: solid 2px $secondary;
-  border-radius: 2%;
+  border-radius: 2px;
 }
 
 .align-pub-user {
@@ -773,7 +773,7 @@ p.card-profiluser-friend-new {
   max-width: 500px;
   width: 100%;
   border-top: solid 2px;
-  border-radius: 2%;
+  border-radius: 2px;
 }
 
 button.class-btn-like-userprofil {
@@ -781,7 +781,7 @@ button.class-btn-like-userprofil {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -814,7 +814,7 @@ button.class-btn-unlike-userprofil {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -849,7 +849,7 @@ div.profilusermain-post {
   margin-bottom: 2%;
   // padding-bottom: 1%;
   border: solid 2px;
-  border-radius: 2%;
+  border-radius: 2px;
   justify-content: center;
   align-items: center;
 

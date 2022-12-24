@@ -3,7 +3,7 @@
     <v-card-text class="card-profil-title">
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
-    <v-card-text v-if="url == '' && urlpic == ''" class="card-profil-name">
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  "  class="card-profil-name">
       <div class="block-picture">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
@@ -361,7 +361,7 @@ export default {
     },
 
     getcolor() {
-      if (this.urlpic === "" || this.urlpic === undefined) {
+      if (this.urlpic === "" || this.urlpic === undefined ) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
       }
     },
@@ -518,6 +518,7 @@ export default {
         this.bioUser = docs.data.bio
         this.follower = docs.data.followers;
         this.following = docs.data.following;
+        console.log("la"+this.urlpic);
       })
       .catch((error) => {
         console.log(error);
@@ -703,11 +704,11 @@ button#btn-del-pic-profil {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -771,11 +772,11 @@ button#btn-confirm-pic-profil {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -788,11 +789,11 @@ button#btn-confirm-pic-profil-post {
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   color: green;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 15px;
     background-color: $secondary;
     color: green;
   }
@@ -902,7 +903,7 @@ p.card-profil-biographie-p {
 
 #btn-bio-delete {
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 10px;
   margin-right: auto;
   margin-top: 1%;
   padding-left: 5px;
@@ -920,7 +921,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -935,7 +936,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
   background-color:  #ccc;
@@ -949,7 +950,7 @@ p.card-profil-biographie-p {
   //   margin-left: 80%;
   // flex-grow: 80%;
   // flex-shrink: 100%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -963,7 +964,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -981,7 +982,7 @@ p.card-profil-biographie-p {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1001,7 +1002,7 @@ p.card-profil-biographie-p {
   // margin-top: 1%;
   // margin-right: 1%;
   // margin-left: 1%;
-  border-radius: 30%;
+  border-radius:10px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1018,7 +1019,7 @@ p.card-profil-biographie-p {
 .btn-followback-profil-user {
   width: 100px;
   border: solid 2px rgb(16, 148, 13);
-  border-radius: 30%;
+  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
   &:hover {
@@ -1129,7 +1130,7 @@ p.card-profil-friend-abo {
   // margin-right: 1%;
   // margin-left: 1%;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1150,7 +1151,7 @@ p.card-profil-friend-abo {
   // margin-right: 1%;
   // margin-left: 1%;
   margin-bottom: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -1176,7 +1177,7 @@ p.card-profil-friend-abo {
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
-  border-radius: 2%;
+  border-radius:2px;
 }
 
 .align-pub-user {
@@ -1194,7 +1195,7 @@ p.card-profil-friend-abo {
   margin-top: 1%;
   padding: 1% 1%;
   border-top: solid 2px $secondary;
-  border-radius: 2%;
+  border-radius: 2px;
   justify-content: center;
   align-items: center;
 }
@@ -1206,7 +1207,7 @@ p.card-profil-friend-abo {
   max-width: 450px;
   width: 100%;
   border-top: solid 2px white;
-  border-radius: 5%;
+  border-radius: 5px;
 
 }
 
@@ -1218,7 +1219,7 @@ p.card-profil-friend-abo {
   flex-direction: column;
   margin-bottom: 2%;
   border: solid 2px;
-  border-radius: 2%;
+  border-radius: 3px;
   justify-content: center;
   align-items: center;
   &:hover {

@@ -32,6 +32,7 @@ methods:{
     axios.get('http://localhost:5000/api/user/logout')
           this.deleteconfirm = false
           setTimeout(() => {
+          localStorage.removeItem('sort')
           window.location.href = "./";        
             }, 2500); 
   },
