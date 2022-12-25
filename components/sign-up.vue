@@ -1,9 +1,9 @@
 <template>
-  <div id="test" class="overlay">
+  <div  class="overlay-signup">
     <div>
       <TermOfUse v-show="termofuse" @close-modal-use="termofuse = false" />
     </div>
-    <v-col class="main d-flex justify-center align-center overlaybis">
+    <v-col class="main d-flex justify-center align-center overlaybis-signup">
       <v-col class="form-sign">
         <v-card id="logo-form" class="logo py-4 d-flex justify-center"
           ><h1><span id="form-span1">Vous inscrire </span></h1></v-card
@@ -84,7 +84,7 @@
                 <v-spacer />
                 <label for="pass">
                   <h2 class="titleh2">
-                    Mot de passe Groupomania-socialnetwork
+                    Mot de passe Groupomania
                   </h2>
                 </label>
 
@@ -192,7 +192,7 @@ export default {
   data() {
     return {
       rules: [
-        { message: "le mot de passe doit contenir : 1 chiffre,",regex: /[0-9]+/,},
+        { message: " 1 chiffre,",regex: /[0-9]+/,},
         { message: "1 miniscule,", regex: /[a-z]+/ },
         { message: "1 majuscule,", regex: /[A-Z]+/ },
         { message: "1 caractere speciale", regex: /[!@#$%^&]+/ },
@@ -323,7 +323,7 @@ export default {
 </script>
 
 <style lang="scss">
-.overlay {
+.overlay-signup {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -358,8 +358,9 @@ export default {
   padding-right: 3px;
 }
 
-div.overlaybis {
+div.overlaybis-signup {
   // height: 100%;
+  height: auto;
   // width: 50%;
   padding-left: 10%;
   padding-right: 10%;
@@ -500,7 +501,7 @@ div.logo {
   text-decoration: none;
   color: white;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
 }
 
 #link-sign:hover {

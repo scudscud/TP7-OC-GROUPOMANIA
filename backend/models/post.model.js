@@ -36,8 +36,18 @@ const PostSchema = new mongoose.Schema(
         video: {
             type:String,
         },
-        signal:{
-            type : Boolean
+        signalBy :{
+            type:[String],
+        },
+        signalpost:{
+            type : [{
+                signalByFullname : String,
+                signalById : String,
+                signalUserFullname: String,
+                signalUserId: String,
+                signalPostId : String,
+                date: String,
+            }]
         },
         posterfollower:{
            type : [String]
@@ -46,9 +56,6 @@ const PostSchema = new mongoose.Schema(
             type : [String]
         },
 
-        signalBy:{
-            type: [String]
-        },
         likers: {
             type: [String],
             required: true,

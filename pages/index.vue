@@ -131,7 +131,7 @@
                 <p class="text-att">Commenter</p>
               </button>
               <!-- <button id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag</v-icon><p class="text-att">Signaler</p></button> -->
-              <button v-if="post.posterId !== userid " id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att">Signaler</p></button>
+              <button v-if="post.posterId !== userid " id="btn-att-flag" @click="showReport = !showReport,reportInfo(post._id,post.posterfullname,post.posterId,fullname,userid)"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att">Signaler</p></button>
             </div>
           </div>
         </v-card>
@@ -169,7 +169,7 @@
   </transition>
     </div>
     <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
-    <report v-if="showReport" v-show="showReport" :idpsot="post._id" :iduserReport="post.posterId" :iduserOrigin="this.userid"  @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
+    <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId" :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname" @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-following="showsort = false,getPostFollowing()"
       @close-modale-sort-follower="showsort = false,getPostFollower()"
@@ -306,6 +306,12 @@ export default {
   events: {
   },
   methods: {
+ reportInfo(postid,usfn,usid,uffn,ufid){
+  const info = {post : postid,userSfull :usfn,userSid :usid, userFfull:uffn,userFid  : ufid}
+  console.log(postid,usfn,usid,ufid,uffn);
+  localStorage.setItem('info',JSON.stringify(info))
+ },
+
     handleScroll: function () {
         if (this.scTimer) return;
         this.scTimer = setTimeout(() => {

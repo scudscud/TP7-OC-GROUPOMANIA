@@ -1,6 +1,7 @@
 // const postModel = require("../models/post.model");
 const PostModel = require("../models/post.model");
 const UserModel = require("../models/user.model");
+const SignalModel = require('../models/signal.model')
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require('fs');
 let path = require('path');
@@ -225,12 +226,51 @@ exports.getPostFollower= (req, res) => {
 };
 
 exports.getPostSignal= (req, res) => {
+  console.log(req);
+ 
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  PostModel.find({posterId : req.params.id}) 
-   .then((post)=>{
-    console.log(req.params)
-    res.status(200).json(post);
+    return res.status(400).send("publication inconnu:" + req.params.id);
+  PostModel.findById(req.params.id) 
+   .then((doc)=>{
+    const postSignal = doc
+    const date = new Date(Date.now())
+    const days = date.toLocaleDateString()
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const finalDate = `signalé le ${days} à ${hours}h${minutes}`
+    const signal ={
+    signalByFullname : req.body.userFromFullname,
+    signalById : req.body.userFromId,
+    sinalUserFullname: req.body.userSignalFullname,
+    signalUserId:req.body.userSignalId,
+    signalPostId : req.body.postSignal,
+    date: finalDate,
+  }
+  PostModel.findByIdAndUpdate(req.params.id,
+  { $push : {
+    signalpost : signal,
+  }, $addToSet :{ 
+    signalBy : req.body.userFromId
+  }
+  },{new:true},
+  (err,doc)=> {
+    if(err) res.status(401).json(err)
+  })
+  const newSignal = new SignalModel({
+    signalByFullname : req.body.userFromFullname,
+    signalById : req.body.userFromId,
+    signalUserFullname: req.body.userSignalFullname,
+    signalUserId:req.body.userSignalId,
+    signalPostId : req.body.postSignal,
+    date: finalDate,
+    post: postSignal,
+  });
+  try {
+    const signalRecord =  newSignal.save();  
+  }catch (err){
+    res.status(400).send(err)
+  }
+    res.status(200).json(doc);
    }).catch((err)=>{
     res.status(401).json(err);
    })

@@ -10,7 +10,7 @@
         class="logo py-4 d-flex justify-center align-center"
       >
         <h2 class="h2-sign-in">
-          <button class="btn-login" @click.stop="$emit('close-modale')">
+          <button class="btn-login">
             connexion
           </button>
         </h2>
@@ -227,6 +227,14 @@ export default {
   z-index: 10;
 }
 
+.overlaybis{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: auto;
+  
+}
+
 #header-index {
   display: flex;
   flex-direction: column;
@@ -275,7 +283,7 @@ h2.h2-sign-in {
 .btn-valid:disabled {
   padding-right: 1rem;
   padding-left: 1rem;
-  border-radius: 30%;
+  border-radius: 15px;
   margin-top: 20px;
   border: solid 2px $secondary;
   background: #ccc;
@@ -290,7 +298,7 @@ h2.h2-sign-in {
   height: 50px;
   padding-right: 1rem;
   padding-left: 1rem;
-  border-radius: 30%;
+  border-radius: 15px;
   margin-top: 20px;
   border: solid 2px $secondary;
   &:hover {
@@ -303,7 +311,7 @@ h2.h2-sign-in {
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   text-decoration: none;

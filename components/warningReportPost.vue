@@ -42,7 +42,7 @@
         </p>
         <v-btn
           v-if="!reportconfirm"
-          @click=";(reportconfirm = !reportconfirm), close()"
+          @click="(reportconfirm = !reportconfirm),  reportPost()"
           id="btn-report-comfirm"
         >
           <span>Signaler</span>
@@ -56,24 +56,47 @@
 </template>
 
 <script>
-// import axios from "axios";
-
-// import { KeyObject } from "crypto";
+import axios from "axios";
 
 export default {
   // name: 'Delete',
+  async mounted(){
+    const getInfo = localStorage.getItem('info')
+    const info = JSON.parse(localStorage.getItem('info'))
+    this.userFromFullname = info.userFfull
+    this.userFromId = info.userFid
+    this.userSignalId = info.userSid
+    this.userSignalFullname = info.userSfull
+    this.postSignal = info.post
+
+   localStorage.removeItem('info')
+  },
 
   data() {
     return {
       reportconfirm: false,
-      // deleteconfirm: false ,
-      // userid:'',
-      // userjwtid:'',
-      // postId:'',
+      userFromFullname: '',
+      userFromId : '',
+      userSignalId : '',
+      userSignalFullname:'',
+      postSignal:'',
     }
   },
   methods: {
-    close() {
+    reportPost() {
+      const sendInfo = {
+    userFromFullname: this.userFromFullname,
+    userFromId: this.userFromId,
+    userSignalId :this.userSignalId,
+    userSignalFullname: this.userSignalFullname,
+    postSignal :this.postSignal
+      }
+      
+      axios.patch(`http://localhost:5000/api/post/postsignal/${this.postSignal}`,sendInfo)
+      .then((doc)=>{
+          console.log(doc);
+
+      })
       setTimeout(() => {
         this.$emit('close-modale-report-comfirm')
       }, 1500)

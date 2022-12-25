@@ -70,9 +70,13 @@
 }
 
 .instruction-term {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 100px;
-  width: 60%;
-  height: 65%;
+  width: auto;
+  height: auto;
   border: solid 2px;
   border-radius: 5%;
   padding: 2%;

@@ -1,0 +1,1 @@
+const SignalModel = require('../models/signal.model')
