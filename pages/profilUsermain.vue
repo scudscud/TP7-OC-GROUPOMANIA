@@ -551,7 +551,7 @@ button#btn-confirm-pic-profil-post {
 .form-avatar-profil-url {
   padding-top: 2%;
   display: none;
-  visibility: none;
+  // visibility: none;
 
   &:hover {
     cursor: pointer;
@@ -855,8 +855,8 @@ div.profilusermain-post {
 
   &:hover {
     // border-color:green;
-
-    transform: scale(1.03);
+ 
+    transform :scale(1.03);
     transition: ease 0.5s;
   }
 }

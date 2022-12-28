@@ -20,7 +20,7 @@
       <div class="empty-sort" v-if="emptyfollower"> 😭 vous ne suivez personne de chez personne 😭 abonné à vous à quelqu'un </div>
       <div class="empty-sort" v-if="emptylike"> 😭 vous n'avais aimer aucune publication 😭 liker une publication </div>
       <div class="empty-sort" v-if="emptyownpost"> 😭 Vous n'avez rien publier 😭 Vous êtes trop timide lancer vous !! </div>
-      <div class="empty-sort" v-if="emptyfollowing"> 😭 Essayer de vous faire des Amis 😭 likers des publications </div>
+      <div class="empty-sort" v-if="emptyfollowing"> 😭 Soit vos abonné(e)(s) son timide 😭 soit vous êtes timide </div>
 
      
       <div class="center-main" v-if="this.posts[0] != undefined">
@@ -99,7 +99,7 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn" title="liker la publication">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att">Like</p>
+                <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
@@ -122,18 +122,51 @@
               <button :class="userLikePostId.includes(post._id) ? 'class-btn-att-like' : 'class-btn-att-unlike'"
                 @click="clickLike(post._id,index)" class="classlikebtn" title="liker la publication">
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
-                <p class="text-att">Like</p>
+                <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length>0" class="buble-like"><span id="number-like">{{post.likers.length}}</span>
                 </div>
               </button>
               <button id="btn-att">
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att">Commenter</p>
+                <p class="text-att-comment" @click="PostCommentOpen(post._id,index)" >Commenter</p>
               </button>
               <!-- <button id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag</v-icon><p class="text-att">Signaler</p></button> -->
-              <button v-if="post.posterId !== userid " id="btn-att-flag" @click="showReport = !showReport,reportInfo(post._id,post.posterfullname,post.posterId,fullname,userid)"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att">Signaler</p></button>
+              <button v-if="post.posterId !== userid " :class="post.signalBy.includes(userid) ? 'reportPost':'notReportPost'" class="btn-att-flag" @click="showReport = !showReport,reportInfo(post._id,post.posterfullname,post.posterId,fullname,userid)" title="signaler la publication"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att-report">Signaler</p>
+                <div v-if="post.signalBy.length>0" class="buble-report"><span id="number-report">{{post.signalBy.length}}</span>
+              </div>
+              </button>
             </div>
           </div>
+          <div class="deploy-comment-button" v-if="post.comments.length > 2 " @click="seecomment = !seecomment"><span>Voir les commentaires</span></div>
+          <div class="deploy-comment" :index="index" :postid="post._id">
+          <v-card-text  class="deploy-commentUser-card"  v-show="writecomment" @change="controleComment()"   >
+      <form class="deploy-commentUser-form" method="post" @submit.prevent @canplaythrough=""  >
+        <label for="comment"  >
+          <h2>Commentaire:</h2>
+        </label>
+        <textarea @change="controleComment()" v-model="newComment" name="biographie" class="card-profil-textarea" type="textarea"
+          placeholder="votre commentaire" maxlength="200" ></textarea>
+
+        <div class="btn-comment"  >
+          <button id="btn-comment-send" type="submit" @click="">Envoyer</button>
+          <button id="btn-comment-delete" @click="">Annuler</button>
+          <button id="btn-comment-close" @click="PostCommentClose(index)"> Fermer</button>
+        </div>
+      </form>
+    </v-card-text>
+  </div>
+            <v-card class="card-comment" >
+              <v-card-text class="card-comment-posted" >
+                <div class="title-card-comment-posted">
+              <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user-comment"
+                  :src='post.posterpicture' alt="photo de l'utilisateur" title="lien vers le profil de l'utilisateur"  /> 
+                <div v-else id="avatar-empty-card-comment" title="lien vers le profil de l'utilisateur"  >{{post.posterlastname.split('')[0].toLocaleUpperCase()}} </div>
+                <span id="fullname-comment">{{post.posterfullname}} à {{post.date}}</span>
+              </div>
+              </v-card-text>
+            </v-card>
+         
+          
         </v-card>
   
       </div>
@@ -169,7 +202,7 @@
   </transition>
     </div>
     <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
-    <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId" :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname" @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false" />
+    <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId" :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname" @close-modale-report="showReport = false" @close-modale-report-comfirm="showReport = false,getRefresh()" />
     <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
       @close-modale-sort-following="showsort = false,getPostFollowing()"
       @close-modale-sort-follower="showsort = false,getPostFollower()"
@@ -181,6 +214,7 @@
     <modify v-if="showmodify"  v-show="showmodify"
       @close-modale-modify=" showmodify=false,getRefresh()" />
     <Postcreate v-show="showpost" @close-modale-post="showpost = false,getRefresh()" />
+    <WarningRecordComment v-if="warningRecordComment" v-show="warningRecordComment" @close-modale-record-comment-confirm="warningRecordComment=!warningRecordComment"/>
   </div>
 
 </template>
@@ -194,6 +228,7 @@ export default {
 
   components: {
     Load,
+    WarningRecordComment:()=> import(/* webpackChunkName:"report"*/"../components/warningrecordcomment.vue"),
     report:() => import(/* webpackChunkName:"report"*/"../components/warningReportPost.vue"),
     sortPost: () => import("../components/sortpostby.vue"),
     Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
@@ -226,6 +261,7 @@ export default {
       posterId: '',
       posterfirstname: '',
       posterlastname: '',
+      signalPost:'',
       urlpic: '',
       image: '',
       message: '',
@@ -246,6 +282,13 @@ export default {
       sortPosts : '',
       showReport : false,
       Followers : false,
+      seecomment : false,
+      writecomment:false,
+      commentValid:false,
+      newComment:'',
+      warningRecordComment:false,
+      open : '',
+      index: '',
       showloader :true,
       scTimer: 0,
       scY: 0,
@@ -306,6 +349,34 @@ export default {
   events: {
   },
   methods: {
+    PostCommentOpen (postid,index){
+      const open = document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "v-show='writecomment'"
+  },
+
+  PostCommentClose (index){
+    const close2 = document.querySelectorAll('.deploy-commentUser-card')[index].textContent = ""
+    const close = document.querySelectorAll('#btn-comment-close')[index]
+    console.log(close2);
+    console.log(close);
+  },
+
+  controleComment(){
+      let testRegex = this.commentUser.split(' ').join('')
+      if(testRegex !='' ){
+          this.commentValid = true
+          return true
+        }
+        else{
+        this.commentValid= false
+        return false
+        }
+    },
+
+
+
+
+
+
  reportInfo(postid,usfn,usid,uffn,ufid){
   const info = {post : postid,userSfull :usfn,userSid :usid, userFfull:uffn,userFid  : ufid}
   console.log(postid,usfn,usid,ufid,uffn);
@@ -336,8 +407,6 @@ export default {
     },
 
   getPostFollower() {
-
-   
             axios.get(`http://localhost:5000/api/post/postfollowing/${this.userid}`)
                  .then((docs)=>{
                   console.log(docs);
@@ -348,9 +417,13 @@ export default {
             })
             localStorage.removeItem('sort')
             this.emptyfollowing = true
+            this.showloader = true
+            setTimeout(()=>{
+            this.showloader = false
+            },1000)
             setTimeout(() => {
               this.emptyfollowing = false
-            }, 5000);
+            }, 6000);
           }else{
           localStorage.setItem('sort', 'Follower');
             return this.posts
@@ -370,6 +443,10 @@ export default {
             })
             localStorage.removeItem('sort')
             this.emptyfollower = true
+            this.showloader = true
+            setTimeout(()=>{
+            this.showloader = false
+            },1000)
             setTimeout(() => {
               this.emptyfollower = false
             }, 5000);
@@ -392,6 +469,10 @@ export default {
             })
             localStorage.removeItem('sort')
             this.emptylike = true
+            this.showloader = true
+            setTimeout(()=>{
+            this.showloader = false
+            },1000)
             setTimeout(() => {
               this.emptylike = false
             }, 5000);
@@ -412,6 +493,10 @@ export default {
             })
             localStorage.removeItem('sort')
             this.emptyownpost = true
+            this.showloader = true
+            setTimeout(()=>{
+            this.showloader = false
+            },1000)
             setTimeout(() => {
               this.emptyownpost = false
             }, 5000);
@@ -543,6 +628,8 @@ export default {
         .catch((err) => { err.message })
     },
   },
+
+
 
 
   async mounted() {
@@ -825,6 +912,142 @@ div.v-main__wrap {
 
   }
 }
+
+
+
+.card-comment{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1%;
+}
+
+.deploy-comment{
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+}
+
+.deploy-commentUser-card{
+  display: flex;
+  width: 100%;
+}
+
+.deploy-commentUser-form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.btn-comment {
+  display: flex;
+  flex-direction: row;
+}
+
+
+button#btn-comment-delete {
+  border: solid 2px $secondary;
+  border-radius: 10px;
+  margin-right: auto;
+  margin-top: 1%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+
+
+button#btn-comment-send {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+button#btn-comment-send:disabled {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color:  #ccc;
+  color: $tertiary;
+}
+
+button#btn-comment-close {
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  //   margin-left: 80%;
+  // flex-grow: 80%;
+  // flex-shrink: 100%;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  &:hover {
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+.title-card-comment-posted{
+display: flex;
+// justify-content: start;
+align-items: center;
+}
+#fullname-comment {
+  margin-left: 2px;
+cursor:default;
+}
+
+#avatar-empty-card-comment {
+  font-size: 1.3rem;
+  display: flex;
+  margin-right: 1%;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-color: $primary;
+  border-radius: 50%;
+  margin-right: 1%;
+  background-color: rgb(89, 165, 35);
+}
+
+
+.picture-user-comment {
+  // margin-top: 1.5%;
+  // margin-right: 1%;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  border-color: $primary;
+  &:hover {
+    transform: scale(1.05);
+    transition: ease 0.5s ;
+  }
+}
+
+
+
 .picture-user-admin {
   margin-top: 1.5%;
   margin-right: 1%;
@@ -1149,7 +1372,7 @@ p.firstpost {
 
 #card-att {
   display: flex;
-  font-display: row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   border-top: solid 2px $secondary;
@@ -1202,7 +1425,7 @@ p.firstpost {
     }
   }
 }
-#btn-att-flag {
+.notReportPost {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1221,11 +1444,54 @@ p.firstpost {
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
-    &#btn-att-flag>.img-att-flag:before {
+    &.notReportPost>.img-att-flag:before {
       color: $secondary;
     }
   }
 }
+
+.reportPost{ 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5%;
+  height: 38px;
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color:  #ae6a6a;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+  &:hover {
+    background-color: $tertiary;
+    color: $secondary;
+    translate: 3px;
+    border: solid 1px $secondary;
+    &.reportPost>.img-att-flag:before {
+      color: $secondary;
+    }
+  }}
+
+  .buble-report {
+  background-color: $tertiary;
+  position: relative;
+  top: -12px;
+  left: 10px;
+  width: 30px;
+  height: 20px;
+  border: solid 2px $primary;
+  border-radius: 50%;
+}
+
+#number-report {
+  color: $secondary;
+  position: relative;
+  top: -5px;
+  right: -0px;
+}
+
 
 .img-att-flag {
   display: flex;
@@ -1414,7 +1680,6 @@ button.class-btn-att-unlike {
   }
 }
 
-
 button.class-btn-att-like {
   display: flex;
   flex-direction: row;
@@ -1459,15 +1724,33 @@ button.class-btn-att-like {
   color: $secondary;
   position: relative;
   top: -4px;
-
-
 }
 
-
-
-
-
 p.text-att {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  // padding-right: 20%;
+}
+p.text-att-comment {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  // padding-right: 20%;
+}
+p.text-att-like {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  // padding-right: 20%;
+}
+p.text-att-report {
   width: auto;
   flex-wrap: nowrap;
   justify-content: center;

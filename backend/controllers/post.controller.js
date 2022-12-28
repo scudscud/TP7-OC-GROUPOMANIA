@@ -19,23 +19,7 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
-//  const followingIdArray = []
-//  const followerIdArray = []
-//  let test = ""
-//  UserModel.find({following : req.body.posterId})
-//   .then((post)=>{
-//     post.forEach(id=> {
-//       const IdFollowing = id._id.toString()
-//       followingIdArray.push(IdFollowing)     
-//     });  
-//   })
-// UserModel.find({followers : req.body.posterId})
-//   .then((post)=>{
-//     post.forEach(id=> {     
-//       //  test = id._id.toString() 
-//       // followerIdArray.push(IdFollower)     
-//     });  
-//   })
+
   const date = new Date(Date.now())
   const days = date.toLocaleDateString()
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -59,10 +43,6 @@ exports.createPost = async (req, res) => {
     date : finalDate,
     posterfollower : followerIdArray != null ? followerIdArray : [],
     posterfollowing : followingIdArray != null ? followingIdArray : [],
-    
-    // posterfollower : req.body.posterFollower
-   
-    
   });
   try {
     post = await newPost.save();
@@ -73,8 +53,8 @@ exports.createPost = async (req, res) => {
   }
 };
 
-
 // update post end point \\
+
 exports.updatePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
   PostModel.findById(req.params.id)
@@ -93,7 +73,7 @@ exports.updatePost = (req, res) => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const finalDate = `modifié le ${days} à ${hours}:${minutes}`
-const updatedRecord = {
+  const updatedRecord = {
   // posterId: req.body.posterId,
   // posterpicture : req.body.photo,
   message: req.body.message,
@@ -120,8 +100,8 @@ exports.updatePictureUserPost = async (req, res) => {
   // if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
 //   PostModel.findById(req.params.id)
 //   .then((post) => {
-//     const postedBy = post.posterId
-//     const connectedUser = req.user
+    const postedBy = post.posterId
+    const connectedUser = req.user
 //     // console.log( "up"+post.posterId);
 //     // console.log("up"+ req.user);
     if(connectedUser == !process.env.ADMINID  || connectedUser == !postedBy){
@@ -155,83 +135,88 @@ exports.getOnePost = (req, res) => {
    })
 };
 
-exports.getPostByPosterid= (req, res) => {
+
+exports.getPostByPosterid= async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  PostModel.find({posterId : req.params.id})
-   .then((post)=>{
-    console.log(req.params)
-    // post.sort({ createdAt: -1 })
-    res.status(200).json(post);
-   }).catch((err)=>{
-    res.status(401).json(err);
-   })
-};
+  PostModel.find(({posterId : req.params.id}),(err,doc)=>{
+  if (!err) res.send(doc);
+  else console.log("Error to get data:" + err)
+})
+.sort({ createdAt: -1 });
+}
+  //  .then((post)=>{
+  //   res.status(200).json(post);
+  //  }).catch((err)=>{
+  //   res.status(401).json(err);
+  //  })
+   
+// };
 
 exports.getPostLike= (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  PostModel.find({likers :  req.params.id} )
-   .then((post)=>{
-    console.log(req.params)
-    // post.sort({ createdAt: -1 })
-    res.status(200).json(post);
-   }).catch((err)=>{
-    res.status(401).json(err);
-   })
-};
+  PostModel.find(({likers :  req.params.id} ),(err,doc)=>{
+    if (!err) res.send(doc);
+    else console.log("Error to get data:" + err)
+  })
+  .sort({ createdAt: -1 });
+  }
 
-exports.getPostFollowing= async (req, res) => {
- 
+//    .then((post)=>{
+//     console.log(req.params)
+//     // post.sort({ createdAt: -1 })
+//     res.status(200).json(post);
+//    }).catch((err)=>{
+//     res.status(401).json(err);
+//    })
+// };
+
+exports.getPostFollowing=  (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
- await PostModel.find({posterfollowing : req.params.id}) 
- .then((post)=>{
-  // post.sort({ createdAt: -1 })
-  console.log(post);
-  res.status(200).json(post);
- })
-   .catch((err)=>{ res.status(401).json(err);})
-//  await UserModel.find({followers : req.params.id}) 
-//    .then((post)=>{
-//     // console.log(post);
-  
-//     post.forEach((idpost)=>{
-//         // console.log(idpost);
-//       let id = idpost._id.toString()
-//           // console.log(id); 
-//         PostModel.find({posterId : id})
-//           .then((test)=>{ Array.push(test)
-//         // console.log(Array)
-//         res.status(201).json(Array)
-//     })
-   
-//     })
-    
-//    })
+  PostModel.find(({posterfollowing : req.params.id}),(err,doc)=>{
+  if (!err) res.send(doc);
+  else console.log("Error to get data:" + err)
+})
+.sort({ createdAt: -1 });
+} 
+//  .then((post)=>{
+//   // post.sort({ createdAt: -1 })
+//   console.log(post);
+//   res.status(200).json(post);
+//  })
 //    .catch((err)=>{ res.status(401).json(err);})
-};
+
+// };
 
 exports.getPostFollower= (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  PostModel.find({posterfollower : req.params.id})  
-   .then((post)=>{
-    // post.sort({ createdAt: -1 })
-    console.log(req.params)
-    res.status(200).json(post);
-   }).catch((err)=>{
-    res.status(401).json(err);
-   })
-};
+  PostModel.find(({posterfollower : req.params.id}),(err,doc)=>{
+    if (!err) res.send(doc);
+    else console.log("Error to get data:" + err)
+  })
+  .sort({ createdAt: -1 });
+  }   
+//    .then((post)=>{
+//     // post.sort({ createdAt: -1 })
+//     console.log(req.params)
+//     res.status(200).json(post);
+//    }).catch((err)=>{
+//     res.status(401).json(err);
+//    })
+// };
 
 exports.getPostSignal= (req, res) => {
-  console.log(req);
- 
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("publication inconnu:" + req.params.id);
   PostModel.findById(req.params.id) 
-   .then((doc)=>{
+    .then((doc)=>{
+    const verifynotreport = doc.signalBy
+    if (doc.signalBy.includes(req.user)){
+    console.log('publication deja sgnaler');
+    }else{
     const postSignal = doc
     const date = new Date(Date.now())
     const days = date.toLocaleDateString()
@@ -271,7 +256,7 @@ exports.getPostSignal= (req, res) => {
     res.status(400).send(err)
   }
     res.status(200).json(doc);
-   }).catch((err)=>{
+   }}).catch((err)=>{
     res.status(401).json(err);
    })
 };
@@ -435,16 +420,21 @@ exports.unLikePost = (req, res) => {
 // commentpost end point \\
 exports.commentPost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    return res.status(400).send("publication inconnu :" + req.params.id);
   try {
     return PostModel.findByIdAndUpdate(
       req.params.id,
       {
         $push: {
           comments: {
+            PostcommentId: req.body.PostcommentId,
             commenterId: req.body.commenterId,
-            commenterPseudo: req.body.commenterPseudo,
-            text: req.body.text,
+            commenterFirstname: req.body.commenterFirstname,
+            commenterLastname: req.body.commenterLastname,
+            commenterFullname: req.body.commenterFullname,
+            commentPicture: req.body.commentPicture,
+            commentLikers: req.body.commentLikers,
+            commentDate: date,
             timestamp: new Date().getTime(),
           },
         },

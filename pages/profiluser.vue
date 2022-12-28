@@ -915,8 +915,6 @@ p.card-profil-biographie-p {
   }
 }
 
-
-
 #btn-bio-send {
   border: solid 2px $secondary;
   margin-top: 1%;

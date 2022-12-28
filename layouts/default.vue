@@ -119,6 +119,7 @@ import axios from "axios";
 import SignIn from "../components/sign-in.vue";
 import Waitload from "../components/Waitload.vue";
 
+
 export default {
   components: {
     SignIn,
@@ -318,7 +319,7 @@ html {
   width: auto;
   border: solid $secondary;
   color: $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
 
   &:hover {
     background-color: $secondary;

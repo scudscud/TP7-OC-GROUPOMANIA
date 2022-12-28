@@ -1,6 +1,6 @@
 <template>
   <div class="overlay-delete">
-    <v-col class="d-flex justify-center align-center">
+    <v-col v-if="!reportcheck.includes(userFromId )" class="d-flex justify-center align-center">
       <v-card class="popup-report-com">
         <p class="logo-disconnect-delete">
           <img class="logo-white" src="../logo/logo.png" alt="logo" />
@@ -42,11 +42,49 @@
         </p>
         <v-btn
           v-if="!reportconfirm"
-          @click="(reportconfirm = !reportconfirm),  reportPost()"
+          @click="(reportconfirm = !reportconfirm),reportPost()"
           id="btn-report-comfirm"
         >
           <span>Signaler</span>
         </v-btn>
+        <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
+        <!-- <v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
+<v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
+      </v-card>
+    </v-col>
+    <v-col v-else class="d-flex justify-center align-center">
+      <v-card class="popup-report-com">
+        <p class="logo-disconnect-delete">
+          <img class="logo-white" src="../logo/logo.png" alt="logo" />
+          <span>La team GROUPOMANIA</span>
+        </p>
+        <p  id="span-report-post-titre">
+          <v-icon class="img-flag">mdi-flag</v-icon>
+          Signalement reçu
+          <v-icon class="img-flag">mdi-flag</v-icon>
+        </p>
+        <p v-if="!reportconfirm" id="span-report-post-2">
+          Vous avez déjà signalé cette publication et son autrice ou auteur
+        </p>
+        <div id="span-report-post-signal">
+          <h4>La team GROUPOMANIA</h4>
+          <span id="span-report">
+          va étudier le cas au plus vite,
+          </span>
+          <span id="span-report">
+            N'hésitez pas à contacter la direction ou l'administrateur de réseau
+            SCUD poste 26 si le cas est grave.
+          </span>
+        </div>
+        <v-btn
+          v-if="!reportconfirm"
+          id="btn-notreport-comfirm"
+          @click="$emit('close-modale-report')"
+        >
+          <span>Retour</span>
+        </v-btn>
+       
+        
         <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
         <!-- <v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
 <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
@@ -61,6 +99,7 @@ import axios from "axios";
 export default {
   // name: 'Delete',
   async mounted(){
+    this.reportcheck= []
     const getInfo = localStorage.getItem('info')
     const info = JSON.parse(localStorage.getItem('info'))
     this.userFromFullname = info.userFfull
@@ -68,8 +107,14 @@ export default {
     this.userSignalId = info.userSid
     this.userSignalFullname = info.userSfull
     this.postSignal = info.post
-
    localStorage.removeItem('info')
+   axios.get(`http://localhost:5000/api/post/${this.postSignal}`)
+        .then((docs) => {
+          console.log(docs.data.signalBy);
+          this.reportcheck = docs.data.signalBy
+          this.posts = docs.data
+        })
+        .catch((err) => { console.log(err); });
   },
 
   data() {
@@ -80,6 +125,8 @@ export default {
       userSignalId : '',
       userSignalFullname:'',
       postSignal:'',
+      posts:'',
+      reportcheck:[],
     }
   },
   methods: {
@@ -95,6 +142,7 @@ export default {
       axios.patch(`http://localhost:5000/api/post/postsignal/${this.postSignal}`,sendInfo)
       .then((doc)=>{
           console.log(doc);
+          this.reportcheck = []
 
       })
       setTimeout(() => {
@@ -130,7 +178,7 @@ export default {
   width: 320px;
   // max-height: 200px;
   // min-height: 200px;
-  height: 280px;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
