@@ -72,7 +72,7 @@ const SignalSchema = new mongoose.Schema(
                 comments: {
                     type: [
                         {
-                            PostcommentId: {
+                            postCommentId: {
                                type: String,
                                required : true
                             },

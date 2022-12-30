@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const { requireAuth } = require("../middleware/auth.middleware");
-
+ 
 const postController = require('../controllers/post.controller');
 const modify = require('../middleware/picture.modify.middleware')
 const image = require("../middleware/picture.post.middleware");

@@ -5,7 +5,7 @@
     <div id="Book" :key="componentKey">
 
       <div id="fix-top">
-        <div id="fix-top-bis" @click="showpost = !showpost" title="creer votre publication">
+        <div id="fix-top-bis" @click="PostCommentControleClear()" title="creer votre publication">
           <img v-if="urlpic !=='' && urlpic !== undefined" class="picture-user-none-top" :src='urlpic' alt="photo de l'utilisateur"  />
           <div v-else id="avatar-empty-book-top">{{avatarpicempty}}</div>
           <button class="new-top">
@@ -128,7 +128,7 @@
               </button>
               <button id="btn-att">
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att-comment" @click="PostCommentOpen(post._id,index)" >Commenter</p>
+                <p class="text-att-comment" @click="PostCommentControle(post._id,index),saveOpen(index)" :index="index" :postid="post._id"  >Commenter</p>
               </button>
               <!-- <button id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag</v-icon><p class="text-att">Signaler</p></button> -->
               <button v-if="post.posterId !== userid " :class="post.signalBy.includes(userid) ? 'reportPost':'notReportPost'" class="btn-att-flag" @click="showReport = !showReport,reportInfo(post._id,post.posterfullname,post.posterId,fullname,userid)" title="signaler la publication"><v-icon class="img-att-flag">mdi-flag-outline</v-icon><p class="text-att-report">Signaler</p>
@@ -137,34 +137,43 @@
               </button>
             </div>
           </div>
-          <div class="deploy-comment-button" v-if="post.comments.length > 2 " @click="seecomment = !seecomment"><span>Voir les commentaires</span></div>
+          
           <div class="deploy-comment" :index="index" :postid="post._id">
-          <v-card-text  class="deploy-commentUser-card"  v-show="writecomment" @change="controleComment()"   >
-      <form class="deploy-commentUser-form" method="post" @submit.prevent @canplaythrough=""  >
+
+
+          <v-card-text  class="deploy-commentUser-card"  v-show="writecomment" >
+      <form class="deploy-commentUser-form" method="post" @submit.prevent  >
         <label for="comment"  >
           <h2>Commentaire:</h2>
         </label>
-        <textarea @change="controleComment()" v-model="newComment" name="biographie" class="card-profil-textarea" type="textarea"
-          placeholder="votre commentaire" maxlength="200" ></textarea>
-
+        <textarea v-model="CommentMessage" name="comment"  class="card-profil-textarea" type="textarea"
+          placeholder="votre commentaire" maxlength="200" :index="index" ></textarea>
         <div class="btn-comment"  >
-          <button id="btn-comment-send" type="submit" @click="">Envoyer</button>
-          <button id="btn-comment-delete" @click="">Annuler</button>
-          <button id="btn-comment-close" @click="PostCommentClose(index)"> Fermer</button>
+          <button id="btn-comment-close" @click="ControleClose(index),saveClose(index)">Fermer</button>
+          <button id="btn-comment-delete" @click="deleteComment()">Effacer</button>
+          <button id="btn-comment-send" type="submit" @click="controlePostComment(post._id,index)">Envoyer</button>
         </div>
       </form>
     </v-card-text>
   </div>
-            <v-card class="card-comment" >
-              <v-card-text class="card-comment-posted" >
+
+      <button class="deploy-comment-button" v-if="post.comments.length > 0 && !seecomment[index] " @click="seecomment[index] = !seecomment[index],SeeComment()" :index="index" >Voir les commentaires</button>
+      <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment[index] " @click="seecomment[index] = !seecomment[index],SeeComment()" :index="index"  >Cacher les commentaires</button>
+      <!-- <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment === false && index == !selectedPostIndexOpen" @click="DeployComment(index),seecomment = !seecomment" :index="index"  :class="seecomment == true ? 'open' : 'close'">Voir les commentaires</button> -->
+      
+    
+            <v-card  v-if=" seecomment[index]" v-for="(comment,indexcomment) in post.comments" :key="comment._id" :index="indexcomment"  class="card-comment"  >
+              <v-card-text  class="card-comment-posted" >
                 <div class="title-card-comment-posted">
-              <img v-if="post.posterpicture !=='' && post.posterpicture !== 'undefined' " class="picture-user-comment"
-                  :src='post.posterpicture' alt="photo de l'utilisateur" title="lien vers le profil de l'utilisateur"  /> 
-                <div v-else id="avatar-empty-card-comment" title="lien vers le profil de l'utilisateur"  >{{post.posterlastname.split('')[0].toLocaleUpperCase()}} </div>
-                <span id="fullname-comment">{{post.posterfullname}} à {{post.date}}</span>
+                    <img v-if="comment.commenterPicture !=='' && comment.commenterPicture != undefined " class="picture-user-comment"
+                    :src='comment.commenterPicture' alt="photo de l'utilisateur"  /> 
+                  <div v-else id="avatar-empty-card-comment" >{{comment.commenterFirstname.split('')[0].toLocaleUpperCase()}} </div>
+                <p id="fullname-comment">{{comment.commenterFullname}} à {{comment.commentDate}}</p>
               </div>
+              <p id="message-comment">{{comment.comment}} </p>
               </v-card-text>
             </v-card>
+            
          
           
         </v-card>
@@ -214,7 +223,13 @@
     <modify v-if="showmodify"  v-show="showmodify"
       @close-modale-modify=" showmodify=false,getRefresh()" />
     <Postcreate v-show="showpost" @close-modale-post="showpost = false,getRefresh()" />
-    <WarningRecordComment v-if="warningRecordComment" v-show="warningRecordComment" @close-modale-record-comment-confirm="warningRecordComment=!warningRecordComment"/>
+    <WarningRecordComment v-if="warningRecordComment" v-show="warningRecordComment" @close-modale-record-comment-confirm="warningRecordComment=!warningRecordComment,PostCommentClose(indexpostClose)"
+    @close-modale-record-comment-confirm-delete="warningRecordComment=!warningRecordComment"/>
+    <WarningRecordCommentEmpty v-if="warningRecordCommentEmpty" v-show="warningRecordCommentEmpty" @close-modale-comment-empty="warningRecordCommentEmpty=!warningRecordCommentEmpty"/>
+    <WarningDoubleComment v-if="WarningDoubleComment" v-show="WarningDoubleComment" @close-modale-double-save="WarningDoubleComment = !WarningDoubleComment"
+    @close-modale-double-delete-confirm="WarningDoubleComment = !WarningDoubleComment,PostCommentOpenBis(indexpostOpen) "/>
+    <WarningClearComment v-if="WarningClearComment" v-show="WarningClearComment" @close-modale-clear-delete="WarningClearComment = !WarningClearComment"
+    @close-modale-clear-comfirm="WarningClearComment = !WarningClearComment,clearComment() "/>
   </div>
 
 </template>
@@ -223,12 +238,17 @@
 import axios from "axios"
 import Load from "../components/Waitload.vue";
 
+
+
 export default {
   name: "Book",
 
   components: {
     Load,
-    WarningRecordComment:()=> import(/* webpackChunkName:"report"*/"../components/warningrecordcomment.vue"),
+    WarningClearComment: ()=>import (/* webpackChunkName:"WarningClearComment"*/"../components/warningclearcomment.vue"),
+    WarningDoubleComment: ()=>import (/* webpackChunkName:"WarningDoubleComment"*/"../components/warningdoublecomment.vue"),
+    WarningRecordComment:()=> import(/* webpackChunkName:"WarningRecordComment"*/"../components/warningrecordcomment.vue"),
+    WarningRecordCommentEmpty:()=> import(/* webpackChunkName:"WarningRecordCommentEmpty"*/"../components/warningrecordcommentempty.vue"),
     report:() => import(/* webpackChunkName:"report"*/"../components/warningReportPost.vue"),
     sortPost: () => import("../components/sortpostby.vue"),
     Postcreate: () => import( /* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
@@ -264,7 +284,7 @@ export default {
       signalPost:'',
       urlpic: '',
       image: '',
-      message: '',
+      CommentMessage: '',
       comdelpost: "",
       like: "",
       userLikePostId: [],
@@ -282,13 +302,28 @@ export default {
       sortPosts : '',
       showReport : false,
       Followers : false,
-      seecomment : false,
+      seecomment : [],
       writecomment:false,
       commentValid:false,
-      newComment:'',
+      Comment:'',
+      commentary:[],
       warningRecordComment:false,
+      warningRecordCommentEmpty:false,
+      WarningDoubleComment:false,
+      WarningClearComment:false,
+
+
+
+      // selectedPostIndexOpen: null,
+      // selectedPostIndexClose: null,
+      // selectedPostIndexes: [],
+        selectedPostIndex: null,
+        selectedCommentIndexes: [],
+      
+
       open : '',
-      index: '',
+      indexpostClose: '',
+      indexpostOpen: '',
       showloader :true,
       scTimer: 0,
       scY: 0,
@@ -349,39 +384,158 @@ export default {
   events: {
   },
   methods: {
+    SeeComment(){
+    window.scrollBy(0, 10)
+    },
+
+    
+    // // DeployComment(index) {
+    // //       this.selectedPostIndexOpen = index
+    // //     },
+    //     CloseComment(index){
+    //       this.seecomment = false
+    //       this.selectedPostIndex = null
+    //     },
+        
+    // DeployComment(index) {
+    //   this.seecomment = true
+    //   this.selectedPostIndex = index
+    //     },
+
+    //     DeployCommentComment(index) {
+    //   const indexInArray = this.selectedCommentIndexes.indexOf(index)
+    //   if (indexInArray !== -1) {
+    //     this.selectedCommentIndexes.splice(indexInArray, 1)
+    //   } else {
+    //     this.selectedCommentIndexes.push(index)
+    //   }
+    // },
+       
+     
+        
+
+      clearComment(){ 
+        this.CommentMessage = ''
+        this.showpost = true
+        const select = document.querySelectorAll('.deploy-commentUser-card')
+        const selectAll =  select.forEach((att) => {
+          att.attributes[1].textContent = "display: none"
+          console.log(att.attributes[1].textContent);})
+      },
+
+    PostCommentControleClear(){
+      if( this.CommentMessage != '' ){
+        this.WarningClearComment = true
+      }else{
+        this.showpost = true
+        const select = document.querySelectorAll('.deploy-commentUser-card')
+        const selectAll =  select.forEach((att) => {
+           att.attributes[1].textContent = "display: none"
+           console.log(att.attributes[1].textContent);})
+      }
+    },
+
+      async PostCommentControle(postid,index){
+       const controle =  document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent
+       const resetMessage =  document.querySelectorAll('.deploy-commentUser-card')[index].firstElementChild[0].value
+       console.log(resetMessage);
+       if(resetMessage !== '' ){
+        this.WarningDoubleComment = true
+       }else{
+       if(controle == "v-show='writecomment'"){
+         this.PostCommentClose(index)
+         console.log('openpost');
+        }else{
+          this.PostCommentOpen(postid,index)
+          console.log('closepost');
+       }}
+      },
+
+      closeComment(){
+      const test = document.querySelectorAll('.deploy-commentUser-card')
+        console.log(test);
+        test.forEach((att) => {
+          att.attributes[1].textContent = "display: none"
+          console.log(att.attributes[1].textContent);
+        });
+      },
+
+      ControleClose(index){
+        const resetMessage =  document.querySelectorAll('.deploy-commentUser-card')[index].firstElementChild[0].value
+         if(resetMessage !== ''){
+          this.warningRecordComment = true
+         }else{
+          this.PostCommentClose(index)
+        }
+      },
+
+    saveClose(data){
+      this.indexpostClose = data
+    },
+    saveOpen(data){
+      this.indexpostOpen = data
+    },
     PostCommentOpen (postid,index){
-      const open = document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "v-show='writecomment'"
+      this.CommentMessage = ''
+      const open = document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "v-show='writecomment'" 
+  },
+    PostCommentOpenBis (index){
+      this.CommentMessage = ''
+      const open = document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "v-show='writecomment'" 
   },
 
   PostCommentClose (index){
-    const close2 = document.querySelectorAll('.deploy-commentUser-card')[index].textContent = ""
-    const close = document.querySelectorAll('#btn-comment-close')[index]
-    console.log(close2);
-    console.log(close);
+    this.CommentMessage = ''
+    const close = document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "display: none"
   },
-
+  
+  deleteComment(){
+    this.CommentMessage = ''
+  },
   controleComment(){
-      let testRegex = this.commentUser.split(' ').join('')
+      let testRegex = this.CommentMessage.split(' ').join('')
+      console.log(testRegex);
       if(testRegex !='' ){
+        console.log('pasok');
           this.commentValid = true
           return true
         }
         else{
+          console.log('ok');
         this.commentValid= false
         return false
         }
     },
+    controlePostComment(postid,index){
+      let testRegex = this.CommentMessage.split(' ').join('')
+        if(testRegex !=''){
+          console.log(testRegex);
+          let data = {
+          postCommentId : postid,
+          commenterId: this.userid,
+          commenterFirstname: this.firstname,
+          commenterLastname: this.lastname,
+          commenterFullname: this.fullname,
+          commenterPicture: this.urlpic ,
+          comment: this.CommentMessage}
+      axios.patch(`http://localhost:5000/api/post/comment-post/${postid}`, data)
+          .then(()=>{ 
+            this.CommentMessage = ''
+            document.querySelectorAll('.deploy-commentUser-card')[index].attributes[1].textContent = "display: none"
+            this.getPostsRefresh()
+        }) 
+        }else{
+          this.warningRecordCommentEmpty = true
+        setTimeout(()=>{
+          this.commentValid = true
+        },2000)
+        }
+    },
 
-
-
-
-
-
- reportInfo(postid,usfn,usid,uffn,ufid){
-  const info = {post : postid,userSfull :usfn,userSid :usid, userFfull:uffn,userFid  : ufid}
-  console.log(postid,usfn,usid,ufid,uffn);
-  localStorage.setItem('info',JSON.stringify(info))
- },
+        reportInfo(postid,usfn,usid,uffn,ufid){
+            const info = {post : postid,userSfull :usfn,userSid :usid, userFfull:uffn,userFid  : ufid}
+            localStorage.setItem('info',JSON.stringify(info))
+    },
 
     handleScroll: function () {
         if (this.scTimer) return;
@@ -726,7 +880,7 @@ div.v-main__wrap {
   &:hover {
     // border-color:green;
 
-    transform: scale(1.02);
+    transform: scale(1.008);
     transition: ease 0.5s ;
 
   }
@@ -765,7 +919,6 @@ div.v-main__wrap {
   padding-left: 8%;
   width: 100%;
   height: 50px;
- 
   // border: solid 2px $secondary;
   // border-radius: 10px/5px;
   // margin-bottom: 2%;
@@ -794,7 +947,6 @@ div.v-main__wrap {
   // position: relative;
   // left : 10%;
   // border: solid black 1px;
-
  translate : 4px;
 
 
@@ -806,9 +958,6 @@ div.v-main__wrap {
   // left : 100%;
   // &:hover{
   // transform: 20px;
-
-
-
   // }
 }
 
@@ -906,14 +1055,10 @@ div.v-main__wrap {
   border-color: $primary;
   &:hover {
     // border-color:green;
-
     transform: scale(1.05);
     transition: ease 0.5s ;
-
   }
 }
-
-
 
 .card-comment{
   display: flex;
@@ -953,7 +1098,6 @@ button#btn-comment-delete {
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
-
   &:hover {
     background-color: $secondary;
     color: $tertiary;
@@ -965,7 +1109,7 @@ button#btn-comment-delete {
 button#btn-comment-send {
   border: solid 2px $secondary;
   margin-top: 1%;
-  margin-right: 1%;
+  
   border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
@@ -990,6 +1134,7 @@ button#btn-comment-send:disabled {
 button#btn-comment-close {
   border: solid 2px $secondary;
   margin-top: 1%;
+  margin-right: 1%;
   //   margin-left: 80%;
   // flex-grow: 80%;
   // flex-shrink: 100%;
@@ -1005,12 +1150,26 @@ button#btn-comment-close {
 
 .title-card-comment-posted{
 display: flex;
-// justify-content: start;
 align-items: center;
 }
 #fullname-comment {
-  margin-left: 2px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
 cursor:default;
+}
+
+#message-comment {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 40px;
+  padding-left: 10px;
+  font-size: small;
+  border-style: dotted;
+  border-color: $tertiary;
 }
 
 #avatar-empty-card-comment {
@@ -1035,6 +1194,7 @@ cursor:default;
   display: flex;
   width: 30px;
   height: 30px;
+  margin-right: 1%;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
@@ -1233,14 +1393,14 @@ p.fullname-none {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   // padding-bottom: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
 
@@ -1262,14 +1422,14 @@ p.fullname-none {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 2px;
   padding-right: 5px;
   // padding-bottom: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
 
@@ -1323,7 +1483,7 @@ p.fullname-none {
   // padding: 1%;
   border: solid 2px $secondary;
   // border-bottom: solid 2px $secondary;
-  border-radius: 2%;
+  border-radius: 2px;
 }
 
 .message-main {
@@ -1406,7 +1566,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1430,7 +1590,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1455,7 +1615,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1512,7 +1672,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1539,7 +1699,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1566,7 +1726,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 30px;
   // margin-top: 2%;
   margin-right: 1%;
@@ -1594,7 +1754,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1625,7 +1785,7 @@ p.firstpost {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 30px;
   // margin-top: 2%;
   // margin-left: auto;
@@ -1658,7 +1818,7 @@ button.class-btn-att-unlike {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;
@@ -1685,7 +1845,7 @@ button.class-btn-att-like {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 5%;
+  border-radius: 5px;
   height: 38px;
   margin-top: 2%;
   margin-right: 3%;

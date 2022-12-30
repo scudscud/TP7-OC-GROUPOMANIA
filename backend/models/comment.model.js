@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const CommentSchema = new mongoose.Schema(
     {
-                    PostcommentId: {
+                    postCommentId: {
                        type: String,
                        required : true
                     },
@@ -21,7 +21,7 @@ const CommentSchema = new mongoose.Schema(
                         type: String,
                         required : true
                      },
-                     commentPicture: String,
+                     commenterPicture: String,
                      comment: {
                      type: String,
                      trim: true,
@@ -34,7 +34,7 @@ const CommentSchema = new mongoose.Schema(
                     commentDate : {
                         type: String
                     },
-                    post : [{
+                    post : {
                         type:[{
                             posterId: {
                                 type : String,
@@ -79,7 +79,7 @@ const CommentSchema = new mongoose.Schema(
                                 type: String
                             },
                         }]
-                    }]
+                    }
                 },
                 {timestamps : true,}
                 );

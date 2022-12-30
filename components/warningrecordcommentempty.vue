@@ -6,9 +6,9 @@
         <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" alt="logo" />
         <span>La team GROUPOMANIA </span>
         </p>
-      <p id="span-del-post"> ⚠️ Oups votre bio est vide de chez vide ⚠️ vous ne pouvez pas enregistrer ça </p>
+      <p id="span-del-post"> ⚠️ Oups votre commentaire est vide de chez vide vous ne pouvez pas envoyez ça ⚠️ </p>
        <!-- <p>cette action est irreversible </p> -->
-       <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-empty')" ><span >Retour</span></v-btn>
+       <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-comment-empty')" ><span >Retour</span></v-btn>
       <!-- <p class="comfirm-span-delete">si tel est votre choix ...</p> -->
       
     <!-- <v-btn  @click="$emit('close-modale-record-confirm')"   id="btn-delete-comfirm"  ><span>Continuer</span></v-btn> -->
@@ -134,7 +134,7 @@
       margin-top: 250px;
       // max-width: 300px;
       // min-width: 300px;
-      width: 320px;
+      width: 250px;
       // max-height: 200px;
       // min-height: 200px;
       height: 200px;
@@ -201,4 +201,3 @@
     
     
     </style>
-    

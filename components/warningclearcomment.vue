@@ -6,12 +6,12 @@
         <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" alt="logo" />
         <span>La team GROUPOMANIA </span>
         </p>
-      <p id="span-del-post"> ⚠️ Vous-êtes sur le point de fermer sans envoyer votre commentaire ⚠️ </p>
+      <p id="span-del-post"> ⚠️ Vous avez un commentaire en attente, Avez vous oublier de l'envoyer ? ⚠️ </p>
+      <p id="span-del-post"> ⚠️ Continuer effacera votre commentaire en attente  ⚠️ </p>
        <!-- <p>cette action est irreversible </p> -->
-       <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-record-comment-confirm-delete')" ><span >Retour</span></v-btn>
+       <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-clear-delete')" ><span >J'ai oublier</span></v-btn>
       <p class="comfirm-span-delete">si tel est votre choix ...</p>
-      
-    <v-btn  @click="$emit('close-modale-record-comment-confirm')"   id="btn-delete-comfirm"  ><span>Continuer</span></v-btn>
+    <v-btn  @click="$emit('close-modale-clear-comfirm')"   id="btn-delete-comfirm"  ><span>Continuer</span></v-btn>
     <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
     
     </v-card>

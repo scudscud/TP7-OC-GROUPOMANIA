@@ -66,7 +66,7 @@ const PostSchema = new mongoose.Schema(
         comments: {
             type: [
                 {
-                    PostcommentId: {
+                    postCommentId: {
                        type: String,
                        required : true
                     },
@@ -86,7 +86,9 @@ const PostSchema = new mongoose.Schema(
                         type: String,
                         required : true
                      },
-                     commentPicture: String,
+                     commenterPicture: {
+                       type: String
+                    },
                      comment: {
                      type: String,
                      trim: true,

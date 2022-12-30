@@ -78,8 +78,29 @@ const userSchema = mongoose.Schema(
     },
     ban: {
       type: Boolean,
-    
-    }
+    },
+    comment : 
+    {type: [{
+      commentId: {
+          type:String
+      },
+      postCommentId: {
+        type: String,
+        required : true
+     },
+     postCommentFullname :{
+        type: String
+     },
+     comment: {
+      type: String,
+      trim: true,
+      maxlenght: 200,
+      required : true
+      },
+      commentDate : {
+        type: String
+    },
+    }]},
   },
   {
     timestamps: true,
