@@ -14,20 +14,18 @@
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
-    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
-      <div class="block-picture">
-        <label class="lab-pic" for="avatar">
-          <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
-
-          <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-          <button id="btn-del-pic-profil-bis" @click="picPreview">
-            <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
-          </button>
-          <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @click="delPic" />
-        </label>
-      </div>
-      <span class="fullname">{{ fullname }}</span>
+    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name-choice">
+      <button id="btn-del-pic-profil-choice" @click="picPreview"><v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon></button>
+      <div class="block-picture-choice">
+        <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur"/>
+        <!-- <v-file-input :rules="rules" hide-input accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" prepend-icon="mdi-camera"
+          label="Avatar" class="camadd">test</v-file-input> -->
+          <label class="lab-pic-choice" for="avatar"> 
+            <v-icon class="lab-pic-custom-choice" size="25px">mdi-camera-plus</v-icon>
+            <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @click="delPic" /> 
+          </label> 
+        </div>
+        <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
     <v-card-text v-else class="card-profil-name">
@@ -36,7 +34,7 @@
           <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
           <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
+            placeholder="votre photo/avatar" @change="picPreview(url)" />
         </label>
         <div class="block-btn-pic-profil">
           <button id="btn-del-pic-profil" @click="delPicPreview">
@@ -253,9 +251,7 @@ export default {
       set(newValue) {
         [this.this.followingLastname, this.followingFirstname] = newValue.split(" ");
       },
-
     },
-
   },
 
   methods: {
@@ -289,7 +285,6 @@ export default {
         })  
     },
 
-
     controleBio(){
       let testRegex = this.newBioUser.split(' ').join('')
       if(testRegex !='' || this.bioUser !== ''){
@@ -301,7 +296,6 @@ export default {
         return false
         }
     },
-
 
     controlePostBio(){
       let testRegex = this.newBioUser.split(' ').join('')
@@ -345,14 +339,12 @@ export default {
       this.url = "";
     },
 
-         
     delPic(e){
       this.url = ""
       // this.urlpic === ""
     },
 
     picPreview(e) {
-      console.log(e);
       e.target.value[0].split(" ");
       const pic = e.target.files[0];
       this.photo = pic;
@@ -365,9 +357,6 @@ export default {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
       }
     },
-
-
-
 
     getImage(imagename) {
       let name = avatar.value;
@@ -575,6 +564,76 @@ label.lab-pic {
   // width: 130px;
 }
 
+label.lab-pic-choice{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 0px;
+}
+
+img#form-picture-profil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  font-size: 5rem;
+
+  // padding-bottom: 5%;
+}
+.block-picture-choice{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  margin-top: 5px;
+}
+
+.card-profil-name-choice {
+  padding-top: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: $tertiary;
+}
+
+.lab-pic-custom-choice {
+  position: relative;
+  top: 47px;
+  left: -10px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button#btn-del-pic-profil-choice {
+  position: relative;
+  top: 50px;
+  left: +30px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .lab-pic-del {
   display: flex;
   justify-content: center;
@@ -642,17 +701,6 @@ img.form-avatar-dl {
   background-color: rgb(6, 132, 6);
 }
 
-#form-picture-profil {
-  display: flex;
-  width: 120px;
-  height: 120px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-  font-size: 5rem;
-  // padding-bottom: 5%;
-}
 
 .card {
   display: flex;
@@ -697,6 +745,12 @@ div.v-card__text.card-profil-name {
   margin-left: 30px;
 }
 
+.camadd{
+  color : red
+
+
+}
+
 button#btn-del-pic-profil {
   display: flex;
   // height: 20px;
@@ -714,22 +768,7 @@ button#btn-del-pic-profil {
   }
 }
 
-button#btn-del-pic-profil-bis {
-  position: relative;
-  top: 80px;
-  left: -170px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
 
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 #btn-del-pic-profil-icon {
   position: relative;
@@ -849,7 +888,7 @@ button#btn-confirm-pic-profil-post {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 1%;
+  padding-left: 2%;
   font-size: 1.8rem;
 }
 
