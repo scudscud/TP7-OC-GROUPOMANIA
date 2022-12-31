@@ -19,6 +19,16 @@ exports.readPost = (req, res) => {
 // create post end point => multer middleware : picture.post \\
 
 exports.createPost = async (req, res) => {
+  if (!ObjectID.isValid(req.user))
+  return res.status(400).send("utilsateur inconnu :" + req.user)
+  UserModel.findById(req.user).then((doc)=>{
+    if(!doc) res.status(400).send('utilisateur inconnu')})
+  const connectedUser = req.user
+  const postedBy = req.body._id
+  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+    res.cookie('jwt','', { session:false, maxAge: 1 })
+    res.status(400).json("erreur");}
+  
   const date = new Date(Date.now());
   const days = date.toLocaleDateString();
   const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -133,7 +143,7 @@ exports.updatePictureUserPost = async (req, res) => {
 
 exports.getOnePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    return res.status(400).send("publication inconnu :" + req.params.id);
   PostModel.findById(req.params.id)
     .then((post) => {
       res.status(200).json(post);
@@ -151,13 +161,7 @@ exports.getPostByPosterid = async (req, res) => {
     else console.log("Error to get data:" + err);
   }).sort({ createdAt: -1 });
 };
-//  .then((post)=>{
-//   res.status(200).json(post);
-//  }).catch((err)=>{
-//   res.status(401).json(err);
-//  })
 
-// };
 
 exports.getPostLike = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
@@ -168,14 +172,7 @@ exports.getPostLike = (req, res) => {
   }).sort({ createdAt: -1 });
 };
 
-//    .then((post)=>{
-//     console.log(req.params)
-//     // post.sort({ createdAt: -1 })
-//     res.status(200).json(post);
-//    }).catch((err)=>{
-//     res.status(401).json(err);
-//    })
-// };
+
 
 exports.getPostFollowing = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
@@ -185,14 +182,7 @@ exports.getPostFollowing = (req, res) => {
     else console.log("Error to get data:" + err);
   }).sort({ createdAt: -1 });
 };
-//  .then((post)=>{
-//   // post.sort({ createdAt: -1 })
-//   console.log(post);
-//   res.status(200).json(post);
-//  })
-//    .catch((err)=>{ res.status(401).json(err);})
 
-// };
 
 exports.getPostFollower = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
@@ -202,14 +192,18 @@ exports.getPostFollower = (req, res) => {
     else console.log("Error to get data:" + err);
   }).sort({ createdAt: -1 });
 };
-//    .then((post)=>{
-//     // post.sort({ createdAt: -1 })
-//     console.log(req.params)
-//     res.status(200).json(post);
-//    }).catch((err)=>{
-//     res.status(401).json(err);
-//    })
-// };
+
+exports.getPostSignalAdmin = (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    console.log(req.user);
+  PostModel.find({ signalBy: {$gte : 1}},(err, doc) => {
+  console.log(doc);
+  if(!err)res.send(doc)
+  else res.status(400).send('erreur la ')
+  }).sort({ createdAt: -1 });
+};
+
 
 exports.getPostSignal = (req, res) => {
   if (!ObjectID.isValid(req.params.id))

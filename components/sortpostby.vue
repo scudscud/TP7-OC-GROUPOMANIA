@@ -4,7 +4,7 @@
 
             <v-card class="popup-sort-post ">
                 <p class="logo-disconnect-delete"><img class="logo-white" src="../logo/logo.png" />
-                    <span id="span-delete-modale">La team GROUPOMANIA </span>
+                    <span id="span-delete-modale">GROUPOMANIA </span>
                 </p>
                 <p id="span-del-bio">Trier les publications par : </p>
                 <div class="btn-sortby">
@@ -13,6 +13,7 @@
                 <li ><button class="friend-btn" @click="$emit('close-modale-sort-follower')" >Mes Abonné(e)s</button></li>
                 <li ><button class="postlike-btn" @click="$emit('close-modale-sort-like')" >Mes Likes</button></li>
                 <li ><button class="postall-btn" @click="$emit('close-modale-sort-all')" >Toutes les publications</button></li>
+                <li v-if="this.role !== undefined"><button class="postall-btn" @click="$emit('close-modale-sort-signal')" >Signalement</button></li>
 
                </div>
                 <!-- <p>cette action est irreversible </p> -->
@@ -29,18 +30,43 @@
     
     
 <script>
-
+import axios from "axios";
 export default {
+   
     // name: 'Delete',
-
     data() {
         return {
-     
+            userjwtid: '',
+            role:'',
+            userid:'',
+          
+
         }
     },
-    methods: {
-   
-    }
+   async mounted() {
+           axios.defaults.withCredentials = true;
+           await axios
+             .get(`http://localhost:5000/jwtid`)
+             .then((res) => {
+               this.userjwtid = res.data;
+               console.log(this.userjwtid);
+               // TODO => Insert loader \\
+             })
+             .catch((error) => {
+               console.log(error);
+             });
+        
+           await axios
+             .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+             .then((docs) => {
+               this.role = docs.data.role;
+               this.userid = docs.data._id;
+             })
+             .catch((error) => {
+               console.log(error);
+             });
+         },
+  
 }
 
 

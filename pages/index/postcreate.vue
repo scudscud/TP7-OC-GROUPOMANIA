@@ -447,14 +447,14 @@
     
     #btn-del-create-pic{
     border: solid 2px $secondary;
-      border-radius: 30%;
+      border-radius: 15px;
       margin-top: 1%;
       padding-left: 5px;
       padding-right: 5px;
       padding-bottom: 4px;
       color: $secondary;
       &:hover {
-         border-radius: 20%;
+         border-radius: 10px;
         background-color: $secondary;
         color: $tertiary;
       }
@@ -539,13 +539,13 @@
        border: solid 2px $secondary;
       margin-top: 1%;
       margin-right: 1%;
-      border-radius: 30%;
+      border-radius: 15px;
       padding-top: 0%;
       padding-left: 1%;
       padding-right: 1%;
       &:hover {
         background-color: $secondary;
-          border-radius: 20%;
+          border-radius: 10px;
        &#back-book>#btn-back{
         color:$tertiary;
         &#btn-back>#div-btn-back>#icon-btn-delete{
@@ -600,11 +600,11 @@
        width:85px ;
       // margin-top: 1%;
       margin-right: 1%;
-      border-radius: 30%;
+      border-radius: 15px;
       padding-left: 1%;
       padding-right: 1%;
       &:hover {
-        border-radius: 20%;
+        border-radius: 10px;
         background-color: $secondary;
         color: $tertiary;
         &#btn-send-post>#div-btn-send>#icon-btn-send{
@@ -620,7 +620,7 @@
        width:100px ;
       // margin-top: 1%;
       margin-right: 1%;
-      border-radius: 30%;
+      border-radius: 15px;
       padding-left: 1%;
       padding-right: 1%;
       // &:hover {
@@ -637,7 +637,7 @@
     
       padding-right: 1rem;
       padding-left: 1rem;
-      border-radius: 30%;
+      border-radius: 15px;
       // margin-top: 20px;
       border: solid 2px $secondary;
       background: #ccc;

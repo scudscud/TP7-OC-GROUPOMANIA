@@ -15,6 +15,7 @@ router.get('/postby/:id',requireAuth,postController.getPostByPosterid);
 router.get('/postlike/:id',requireAuth,postController.getPostLike);
 router.get('/postfollowing/:id',requireAuth,postController.getPostFollowing);
 router.get('/postfollower/:id',requireAuth,postController.getPostFollower);
+router.get('/postsignaladmin/:id',requireAuth,postController.getPostSignalAdmin);
 router.patch('/postsignal/:id',requireAuth,postController.getPostSignal);
 router.put('/:id',requireAuth,(req, res, next) => {modify(req, res, function (err) {if (err) {console.log(err.message);const errors = multerErrors(err);res.status(400).json({ errors });} else {next();}});}, postController.updatePost);
 router.delete('/:id',requireAuth, postController.deletePost);

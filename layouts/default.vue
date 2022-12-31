@@ -61,7 +61,7 @@
 
       <v-spacer />
       <router-link id="router-main" to="/" title="page des publications">
-        <img class="logo-white" src="../logo/logo.png" to="/" />
+        <img class="logo-white" src="../logo/logo.png" to="/" alt="logo"/>
         <v-toolbar-title v-text="title" id="temp-title" alt="logo" />
       </router-link>
       <v-spacer />
