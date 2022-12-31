@@ -4,8 +4,8 @@
       <h1 class="card-profil-title-h1">Profil Admin</h1>
     </v-card-text>
 
-    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined" class="card-profil-name">
-      <div class="block-picture">
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined" class="card-profil-name-admin">
+      <div class="block-picture-admin-empty">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
           <!-- <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
@@ -15,24 +15,18 @@
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
-    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name">
-      <div class="block-picture">
-        <!-- <label class="lab-pic" for="avatar">
-          <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
-
-          <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-          <button id="btn-del-pic-profil-bis" @click="profilUpdate">
-            <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
-          </button>
-          <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
-        </label> -->
+    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name-admin">
+      <button id="btn-del-pic-profil-bis" @click="warningDelPic = !warningDelPic">
+        <v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon>
+      </button>
+      <div class="block-picture-admin">
+           <img id="form-picture-profil-admin" :src="urlpic" alt="photo de l'utilisateur" /> 
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
-    <v-card-text v-else class="card-profil-name">
-      <!-- <div class="block-picture-url"> -->
+    <!-- <v-card-text v-else class="card-profil-name-admin">
+       <div class="block-picture-url"> -->
         <!-- <label class="lab-pic-del" for="avatar">
           <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
@@ -49,9 +43,9 @@
           </button>
           <button v-else id="btn-confirm-pic-profil-post">Valider</button>
         </div> -->
-      <!-- </div> -->
+      <!-- </div> 
       <span class="fullname-url">{{ fullname }}</span>
-    </v-card-text>
+    </v-card-text> -->
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
@@ -169,6 +163,7 @@
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
     <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
+    <WarningDeletePicture v-if="warningDelPic" v-show="warningDelPic" @close-modale-delpicuser=" warningDelPic = false" @close-modale-delpicuser-confirm="warningDelPic = false,deletePicUser()" />
     <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
     <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
     <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
@@ -186,6 +181,7 @@ export default {
   name: "Profil",
   components: {
     Load,
+    WarningDeletePicture: () => import( /* webpackChunkName:"WarningDeletePicture"*/"../components/warningdeletepictureuser.vue"),
     WarningDelete: () => import ("../components/warnindelete.vue"),
     WarningEmpty: ()=> import ("../components/warningempty.vue"),
     WarningRecord: () => import("../components/warningrecord.vue"),
@@ -242,6 +238,7 @@ export default {
       warningRecord:false,
       warningEmpty: false,
       warningDelete :false,
+      warningDelPic : false,
 
       bioValid:false,
       showloader:true,
@@ -357,22 +354,30 @@ export default {
         })
     },
 
-    async profilUpdate() {
- 
-      let formData = new FormData();
-      formData.append("fullname", this.fullname);
+    deletePicUser(){
+      this.showloader = true
+       this.photo = ''
+       this.url = ''
+       this.urlpic =''
+       let formData = new FormData();
       formData.append("photo", this.photo);
-      await axios
+      formData.append("posterId",this.userid)
+
+       axios
         .put(`http://localhost:5000/api/user/${this.userid}`, formData)
         .then(() => {
-          axios.get(`http://localhost:5000/api/post`).then((post) => {
+          
+            axios.get(`http://localhost:5000/api/post`).then((post) => {
             post.data.forEach((doc) => {
               if (doc.posterId === this.userid) {
                 const id = [];
                 id.push(doc._id);
                 id.forEach((postid) => {
+                  // console.log(postid);
+                  // console.log(this.photo);
                   let formData = new FormData();
                   formData.append("picture", this.photo);
+                  console.log(this.photo);
                   axios.put(
                     `http://localhost:5000/api/post/photo/${postid}`,
                     formData
@@ -380,26 +385,58 @@ export default {
                 });
               }
             });
-          });
-        })
-        .then(() => {
-          this.posted = true;
+          })
+        }).then(( )=>{
           setTimeout(() => {
-            this.posted = false;
             window.location.reload();
-          }, 1000);
+          },1500);
         })
-        .catch((errors, test) => {
-          this.maxsize = errors.response.data.errors.maxsize;
-          this.format = errors.response.data.errors.format;
-          setTimeout(() => {
-            this.maxsize = "";
-            this.format = "";
-          }, 3000);
-          console.log(errors.response.data.errors.maxsize);
-          console.log(errors.response.data.errors.format);
-        });
     },
+
+    // async profilUpdate() {
+ 
+    //   let formData = new FormData();
+    //   formData.append("fullname", this.fullname);
+    //   formData.append("photo", this.photo);
+    //   await axios
+    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
+    //     .then(() => {
+    //       axios.get(`http://localhost:5000/api/post`).then((post) => {
+    //         post.data.forEach((doc) => {
+    //           if (doc.posterId === this.userid) {
+    //             const id = [];
+    //             id.push(doc._id);
+    //             id.forEach((postid) => {
+    //               let formData = new FormData();
+    //               formData.append("picture", this.photo);
+    //               axios.put(
+    //                 `http://localhost:5000/api/post/photo/${postid}`,
+    //                 formData
+    //               );
+    //             });
+    //           }
+    //         });
+    //       });
+    //     })
+    //     .then(() => {
+    //       this.posted = true;
+    //       setTimeout(() => {
+    //         this.posted = false;
+    //         window.location.reload();
+    //       }, 1000);
+    //     })
+    //     .catch((errors, test) => {
+    //       this.maxsize = errors.response.data.errors.maxsize;
+    //       this.format = errors.response.data.errors.format;
+    //       setTimeout(() => {
+    //         this.maxsize = "";
+    //         this.format = "";
+    //       }, 3000);
+    //       console.log(errors.response.data.errors.maxsize);
+    //       console.log(errors.response.data.errors.format);
+    //     });
+    // },
+
     getFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userjwtid}`, { idToFollow: id })
       .then(() => {
@@ -614,7 +651,7 @@ img.form-avatar-dl {
   background-color: rgb(6, 132, 6);
 }
 
-#form-picture-profil {
+#form-picture-profil-admin {
   display: flex;
   width: 120px;
   height: 120px;
@@ -648,6 +685,12 @@ img.form-avatar-dl {
 }
 
 div.v-card__text.card-profil-name {
+  padding-top: 1%;
+  display: flex;
+  justify-content: center;
+  background-color: $tertiary;
+}
+.card-profil-name-admin {
   padding-top: 1%;
   display: flex;
   justify-content: center;
@@ -688,8 +731,8 @@ button#btn-del-pic-profil {
 
 button#btn-del-pic-profil-bis {
   position: relative;
-  top: 80px;
-  left: -170px;
+  top: 100px;
+  left: 50px;
   height: 38px;
   width: 38px;
   background-color: $tertiary;
@@ -697,7 +740,6 @@ button#btn-del-pic-profil-bis {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
-
   &:hover {
     cursor: pointer;
   }
@@ -720,22 +762,6 @@ button#btn-del-pic-profil-bis {
   }
 }
 
-.lab-pic-custom-url {
-  position: relative;
-  top: 70px;
-  left: 140px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 button#btn-confirm-pic-profil {
   display: flex;
@@ -781,28 +807,45 @@ button#btn-confirm-pic-profil-post {
   }
 }
 
-.lab-pic-custom-url {
-  position: relative;
-  top: 70px;
-  left: 140px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
+// .lab-pic-custom-url {
+//   position: relative;
+//   top: 70px;
+//   left: 140px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
 
-  &:hover {
-    cursor: pointer;
-  }
-}
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
 
 .fullname-url {
   padding-top: 1%;
   padding-left: 5%;
   font-size: 1.8rem;
   padding-top: 4%;
+}
+
+.block-picture-admin{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 140px;
+  margin-top: 5px;
+}
+.block-picture-admin-empty{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 140px;
+  margin-top: 5px;
 }
 
 .block-picture-url {
