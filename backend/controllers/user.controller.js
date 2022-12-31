@@ -57,6 +57,39 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+exports.delPicUser = (req,res) => {
+  if (!ObjectID.isValid(req.params.id))
+  return res.status(400).send("utilsateur inconnu :" + req.params.id);
+  UserModel.findById(req.params.id)
+  .then((post)=>{  
+    const postedBy = post.posterId;
+      const connectedUser = req.user;
+      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+        res.cookie("jwt", "", { session: false, maxAge: 1 });
+        res.status(400).json("nocookie");
+      } else {
+        let delimg = post.picture.split("images/default")[1];
+        fs.unlink(`images/default/${delimg}`, () => {
+          UserModel.findByIdAndRemove(req.params.id, (err, docs) => {
+            // console.log(req);
+            if (!err) {
+              log('ok')
+              res.status(200).json(docs);
+            } else {
+              res.status(400).send(err);
+            }
+          });
+        });
+      }
+    })
+    .catch((err) => {
+      err;
+
+
+
+
+  })
+}
 
 // user delete end point \\
 
@@ -96,6 +129,7 @@ exports.userDelete = async (req, res) => {
         }
       });
       
+
            
      UserModel.deleteOne(req.body.idrequest )
       

@@ -3,45 +3,45 @@
     <v-card-text class="card-profil-title">
       <h1 class="card-profil-title-h1">Mon profil</h1>
     </v-card-text>
-    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  "  class="card-profil-name">
-      <div class="block-picture">
-        <label class="lab-pic" for="avatar">
-          <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
-          <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  "  class="card-profil-name-empty">
+      <div class="block-picture-empty">
+        <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
+        <label class="lab-pic-empty" for="avatar">
+          <v-icon class="lab-pic-custom-empty" size="25px">mdi-camera-plus</v-icon>
           <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
             placeholder="votre photo/avatar" @change="picPreview" />
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
-    <v-card-text v-else-if=" urlpic !== '' " class="card-profil-name-choice">
-      <button id="btn-del-pic-profil-choice" @click="picPreview"><v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon></button>
+    <v-card-text v-else-if=" urlpic !== '' && modifyPictureUserInprogress === false " class="card-profil-name-choice">
+      <button id="btn-del-pic-profil-choice" @click="warningDelPic = !warningDelPic"><v-icon id="btn-del-pic-profil-icon" size="25px">mdi-camera-off</v-icon></button>
       <div class="block-picture-choice">
         <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur"/>
         <!-- <v-file-input :rules="rules" hide-input accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" prepend-icon="mdi-camera"
           label="Avatar" class="camadd">test</v-file-input> -->
           <label class="lab-pic-choice" for="avatar"> 
             <v-icon class="lab-pic-custom-choice" size="25px">mdi-camera-plus</v-icon>
-            <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @click="delPic" /> 
+            <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar" placeholder="votre photo/avatar" @change="picPreview" /> 
           </label> 
         </div>
         <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
-    <v-card-text v-else class="card-profil-name">
+    <v-card-text v-else-if="modifyPictureUserInprogress === true" class="card-profil-name">
       <div class="block-picture-url">
         <label class="lab-pic-del" for="avatar">
           <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
           <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview(url)" />
+            placeholder="votre photo/avatar" @change="picPreview" />
         </label>
         <div class="block-btn-pic-profil">
-          <button id="btn-del-pic-profil" @click="delPicPreview">
+          <button id="btn-del-pic-profil" @click="delPicPreview()">
             Annuler
           </button>
           <button v-if="!posted" id="btn-confirm-pic-profil" action="/upload" type="submit" method="post"
-            enctype="multipart/form-data" @click="profilUpdate">
+            enctype="multipart/form-data" @click="profilUpdate()">
             Valider
           </button>
           <button v-else id="btn-confirm-pic-profil-post">Valider</button>
@@ -100,7 +100,7 @@
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p  class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
-        <button :key="followkey " v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
+        <button  v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
       </div>
     </v-card-text>
     <v-card-text  v-if="following[0] === undefined" class="card-profil-friend">
@@ -146,12 +146,22 @@
       </div>
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
+    <transition name="fade" bottom right  fixed >
+    <div id="pagetopscroll" v-show="scY > 300" @click="toTop" >
+      <svg id="arrowscroll" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+           stroke="#4a5568"
+           stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </div>
+  </transition>
     <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     <WarningRecord v-if="warningRecord" v-show="warningRecord" @close-modale-record ="warningRecord=false" @close-modale-record-confirm="warningRecord=false,modifbio=false"/>
     <WarningEmpty v-if="warningEmpty" v-show="warningEmpty" @close-modale-empty ="warningEmpty=false" />
     <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
     <modify v-if="showmodify"  v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
     <deletepost v-if="showdel" v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
+    <WarningDeletePicture v-if="warningDelPic" v-show="warningDelPic" @close-modale-delpicuser=" warningDelPic = false" @close-modale-delpicuser-confirm="warningDelPic = false,deletePicUser()" />
   </v-card>
 
 </template>
@@ -159,12 +169,13 @@
 <script>
 import axios from "axios";
 import Load from "../components/Waitload.vue";
-
+// import { replace } from 'vue-router'
 
 export default {
   name: "Profil",
   components: {
     Load,
+    WarningDeletePicture: () => import( /* webpackChunkName:"WarningDeletePicture"*/"../components/warningdeletepictureuser.vue"),
     WarningDelete: () => import ("../components/warnindelete.vue"),
     WarningEmpty: ()=> import ("../components/warningempty.vue"),
     WarningRecord: () => import("../components/warningrecord.vue"),
@@ -211,17 +222,24 @@ export default {
       photo: [],
       userid: "",
       posted: "",
+      modifyPictureUserInprogress : false,
 
-      followkey: 0,
+      // followkey: 0,
 
       showdel: false,
       showmodify: false,
       warningRecord:false,
       warningEmpty: false,
       warningDelete :false,
+      warningDelPic : false,
 
       bioValid:false,
       showloader:true,
+
+      scTimer: 0,
+      scY: 0,
+
+    
 
 
     };
@@ -255,6 +273,9 @@ export default {
   },
 
   methods: {
+    // reloadPage () {
+    //     replace('/profiluser')
+    //   },
 
     getBio(){
        axios
@@ -337,24 +358,115 @@ export default {
 
     delPicPreview() {
       this.url = "";
+      this.modifyPictureUserInprogress = false
     },
 
-    delPic(e){
+    delPic(){
       this.url = ""
-      // this.urlpic === ""
+      // this.urlpic = ""
+    },
+
+     profilUpdate() {
+      this.showloader = true
+      // window.location.reload();
+      //    this.modifyPictureUserInprogress = false
+      let formData = new FormData();
+      formData.append("fullname", this.fullname);
+      formData.append("photo", this.photo);
+
+       axios
+        .put(`http://localhost:5000/api/user/${this.userid}`, formData)
+        .then(() => {
+          axios.get(`http://localhost:5000/api/post`).then((post) => {
+            post.data.forEach((doc) => {
+              if (doc.posterId === this.userid) {
+                const id = [];
+                id.push(doc._id);
+                id.forEach((postid) => {
+                  // console.log(postid);
+                  // console.log(this.photo);
+                  let formData = new FormData();
+                  formData.append("picture", this.photo);
+                  axios.put(
+                    `http://localhost:5000/api/post/photo/${postid}`,
+                    formData
+                  );
+                });
+              }
+            });
+          });
+        })
+        .catch((errors, test) => {
+          this.maxsize = errors.response.data.errors.maxsize;
+          this.format = errors.response.data.errors.format;
+          setTimeout(() => {
+            this.maxsize = "";
+            this.format = "";
+          }, 3000);
+          console.log(errors.response.data.errors.maxsize);
+          console.log(errors.response.data.errors.format);
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.modifyPictureUserInprogress = false
+            window.location.reload();
+          },1500);
+        })
+      },
+
+    deletePicUser(){
+      this.showloader = true
+       this.photo = ''
+       this.url = ''
+       this.urlpic =''
+       let formData = new FormData();
+      formData.append("photo", this.photo);
+      formData.append("posterId",this.userid)
+
+       axios
+        .put(`http://localhost:5000/api/user/${this.userid}`, formData)
+        .then(() => {
+          
+            axios.get(`http://localhost:5000/api/post`).then((post) => {
+            post.data.forEach((doc) => {
+              if (doc.posterId === this.userid) {
+                const id = [];
+                id.push(doc._id);
+                id.forEach((postid) => {
+                  // console.log(postid);
+                  // console.log(this.photo);
+                  let formData = new FormData();
+                  formData.append("picture", this.photo);
+                  console.log(this.photo);
+                  axios.put(
+                    `http://localhost:5000/api/post/photo/${postid}`,
+                    formData
+                  );
+                });
+              }
+            });
+          })
+        }).then(( )=>{
+          setTimeout(() => {
+            window.location.reload();
+          },1500);
+        })
     },
 
     picPreview(e) {
+      this.modifyPictureUserInprogress = true
+      console.log(e);
+      console.log(this.modifyPictureUserInprogress);
       e.target.value[0].split(" ");
       const pic = e.target.files[0];
       this.photo = pic;
       this.url = URL.createObjectURL(pic);
-      this.validPost = !this.validPost;
+      // this.validPost = !this.validPost;
     },
 
     getcolor() {
       if (this.urlpic === "" || this.urlpic === undefined ) {
-        this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
+        this.avatarpicempty = this.firstname.split("")[0].toLocaleUpperCase();
       }
     },
 
@@ -379,51 +491,7 @@ export default {
         })
     },
 
-    async profilUpdate() {
-      let formData = new FormData();
-      formData.append("fullname", this.fullname);
-      formData.append("photo", this.photo);
-
-      await axios
-        .put(`http://localhost:5000/api/user/${this.userid}`, formData)
-        .then(() => {
-          axios.get(`http://localhost:5000/api/post`).then((post) => {
-            post.data.forEach((doc) => {
-              if (doc.posterId === this.userid) {
-                const id = [];
-                id.push(doc._id);
-                id.forEach((postid) => {
-                  // console.log(postid);
-                  // console.log(this.photo);
-                  let formData = new FormData();
-                  formData.append("picture", this.photo);
-                  axios.put(
-                    `http://localhost:5000/api/post/photo/${postid}`,
-                    formData
-                  );
-                });
-              }
-            });
-          });
-        })
-        .then(() => {
-          this.posted = true;
-          setTimeout(() => {
-            this.posted = false;
-            window.location.reload();
-          }, 1000);
-        })
-        .catch((errors, test) => {
-          this.maxsize = errors.response.data.errors.maxsize;
-          this.format = errors.response.data.errors.format;
-          setTimeout(() => {
-            this.maxsize = "";
-            this.format = "";
-          }, 3000);
-          console.log(errors.response.data.errors.maxsize);
-          console.log(errors.response.data.errors.format);
-        });
-    },
+    
 
     getFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userid}`, { idToFollow: id })
@@ -478,9 +546,32 @@ export default {
             })
         })
     },
+
+
+    handleScroll () {
+        if (this.scTimer) return;
+        this.scTimer = setTimeout(() => {
+          this.scY = window.scrollY;
+          clearTimeout(this.scTimer);
+          this.scTimer = 0;
+        }, 100);
+      },
+      toTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      },
+
+    
+
+
+
+
   },
 
   async mounted() {
+    window.addEventListener('scroll', this.handleScroll);
     setTimeout(() => {
       this.showloader = false
     }, 1500);
@@ -507,7 +598,6 @@ export default {
         this.bioUser = docs.data.bio
         this.follower = docs.data.followers;
         this.following = docs.data.following;
-        console.log("la"+this.urlpic);
       })
       .catch((error) => {
         console.log(error);
@@ -523,7 +613,6 @@ export default {
               let name = this.followFirstname + " " + this.followLastname;
               this.followInfo = docs.data
               this.info.push(this.followInfo)
-              console.log(this.info);
             });
         });
       }).catch((error) => {
@@ -562,6 +651,59 @@ export default {
 label.lab-pic {
   display: flex;
   // width: 130px;
+}
+
+.block-picture-empty{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 140px;
+  margin-top: 5px;
+}
+
+label.lab-pic-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 0px;
+  height: 0px;
+}
+
+.card-profil-name-empty {
+  padding-bottom: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: $tertiary;
+}
+
+.lab-pic-custom-empty {
+  position: relative;
+  top: 45px;
+  left: -20px;
+  height: 40px;
+  width: 40px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#avatar-empty-profil {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px $secondary;
+  border-radius: 50%;
+  font-size: 5rem;
+  background-color: rgb(6, 132, 6);
 }
 
 label.lab-pic-choice{
@@ -688,18 +830,6 @@ img.form-avatar-dl {
   border-radius: 50%;
 }
 
-#avatar-empty-profil {
-  display: flex;
-  width: 120px;
-  height: 120px;
-  justify-content: center;
-  align-items: center;
-  border: solid 2px $secondary;
-  border-radius: 50%;
-  font-size: 5rem;
-  padding-bottom: 5%;
-  background-color: rgb(6, 132, 6);
-}
 
 
 .card {
@@ -745,11 +875,7 @@ div.v-card__text.card-profil-name {
   margin-left: 30px;
 }
 
-.camadd{
-  color : red
 
-
-}
 
 button#btn-del-pic-profil {
   display: flex;
@@ -787,6 +913,9 @@ button#btn-del-pic-profil {
   }
 }
 
+
+
+
 .lab-pic-custom-url {
   position: relative;
   top: 70px;
@@ -803,6 +932,7 @@ button#btn-del-pic-profil {
     cursor: pointer;
   }
 }
+
 
 button#btn-confirm-pic-profil {
   display: flex;
@@ -848,28 +978,13 @@ button#btn-confirm-pic-profil-post {
   }
 }
 
-.lab-pic-custom-url {
-  position: relative;
-  top: 70px;
-  left: 140px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 
 .fullname-url {
-  padding-top: 1%;
-  padding-left: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1%;
   font-size: 1.8rem;
-  padding-top: 4%;
 }
 
 .block-picture-url {

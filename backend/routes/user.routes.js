@@ -7,6 +7,7 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const userController = require("../controllers/user.controller");
 const uploadController = require("../controllers/upload.controller");
+const { requireAuth } = require("../middleware/auth.middleware");
 
 
 // router.get('/me', authenticateToken, (req,res,next) => res.send(req.user))
@@ -22,6 +23,7 @@ router.put("/:id",(req, res, next) => {image(req, res, function (err) {if (err) 
 } else {next();}
   });
 }, userController.updateUser);
+router.patch("/deleteuserpicture/:id",requireAuth,userController.delPicUser)
 router.delete("/:id", userController.userDelete);
 router.patch("/follow/:id", userController.follow);
 router.patch("/unfollow/:id", userController.unfollow);

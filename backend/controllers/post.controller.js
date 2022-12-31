@@ -65,8 +65,6 @@ exports.updatePost = (req, res) => {
     // console.log(req);
     const postedBy = post.posterId;
     const connectedUser = req.user;
-    console.log("up" + postedBy);
-    console.log("up" + connectedUser);
     if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
       // res.cookie('jwt','', { session:false, maxAge: 1 })
       res.status(400).json("delete");
@@ -100,12 +98,12 @@ exports.updatePost = (req, res) => {
 };
 
 exports.updatePictureUserPost = async (req, res) => {
-  //  console.log(req);
-  // if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
-  //   PostModel.findById(req.params.id)
-  //   .then((post) => {
+  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
+    PostModel.findById(req.params.id)
+    .then((post) => {
   const postedBy = post.posterId;
   const connectedUser = req.user;
+  console.log(req.file);
   //     // console.log( "up"+post.posterId);
   //     // console.log("up"+ req.user);
   if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
@@ -130,7 +128,7 @@ exports.updatePictureUserPost = async (req, res) => {
       }
     );
   }
-  // })
+  })
 };
 
 exports.getOnePost = (req, res) => {
@@ -350,7 +348,6 @@ exports.deleteOldPicModidify = (req, res) => {
       // console.log(req.body.id);
       old = req.body.id;
       let delimg = old.split("images/")[1];
-      console.log(delimg);
 
       fs.unlink(`images/${delimg}`, (err) => {
         if (err) {
@@ -443,7 +440,6 @@ exports.commentPost = (req, res) => {
   PostModel.findById(req.params.id)
     .then((post) => {
       const postRecord = post;
-      console.log(post);
       try {
         const date = new Date(Date.now());
         const days = date.toLocaleDateString();
