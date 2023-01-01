@@ -19,21 +19,21 @@ router.get("/logout", authController.logout);
 
 router.get("/", userController.getAllUsers);
 router.get('/:id', userController.userInfo);
-router.put("/:id",(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
+router.put("/:id",requireAuth,(req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
 } else {next();}
   });
 }, userController.updateUser);
 router.patch("/deleteuserpicture/:id",requireAuth,userController.delPicUser)
 router.delete("/:id", userController.userDelete);
-router.patch("/follow/:id", userController.follow);
-router.patch("/unfollow/:id", userController.unfollow);
+router.patch("/follow/:id",requireAuth, userController.follow);
+router.patch("/unfollow/:id",requireAuth, userController.unfollow);
 
 // router upload picture profil + multer error\\
 
 // router.delete('/photo/:id',userController.deletePictureProfil)
 
 router.post(
-  "/:id", 
+  "/:id",requireAuth, 
   (req, res, next) => {image(req, res, function (err) {if (err) {console.log(err.message); const errors = multerErrors(err);res.status(400).json({ errors });
   } else {next();}
     });

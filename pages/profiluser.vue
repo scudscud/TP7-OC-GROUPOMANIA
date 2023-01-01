@@ -70,11 +70,9 @@
           placeholder="votre biographie" maxlength="500" ></textarea>
 
         <div class="btn-bio"  >
-          <button id="btn-bio-send" type="submit" @click="controlePostBio">Enregistrer</button>
+          <button id="btn-bio-close" @click="(warningRecord = !warningRecord)">Fermer</button>
           <button id="btn-bio-delete" @click="deletebio">Annuler</button>
-          <button id="btn-bio-close" @click="(warningRecord = !warningRecord)">
-            Fermer
-          </button>
+          <button id="btn-bio-send" type="submit" @click="controlePostBio">Enregistrer</button>
         </div>
       </form>
     </v-card-text>
@@ -1099,9 +1097,7 @@ p.card-profil-biographie-p {
 #btn-bio-close {
   border: solid 2px $secondary;
   margin-top: 1%;
-  //   margin-left: 80%;
-  // flex-grow: 80%;
-  // flex-shrink: 100%;
+  margin-right: 1%;
   border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;

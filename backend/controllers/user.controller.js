@@ -4,6 +4,7 @@ const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const { connected } = require("process");
+const { createSecretKey } = require("crypto");
 
 // all user end point \\
 
@@ -32,7 +33,12 @@ exports.userInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-
+    const postedBy = req.params.id;
+    const connectedUser = req.user;
+    if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+      res.cookie('jwt','', { session:false, maxAge: 1 })
+      res.status(400).json("delete");
+    }else{
   const updatedData = {
     bio: req.body.bio,
     photo:
@@ -55,6 +61,7 @@ exports.updateUser = async (req, res) => {
   } catch (err) {
     return res.status(400).json({ message: err });
   }
+}
 };
 
 exports.delPicUser = (req,res) => {
@@ -81,14 +88,8 @@ exports.delPicUser = (req,res) => {
           });
         });
       }
-    })
-    .catch((err) => {
-      err;
+    }).catch((err) => {err;})
 
-
-
-
-  })
 }
 
 // user delete end point \\
@@ -150,10 +151,21 @@ exports.userDelete = async (req, res) => {
 exports.follow = async (req, res) => {
   if ( !ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.idToFollow) )
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    console.log(req.params.id);
-    console.log(req.body.idToFollow);
+    const postedBy = req.params.id;
+    const connectedUser = req.user;
+    if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+      res.cookie('jwt','', { session:false, maxAge: 1 })
+      res.status(400).json("delete");
+    }else{
+      UserModel.find({ _id: req.params.id, following:  req.body.idToFollow  },(err,doc)=>{
+        console.log(req.params.id);
+        console.log(req.body.idToFollow);
+        console.log(doc[0]);
+        console.log(err);
+      if ( doc[0] != undefined) return res.status(400).json('utilisateur deja follow');
+      else {
   try {
-    await UserModel.findByIdAndUpdate(
+     UserModel.findByIdAndUpdate(
       req.params.id,
       { $addToSet: { following: req.body.idToFollow } },
       { new: true, upsert: true }
@@ -161,32 +173,26 @@ exports.follow = async (req, res) => {
       .then((docs) => res.status(201).json(docs))
       .catch((err) => res.status(400).json({ message: err }));
   
-    await UserModel.findByIdAndUpdate(
+    UserModel.findByIdAndUpdate(
       req.body.idToFollow,
       { $addToSet: { followers: req.params.id } },
       { new: true, upsert: true }
     ).catch((err) => res.status(400).json({ message: err }));
 
-    await PostModel.findOneAndUpdate({posterId : req.body.idToFollow},
+    PostModel.findOneAndUpdate({posterId : req.body.idToFollow},
       {$push :{ posterfollower : req.params.id } },
       // { new: true, upsert: true }
       )
       .catch((err) => res.status(400).json({ message: err }));
-    await PostModel.findOneAndUpdate({posterId : req.params.id},
+     PostModel.findOneAndUpdate({posterId : req.params.id},
       {$push :{ posterfollowing : req.body.idToFollow}},
       // { new: true, upsert: true }
       )
       .catch((err) => res.status(400).json({ message: err }));
-  } catch (err) {
+   } catch (err) {
     res.status(500).json({ message: err });}
-    //   .then((doc)=>{
-  //     PostModel.updateMany(req.body.idToFollow,
-  //  {$addToSet :{ posterfollower : req.params.id } },
-  //     { multi: true, upsert: true }
-  //     )
-  //     console.log(doc)
-  //   }) 
-    // .then((docs) => res.status(201).json(docs))
+  }}) 
+  }
 };
 
 // unfollow user end point \\
@@ -197,8 +203,7 @@ exports.unfollow = async (req, res) => {
     !ObjectID.isValid(req.body.idToUnFollow)
   )
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    console.log(req.params.id);
-    console.log(req.body.idToUnFollow);
+  
   try {
     await UserModel.findByIdAndUpdate(req.params.id,
       { $pull: { following: req.body.idToUnFollow } },

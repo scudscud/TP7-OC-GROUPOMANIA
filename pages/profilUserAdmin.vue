@@ -52,8 +52,8 @@
       <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
       <!-- <button v-if='!modifbio' class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
-        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button>
- -->
+        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button> -->
+
       <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
         <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer la biographie </button>
     </v-card-text>

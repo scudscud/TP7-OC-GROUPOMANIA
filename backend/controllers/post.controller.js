@@ -72,11 +72,10 @@ exports.updatePost = (req, res) => {
     return res.status(400).send("post inconuu:" + req.params.id);
   }
   PostModel.findById(req.params.id).then((post) => {
-    // console.log(req);
     const postedBy = post.posterId;
     const connectedUser = req.user;
     if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-      // res.cookie('jwt','', { session:false, maxAge: 1 })
+      res.cookie('jwt','', { session:false, maxAge: 1 })
       res.status(400).json("delete");
     } else {
       const date = new Date(Date.now());
@@ -85,8 +84,6 @@ exports.updatePost = (req, res) => {
       const hours = String(date.getHours()).padStart(2, "0");
       const finalDate = `modifié le ${days} à ${hours}:${minutes}`;
       const updatedRecord = {
-        // posterId: req.body.posterId,
-        // posterpicture : req.body.photo,
         message: req.body.message,
         picture:
           req.file != null
@@ -113,9 +110,6 @@ exports.updatePictureUserPost = async (req, res) => {
     .then((post) => {
   const postedBy = post.posterId;
   const connectedUser = req.user;
-  console.log(req.file);
-  //     // console.log( "up"+post.posterId);
-  //     // console.log("up"+ req.user);
   if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
     // res.cookie('jwt','', { session:false, maxAge: 1 })
     res.status(400).json("delete");
@@ -198,7 +192,6 @@ exports.getPostSignalAdmin = (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
     console.log(req.user);
   PostModel.find({ signalBy: {$gte : 1}},(err, doc) => {
-  console.log(doc);
   if(!err)res.send(doc)
   else res.status(400).send('erreur la ')
   }).sort({ createdAt: -1 });
@@ -271,11 +264,8 @@ exports.deletePost = (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   PostModel.findById(req.params.id)
     .then((post) => {
-      // console.log(req.user);
       const postedBy = post.posterId;
       const connectedUser = req.user;
-      // console.log("del"+postedBy);
-      // console.log( "del"+req.user);
       if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
         res.cookie("jwt", "", { session: false, maxAge: 1 });
         res.status(400).json("nocookie");
@@ -283,7 +273,6 @@ exports.deletePost = (req, res) => {
         let delimg = post.picture.split("images/")[1];
         fs.unlink(`images/${delimg}`, () => {
           PostModel.findByIdAndRemove(req.params.id, (err, docs) => {
-            // console.log(req);
             if (!err) {
               res.status(200).json(docs);
             } else {
@@ -305,17 +294,11 @@ exports.deleteOnePicture = (req, res) => {
     .then((post) => {
       const postedBy = post.posterId;
       const connectedUser = req.user;
-      // console.log(post);
-      // console.log("on"+postedBy);
-      // console.log( "on"+req.user);
       if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
         res.cookie("jwt", "", { session: false, maxAge: 1 });
         res.status(400).json("onepic");
       } else {
-        // console.log(post);
         let delimg = post.picture.split("images/")[1];
-        // console.log(delimg);
-
         fs.unlink(`images/${delimg}`, (err) => {
           if (err) {
             console.log("failed to delete local image:" + err);
@@ -361,42 +344,51 @@ exports.deleteOldPicModidify = (req, res) => {
 exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("post iconnu:" + req.params.id);
-  try {
-    // console.log(req.params.id),
-    // console.log(req.body.id),
-    PostModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $addToSet: {
-          likers: req.body.id,
+    if (req.user !== req.body.id) return res.status(400).send("erreur de user");
+    PostModel.find({ _id: req.params.id, likers: { $gte: req.body.id } },(err,doc)=>{
+      console.log(doc[0]);
+      console.log(err);
+    if ( doc[0] != undefined)  res.status(400).json('publication deja liker')
+    else {
+    try {
+      PostModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          $addToSet: {
+            likers: req.body.id,
+          },
         },
-      },
-      (err, docs) => {
-        if (err) {
-          return res.status(400).send(err.message);
+        (err, docs) => {
+          if (err) {
+            return res.status(400).send(err.message);
+          }
         }
-      }
-    );
-    UserModel.findByIdAndUpdate(
-      req.body.id,
-      {
-        $addToSet: { likes: req.params.id },
-      },
-      { new: true },
-      (err, docs) => {
-        if (!err) res.send("post liker");
-        else return res.status(400).send(err.message);
-      }
-    );
-  } catch (err) {
-    return res.status(400).send(err.message);
+      );
+      UserModel.findByIdAndUpdate(
+        req.body.id,
+        {
+          $addToSet: { likes: req.params.id },
+        },
+        { new: true },
+        (err, docs) => {
+          if (!err) res.send("post liker");
+          else return res.status(400).send(err.message);
+        }
+      );
+    } catch (err) {
+      return res.status(400).send(err.message);
+    }
   }
+
+    })
+ 
 };
 
 // unlike post end point \\
 exports.unLikePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    if (req.user !== req.body.id) return res.status(400).json("erreur de user");
   try {
     PostModel.findByIdAndUpdate(
       req.params.id,
