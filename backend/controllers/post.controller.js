@@ -105,7 +105,7 @@ exports.updatePost = (req, res) => {
 };
 
 exports.updatePictureUserPost = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconuu:" + req.params.id);}
+  if (!ObjectID.isValid(req.params.id) ) {return res.status(400).send("post inconu:" + req.params.id);}
     PostModel.findById(req.params.id)
     .then((post) => {
   const postedBy = post.posterId;
@@ -201,6 +201,7 @@ exports.getPostSignalAdmin = (req, res) => {
 exports.getPostSignal = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("publication inconnu:" + req.params.id);
+    if(req.body.userFromId !== req.user ) return res.status(400).send("erreur sur l'utilisateur");
   PostModel.findById(req.params.id)
     .then((doc) => {
       const verifynotreport = doc.signalBy;
@@ -250,7 +251,14 @@ exports.getPostSignal = (req, res) => {
         } catch (err) {
           res.status(400).send(err);
         }
-        res.status(200).json(doc);
+        UserModel.findById(req.body.userSignalId,{signalBy:req.body.userSignalId},(err,doc)=>{
+           if (doc[0] !== null ) console.log('utilisateur deja signaler')
+           else {
+           UserModel.findByIdAndUpdate(req.body.userSignalId,
+              { $push: {signalBy : req.body.userFromId}},
+              (err,doc)=>{ if (err) res.status(400).json(err)})
+            }
+        })
       }
     })
     .catch((err) => {
@@ -345,7 +353,7 @@ exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("post iconnu:" + req.params.id);
     if (req.user !== req.body.id) return res.status(400).send("erreur de user");
-    PostModel.find({ _id: req.params.id, likers: { $gte: req.body.id } },(err,doc)=>{
+    PostModel.find({ _id: req.params.id, likers: req.body.id },(err,doc)=>{
       console.log(doc[0]);
       console.log(err);
     if ( doc[0] != undefined)  res.status(400).json('publication deja liker')

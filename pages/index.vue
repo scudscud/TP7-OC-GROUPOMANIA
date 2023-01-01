@@ -85,7 +85,7 @@
                 <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
                   title="modifier votre publication">
                   <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>
-                  Modifierer
+                  Modifier
                 </button>
                 <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
                 <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
@@ -202,9 +202,9 @@
                     " title="signaler la publication">
                 <v-icon class="img-att-flag">mdi-flag-outline</v-icon>
                 <p class="text-att-report">Signaler</p>
-                <div v-if="post.signalBy.length > 0" class="buble-report">
+                <!-- <div v-if="post.signalBy.length > 0" class="buble-report">
                   <span id="number-report">{{ post.signalBy.length }}</span>
-                </div>
+                </div> -->
               </button>
             </div>
           </div>
