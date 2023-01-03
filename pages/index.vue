@@ -691,7 +691,7 @@ import Load from "../components/Waitload.vue";
             document.querySelectorAll(".deploy-commentUser-card")[
               index
             ].attributes[1].textContent = "display: none";
-            this.getPostsRefresh();
+            this.getRefresh();
           });
       } else {
         this.warningRecordCommentEmpty = true;
