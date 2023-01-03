@@ -78,21 +78,58 @@
                   </div>
                 </nuxt-link>
                 <span id="fullname-main">{{ post.posterfullname }} à {{ post.date }}</span>
-                <!-- <p class="full-date">{{post.date}}</p> -->
               </div>
-              <div class="btn-book-main">
-                <!-- <modify :keyPost="post._id" v-show="showmodify" @close-modale-modify="showmodify = false" /> -->
+
+              <div class="text-center">
+    <v-menu
+      open-on-hover
+      top
+      offset-y
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn id="manage-btn-admin-post"
+          v-bind="attrs"
+          v-on="on"
+        >
+          gestion 
+        </v-btn>
+      </template>
+      <v-list>
+      <div class="btn-book-main">
                 <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
                   title="modifier votre publication">
                   <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>
                   Modifier
                 </button>
-                <!-- <deletepost ref="post_id"  :tets="post._id,index"  v-show="showdel" @close-modale-delete="showdel = false" /> -->
                 <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
                   title="supprimer votre publication">
                   <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
                 </button>
               </div>
+            </v-list>
+      <!-- <v-list>
+        <v-list-item
+          v-for="(action, index) in actions"
+          :key="index"
+        >
+          <v-list-item-title>{{ action.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list> -->
+    </v-menu>
+  </div>
+
+
+              <!-- <div class="btn-book-main">
+                <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
+                  title="modifier votre publication">
+                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>
+                  Modifier
+                </button>
+                <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
+                  title="supprimer votre publication">
+                  <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
+                </button>
+              </div> -->
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
@@ -163,7 +200,12 @@
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">S'abonné</p>
               </button>
-              <div v-if="post.signalBy.length > 0"  id="flag-admin-signal"><v-icon id="flag-admin-signal-icon">mdi-flag</v-icon></div>
+              <div v-if="post.signalBy.length > 0"  id="flag-admin-signal"><v-icon id="flag-admin-signal-icon">mdi-flag</v-icon> 
+                <div v-if="post.signalBy.length > 0" class="buble-report">
+                  <span id="number-report">{{ post.signalBy.length }}</span>
+                </div>
+              </div>
+             
             </div>
 
             <div v-else class="btn-card" id="card-att">
@@ -215,7 +257,7 @@
                 <label for="comment">
                   <h2>Commentaire:</h2>
                 </label>
-                <textarea v-model="CommentMessage" name="comment" class="card-profil-textarea" type="textarea"
+                <textarea v-model="CommentMessage" name="comment" class="card-comment-area" type="textarea"
                   placeholder="votre commentaire" maxlength="200" :index="index"></textarea>
                 <div class="btn-comment">
                   <button id="btn-comment-close" @click="ControleClose(index), saveClose(index)">
@@ -232,17 +274,22 @@
             </v-card-text>
           </div>
 
-          <button class="deploy-comment-button" v-if="post.comments.length > 0 && !seecomment[index]" @click="(seecomment[index] = !seecomment[index]), SeeComment()" :index="index">
+          <button class="deploy-comment-button" v-if="post.comments.length > 0 && (seetest.index !== index || !seetest.see)" @click="selectPost(index)"  :index="index" >Voir les commentaires</button>
+      <button class="deploy-comment-button" v-if="post.comments.length > 0 && seetest.index === index && seetest.see" @click="selectPost(index)" :index="index">Cacher les commentaires</button>
+
+          <!-- <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment[index] " @click="seecomment[index] = !seecomment[index], SeeComment(index)" :index="index">
             Voir les commentaires<v-icon class="arrow-comment">mdi-arrow-down</v-icon>
           </button>
-          <button class="close-comment-button" v-if="post.comments.length > 0 && seecomment[index]"
-            @click="(seecomment[index] = !seecomment[index]), SeeComment()" :index="index">
+          <button class="close-comment-button" v-if="post.comments.length > 0 && !seecomment[index]"
+            @click=" seecomment[index] = !seecomment[index], CloseComment(index)" :index="index">
             Cacher les commentaires<v-icon class="arrow-comment">mdi-arrow-up</v-icon>
-          </button>
+          </button> -->
           <!-- <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment === false && index == !selectedPostIndexOpen" @click="DeployComment(index),seecomment = !seecomment" :index="index"  :class="seecomment == true ? 'open' : 'close'">Voir les commentaires</button> -->
 
-          <v-card v-if="seecomment[index]" v-for="(comment, indexcomment) in post.comments" :key="comment._id"
-            :index="indexcomment" class="card-comment">
+          <v-card v-if="seetest.index === index && seetest.see"  v-for="(comment, indexcomment) in post.comments" :key="comment._id" :index="indexcomment" class="card-comment">
+
+          <!-- <v-card v-if="!seecomment[index]" v-for="(comment, indexcomment) in post.comments" :key="comment._id"
+            :index="indexcomment" class="card-comment"> -->
             <v-card-text class="card-comment-posted">
               <div class="title-card-comment-posted">
                 <img v-if="
@@ -329,6 +376,9 @@
       @close-modale-clear-delete="WarningClearComment = !WarningClearComment" @close-modale-clear-comfirm="
   (WarningClearComment = !WarningClearComment), clearComment()
       " />
+      <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId"
+      :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname"
+      @close-modale-report="showReport = false" @close-modale-report-comfirm="(showReport = false), getRefresh()" />
   </div>
 </template>
 <script>
@@ -415,6 +465,12 @@ import Load from "../components/Waitload.vue";
       showReport: false,
       Followers: false,
       seecomment: [],
+      seetest: {
+        index: null,
+        see: false
+
+      },
+      seeok : false,
       writecomment: false,
       commentValid: false,
       Comment: "",
@@ -423,10 +479,6 @@ import Load from "../components/Waitload.vue";
       warningRecordCommentEmpty: false,
       WarningDoubleComment: false,
       WarningClearComment: false,
-
-      // selectedPostIndexOpen: null,
-      // selectedPostIndexClose: null,
-      // selectedPostIndexes: [],
       selectedPostIndex: null,
       selectedCommentIndexes: [],
 
@@ -436,15 +488,20 @@ import Load from "../components/Waitload.vue";
       showloader: true,
       scTimer: 0,
       scY: 0,
-      // userlike:[],
-      // numberlike:[],
-      // likeby:'',
-      // postlikers:[],
-      // liker : [],
-      // photo:'',
-      // userphoto:'',
-      // match:[],
-      // liked: "",
+
+
+      actions: [
+        { 
+          title: 'Supprimer la publication',
+        
+      
+      
+      },
+        { title: 'Modifier la publication' },
+        { title: "Bannir l'utilisateur" },
+      ],
+
+
     };
    },
    computed: {
@@ -490,31 +547,25 @@ import Load from "../components/Waitload.vue";
    },
    events: {},
    methods: {
-    SeeComment() {
-      window.scrollBy(0, 10);
-    },
+    selectPost(index) {
+    if (this.seetest.index === index) {
+      this.seetest.see = !this.seetest.see
+    } else { 
+      this.seetest.index = index
+      this.seetest.see = true
+    }
+  },
 
-    // // DeployComment(index) {
-    // //       this.selectedPostIndexOpen = index
-    // //     },
-    //     CloseComment(index){
-    //       this.seecomment = false
-    //       this.selectedPostIndex = null
-    //     },
+  //   openPostComment(index) {
+  //   this.seetest.index = index;
+  //   this.seetest.see = true;
+  // },
+  // closePostComment(index) {
+  //   this.seetest.index = index;
+  //   this.seetest.see = false;
+  // },
 
-    // DeployComment(index) {
-    //   this.seecomment = true
-    //   this.selectedPostIndex = index
-    //     },
-
-    //     DeployCommentComment(index) {
-    //   const indexInArray = this.selectedCommentIndexes.indexOf(index)
-    //   if (indexInArray !== -1) {
-    //     this.selectedCommentIndexes.splice(indexInArray, 1)
-    //   } else {
-    //     this.selectedCommentIndexes.push(index)
-    //   }
-    // },
+ 
 
     clearComment() {
       this.CommentMessage = "";
@@ -561,11 +612,9 @@ import Load from "../components/Waitload.vue";
     },
 
     closeComment() {
-      const test = document.querySelectorAll(".deploy-commentUser-card");
-      console.log(test);
-      test.forEach((att) => {
+      const closeCom = document.querySelectorAll(".deploy-commentUser-card");
+      closeCom.forEach((att) => {
         att.attributes[1].textContent = "display: none";
-        console.log(att.attributes[1].textContent);
       });
     },
 
@@ -660,7 +709,8 @@ import Load from "../components/Waitload.vue";
         userFfull: uffn,
         userFid: ufid,
       };
-      localStorage.setItem("info", JSON.stringify(info));
+      console.log(info);
+      localStorage.setItem("info-signal-post", JSON.stringify(info));
     },
 
     handleScroll: function () {
@@ -1295,6 +1345,13 @@ div.v-main__wrap {
   width: 100%;
 }
 
+textarea.card-comment-area{
+  color : white;
+  caret-color: red ;
+  border: solid 1px $secondary;
+
+}
+
 .btn-comment {
   display: flex;
   flex-direction: row;
@@ -1857,22 +1914,51 @@ p.firstpost {
   }
 }
 
+#manage-btn-admin-post{
+background-color: $secondary;
+
+
+}
+
+#flag-admin-signal-icon{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-left: 10%;
+color: red;
+width: 20px;
+height: 20px;
+}
+
+#flag-admin-signal{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: $secondary;
+  border-radius: 20px;
+  margin-top: 2.5%;
+  width: 55px;
+  height: 38px;
+}
+
+
 .buble-report {
-  background-color: $tertiary;
+  background-color: $secondary;
   position: relative;
-  top: -12px;
-  left: 10px;
-  width: 30px;
+  top: 0px;
+  left: 0px;
+  width: 20px;
   height: 20px;
   border: solid 2px $primary;
   border-radius: 50%;
 }
 
 #number-report {
-  color: $secondary;
+  color: black;
   position: relative;
   top: -5px;
-  right: -0px;
+  right: -3px;
+  font-size: 15px;
 }
 
 .img-att-flag {
@@ -2143,26 +2229,6 @@ p.text-att-report {
   align-items: center;
   margin-bottom: 0px;
   // padding-right: 20%;
-}
-
-#flag-admin-signal-icon{
-display: flex;
-justify-content: center;
-align-items: center;
-color: red;
-width: 25px;
-height: 25px;
-}
-
-#flag-admin-signal{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $secondary;
-  border-radius: 50%;
-  margin-top: 2.5%;
-  width: 30px;
-  height: 30px;
 }
 
 

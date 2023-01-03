@@ -100,14 +100,13 @@ export default {
   // name: 'Delete',
   async mounted(){
     this.reportcheck= []
-    const getInfo = localStorage.getItem('info')
-    const info = JSON.parse(localStorage.getItem('info'))
+    const getInfo = localStorage.getItem('info-signal-post')
+    const info = JSON.parse(localStorage.getItem('info-signal-post'))
     this.userFromFullname = info.userFfull
     this.userFromId = info.userFid
     this.userSignalId = info.userSid
     this.userSignalFullname = info.userSfull
     this.postSignal = info.post
-   localStorage.removeItem('info')
    axios.get(`http://localhost:5000/api/post/${this.postSignal}`)
         .then((docs) => {
           console.log(docs.data.signalBy);

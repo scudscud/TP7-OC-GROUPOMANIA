@@ -6,6 +6,7 @@ const CommentModel = require("../models/comment.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
 let path = require("path");
+const { log } = require("console");
 // const { log } = require("console");
 
 // read post end point \\
@@ -187,16 +188,20 @@ exports.getPostFollower = (req, res) => {
   }).sort({ createdAt: -1 });
 };
 
-exports.getPostSignalAdmin = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    console.log(req.user);
-  PostModel.find({ signalBy: {$gte : 1}},(err, doc) => {
-  if(!err)res.send(doc)
-  else res.status(400).send('erreur la ')
-  }).sort({ createdAt: -1 });
-};
-
+exports.getPostSignalAdmin = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(400).send("Utilisateur inconnu : " + req.params.id);
+  }
+  if (req.user != process.env.ADMINID ) {return res.status(400).json("tu n'est pas l'admin")}
+else{
+  try {
+    const docs = await PostModel.find({ signalBy: { $gte: 1 } }).sort({ signalpost: -1 });
+    res.send(docs);
+  } catch (err) {
+    res.status(400).send("Erreur : " + err);
+    }
+  }
+}; 
 
 exports.getPostSignal = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
@@ -251,12 +256,23 @@ exports.getPostSignal = (req, res) => {
         } catch (err) {
           res.status(400).send(err);
         }
-        UserModel.findById(req.body.userSignalId,{signalBy:req.body.userSignalId},(err,doc)=>{
-           if (doc[0] !== null ) console.log('utilisateur deja signaler')
+        const signalUser = {
+          signalPostId : req.body.postSignal,
+          signalUserId : req.body.userFromId ,
+          date: finalDate,  
+        }
+        UserModel.findById(req.body.userSignalId,{postSignalBy:
+          {$elemMatch :
+            {signalPostid :req.body.postSignal, signalUserId : req.body.userFromId}}},(err,doc)=>{
+              console.log(doc.postSignalBy[0]);
+           if (doc.postSignalBy[0] != undefined ) console.log('user utilisateur deja signaler')
            else {
            UserModel.findByIdAndUpdate(req.body.userSignalId,
-              { $push: {signalBy : req.body.userFromId}},
-              (err,doc)=>{ if (err) res.status(400).json(err)})
+              { $push: {postSignalBy : signalUser}},
+              (err,doc)=>{ 
+                if (err) res.status(400).json(err)
+                else console.log("c'est ok '" + doc);
+              })
             }
         })
       }

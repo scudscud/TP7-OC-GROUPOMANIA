@@ -73,6 +73,13 @@ const userSchema = mongoose.Schema(
     following: {
       type: [String],
     },
+    postSignalBy : {
+      type :[ {
+        signalPostId : String,
+        signalUserId : String ,
+        date: String,  
+      }]
+    },
     signalBy:{ type: [String]
     // type: [{  
     //   signalByFullname: {type:String},
@@ -85,6 +92,7 @@ const userSchema = mongoose.Schema(
     },
     ban: {
       type: Boolean,
+      default: false
     },
     comment : 
     {type: [{

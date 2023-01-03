@@ -697,37 +697,35 @@ div.v-card__text.card-profil-name {
   background-color: $tertiary;
 }
 
-.card-profil-name-url {
-  display: flex;
-  justify-content: center;
-  background-color: $tertiary;
-}
+// .card-profil-name-url {
+//   display: flex;
+//   justify-content: center;
+//   background-color: $tertiary;
+// }
 
-.block-btn-pic-profil {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 175px;
-  margin-left: 30px;
-}
+// .block-btn-pic-profil {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   width: 175px;
+//   margin-left: 30px;
+// }
 
-button#btn-del-pic-profil {
-  display: flex;
-  // height: 20px;
-  justify-content: center;
-  align-items: center;
-  margin-left: 0%;
-  border: solid 2px $secondary;
-  border-radius:15px;
-  color: $secondary;
-
-  &:hover {
-    border-radius: 10px;
-    background-color: $secondary;
-    color: $tertiary;
-  }
-}
+// button#btn-del-pic-profil {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-left: 0%;
+//   border: solid 2px $secondary;
+//   border-radius:15px;
+//   color: $secondary;
+//   &:hover {
+//     border-radius: 10px;
+//     background-color: $secondary;
+//     color: $tertiary;
+//   }
+// }
 
 button#btn-del-pic-profil-bis {
   position: relative;
@@ -735,9 +733,6 @@ button#btn-del-pic-profil-bis {
   left: 50px;
   height: 38px;
   width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
   &:hover {

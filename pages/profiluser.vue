@@ -648,7 +648,6 @@ export default {
 <style lang="scss">
 label.lab-pic {
   display: flex;
-  // width: 130px;
 }
 
 .block-picture-empty{
@@ -682,6 +681,7 @@ label.lab-pic-empty {
   position: relative;
   top: 45px;
   left: -20px;
+  padding: 1%;
   height: 40px;
   width: 40px;
   background-color: $tertiary;
@@ -721,9 +721,8 @@ img#form-picture-profil {
   border: solid 2px $secondary;
   border-radius: 50%;
   font-size: 5rem;
-
-  // padding-bottom: 5%;
 }
+
 .block-picture-choice{
   display: flex;
   justify-content: center;
@@ -763,12 +762,8 @@ button#btn-del-pic-profil-choice {
   left: +30px;
   height: 38px;
   width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
-
   &:hover {
     cursor: pointer;
   }
@@ -777,7 +772,6 @@ button#btn-del-pic-profil-choice {
 .lab-pic-del {
   display: flex;
   justify-content: center;
-
 }
 
 .lab-pic-custom {
@@ -791,7 +785,6 @@ button#btn-del-pic-profil-choice {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
-
   &:hover {
     cursor: pointer;
   }
@@ -800,8 +793,6 @@ button#btn-del-pic-profil-choice {
 .form-avatar-profil {
   padding-top: 2%;
   display: none;
-  // visibility: none;
-
   &:hover {
     cursor: pointer;
   }
@@ -811,7 +802,6 @@ button#btn-del-pic-profil-choice {
   display: flex;
   width: 120px;
   height: 120px;
-
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
@@ -827,8 +817,6 @@ img.form-avatar-dl {
   border: solid 2px $secondary;
   border-radius: 50%;
 }
-
-
 
 .card {
   display: flex;
@@ -873,26 +861,20 @@ div.v-card__text.card-profil-name {
   margin-left: 30px;
 }
 
-
-
 button#btn-del-pic-profil {
   display: flex;
-  // height: 20px;
   justify-content: center;
   align-items: center;
   margin-left: 0%;
   border: solid 2px $secondary;
   border-radius: 15px;
   color: $secondary;
-
   &:hover {
     border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
 }
-
-
 
 #btn-del-pic-profil-icon {
   position: relative;
@@ -905,14 +887,10 @@ button#btn-del-pic-profil {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
-
   &:hover {
     cursor: pointer;
   }
 }
-
-
-
 
 .lab-pic-custom-url {
   position: relative;
@@ -925,12 +903,10 @@ button#btn-del-pic-profil {
   border: solid 2px $primary;
   padding-bottom: 2%;
   padding-right: 2%;
-
   &:hover {
     cursor: pointer;
   }
 }
-
 
 button#btn-confirm-pic-profil {
   display: flex;
@@ -958,7 +934,6 @@ button#btn-confirm-pic-profil-post {
   border: solid 2px $secondary;
   border-radius: 15px;
   color: green;
-
   &:hover {
     border-radius: 15px;
     background-color: $secondary;
@@ -975,7 +950,6 @@ button#btn-confirm-pic-profil-post {
     cursor: pointer;
   }
 }
-
 
 .fullname-url {
   display: flex;

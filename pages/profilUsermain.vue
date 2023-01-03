@@ -22,9 +22,27 @@
         </label>
       </div>
       <span class="fullname-profilusermain">{{ fullname }}</span>
+
+      <button 
+
+      
+
+      class="btn-att-flag" @click="
+                      (showReportUser = !showReportUser),
+                      reportInfoUser(
+                        fullname,
+                        userid,
+                        userfullname,
+                        userjwtid
+                      )
+                    " title="signaler la publication">
+                <v-icon class="img-att-flag-usermain">mdi-flag-outline</v-icon>
+                <p class="text-att-report-usermain">Signaler</p>
+                <!-- <div v-if="post.signalBy.length > 0" class="buble-report">
+                  <span id="number-report">{{ post.signalBy.length }}</span>
+                </div> -->
+              </button>
     </v-card-text>
-
-
 
     <v-card-text class="card-profil-biographie">
       <h2>biographie </h2>
@@ -117,6 +135,9 @@
       <div class="card-profil-post-p">{{ publication }}</div>
     </v-card-text>
     <div>
+      <reportuser v-if="showReportUser" v-show="showReportUser"  
+      
+      @close-modale-report-user="showReportUser = false" @close-modale-report-comfirm-user="(showReportUser = false)" />
       <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     </div>
 
@@ -131,7 +152,8 @@ import Load from "../components/Waitload.vue"
 export default {
   name: "Profil",
   components: {
- Load
+ Load,
+ reportuser: () => import(/* webpackChunkName:"reportuser"*/ "../components/warningreportuserprofil.vue"),
   },
 
   data() {
@@ -159,6 +181,8 @@ export default {
       userjwtid: '',
       myfollower:[],
       myfollowing:[],
+      userfirstname : "",
+      userlastname : "",
 
       userLikePostId: [],
 
@@ -191,6 +215,11 @@ export default {
       warningRecord: false,
       warningEmpty: false,
       warningDelete: false,
+      showReportUser : false,
+      userSfull: '',
+      userSid: '',
+      userFfull: '',
+      userFid: '',
 
       bioValid: false,
       showloader:true,
@@ -207,9 +236,28 @@ export default {
         [this.firstname, this.lastname] = newValue.split(" ");
       },
     },
+    userfullname: {
+      get() {
+        return this.userfirstname + " " + this.userlastname;
+      },
+      set(newValue) {
+        [this.userfirstname, this.userlastname] = newValue.split(" ");
+      },
+    },
   },
 
   methods: {
+
+    
+    reportInfoUser(usfn, usid, uffn, ufid) {
+      const infouser = {
+        userSfullP: usfn,
+        userSidP: usid,
+        userFfullP: uffn,
+        userFidP: ufid,
+      };
+      localStorage.setItem("info-signal-profil", JSON.stringify(infouser));
+    },
 
 
     clickLike(postId, index) {
@@ -345,6 +393,13 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+
+      await axios
+      .get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((docs) => {
+         this.userfirstname =  docs.data.firstname,
+         this.userlastname =  docs.data.lastname
+        }).catch((error) => {console.log(error)});
 
     await axios
       .get(`http://localhost:5000/api/user/${this.id}`)
@@ -495,58 +550,135 @@ span.fullname-usermain {
 }
 
 
-
-
-.lab-pic-custom-url {
-  position: relative;
-  top: 70px;
-  left: 140px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-button#btn-confirm-pic-profil {
+.img-att-flag-usermain {
   display: flex;
-  // height: 20px;
-  justify-content: center;
   align-items: center;
-  margin-left: 0%;
-  border: solid 2px $secondary;
-  border-radius: 15px;
-  color: $secondary;
+  justify-content: center;
+  width: auto;
+  padding-right: 10%;
 
-  &:hover {
-    border-radius:10px;
-    background-color: $secondary;
+  &:before {
     color: $tertiary;
   }
-}
-
-button#btn-confirm-pic-profil-post {
-  display: flex;
-  // height: 20px;
-  justify-content: center;
-  align-items: center;
-  margin-left: 0%;
-  border: solid 2px $secondary;
-  border-radius: 15px;
-  color: green;
 
   &:hover {
-    border-radius: 10px;
-    background-color: $secondary;
-    color: green;
+    color: $secondary;
   }
 }
+
+p.text-att-report-usermain {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  // padding-right: 20%;
+}
+
+.notReportPost {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  height: 38px;
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: $secondary;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+
+  &:hover {
+    background-color: $tertiary;
+    color: $secondary;
+    translate: 3px;
+    border: solid 1px $secondary;
+
+    &.notReportPost>.img-att-flag:before {
+      color: $secondary;
+    }
+  }
+}
+
+.reportPost {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  height: 38px;
+  margin-top: 2%;
+  margin-right: 3%;
+  background-color: #ae6a6a;
+  color: $tertiary;
+  width: auto;
+  cursor: pointer;
+  padding: 2%;
+
+  &:hover {
+    background-color: $tertiary;
+    color: $secondary;
+    translate: 3px;
+    border: solid 1px $secondary;
+
+    &.reportPost>.img-att-flag:before {
+      color: $secondary;
+    }
+  }
+}
+
+// .lab-pic-custom-url {
+//   position: relative;
+//   top: 70px;
+//   left: 140px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
+
+// button#btn-confirm-pic-profil {
+//   display: flex;
+//   // height: 20px;
+//   justify-content: center;
+//   align-items: center;
+//   margin-left: 0%;
+//   border: solid 2px $secondary;
+//   border-radius: 15px;
+//   color: $secondary;
+
+//   &:hover {
+//     border-radius:10px;
+//     background-color: $secondary;
+//     color: $tertiary;
+//   }
+// }
+
+// button#btn-confirm-pic-profil-post {
+//   display: flex;
+//   // height: 20px;
+//   justify-content: center;
+//   align-items: center;
+//   margin-left: 0%;
+//   border: solid 2px $secondary;
+//   border-radius: 15px;
+//   color: green;
+
+//   &:hover {
+//     border-radius: 10px;
+//     background-color: $secondary;
+//     color: green;
+//   }
+// }
 
 .form-avatar-profil-url {
   padding-top: 2%;

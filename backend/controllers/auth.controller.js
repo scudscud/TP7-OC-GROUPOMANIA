@@ -64,8 +64,10 @@ console.log(err);
 // signin end point cookie jwt \\
 
 exports.signIn = async (req, res) => {
+ 
   const { email, badge, password } = req.body;
   try {
+    const ban = UserModel.findById()
     const user = await UserModel.login(email, badge, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, {
@@ -75,7 +77,11 @@ exports.signIn = async (req, res) => {
       secure:false,
       httpOnly: true,
     });
-    res.status(200).json({ user: user._id , token});
+    UserModel.findOne({_id: user, ban : true}, (err,doc) => {
+    if (doc)
+     {res.cookie("jwt",'', { maxAge: durationTokenLogout }),  res.status(400).json('utilisateur banni') }
+    else {res.status(200).json({ user: user._id , token});}
+  })
   } catch (err) {
     const errors = signInErrors(err);
     res.status(401).send({ errors });
