@@ -46,9 +46,7 @@
         >
           <span>Signaler</span>
         </v-btn>
-        <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
-        <!-- <v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
-<v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
+
       </v-card>
     </v-col>
     <v-col v-else class="d-flex justify-center align-center">
@@ -83,10 +81,6 @@
           <span>Retour</span>
         </v-btn>
        
-        
-        <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
-        <!-- <v-btn v-if="!deleteconfirm" @click="deletedPost(userid)"  id="btn-delete-comfirm"  ><span>Supprimer le post</span></v-btn>
-<v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
       </v-card>
     </v-col>
   </div>
@@ -172,11 +166,7 @@ export default {
   padding-top: 1%;
   background-color: $secondary;
   margin-top: 250px;
-  // max-width: 300px;
-  // min-width: 300px;
   width: 320px;
-  // max-height: 200px;
-  // min-height: 200px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -196,8 +186,6 @@ export default {
   max-width: 350px;
   min-width: 350px;
   width: 350px;
-  //   max-height: 400px;
-  //   min-height: 400px;
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -238,6 +226,7 @@ export default {
 
 #span-report-post-signal {
   width: 100%;
+  height: 165px;
   text-align: center;
   padding: 1%;
   font-style: italic;

@@ -1,368 +1,373 @@
 <template>
-<div class="overlay">
-  <v-card id="card-mod-modal" >
-     <v-card-text class="card-profil-title"   >
-      <h1 class="card-profil-title-h1">Modifier</h1></v-card-text>
+  <div class="overlay">
+    <v-card id="card-mod-modal">
+      <v-card-text class="card-profil-title">
+        <h1 class="card-profil-title-h1">Modifier</h1>
+      </v-card-text>
       <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
         <v-card-text id="card-autor-test">
-                <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
-                <img v-if="urlpic !==''&& urlpic !== undefined" class="picture-user-create" :src='urlpic' alt="photo de l'utilisateur"  />
-                <div v-else id="avatar-empty-modify">{{avatarpicempty}}</div>
-                <p class="fullname-create">{{fullname}}</p>
-                 <div class="header-btn">
+          <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
+          <img v-if="urlpic !== '' && urlpic !== undefined" class="picture-user-create" :src='urlpic'
+            alt="photo de l'utilisateur" />
+          <div v-else id="avatar-empty-modify">{{ avatarpicempty }}</div>
+          <p class="fullname-create">{{ fullname }}</p>
+          <div class="header-btn">
 
-                   <button v-if="!posted"  id="btn-send-post" :disabled ="!validPost"  action="/upload" method="post" enctype=" multipart/form-data"  @click="updatePost()" type="submit"><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Envoyer</span></div></button> 
-                  <button v-else id="btn-send-post-posted" ><div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span id="span-btn-send">Poster!!</span></div></button> 
-                     <router-link to="/" id="back-book"> <button id="btn-back"  @click="deletemess(),$emit('close-modale-modify'),delPicPreview()" > <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span id="span-back">Retour</span> </div></button></router-link>
-                     <div >{{vide}}</div>
-                      </div>
+            <button v-if="!posted" id="btn-send-post" :disabled="!validPost" action="/upload" method="post"
+              enctype=" multipart/form-data" @click="updatePost()" type="submit">
+              <div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span
+                  id="span-btn-send">Envoyer</span></div>
+            </button>
+            <button v-else id="btn-send-post-posted">
+              <div id="div-btn-send"><v-icon id="icon-btn-send">mdi-check-circle</v-icon><span
+                  id="span-btn-send">Poster!!</span></div>
+            </button>
+            <router-link to="/" id="back-book"> <button id="btn-back"
+                @click="deletemess(), $emit('close-modale-modify'), delPicPreview()">
+                <div id="div-btn-back"><v-icon id="icon-btn-delete"> mdi-arrow-left-circle</v-icon><span
+                    id="span-back">Retour</span> </div>
+              </button></router-link>
+            <div>{{ vide }}</div>
+          </div>
         </v-card-text>
         <div class="pic-create-post">
-          <div class="block-header"><h3 id="card-create-picture">Votre photo</h3>
-              <label  class="lab-pic-btn" for="picmodtest"  >
-                <v-icon   class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span  v-if="url !== '' || oldpic !== ''">Modifier la photo</span>
-                <span v-else>Ajouter une photo</span>
-                <input id="picmodtest" class="form-avatar-profil" type="file" value="" name="picmodtest" placeholder="votre photo/avatar" @change="picPreview" />
-              </label>
-                          
-          <div class="preview-pic-size" @change="postValid()" > 
-            <img id="pic-size" v-if="url == '' && oldpic !== ''" :src="oldpic" @change="postValid()" alt="photo de publication"  >
-            <img id="pic-size"  v-else-if="url !==''" :src="url" @change="postValid()" alt="photo de publication"   >
-             <div  id="pic-size"  v-if="url == '' && oldpic == ''" @change="postValid()"> c'est vide .... vous n'avez aucune photo à partager ?  😪 </div>
-          </div>
-         
+          <div class="block-header">
+            <h3 id="card-create-picture">Votre photo</h3>
+            <label class="lab-pic-btn" for="picmodtest">
+              <v-icon class="lab-pic-icon" size="25px">mdi-camera-plus</v-icon> <span
+                v-if="url !== '' || oldpic !== ''">Modifier la photo</span>
+              <span v-else>Ajouter une photo</span>
+              <input id="picmodtest" class="form-avatar-profil" type="file" value="" name="picmodtest"
+                placeholder="votre photo/avatar" @change="picPreview" />
+            </label>
+
+            <div class="preview-pic-size" @change="postValid()">
+              <img id="pic-size" v-if="url == '' && oldpic !== ''" :src="oldpic" @change="postValid()"
+                alt="photo de publication">
+              <img id="pic-size" v-else-if="url !== ''" :src="url" @change="postValid()" alt="photo de publication">
+              <div id="pic-size" v-if="url == '' && oldpic == ''" @change="postValid()"> c'est vide .... vous n'avez
+                aucune photo à partager ? 😪 </div>
+            </div>
+
           </div>
           <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
-          <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
-          <button id="btn-del-create-pic" v-if="url !== '' || oldpic !== ''" @click="delPicPreview(),postValid(),deletePictureModify()" >Supprimer</button>
+          <span class="error-style-span">{{ maxsize }}</span><span class="error-style-span">{{ format }}</span>
+          <button id="btn-del-create-pic" v-if="url !== '' || oldpic !== ''"
+            @click="delPicPreview(), postValid(), deletePictureModify()">Supprimer</button>
         </div>
-      <v-card-text id="card-comment" >
-        <label for="messagetext-modify"><h2 class="comment-title">Votre commentaire</h2></label>
-        <textarea
-          id="messagetext-modify"
-          v-model="message"
-          name="messagetext"
-          class="card-create-comment"
-          type="text"
-          placeholder="Ecrivez ici votre commentaire"
-          maxlength="300"
-          @mousemove="postValid(),textValid()"
-          @mouseleave="postValid(),textValid()"
-          @mouseenter="postValid(),textValid()"
-          @change="postValid(),textValid()"
-        />
-        <!-- <input id="messagetext" v-model="message" name="messagetext" class="card-create-comment" type="text" placeholder="Ecrivez ici votre commentaire" maxlength="300" /> -->
-        <div class="btn-bio">
-          <button  v-if="!createText"  @change="postValid()"  id="btn-comment-send" >Enregistrer le commentaire</button>
-          <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button>
-          <button id="btn-comment-delete" @click.stop="deletemess(),textValid()">Annuler</button>
-        </div>
-       </v-card-text>
-    </form>
-  </v-card>
-</div>
+        <v-card-text id="card-comment">
+          <label for="messagetext-modify">
+            <h2 class="comment-title">Votre commentaire</h2>
+          </label>
+          <textarea id="messagetext-modify" v-model="message" name="messagetext" class="card-create-comment" type="text"
+            placeholder="Ecrivez ici votre commentaire" maxlength="300" @mousemove="postValid(), textValid()"
+            @mouseleave="postValid(), textValid()" @mouseenter="postValid(), textValid()"
+            @change="postValid(), textValid()" />
+          <!-- <input id="messagetext" v-model="message" name="messagetext" class="card-create-comment" type="text" placeholder="Ecrivez ici votre commentaire" maxlength="300" /> -->
+          <div class="btn-bio">
+            <button v-if="!createText" @change="postValid()" id="btn-comment-send">Enregistrer le commentaire</button>
+            <button v-else><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button>
+            <button id="btn-comment-delete" @click.stop="deletemess(), textValid()">Annuler</button>
+          </div>
+        </v-card-text>
+      </form>
+    </v-card>
+  </div>
 </template>
 <script>
 import axios from "axios";
 
 
 
-export default{
+export default {
   name: "modify",
   methods: {
     getPosts() {
       axios.get("http://localhost:5000/api/post")
-      .then((docs) => { console.log(docs.data); this.posts = docs.data
-    
-      // this.posts.forEach(doc=>{
-      //     this.number = doc.likers.length
-      //     console.log(doc.likers.length);
+        .then((docs) => {
+          console.log(docs.data); this.posts = docs.data
 
-      //   })
-      })
-      .catch((err)=>{console.log(err);});
+          // this.posts.forEach(doc=>{
+          //     this.number = doc.likers.length
+          //     console.log(doc.likers.length);
+
+          //   })
+        })
+        .catch((err) => { console.log(err); });
     },
-    getcolor(){
-      if(this.urlpic === '' || this.urlpic === undefined  ){
-   this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
-    // let randomColor = Math.floor(Math.random()*16777215).toString(16)
-    // document.getElementById('avatar-empty-modify').style.backgroundColor = '#' 
-  //  document.getElementById('avatar-empty-book').style.backgroundColor = '#' + randomColor
+    getcolor() {
+      if (this.urlpic === '' || this.urlpic === undefined) {
+        this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
       }
-},
-  postValid(){
-    let testRegex = this.message.split(' ').join('')
-    
-   if(testRegex !='' || this.url !='' || this.oldpic !=''){
-    this.message.trimStart('')
-    this.validPost = true
-    return true
-   } else {
-    this.validPost = false
-    return false
-   }
-  },
-  textValid(){
-    let testRegex = this.message.split(' ').join('')
-    if(testRegex !='' ){
-      this.createText = true
-    }
-    else{
+    },
+    postValid() {
+      let testRegex = this.message.split(' ').join('')
 
-    this.createText = false
-    }
-  },
-  picValid(){
-    if(this.url !== null || this.oldpic != '' || this.url !=''){
-      this.createPic = true
-      return true
-    }else{
-      this.createPic=false
-      return false
-    }
-  },
+      if (testRegex != '' || this.url != '' || this.oldpic != '') {
+        this.message.trimStart('')
+        this.validPost = true
+        return true
+      } else {
+        this.validPost = false
+        return false
+      }
+    },
+    textValid() {
+      let testRegex = this.message.split(' ').join('')
+      if (testRegex != '') {
+        this.createText = true
+      }
+      else {
+
+        this.createText = false
+      }
+    },
+    picValid() {
+      if (this.url !== null || this.oldpic != '' || this.url != '') {
+        this.createPic = true
+        return true
+      } else {
+        this.createPic = false
+        return false
+      }
+    },
     deletemess() {
       this.message = "";
       this.createText = false
     },
-    delPicPreview(){
+    delPicPreview() {
       this.oldpic = ''
       this.url = ''
       this.createPic = false
     },
-    
-    picPreview(e){
+
+    picPreview(e) {
       e.target.value[0].split(" ")
       const pic = e.target.files[0];
       this.file = pic
       this.url = URL.createObjectURL(pic);
       this.createPic = false
       this.validPost = !this.validPost
-    //   console.log(this.file);
+      //   console.log(this.file);
     },
 
-    deletePictureModify(){
+    deletePictureModify() {
       axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
-      .then(()=>{
-        console.log('ok');
-      }).catch((err)=>{
-        console.log(err);
-      })
+        .then(() => {
+          console.log('ok');
+        }).catch((err) => {
+          console.log(err);
+        })
     },
 
 
- updatePost(){
-  let testRegex = this.message.split(' ').join('')
-    if(testRegex !='' || this.url !== '' ||this.url !== null || this.oldpic !==''){
-              // console.log(this.oldpic) 
+    updatePost() {
+      let testRegex = this.message.split(' ').join('')
+      if (testRegex != '' || this.url !== '' || this.url !== null || this.oldpic !== '') {
+        // console.log(this.oldpic) 
         // if(this.file == null || this.file == ''){ this.file = this.oldpic }else{this.file }
-        if((this.oldpic =='' && this.url == '')||(this.oldpic =='' && this.url == null)){
-        // axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
-         let formData = new FormData()
+        if ((this.oldpic == '' && this.url == '') || (this.oldpic == '' && this.url == null)) {
+          // axios.delete(`http://localhost:5000/api/post/picture/${this.id}`)
+          let formData = new FormData()
           formData.append('posterId', this.userid),
-          formData.append('id',this.postId),
-          formData.append('oldname',this.oldpic),
-          formData.append('message', this.message),
-          formData.append('file', this.file),
-          // formData.append('role',this.role)
-        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
-           
-            this.posted = true
-             setTimeout(() => { 
-            this.$emit('close-modale-modify')
-            }, 2500)        
-          // })
-        //    .then((doc)=> console.log(doc))
+            formData.append('id', this.postId),
+            formData.append('oldname', this.oldpic),
+            formData.append('message', this.message),
+            formData.append('file', this.file),
+            // formData.append('role',this.role)
+            axios.put(`http://localhost:5000/api/post/${this.id}`, formData)
 
-        }else if (this.file == null || this.file == ''){
+          this.posted = true
+          setTimeout(() => {
+            this.$emit('close-modale-modify')
+          }, 2500)
+          // })
+          //    .then((doc)=> console.log(doc))
+
+        } else if (this.file == null || this.file == '') {
           this.file = this.oldpic
           let formData = new FormData()
           formData.append('posterId', this.userid),
-          formData.append('id',this.postId),
-          formData.append('oldname',this.oldpic),
-          formData.append('message', this.message),
-          formData.append('file', this.file),
-          // formData.append('role',this.role)
-        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
-          .then(() => {
-            this.posted = true
-            setTimeout(() => {
-          this.$emit('close-modale-modify')
-            }, 2500); 
-          })
-        } else  {
+            formData.append('id', this.postId),
+            formData.append('oldname', this.oldpic),
+            formData.append('message', this.message),
+            formData.append('file', this.file),
+            // formData.append('role',this.role)
+            axios.put(`http://localhost:5000/api/post/${this.id}`, formData)
+              .then(() => {
+                this.posted = true
+                setTimeout(() => {
+                  this.$emit('close-modale-modify')
+                }, 2500);
+              })
+        } else {
           // let formData = new FormData()
           //   formData.append('oldname', this.oldpic)
-          
-         
-      let formData = new FormData()
+
+
+          let formData = new FormData()
           formData.append('posterId', this.userid),
-          formData.append('id',this.postId),
-          formData.append('oldname',this.oldpic),
-          formData.append('message', this.message),
-          formData.append('file', this.file),
-          // formData.append('role',this.role)
-        axios.put(`http://localhost:5000/api/post/${this.id}`,formData)
-     
-          .then(() => {
-            axios.delete(`http://localhost:5000/api/post/delete-old-pic-modify/${this.id}`, {data : {id:this.oldpic}})
-            this.posted = true
-            setTimeout(() => {
-          this.$emit('close-modale-modify')
-            }, 2500); 
-          })
-          .catch((errors,test)=>{
-             test = this.delPicPreview()
-           console.log(this.maxsize);
-            this.maxsize = errors.response.data.errors.maxsize
-            this.format = errors.response.data.errors.format
-            test
-           setTimeout(() => {
-             this.maxsize = ''
-            this.format =''
-           }, 3000);   })
- 
-            // console.log(errors.response.data.errors.maxsize);
-            // console.log(errors.response.data.errors.format);    
-          
-        } 
-   
+            formData.append('id', this.postId),
+            formData.append('oldname', this.oldpic),
+            formData.append('message', this.message),
+            formData.append('file', this.file),
+            // formData.append('role',this.role)
+            axios.put(`http://localhost:5000/api/post/${this.id}`, formData)
 
-    }else{
-             this.vide="aie c'est vide"
-          }
+              .then(() => {
+                axios.delete(`http://localhost:5000/api/post/delete-old-pic-modify/${this.id}`, { data: { id: this.oldpic } })
+                this.posted = true
+                setTimeout(() => {
+                  this.$emit('close-modale-modify')
+                }, 2500);
+              })
+              .catch((errors, test) => {
+                test = this.delPicPreview()
+                console.log(this.maxsize);
+                this.maxsize = errors.response.data.errors.maxsize
+                this.format = errors.response.data.errors.format
+                test
+                setTimeout(() => {
+                  this.maxsize = ''
+                  this.format = ''
+                }, 3000);
+              })
+
+          // console.log(errors.response.data.errors.maxsize);
+          // console.log(errors.response.data.errors.format);    
+
+        }
+
+
+      } else {
+        this.vide = "aie c'est vide"
+      }
+    },
   },
-},
 
-  data(){
+  data() {
     return {
-      log:false,
-      vide:'',
+      log: false,
+      vide: '',
       lastname: '',
       firstname: '',
-      post:[],
-      userjwtid:'',
-      userid:'',
-  
-      avatarpicempty:'',
-      urlpic:'',
-      posterId : '',
-      posterfirstname : '',
+      post: [],
+      userjwtid: '',
+      userid: '',
+
+      avatarpicempty: '',
+      urlpic: '',
+      posterId: '',
+      posterfirstname: '',
       posterlastname: '',
-      userlike:'',
+      userlike: '',
       picutername: '',
       modifbio: false,
       message: '',
       url: '',
-      oldpic:'',
-      validPost:false,
+      oldpic: '',
+      validPost: false,
       createPic: false,
-      createText:false,
-      photoup:'',
-      file:[],
-      maxsize:'',
-      format:'',
+      createText: false,
+      photoup: '',
+      file: [],
+      maxsize: '',
+      format: '',
       posted: false,
 
-      userpicture:'',
-       // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      userpicture: '',
+      // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
       // lastname: "",
       // firstname: "",
     }
-    },
+  },
 
-computed:{
-date(){
-let today = new Date();
-let dd = today.getDate();
-let mm = today.getMonth()+1; 
-let yyyy = today.getFullYear();
-if(dd<10) 
-{
-    dd='0'+dd;
-} 
-if(mm<10) 
-{
-    mm='0'+mm;
-} 
-// today = mm+'-'+dd+'-'+yyyy;
-// today = mm+'/'+dd+'/'+yyyy;
-// today = dd+'-'+mm+'-'+yyyy;
-today = dd+'/'+mm+'/'+yyyy;
- return today
-      },
-    hour(){ 
-    const d = new Date();
-    let hh =  d.getHours();
-    let mi = d.getMinutes();
-    if(hh<10)
-    {hh='0'+hh;}
-    if(mi <10)
-    {mi='0'+mi;}
-    let hours = hh+":" + mi;
-    return hours
+  computed: {
+    date() {
+      let today = new Date();
+      let dd = today.getDate();
+      let mm = today.getMonth() + 1;
+      let yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+
+      today = dd + '/' + mm + '/' + yyyy;
+      return today
     },
-     fullname: {
+    hour() {
+      const d = new Date();
+      let hh = d.getHours();
+      let mi = d.getMinutes();
+      if (hh < 10) { hh = '0' + hh; }
+      if (mi < 10) { mi = '0' + mi; }
+      let hours = hh + ":" + mi;
+      return hours
+    },
+    fullname: {
       get() {
         return this.firstname + ' ' + this.lastname
       },
       set(newValue) {
-        
+
         [this.firstname, this.lastname] = newValue.split(' ')
       }
     }
   },
 
- async mounted(){
+  async mounted() {
     axios.defaults.withCredentials = true;
 
     await axios.get(`http://localhost:5000/jwtid`)
-    .then((res) => {
-      // console.log(res.data);
-    this.userjwtid = res.data
-    this.show = false
-    // this.log = true
-    // TODO => Insert loader \\ 
-    }).catch((error)=>{
-      console.log(error);
-    })
+      .then((res) => {
+        // console.log(res.data);
+        this.userjwtid = res.data
+        this.show = false
+        // this.log = true
+        // TODO => Insert loader \\ 
+      }).catch((error) => {
+        console.log(error);
+      })
 
-  await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
-    .then((docs) => {
-      // console.log(docs.data);
-      this.role = docs.data.role
+    await axios.get(`http://localhost:5000/api/user/${this.userjwtid}`)
+      .then((docs) => {
+        // console.log(docs.data);
+        this.role = docs.data.role
         this.userid = docs.data._id
         this.firstname = docs.data.firstname
         this.lastname = docs.data.lastname
         this.urlpic = docs.data.photo
-          // console.log(docs.data.photo)
-    }).catch((error)=>{
-      console.log(error);
-    })
+        // console.log(docs.data.photo)
+      }).catch((error) => {
+        console.log(error);
+      })
 
 
-if(localStorage.getItem('categories')) {
+    if (localStorage.getItem('categories')) {
       try {
         this.postId = JSON.parse(localStorage.getItem('categories'))
-         axios.get(`http://localhost:5000/api/post/${this.postId}`)
-        .then((docs)=>{
-              
-              this.message = docs.data.message
-              this.post = docs.data
-              this.oldpic = docs.data.picture
-              this.id = docs.data._id
+        axios.get(`http://localhost:5000/api/post/${this.postId}`)
+          .then((docs) => {
+
+            this.message = docs.data.message
+            this.post = docs.data
+            this.oldpic = docs.data.picture
+            this.id = docs.data._id
             console.log(docs.data);
-        }).then(()=>{
-           localStorage.removeItem('categories')
+          }).then(() => {
+            localStorage.removeItem('categories')
 
-        })
+          })
 
-      } catch(e) {
+      } catch (e) {
         localStorage.removeItem('categories')
       }
     }
 
-  this.getcolor()
+    this.getcolor()
 
 
   },
@@ -389,13 +394,13 @@ if(localStorage.getItem('categories')) {
 }
 
 .card-profil-title {
-// border-radius: 5%;
+  // border-radius: 5%;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
 }
 
 .card-profil-title-h1 {
-  
+
   padding-top: 2%;
   padding-bottom: 1%;
   font-size: 2.5rem;
@@ -403,46 +408,43 @@ if(localStorage.getItem('categories')) {
   font-style: italic;
   color: $primary;
 }
-// #h1-post{
-// display: flex;
-// border-top-left-radius: 20%;
-// border-top-right-radius: 5%;
-//   background-color: $secondary;
-//   border-bottom: solid 5px $primary;
-//   color:$primary;
-// }
 
-#card-mod-modal{
+
+#card-mod-modal {
   width: 75%;
   margin-top: 100px;
   max-width: 950px;
   min-width: 350px;
   // height: 650px;
-align-items: center;
-justify-content: center;
-background-color: $tertiary;
-border: solid;
-border-color: $secondary;
-border-radius: 1%
-};
-
-#card-autor-test{
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-width: 100%;
-padding-top: 2%;
-
-};
-
-.poster-info{
-flex-direction: row;
-width: auto;
-height: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: $tertiary;
+  border: solid;
+  border-color: $secondary;
+  border-radius: 1%
 }
 
-.block-header{
+;
+
+#card-autor-test {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 2%;
+
+}
+
+;
+
+.poster-info {
+  flex-direction: row;
+  width: auto;
+  height: 20px;
+}
+
+.block-header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -454,6 +456,7 @@ height: 20px;
 
 .lab-pic-icon {
   padding-right: 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -465,48 +468,50 @@ height: 20px;
   align-items: center;
   min-width: 190px;
   width: 190px;
-  background-color:$tertiary;
+  background-color: $tertiary;
   border-radius: 10%;
   border: solid 2px $secondary;
   padding-right: 1%;
   padding-left: 1%;
+
   &:hover {
-  border-radius: 0%;
-  background-color: $secondary;
-  color:$tertiary;
+    border-radius: 0%;
+    background-color: $secondary;
+    color: $tertiary;
     cursor: pointer;
   }
 }
 
-.preview-pic-size{
+.preview-pic-size {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-height:350px ;
+  max-height: 350px;
   max-width: 65vw;
   padding-top: 2%;
   padding-bottom: 2%;
 }
 
-#pic-size{
+#pic-size {
   display: flex;
   object-fit: cover;
-// overflow: hidden;
-  max-height:300px ;
- max-width: 65vw;
+  // overflow: hidden;
+  max-height: 300px;
+  max-width: 65vw;
 }
 
 
-#btn-del-create-pic{
-border: solid 2px $secondary;
+#btn-del-create-pic {
+  border: solid 2px $secondary;
   border-radius: 30%;
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 4px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -517,12 +522,13 @@ border: solid 2px $secondary;
   padding-top: 3%;
   display: none;
   visibility: none;
+
   &:hover {
     cursor: pointer;
   }
 }
 
-.picture-user-create{
+.picture-user-create {
   // margin-top: 5%;
   display: flex;
   width: 50px;
@@ -530,9 +536,10 @@ border: solid 2px $secondary;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
-  border-radius: 50%; 
+  border-radius: 50%;
 }
-.fullname-create{
+
+.fullname-create {
   margin-left: 1%;
   margin-right: auto;
   margin-bottom: 0.5%;
@@ -541,7 +548,7 @@ border: solid 2px $secondary;
   font-weight: bold;
 }
 
-#avatar-empty-modify{
+#avatar-empty-modify {
   // margin-top: 5%;
   font-size: 1.8rem;
   display: flex;
@@ -550,143 +557,104 @@ border: solid 2px $secondary;
   justify-content: center;
   align-items: center;
   border: solid 2px $secondary;
-  border-radius: 50%; 
+  border-radius: 50%;
   background-color: rgb(89, 165, 35);
 }
 
-// .post-date-full{
-//   display: flex;
-//   width: 100%;
-//   padding-top: 1.5% ;
-// }
-// .date-now{
-//     padding-top: 1.5%;
-//   margin-left: 0.5%;
-//   font-style: italic;
-// }
-
-// .hour-now{
-//     padding-top: 1.5%;
-//   margin-left: 0.5%;
-//    font-style: italic;
-//    margin-right: auto;
-// }
-
-// .hour-à{
-//     padding-top: 1.5%;
-//   margin-left: 0.5%;
- 
-// }
-// .post-date{
-//     padding-top: 1.5%;
-//   margin-left: 0.5%;
-  
-// }
-#back-book{
+#back-book {
   display: flex;
   height: 40px;
-  align-items:center;
+  align-items: center;
   justify-content: center;
   text-decoration: none;
-color:$secondary;
-   border: solid 2px $secondary;
+  color: $secondary;
+  border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
   padding-top: 0%;
   padding-left: 1%;
   padding-right: 1%;
+
   &:hover {
     background-color: $secondary;
-      border-radius: 20%;
-   &#back-book>#btn-back{
-    color:$tertiary;
-    &#btn-back>#div-btn-back>#icon-btn-delete{
-      color:$tertiary;
+    border-radius: 20%;
+
+    &#back-book>#btn-back {
+      color: $tertiary;
+
+      &#btn-back>#div-btn-back>#icon-btn-delete {
+        color: $tertiary;
+      }
     }
-   }
   }
-} 
-#icon-btn-delete{
+}
+
+#icon-btn-delete {
   padding-left: 5%;
 }
-#div-btn-back{
+
+#div-btn-back {
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
 }
-#btn-back{
+
+#btn-back {
   padding-left: 0;
   padding-right: 0;
 }
 
-#span-back{
+#span-back {
   padding-left: 10%;
   padding-right: 10%;
 }
 
-.error-style-span{
- color:$primary;
- text-decoration: underline;
-
+.error-style-span {
+  color: $primary;
+  text-decoration: underline;
 
 }
-// #btn-delete-post{
-//   width: 100%;
-//   margin-top: 10%;
-//   margin-right: 1%;
-//   padding-top: 10%;
-//   padding-left: 5px;
-//   padding-right: 5px;
-//   color: $secondary;
-//   :hover{
-//     background-color: $secondary;
-//     color: $tertiary;
-//   }
-// }
 
-#btn-send-post{
-  color:$secondary;
-   border: solid 2px $secondary;
-   height: 40px;
-   width:85px ;
+
+#btn-send-post {
+  color: $secondary;
+  border: solid 2px $secondary;
+  height: 40px;
+  width: 85px;
   // margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
   padding-left: 1%;
   padding-right: 1%;
+
   &:hover {
     border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
-    &#btn-send-post>#div-btn-send>#icon-btn-send{
-        color:$tertiary;
+
+    &#btn-send-post>#div-btn-send>#icon-btn-send {
+      color: $tertiary;
     }
   }
 }
-#btn-send-post-posted{
-  color:$secondary;
-   border: solid 2px green;
-   background-color: rgb(38, 145, 49);
-   height: 40px;
-   width:100px ;
+
+#btn-send-post-posted {
+  color: $secondary;
+  border: solid 2px green;
+  background-color: rgb(38, 145, 49);
+  height: 40px;
+  width: 100px;
   // margin-top: 1%;
   margin-right: 1%;
   border-radius: 30%;
   padding-left: 1%;
   padding-right: 1%;
-  // &:hover {
-  //   border-radius: 20%;
-  //   background-color: $secondary;
-  //   color: $tertiary;
-  //   &#btn-send-post>#div-btn-send>#icon-btn-send{
-  //       color:$tertiary;
-  //   }
-  // }
+
 }
 
-#btn-send-post:disabled{
+#btn-send-post:disabled {
 
   padding-right: 1rem;
   padding-left: 1rem;
@@ -694,6 +662,7 @@ color:$secondary;
   // margin-top: 20px;
   border: solid 2px $secondary;
   background: #ccc;
+
   &:hover {
     background: #ccc;
     color: red;
@@ -701,59 +670,49 @@ color:$secondary;
 }
 
 
-#div-btn-send{
+#div-btn-send {
   display: flex;
- justify-content: center;
- align-items: center;
- 
+  justify-content: center;
+  align-items: center;
+
 }
-#icon-btn-send{
+
+#icon-btn-send {
   padding-right: 7%;
 }
 
 
-.pic-create-post{
+.pic-create-post {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-border-top: solid 2px $secondary;
-border-bottom: solid 2px $secondary;
-border-radius: 5%;
-margin-bottom: 1%;
-padding: 1.5%;
+  border-top: solid 2px $secondary;
+  border-bottom: solid 2px $secondary;
+  border-radius: 5%;
+  margin-bottom: 1%;
+  padding: 1.5%;
 }
 
-#card-create-picture{
+#card-create-picture {
   display: flex;
-  // margin-left: 1.5%;
   color: $secondary;
   padding-top: 1%;
   padding-bottom: 1%;
   justify-content: center;
-  // border-top:solid 2px $secondary;
-  // border-radius: 30%;
+}
 
-  }
+#card-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-height: 200px;
+  padding: 1%;
+}
 
-#card-img{
-display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-// border-top: solid 2px $secondary;
-// border-bottom: solid 2px $secondary;
-// border-radius: 10%;
-max-height: 200px;
-padding: 1%;
-};
+;
 
-// .blockquote{
-// margin-top: 10px;
-// margin-right: 20px;
-// overflow: hidden;
-// text-overflow: ellipsis;
-// };
 
 #messagetext-modify {
   width: 100%;
@@ -761,19 +720,20 @@ padding: 1%;
   word-break: break-word;
   border: solid 2px $secondary;
   padding: 1%;
+
   &:focus {
     outline: none;
   }
 }
 
-#card-comment{
-border-top: solid 2px $secondary;
-border-bottom: solid 2px $secondary;
-border-radius: 10%;
-margin-bottom: 1%;
+#card-comment {
+  border-top: solid 2px $secondary;
+  border-bottom: solid 2px $secondary;
+  border-radius: 10%;
+  margin-bottom: 1%;
 }
 
-h2.comment-title{
+h2.comment-title {
   display: flex;
   justify-content: center;
   padding-top: 1%;
@@ -789,8 +749,9 @@ h2.comment-title{
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -804,8 +765,9 @@ h2.comment-title{
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -819,12 +781,14 @@ h2.comment-title{
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
 }
+
 #btn-comment-send-icon {
   border: solid 2px $secondary;
   margin-top: 1%;
@@ -833,8 +797,9 @@ h2.comment-title{
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -848,11 +813,11 @@ h2.comment-title{
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
+
   &:hover {
-     border-radius: 20%;
+    border-radius: 20%;
     background-color: $secondary;
     color: $tertiary;
   }
 }
-
 </style>

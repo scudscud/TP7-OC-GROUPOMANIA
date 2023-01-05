@@ -95,16 +95,6 @@ export default {
   name: "SignInPage",
   components: { SignUp },
   computed: {
-    //     mailValidation(){
-    //     // ====== si bug doublebackslash new regexp consum one bs =======\\
-    //   let mail =  new RegExp('[a-z]+\.[a-z]@groupomania.fr')
-    //   let testMail = mail.test(this.email)
-    // if(testMail = true){
-    //   return true
-    //  }else{
-    //   return false
-    //  }
-    // },
 
     validatedForm() {
       if (this.badge != "" && this.email != "" && this.psw != "") {
@@ -121,11 +111,7 @@ export default {
      
     async verifyUser() {
        axios.defaults.withCredentials = true;
-      // axios.defaults.withCredentials = true;
-      //      if(mailValidation = false){
-      //    this.infomsg = "il y a une erreur, Réessayer";
-      //     return false
-      //  }
+
 
       await axios
         .post("http://localhost:5000/api/user/login", {
@@ -134,8 +120,6 @@ export default {
           badge: this.badge,
         })
         .then((user) => {
-          //  console.log(Cookie);
-          //  this.$cookie.set('token',res.data.token);
           const userId = user.data.user;
           // window.prompt("entrer la clé reçu par mail (n'importe lequel)");
           // => *TODO capcha ou systeme de mail comfirmation register <= \\
@@ -155,41 +139,6 @@ export default {
           }, 3000);
         });
 
-      // await axios
-      //   .get(
-      //     `http://localhost:5000/api/user/${this.userid}`,
-       
-      //     // ,{'headers': { 'Authorization': this.$cookie.get('token')}}
-      //   )
-      //   .then((res, req) => {
-     
-      //     console.log(res.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-      // await axios
-      //   .get(`http://localhost:5000/jwtid`,
- 
-      //       )
-      //   .then((res) => {
-      //     //   console.log(res.headers["Set-Cookie"]);
-      //     // console.log(req);
-      //     console.log(res);
-      //   })
-      //   .catch((err)=>{
-
-      //     console.log(err);
-      //   });
-
-      //  axios.get(`http://localhost:5000/me`)
-      // .then((res) => {
-      //        console.log(res.headers["Set-Cookie"]);
-      //   console.log(res.cookies.jwt);
-
-      // }).catch((error)=>{
-      //    error
-      // })
     },
   },
 
@@ -242,9 +191,6 @@ export default {
   align-items: center;
   width: auto;
   height: auto;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow:ellipsis;
   border: solid 5px $secondary;
   margin-bottom: 2px;
   background: $tertiary;
@@ -331,11 +277,6 @@ h2 {
   padding-top: 1rem;
 }
 
-// .h2-form:hover {
-//   background-color: $secondary;
-//   color: $tertiary;
-// }
-
 .form-input {
   border: solid 2px $secondary;
   font-size: 1.5em;
@@ -351,44 +292,4 @@ input {
   padding: 5px;
 }
 
-// .btn-sign {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   border: solid 2px $secondary;
-//   border-radius: 30%;
-//   margin-left: 10px;
-//   padding-left: 5px;
-//   padding-right: 5px;
-//   text-decoration: none;
-//   color: white;
-//   // white-space: nowrap;
-//   // overflow: hidden;
-//   // text-overflow: ellipsis;
-//   cursor: pointer;
-// }
-
-// .btn-sign:hover {
-//   background-color: $secondary;
-//   color: $tertiary;
-// }
-
-// h1{
-// display: flex;
-// width: 100%;
-// height: auto;
-// flex-wrap: nowrap;
-// white-space: nowrap;
-// overflow: hidden;
-// text-overflow: ellipsis;
-
-// }
-
-// .logo{
-//   display: flex;
-//   width: 100%;
-//   flex-direction: row;
-//   flex-wrap:wrap;
-
-// }
 </style>

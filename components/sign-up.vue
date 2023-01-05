@@ -12,18 +12,6 @@
           <v-col id="logo-form2" cols="12" sm="12" md="12">
             <v-card-text>
               <form @submit.prevent class="form-container" ref="formsignup">
-                <!-- <label for="avatar">
-                  <h2 class="titleh2">Votre photo / avatar</h2>
-                </label>
-                <img class="form-avatar-dl" src="../logo/avatar1.png" />
-                <input
-                  class="form-avatar"
-                  type="file"
-                  value="test"
-                  name="avatar"
-                  placeholder="votre photo/avatar"
-                />
-                <v-spacer /> -->
 
                 <label for="nom">
                   <h2 class="titleh2">Nom</h2>
@@ -156,10 +144,7 @@
                 >
                   <h2 class="h2-form">Inscritpion</h2>
                 </button>
-                <!-- &nbsp
-                <button href="./index.vue" class="btn cancel">
-                  <h2 class="h2-form">Annuler</h2>
-                </button> -->
+
               </form>
 
               <button id="form-span2">
@@ -185,10 +170,7 @@ import TermOfUse from "../components/term-of-use.vue";
 export default {
   name: "IndexPage",
   components: { TermOfUse },
-  // props:{
-  //   psw:"",
-  //   pswcom:""
-  // },
+
   data() {
     return {
       rules: [
@@ -198,8 +180,7 @@ export default {
         { message: "1 caractere speciale", regex: /[!@#$%^&]+/ },
         { message: "8 caracteres minimun", regex: /.{8,}/ },
       ],
-      // testpsw:true,
-      // passwordValidation.valid :false,
+  
       termofuse: false,
       successreg: "",
       infomsg: "",
@@ -378,9 +359,7 @@ div.overlaybis-signup {
   border: solid 5px $secondary;
   border-radius: 10%;
   padding: 0;
-  // background-color:$tertiary;
   overflow: hidden;
-  // background-color: #fff;
 }
 
 input.form-input {
@@ -430,14 +409,12 @@ h1 {
 
 .titleh2-check {
   color: $secondary;
-  // padding-bottom: 0.5rem;
-  //  margin-top: 1rem;
   color: $secondary;
 }
 .titleh2-check:hover {
   color: $primary;
   text-decoration: underline;
-  // font-size: 1.001rem;
+
 }
 
 //______________________________\\

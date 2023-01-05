@@ -57,46 +57,4 @@ exports.checkUser = (req, res, next) => {
   }
 };
 
-// exports.validUser = ( req,res,next)=>{
-//     // console.log(req.params);
-//     const auth = req.headers.cookie
-//     const token = auth && auth.split('=')[1]
 
-//     // console.log(token);
-// if(token){
-//     jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
-//    if (err){
-//     res.locals.user = null;
-//     res.cookie('jwt','', { session:false, maxAge: 1 });
-//     res.status(401).send('nop nop nop ');
-//     }else{
-//         // console.log(decodedToken);
-//   let user = await UserModel.findById(decodedToken.id);
-// //   console.log(decodedToken.id);
-//    res.locals.user = user;
-// //    console.log("test"+res.locals.user);
-//   next();
-//     }
-//     })
-// }else{
-//     res.locals.user = null;
-//     next();
-// }
-// };
-
-// exports.authUser = (req, res ,next) =>{
-//     const authHeader = req.headers['authorization']
-//     const token = authHeader && authHeader.split(' ')[1]
-//     if(!token) {
-//         return res.status(401).send('token not found');
-//     }
-//     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-//         if(err) {
-//             return res.status(401).send('invalid token')
-//         }
-//         console.log(req.body);
-//         req.user = user.id;
-//         next();
-//     });
-//     // next();
-// }

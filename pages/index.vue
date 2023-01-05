@@ -1329,8 +1329,11 @@ div.v-main__wrap {
 textarea.card-comment-area{
   color : white;
   caret-color: red ;
-  border: solid 1px $secondary;
-
+  border: solid 2px $secondary;
+  padding: 1%;
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn-comment {

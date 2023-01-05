@@ -16,12 +16,10 @@
                 <li v-if="this.role !== undefined"><button class="postall-btn" @click="$emit('close-modale-sort-signal')" >Signalement</button></li>
 
                </div>
-                <!-- <p>cette action est irreversible </p> -->
-                <!-- <v-btn id="btn-notdelete-comfirm" @click="$emit('close-modale-sort')"><span>Valider</span></v-btn> -->
                 <p class="comfirm-span-delete"></p>
                 <v-btn @click="$emit('close-modale-sort')" id="btn-delete-comfirm"><span>Retour</span>
                 </v-btn>
-                <!-- <v-btn v-else id="btn-delete-comfirm"  ><span>c'est fait <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon ></span></v-btn> -->
+              
 
             </v-card>
         </v-col>

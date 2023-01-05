@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const { isEmail}= require("validator");
-const { isBadge}  = require("validator");
+const { isEmail } = require("validator");
+const { isBadge } = require("validator");
 
 const bcrypt = require("bcrypt");
 
@@ -8,7 +8,6 @@ const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema(
   {
-
     firstname: {
       type: String,
       required: true,
@@ -27,7 +26,6 @@ const userSchema = mongoose.Schema(
       type: String,
       minlenth: 3,
       maxlength: 50,
-    
     },
     email: {
       type: String,
@@ -55,13 +53,13 @@ const userSchema = mongoose.Schema(
       trim: true,
     },
     likes: {
-      type : [String]
+      type: [String],
     },
-    role:{
-        type:String,
+    role: {
+      type: String,
     },
     photo: {
-      type: String,   
+      type: String,
     },
     bio: {
       type: String,
@@ -73,53 +71,58 @@ const userSchema = mongoose.Schema(
     following: {
       type: [String],
     },
-    postSignalBy : {
-      type :[ {
-        signalPostId : String,
-        signalUserId : String ,
-        date: String,  
-      }]
+    postSignalBy: {
+      type: [
+        {
+          signalPostId: String,
+          signalUserId: String,
+          date: String,
+        },
+      ],
     },
-    profilSignalBy:{  
-    type:[{  
-      signalByFullname: { type : String} ,
-      signalById: { type : String},
-      date: { type : String},
-    }]
+    profilSignalBy: {
+      type: [
+        {
+          signalByFullname: { type: String },
+          signalById: { type: String },
+          date: { type: String },
+        },
+      ],
     },
     ban: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    comment : 
-    {type: [{
-      commentId: {
-          type:String
-      },
-      postCommentId: {
-        type: String,
-        required : true
-     },
-     postCommentFullname :{
-        type: String
-     },
-     comment: {
-      type: String,
-      trim: true,
-      maxlenght: 200,
-      required : true
-      },
-      commentDate : {
-        type: String
+    comment: {
+      type: [
+        {
+          commentId: {
+            type: String,
+          },
+          postCommentId: {
+            type: String,
+            required: true,
+          },
+          postCommentFullname: {
+            type: String,
+          },
+          comment: {
+            type: String,
+            trim: true,
+            maxlenght: 200,
+            required: true,
+          },
+          commentDate: {
+            type: String,
+          },
+        },
+      ],
     },
-    }]},
   },
   {
     timestamps: true,
   }
-
 );
-
 
 //bcrypt password and badge user \\
 
@@ -131,43 +134,27 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// crypt badge from sign up \\
-// userSchema.pre("save", async function (next) {
-//   const salt = await bcrypt.genSalt();
-//   this.badge = await bcrypt.hash(this.badge, salt);
-//   next();
-// });
 
 // decrypt to compare badge and password login -- signup \\
 userSchema.statics.login = async function (email, badge, password) {
   // console.log(user);
-  const user = await this.findOne({email})
+  const user = await this.findOne({ email });
 
-  if (user) { 
-    const auth = await bcrypt.compare(password, user.password ) 
-      if (auth) {
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      const test = await bcrypt.compare(badge, user.badge);
 
-      const test= await bcrypt.compare(badge,user.badge)
-       
-      if(test){
-
-        return user
-          }
-          throw Error(
-            "test password accée refusé  ")
+      if (test) {
+        return user;
       }
-    throw Error(
-      "test password accée refusé  "
-    )
+      throw Error("test password accée refusé  ");
+    }
+    throw Error("test password accée refusé  ");
   }
-  throw Error(
-    "test email accée refusé "
-  );
+  throw Error("test email accée refusé ");
 };
-
-
 
 const UserModel = mongoose.model("user", userSchema);
 
-
-module.exports = UserModel ;
+module.exports = UserModel;
