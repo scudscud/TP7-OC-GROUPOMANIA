@@ -1,47 +1,39 @@
 <template>
   <v-card class="card">
-    <v-card-text class="card-profil-title">
-      <h1 class="card-profil-title-h1">Son profil </h1>
-    </v-card-text>
-
-    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  " class="card-profiluser">
-      <div class="block-picture">
-        <label class="lab-pic" for="avatar">
-          <div id="avatar-empty-profiluser">{{ avatarpicempty }}</div>
-
-        </label>
-      </div>
-      <span class="fullname-usermain">{{ fullname }}</span>
-    </v-card-text>
-    <v-card-text v-else-if=" urlpic !== '' " class="card-profilusermain">
-      <div class="block-picture">
-        <label class="lab-pic" for="avatar">
-          <img id="form-picture-profil" :src="urlpic" alt="phtot de l'utilisateur" />
-
-
-        </label>
-      </div>
-      <span class="fullname-profilusermain">{{ fullname }}</span>
-
-      <button 
-
-      
-
-      class="btn-att-flag" @click="
-                      (showReportUser = !showReportUser),
-                      reportInfoUser(
-                        fullname,
-                        userid,
-                        userfullname,
-                        userjwtid
-                      )
-                    " title="signaler la publication">
+    <v-card-text class="card-profil-title-usermain">
+      <h1 class="card-profil-title-usermain-h1">Son profil </h1>
+      <button class="btn-att-flag-profil-usermain" :class=" checkreport === true ? 'reportPostUsermain' 
+                        : 'notReportPostUsermain'" @click="(showReportUser = !showReportUser),reportInfoUser(fullname,userid,userfullname,userjwtid )" title="signaler la publication">
                 <v-icon class="img-att-flag-usermain">mdi-flag-outline</v-icon>
                 <p class="text-att-report-usermain">Signaler</p>
-                <!-- <div v-if="post.signalBy.length > 0" class="buble-report">
-                  <span id="number-report">{{ post.signalBy.length }}</span>
-                </div> -->
               </button>
+    </v-card-text>
+
+    <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined  " class="card-profiluser-usermain-empty">
+      <div class="block-picture-profilusermain">
+      <div class="block-picture">
+          <div id="avatar-empty-profilusermain">{{ avatarpicempty }}</div>
+      </div>
+      <span class="fullname-usermain">{{ fullname }}</span>
+    </div>
+      <!-- <button class="btn-att-flag-profil-usermain" :class=" checkreport === true ? 'reportPost' 
+                        : 'notReportPost'" @click="(showReportUser = !showReportUser),reportInfoUser(fullname,userid,userfullname,userjwtid )" title="signaler la publication">
+                 <v-icon class="img-att-flag-usermain">mdi-flag-outline</v-icon> 
+                <p class="text-att-report-usermain">Signaler</p>
+              </button> -->
+    </v-card-text>
+    <v-card-text v-else-if=" urlpic !== '' " class="card-profilusermain">
+      <div class="block-picture-profilusermain">
+      <div class="block-picture">
+          <img id="form-picture-profil" :src="urlpic" alt="photo de l'utilisateur" />
+      </div>
+      <span class="fullname-profilusermain">{{ fullname }}</span>
+    </div>
+      <!-- <button class="btn-att-flag-profil-usermain" :class=" checkreport === true ? 'reportPost' 
+                        : 'notReportPost'" @click="(showReportUser = !showReportUser),reportInfoUser(fullname,userid,userfullname,userjwtid )" title="signaler la publication">
+                 <v-icon class="img-att-flag-usermain">mdi-flag-outline</v-icon> 
+                <p class="text-att-report-usermain">Signaler</p>
+              </button> -->
     </v-card-text>
 
     <v-card-text class="card-profil-biographie">
@@ -137,7 +129,7 @@
     <div>
       <reportuser v-if="showReportUser" v-show="showReportUser"  
       
-      @close-modale-report-user="showReportUser = false" @close-modale-report-comfirm-user="(showReportUser = false)" />
+      @close-modale-report-user="showReportUser = false" @close-modale-report-comfirm-user="(showReportUser = false),getSignal()" />
       <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
     </div>
 
@@ -183,6 +175,8 @@ export default {
       myfollowing:[],
       userfirstname : "",
       userlastname : "",
+      signaluser: [],
+      checkreport : false,
 
       userLikePostId: [],
 
@@ -247,6 +241,25 @@ export default {
   },
 
   methods: {
+
+    getSignal(){
+      this.signaluser = []
+       axios.get(`http://localhost:5000/api/user/${this.id}`)
+      .then((docs) => {
+        this.signaluser = docs.data.profilSignalBy
+        this.userid = docs.data._id;
+        this.firstname = docs.data.firstname;
+        this.lastname = docs.data.lastname;
+        this.urlpic = docs.data.photo;
+        this.bioUser = docs.data.bio
+        this.userLikePostId = docs.data.likes
+        this.follower = docs.data.followers;
+        this.following = docs.data.following;
+        this.signaluser.forEach((profil)=>{
+          if (profil.signalById.includes(this.userjwtid)) this.checkreport = true
+        })
+      })
+    },
 
     
     reportInfoUser(usfn, usid, uffn, ufid) {
@@ -375,6 +388,7 @@ export default {
   },
 
   async mounted() {
+    this.signaluser = []
     setTimeout(() => {
       this.showloader = false
     }, 1500);
@@ -404,6 +418,8 @@ export default {
     await axios
       .get(`http://localhost:5000/api/user/${this.id}`)
       .then((docs) => {
+       
+        this.signaluser = docs.data.profilSignalBy
         this.userid = docs.data._id;
         this.firstname = docs.data.firstname;
         this.lastname = docs.data.lastname;
@@ -412,6 +428,10 @@ export default {
         this.userLikePostId = docs.data.likes
         this.follower = docs.data.followers;
         this.following = docs.data.following;
+        this.signaluser.forEach((profil)=>{
+          if (profil.signalById.includes(this.userjwtid)) this.checkreport = true
+        })
+        
       })
       .catch((error) => {
         console.log(error);
@@ -472,18 +492,32 @@ label.lab-pic {
   // width: 130px;
 }
 
-div.v-card__text.card-profilusermain {
+
+
+.card-profilusermain {
   padding-top: 1%;
   display: flex;
   justify-content: center;
   background-color: $tertiary;
 }
 
-div.v-card__text.card-profiluser {
+.block-picture-profilusermain{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 10%;
+  margin-top: 1%;
+}
+
+.card-profiluser-usermain-empty {
   padding-top: 1%;
   padding-bottom: 2%;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: $tertiary;
 }
 
@@ -500,10 +534,9 @@ div.v-card__text.card-profiluser {
 span.fullname-usermain {
   padding-left: 1%;
   font-size: 1.8rem;
-  padding-top: 5%;
 }
 
-#avatar-empty-profiluser {
+#avatar-empty-profilusermain {
   display: flex;
   width: 100px;
   height: 100px;
@@ -512,6 +545,7 @@ span.fullname-usermain {
   border: solid 2px $secondary;
   border-radius: 50%;
   font-size: 5rem;
+  margin-top: 10%;
   padding-bottom: 3%;
   background-color: rgb(6, 132, 6);
 }
@@ -535,98 +569,104 @@ span.fullname-usermain {
   flex-direction: column;
 }
 
-.card-profil-title {
+.card-profil-title-usermain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
+  padding-bottom: 1%;
 }
 
-.card-profil-title-h1 {
+.card-profil-title-usermain-h1 {
   padding-top: 2%;
-  padding-bottom: 1%;
+  padding-bottom: 2%;
+  margin-left: 15%;
   font-size: 2.5rem;
   font-weight: bolder;
   font-style: italic;
   color: $primary;
 }
 
+// .btn-att-flag-profil-usermain{
+// display: flex;
+// justify-content: center;
+// align-items: center;
+// margin-left: auto;
+// height: 25px;
+// width: auto;
+// border: solid 2px $primary;
+// border-radius: 25px;
+// &:hover{
+//   color : $tertiary;
+//   background-color: $secondary;
+//   transform: scale(1.1);
+// }
+// }
 
-.img-att-flag-usermain {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  padding-right: 10%;
-
-  &:before {
-    color: $tertiary;
-  }
-
-  &:hover {
-    color: $secondary;
-  }
-}
+// .img-att-flag-usermain {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: auto;
+//   &:before {
+//     color: $secondary;
+//   }
+//   &:hover {
+//     color: $tertiary;
+//   }
+// }
 
 p.text-att-report-usermain {
-  width: auto;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   margin-bottom: 0px;
+
   // padding-right: 20%;
 }
 
-.notReportPost {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  height: 38px;
-  margin-top: 2%;
-  margin-right: 3%;
-  background-color: $secondary;
-  color: $tertiary;
-  width: auto;
+.notReportPostUsermain {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-left: auto;
+margin-top: 1%;
+height: 40px;
+border: solid 2px $primary;
+border-radius: 25px;
+background-color: $tertiary;
+color: $secondary;
   cursor: pointer;
   padding: 2%;
-
-  &:hover {
-    background-color: $tertiary;
-    color: $secondary;
-    translate: 3px;
-    border: solid 1px $secondary;
-
-    &.notReportPost>.img-att-flag:before {
-      color: $secondary;
-    }
+  &.notReportPostUsermain>.img-att-flag-usermain {
+    display: none;
   }
+  &:hover {
+    background-color: $primary;
+    color: $secondary;
+    border: solid 2px $secondary;
+  }
+
 }
 
-.reportPost {
+.reportPostUsermain {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  height: 38px;
-  margin-top: 2%;
-  margin-right: 3%;
-  background-color: #ae6a6a;
-  color: $tertiary;
-  width: auto;
-  cursor: pointer;
-  padding: 2%;
+justify-content: center;
+align-items: center;
+margin-left: auto;
+margin-top: 1%;
+height: 40px;
+width: auto;
+font-weight: bolder;
+border: solid 2px $primary;
+border-radius: 25px;
+background-color: $primary;
+&.reportPostUsermain>.img-att-flag-usermain {
+  margin-right: 5%;
+}
 
-  &:hover {
-    background-color: $tertiary;
-    color: $secondary;
-    translate: 3px;
-    border: solid 1px $secondary;
 
-    &.reportPost>.img-att-flag:before {
-      color: $secondary;
-    }
-  }
 }
 
 // .lab-pic-custom-url {

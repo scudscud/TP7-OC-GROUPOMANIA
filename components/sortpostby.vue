@@ -120,7 +120,8 @@ export default {
     width: 320px;
     // max-height: 200px;
     // min-height: 200px;
-    height: 278px;
+    display: flex;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -149,6 +150,8 @@ export default {
 }
 
 #span-delete-modale{
+    display: flex;
+    margin-top: 1%;
 font-style: italic;
 color: $primary;
 

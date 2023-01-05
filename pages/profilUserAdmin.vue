@@ -1,16 +1,26 @@
 <template>
   <v-card class="card">
-    <v-card-text class="card-profil-title">
-      <h1 class="card-profil-title-h1">Profil Admin</h1>
+    <v-card-text class="card-profil-title-admin">
+      <h1 class="card-profil-title-h1-admin">Profil Admin</h1>
+      <button id="btn-flag-admin" v-if="this.userReport.length > 0 && this.userBan == false"  @click="(showBan = !showBan),banUserId(userid)"> Bannir
+      <div   id="flag-admin-signal-profil"><v-icon id="flag-admin-signal-icon-profil">mdi-flag</v-icon> 
+                <div  class="buble-report-profil">
+                  <span id="number-report-profil">{{this.userReport.length}}</span>
+                </div>
+                </div>
+              </button>
+      <button id="btn-flag-admin-ban" v-else-if ="this.userReport.length > 0 && this.userBan == true"  @click="(showBan = !showBan),banUserId(userid)">      Banni
+      <div   id="flag-admin-signal-profil"><v-icon id="flag-admin-signal-icon-profil" size="30px">mdi-check-underline-circle</v-icon> 
+                </div>
+              </button>
+              <div v-else id="btn-flag-admin-bis" ></div>
     </v-card-text>
 
     <v-card-text v-if="url == '' && urlpic == '' || url == '' && urlpic === undefined" class="card-profil-name-admin">
       <div class="block-picture-admin-empty">
         <label class="lab-pic" for="avatar">
           <div id="avatar-empty-profil">{{ avatarpicempty }}</div>
-          <!-- <v-icon class="lab-pic-custom" size="25px">mdi-camera-plus</v-icon>
-          <input id="avatar" class="form-avatar-profil" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" /> -->
+
         </label>
       </div>
       <span class="fullname">{{ fullname }}</span>
@@ -25,34 +35,13 @@
       <span class="fullname">{{ fullname }}</span>
     </v-card-text>
 
-    <!-- <v-card-text v-else class="card-profil-name-admin">
-       <div class="block-picture-url"> -->
-        <!-- <label class="lab-pic-del" for="avatar">
-          <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
-          <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
-          <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
-        </label> -->
-        <!-- <div class="block-btn-pic-profil">
-          <button id="btn-del-pic-profil" @click="delPicPreview">
-            Annuler
-          </button>
-          <button v-if="!posted" id="btn-confirm-pic-profil" action="/upload" type="submit" method="post"
-            enctype="multipart/form-data" @click="profilUpdate">
-            Valider
-          </button>
-          <button v-else id="btn-confirm-pic-profil-post">Valider</button>
-        </div> -->
-      <!-- </div> 
-      <span class="fullname-url">{{ fullname }}</span>
-    </v-card-text> -->
+
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
       <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
-      <!-- <button v-if='!modifbio' class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
-        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button> -->
+
 
       <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
         <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer la biographie </button>
@@ -75,30 +64,12 @@
     <p v-if="following[0] == undefined" class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
   </v-card-text>
 
-  <!-- <v-card-text v-else class="card-profil-friend">
-    <div class="card-profil-friend-t">
-      <v-icon class="icon-friend">mdi-account-group</v-icon>
-      <h2 class="h2-friend">Les abonnements de {{ fullname }}</h2>
-    </div>
-    
-    <div class="btn-profil-follow">
-
-    <p class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
-
-    </div>
-  </v-card-text>  -->
-
-
-
   <v-card-text v-if="follower[0] !== undefined"   class="card-profil-friend">
     <div class="card-profil-friend-t">
       <v-icon class="icon-friend">mdi-account-group</v-icon>
       <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}&nbsp({{info.length}})</h2>
     </div>
-    <!-- <div v-else class="card-profil-friend-t">
-      <v-icon class="icon-friend">mdi-account-group</v-icon>
-      <h2 class="h2-friend">Les abonné(e)s de {{ fullname }}</h2>
-    </div> -->
+
     <div v-for="(p, index) in info" class="btn-profil-follow">
       <p v-if="p._id !== userjwtid " class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
       <p v-if="p._id == userjwtid " class="card-profilAdmin-friend">Vous êtes abonné(e) à {{fullname}} </p>
@@ -112,14 +83,6 @@
       <p  class="card-profilAdmin-friend-new">Abonnez-vous à {{fullname}}</p>
       <button  class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
     </div>
-
-    
-    <!-- <div v-if="follower[0] == undefined"  class="card-profil-friend">
-    <div class="btn-profil-follow">
-      <p class="card-profilAdmin-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
-      <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
-    </div>
-  </div> -->
 
   </v-card-text>
   <v-card-text v-else class="card-profil-friend">
@@ -169,6 +132,8 @@
     <WarningDelete v-if="warningDelete" v-show="warningDelete" @close-modale-biodelete ="warningDelete=false" @close-modale-biodelete-confirm="warningDelete=false,deleteUserBio()" />
     <modify v-if="showmodify"  v-show="showmodify" @close-modale-modify=" showmodify=false,getPosts()" />
     <deletepost v-if="showdel" v-show="showdel" @close-modale-delete="showdel = false,getPosts()" />
+    <WarningBanUser v-if="showBan" v-show="showBan" 
+      @close-modale-ban-delete="(showBan = false),getRefresh()" @close-modale-ban-confirm="(showBan = false),getRefresh()" />
   </v-card>
 
 </template>
@@ -181,6 +146,7 @@ export default {
   name: "Profil",
   components: {
     Load,
+    WarningBanUser: () => import( /* webpackChunkName:"WarningBanUser"*/"../components/warningbanuser.vue"),
     WarningDeletePicture: () => import( /* webpackChunkName:"WarningDeletePicture"*/"../components/warningdeletepictureuser.vue"),
     WarningDelete: () => import ("../components/warnindelete.vue"),
     WarningEmpty: ()=> import ("../components/warningempty.vue"),
@@ -230,9 +196,12 @@ export default {
       photo: [],
       userid: "",
       posted: "",
+      userReport : [],
+      checkreport : false,
+      userBan:false,
 
       followkey: 0,
-
+      showBan:false,
       showdel: false,
       showmodify: false,
       warningRecord:false,
@@ -258,6 +227,32 @@ export default {
   },
 
   methods: {
+
+    banUserId(id){
+      const info = { 
+        idban : id,
+      };
+      localStorage.setItem("info-ban-user", JSON.stringify(info));
+    
+    },
+
+
+    getRefresh(){
+      this.userBan = false
+       axios.get(`http://localhost:5000/api/user/${this.id}`)
+      .then((docs) => {
+        this.userid = docs.data._id;
+        this.firstname = docs.data.firstname;
+        this.lastname = docs.data.lastname;
+        this.urlpic = docs.data.photo;
+        this.bioUser = docs.data.bio
+        this.follower = docs.data.followers;
+        this.following = docs.data.following;
+        this.userReport = docs.data.profilSignalBy
+        if (docs.data.ban == true) this.userBan = true
+      })
+    },
+
 
     getBio(){
        axios
@@ -311,9 +306,7 @@ export default {
     getcolor() {
       if (this.urlpic === "" || this.url === ""  || this.urlpic=== undefined) {
         this.avatarpicempty = this.lastname.split("")[0].toLocaleUpperCase();
-        // let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        // document.getElementById("avatar-empty-profil").style.backgroundColor =
-        //   "#" + randomColor;
+  
       }
     },
 
@@ -393,49 +386,6 @@ export default {
         })
     },
 
-    // async profilUpdate() {
- 
-    //   let formData = new FormData();
-    //   formData.append("fullname", this.fullname);
-    //   formData.append("photo", this.photo);
-    //   await axios
-    //     .put(`http://localhost:5000/api/user/${this.userid}`, formData)
-    //     .then(() => {
-    //       axios.get(`http://localhost:5000/api/post`).then((post) => {
-    //         post.data.forEach((doc) => {
-    //           if (doc.posterId === this.userid) {
-    //             const id = [];
-    //             id.push(doc._id);
-    //             id.forEach((postid) => {
-    //               let formData = new FormData();
-    //               formData.append("picture", this.photo);
-    //               axios.put(
-    //                 `http://localhost:5000/api/post/photo/${postid}`,
-    //                 formData
-    //               );
-    //             });
-    //           }
-    //         });
-    //       });
-    //     })
-    //     .then(() => {
-    //       this.posted = true;
-    //       setTimeout(() => {
-    //         this.posted = false;
-    //         window.location.reload();
-    //       }, 1000);
-    //     })
-    //     .catch((errors, test) => {
-    //       this.maxsize = errors.response.data.errors.maxsize;
-    //       this.format = errors.response.data.errors.format;
-    //       setTimeout(() => {
-    //         this.maxsize = "";
-    //         this.format = "";
-    //       }, 3000);
-    //       console.log(errors.response.data.errors.maxsize);
-    //       console.log(errors.response.data.errors.format);
-    //     });
-    // },
 
     getFollowBack(id) {
       axios.patch(`http://localhost:5000/api/user/follow/${this.userjwtid}`, { idToFollow: id })
@@ -510,6 +460,7 @@ export default {
   },
 
   async mounted() {
+    this.userReport = []
     setTimeout(() => {
     this.showloader = false
   }, 1500);
@@ -539,6 +490,15 @@ export default {
         this.bioUser = docs.data.bio
         this.follower = docs.data.followers;
         this.following = docs.data.following;
+        this.userReport = docs.data.profilSignalBy
+     
+        if (docs.data.ban == true) this.userBan = true
+        console.log(this.userBan);
+
+        
+  
+    
+      
       })
       .catch((error) => {
         console.log(error);
@@ -595,6 +555,40 @@ label.lab-pic {
   display: flex;
   // width: 130px;
 }
+
+
+#flag-admin-signal-icon-profil{
+display: flex;
+justify-content: center;
+align-items: center;
+color: $tertiary;
+margin-bottom: 5%;
+width: 20px;
+height: 20px;
+}
+
+#flag-admin-signal-profil{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: $primary;
+  border-radius: 20px;
+  border: solid 2px $primary;
+  margin-top: 2.5%;
+  height: 38px;
+  width: 50px;
+}
+
+
+#number-report-profil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 15px;
+  margin-right: 10%;
+}
+
 
 .lab-pic-del {
   display: flex;
@@ -670,18 +664,67 @@ img.form-avatar-dl {
   flex-direction: column;
 }
 
-.card-profil-title {
+.card-profil-title-admin {
+  display: inline-flex;
+  align-items: center;
   border-bottom: solid 2px $primary;
   background-color: $secondary;
+  padding-bottom: 1%;
+  
+
 }
 
-.card-profil-title-h1 {
+#btn-flag-admin{
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+align-items: center;
+height: 40px;
+width: 130px;
+background-color: $primary;
+border-radius: 20px;
+border: solid 2px $primary;
+color:$tertiary;
+font-weight: bold;
+font-size: large;
+font-style: italic;
+}
+
+#btn-flag-admin-ban{
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+align-items: center;
+height: 40px;
+width: 130px;
+background-color: $primary;
+border-radius: 20px;
+border: solid 2px $primary;
+color:$tertiary;
+font-weight: bold;
+font-size: large;
+font-style: italic;
+}
+
+#btn-flag-admin-bis{
+height: 40px;
+width: 130px;
+}
+
+
+
+
+.card-profil-title-h1-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding-top: 2%;
-  padding-bottom: 1%;
+  padding-bottom: 2%;
   font-size: 2.5rem;
   font-weight: bolder;
   font-style: italic;
   color: $primary;
+  margin-left: 15%;
 }
 
 div.v-card__text.card-profil-name {

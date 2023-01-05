@@ -265,7 +265,7 @@ exports.getPostSignal = (req, res) => {
           {$elemMatch :
             {signalPostid :req.body.postSignal, signalUserId : req.body.userFromId}}},(err,doc)=>{
               console.log(doc.postSignalBy[0]);
-           if (doc.postSignalBy[0] != undefined ) console.log('user utilisateur deja signaler')
+           if (doc.postSignalBy[0] != undefined ) console.log('publication deja signalé')
            else {
            UserModel.findByIdAndUpdate(req.body.userSignalId,
               { $push: {postSignalBy : signalUser}},
@@ -320,7 +320,7 @@ exports.deleteOnePicture = (req, res) => {
       const connectedUser = req.user;
       if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
         res.cookie("jwt", "", { session: false, maxAge: 1 });
-        res.status(400).json("onepic");
+        res.status(400).json("erreur onepic");
       } else {
         let delimg = post.picture.split("images/")[1];
         fs.unlink(`images/${delimg}`, (err) => {
@@ -340,13 +340,13 @@ exports.deleteOnePicture = (req, res) => {
 exports.deleteOldPicModidify = (req, res) => {
   PostModel.findById(req.params.id)
     .then((post) => {
-      // const postedBy = post.posterId
-      // const connectedUser = req.user
-      // if(connectedUser !== '62f8f745c348ae5b9f081062'  &&  postedBy !== connectedUser){
-      //   res.cookie('jwt','', { session:false, maxAge: 1 })
-      //   res.status(400).json('moddelpic')
-      // }else{
-      // console.log(req.body.id);
+      const postedBy = post.posterId
+      const connectedUser = req.user
+      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+        res.cookie("jwt", "", { session: false, maxAge: 1 });
+        res.status(400).json("erreur onepicuser");
+      }else{
+      console.log(req.body.id);
       old = req.body.id;
       let delimg = old.split("images/")[1];
 
@@ -357,7 +357,7 @@ exports.deleteOldPicModidify = (req, res) => {
           console.log("successfully deleted local image");
         }
       });
-      // }
+      }
     })
     .catch((err) => {
       err;
@@ -368,7 +368,7 @@ exports.deleteOldPicModidify = (req, res) => {
 exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("post iconnu:" + req.params.id);
-    if (req.user !== req.body.id) return res.status(400).send("erreur de user");
+    if (!req.user === req.params.id || !req.user === process.env.ADMINID) return res.status(400).json("erreur de user");
     PostModel.find({ _id: req.params.id, likers: req.body.id },(err,doc)=>{
       console.log(doc[0]);
       console.log(err);
@@ -395,7 +395,7 @@ exports.likePost = (req, res) => {
         },
         { new: true },
         (err, docs) => {
-          if (!err) res.send("post liker");
+          if (!err) res.json("post liker");
           else return res.status(400).send(err.message);
         }
       );
@@ -412,7 +412,7 @@ exports.likePost = (req, res) => {
 exports.unLikePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    if (req.user !== req.body.id) return res.status(400).json("erreur de user");
+    if (!req.user === req.params.id || !req.user === process.env.ADMINID) return res.status(400).json("erreur de user");
   try {
     PostModel.findByIdAndUpdate(
       req.params.id,
@@ -434,7 +434,7 @@ exports.unLikePost = (req, res) => {
       },
       { new: true },
       (err, docs) => {
-        if (!err) res.send(docs);
+        if (!err) res.json('unlike ok ');
         else return res.status(400).send(err.message);
       }
     );
@@ -524,7 +524,7 @@ exports.commentPost = (req, res) => {
       } catch (err) {
         res.status(400).send(err);
       }
-      res.status(200).send("allgood");
+      res.status(200).json("commentaire envoyer");
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -542,7 +542,7 @@ exports.editCommentPost = (req, res) => {
         comment._id.equals(req.body.commentId)
       );
 
-      if (!Comment) return res.status(404).send("Commentaire non trouver");
+      if (!Comment) return res.status(404).json("Commentaire non trouver");
       Comment.text = req.body.text;
       return docs.save((err) => {
         if (!err) return res.status(200).send(docs);

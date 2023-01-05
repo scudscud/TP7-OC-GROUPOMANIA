@@ -21,7 +21,6 @@ const createToken = (id) => {
 // signup end point \\
 
 exports.signUp = async (req, res, next) => {
-  
   const { lastname, firstname, email, badge, password } = req.body;
   const find = await EmployeesModel.find({
     lastname: lastname,
@@ -29,84 +28,75 @@ exports.signUp = async (req, res, next) => {
     email: email,
     badge: badge,
   }).count();
-console.log(find);
+  console.log(find);
   if (find != 1) {
-    return res.status(401).json({ error: "echec veuillez réessayer, si le probleme persiste contacter un administrateur",
-});
-  }else{
+    return res
+      .status(401)
+      .json({
+        error:
+          "echec veuillez réessayer, si le probleme persiste contacter un administrateur",
+      });
+  } else {
+    try {
+      const userNew = new UserModel({
+        lastname: lastname,
+        firstname: firstname,
+        email: email,
+        badge: badge,
+        password: password,
+      });
+      console.log(userNew);
 
+      await userNew.save();
 
- try {
-  const userNew =  new UserModel({lastname: lastname,firstname: firstname,email: email,badge: badge,password: password })
-  console.log( userNew);
- 
-  await userNew.save();
-
-  return res.status(201).json(userNew);
-} catch (err) {
-console.log(err);
+      return res.status(201).json(userNew);
+    } catch (err) {
+      console.log(err);
 
       const errors = signUpErrors(err);
-  //  return res.status(400).send(errors);
-
-}}
-  // .then(()=>{
-  //   // console.log(docs);
-  //   return res.status(201).json(test);
-  //   // next()
-  // }).catch((err) => {
-  //   const errors = signUpErrors(err);
-  //   res.status(400).send(errors);
-  // })
+    }
+  }
 };
-
 
 // signin end point cookie jwt \\
 
 exports.signIn = async (req, res) => {
- 
   const { email, badge, password } = req.body;
   try {
-    const ban = UserModel.findById()
+    const ban = UserModel.findById();
     const user = await UserModel.login(email, badge, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, {
       // SameSite : None,
       session: false,
       maxAge: durationTokenLogin12,
-      secure:false,
+      secure: false,
       httpOnly: true,
     });
-    UserModel.findOne({_id: user, ban : true}, (err,doc) => {
-    if (doc)
-     {res.cookie("jwt",'', { maxAge: durationTokenLogout }),  res.status(400).json('utilisateur banni') }
-    else {res.status(200).json({ user: user._id , token});}
-  })
+    UserModel.findOne({ _id: user, ban: true }, (err, doc) => {
+      if (doc) {
+        res.cookie("jwt", "", { maxAge: durationTokenLogout }),
+          res.status(400).json("utilisateur banni");
+      } else {
+        res.status(200).json({ user: user._id, token });
+      }
+    });
   } catch (err) {
     const errors = signInErrors(err);
     res.status(401).send({ errors });
   }
 };
 
-
-
-
-
-
-
 // logout end point \\
 
 exports.logout = (req, res) => {
-// console.log(req.cookies)
-// console.log(res.cookie)
+  // console.log(req.cookies)
+  // console.log(res.cookie)
 
-  res.cookie("jwt",'', { maxAge: durationTokenLogout })
-  
+  res.cookie("jwt", "", { maxAge: durationTokenLogout });
+
   res.redirect("./");
 };
-
-
-
 
 // signin end point header jwt \\
 
@@ -121,10 +111,6 @@ exports.logout = (req, res) => {
 //     res.status(401).json({ errors });
 //   }
 // };
-
-
-
-
 
 //----------------------------------------end---------------------------------------------------------------------------------------\\
 
@@ -153,9 +139,6 @@ exports.logout = (req, res) => {
 //     res.status(400).json({ errors })
 //   }
 // };
-
-
-
 
 // exports.signUp = async (req, res, next) => {
 //   const { name,firstname, badge, email, password } = req.body;

@@ -17,8 +17,7 @@
           <v-icon class="img-flag">mdi-flag</v-icon>
         </p>
         <p v-if="!reportconfirm" id="span-report-post-2">
-          cette publication vous offense signaler la ainsi que son auteur ou
-          autrice
+          cette publication vous offense signaler la
         </p>
         <div v-if="reportconfirm" id="span-report-post-signal">
           <h4>La team GROUPOMANIA</h4>
@@ -64,7 +63,7 @@
           <v-icon class="img-flag">mdi-flag</v-icon>
         </p>
         <p v-if="!reportconfirm" id="span-report-post-2">
-          Vous avez déjà signalé cette publication et son autrice ou auteur
+          Vous avez déjà signalé cette publication
         </p>
         <div id="span-report-post-signal">
           <h4>La team GROUPOMANIA</h4>
@@ -107,9 +106,10 @@ export default {
     this.userSignalId = info.userSid
     this.userSignalFullname = info.userSfull
     this.postSignal = info.post
+   
    axios.get(`http://localhost:5000/api/post/${this.postSignal}`)
         .then((docs) => {
-          console.log(docs.data.signalBy);
+          localStorage.removeItem('info-signal-post')
           this.reportcheck = docs.data.signalBy
           this.posts = docs.data
         })

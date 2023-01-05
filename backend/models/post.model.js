@@ -36,7 +36,14 @@ const PostSchema = new mongoose.Schema(
         video: {
             type:String,
         },
+        banuser: {
+            type: Boolean,
+            default: false
+          },
         signalBy :{
+            type:[String],
+        },
+        signalProfil :{
             type:[String],
         },
         signalpost:{

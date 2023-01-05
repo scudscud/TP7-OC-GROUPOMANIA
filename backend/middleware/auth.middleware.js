@@ -1,67 +1,67 @@
-const jwt = require('jsonwebtoken');
-const UserModel = require('../models/user.model');
+const jwt = require("jsonwebtoken");
+const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
-const durationTokenLogout = 1
+const durationTokenLogout = 1;
 
-exports.requireAuth = (req,res,next)=>{
-// console.log(req);
-    const auth = req.headers.cookie
-    const token = auth && auth.split('=')[1]
-    //    console.log(req);
-   if (token){
-    jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken)=>{
-        if(err){
-            // console.log('no token');
-            res.status(401).send('token not found');
-        }else{
+exports.requireAuth = (req, res, next) => {
+  const auth = req.headers.cookie;
+  const token = auth && auth.split("=")[1];
+
+  if (token) {
+    jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
+      if (err) {
+        res.status(401).send("token not found");
+      } else {
+        UserModel.findOne({ _id: decodedToken.id, ban: true }, (err, doc) => {
+          if (doc) {
+            res.cookie("jwt", "", { maxAge: durationTokenLogout }),
+              res.status(400).json("utilisateur banni");
+          } else {
             req.user = decodedToken.id;
-            // console.log("mid"+req.user);
-            // res.status(200).json(decodedToken.id)      
-       next()
-        }
-    })
-   }else{
-    req.user = ''
-    console.log('access denied invalid token ');
+            next();
+          }
+        });
+      }
+    });
+  } else {
+    req.user = "";
+    console.log("access denied invalid token ");
     // res.status(401).json('erreur')
-    next()
-   }
+    next();
+  }
 };
 
+exports.checkUser = (req, res, next) => {
+  const auth = req.headers.cookie;
+  const token = auth && auth.split("=")[1];
+  if (token) {
+    jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
+      if (err) {
+        res.locals.user = null;
+        res.cookie("jwt", "", { session: false, maxAge: 1 });
 
-
-exports.checkUser = ( req,res,next)=>{
-    const auth = req.headers.cookie
-    const token = auth && auth.split('=')[1]
-if(token){
-    jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
-   if (err){
-    res.locals.user = null;
-    res.cookie('jwt','', { session:false, maxAge: 1 });
-   
-    next();
-    }else{
+        next();
+      } else {
         // console.log(decodedToken);
-  let user = await UserModel.findById(decodedToken.id);
-//   console.log(decodedToken.id);
-   res.locals.user = user;
-//    console.log("test"+res.locals.user);
-  next();
-    }
-    })
-}else{ 
+        let user = await UserModel.findById(decodedToken.id);
+        //   console.log(decodedToken.id);
+        res.locals.user = user;
+        //    console.log("test"+res.locals.user);
+        next();
+      }
+    });
+  } else {
     res.locals.user = null;
     next();
-}
+  }
 };
-
 
 // exports.validUser = ( req,res,next)=>{
 //     // console.log(req.params);
 //     const auth = req.headers.cookie
 //     const token = auth && auth.split('=')[1]
-  
+
 //     // console.log(token);
 // if(token){
 //     jwt.verify( token , process.env.TOKEN_SECRET, async ( err, decodedToken)=> {
@@ -78,16 +78,11 @@ if(token){
 //   next();
 //     }
 //     })
-// }else{ 
+// }else{
 //     res.locals.user = null;
 //     next();
 // }
 // };
-
-
-
-
-
 
 // exports.authUser = (req, res ,next) =>{
 //     const authHeader = req.headers['authorization']

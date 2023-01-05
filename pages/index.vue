@@ -8,6 +8,7 @@
           <div v-else id="avatar-empty-book-top">{{ avatarpicempty }}</div>
           <button class="new-top">
             <p class="new-top-span">Envie de partager, {{ firstname }} ?</p>
+            <p class="new-top-span-bis"><v-icon id="circle-top" size="35px">mdi-plus-circle-outline</v-icon></p>
           </button>
         </div>
         <button class="post-option" @focusin="showsort = !showsort" title="trier les publications">
@@ -35,7 +36,7 @@
         <v-card class="card-post" v-for="(post, index) in posts" :key="post.id" :index="index">
           <div class="border-card">
             <div id="card-autor-book" v-if="post.posterId === userid">
-              <!-- <nuxt-link :to="{name: 'profilUsermain', params: { id : post.posterId} }" class="name-date-book"  > -->
+
               <div class="name-date-book">
                 <nuxt-link class="link" :to="{ name: 'profiluser' }" title="lien vers le profil de l'utilisateur">
                   <img v-if="
@@ -48,8 +49,7 @@
                   </div>
                 </nuxt-link>
                 <span id="fullname-main">{{ post.posterfullname }} à {{ post.date }}</span>
-                <!-- <p class="full-date">{{post.date}}</p> -->
-                <!-- </nuxt-link> -->
+
               </div>
               <div class="btn-book-main">
                 <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
@@ -78,13 +78,16 @@
                   </div>
                 </nuxt-link>
                 <span id="fullname-main">{{ post.posterfullname }} à {{ post.date }}</span>
+                <v-icon class="alert-signal-profil-admin" v-if="post.signalProfil.length > 0" color="red"  size="25px" >mdi-alert-outline</v-icon>
               </div>
 
               <div class="text-center">
     <v-menu
+    id="btn-admin-menu"
       open-on-hover
-      top
       offset-y
+      transition="slide-y-transition"
+      bottom
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn id="manage-btn-admin-post"
@@ -94,42 +97,36 @@
           gestion 
         </v-btn>
       </template>
-      <v-list>
-      <div class="btn-book-main">
+      <v-list class="btn-book-main-list">
+      <v-list-item class="btn-book-admin-post">
+                  <p class="btn-book-main-post"> publication </p>
+                 <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
+                  title="supprimer votre publication">
+                  <!-- <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                  Supprimer
+                </button>
                 <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
                   title="modifier votre publication">
-                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>
+                  <!-- <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> -->
                   Modifier
                 </button>
-                <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
-                  title="supprimer votre publication">
-                  <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
+                <div class="btn-book-main-user"> utilisateur </div>
+                <button v-if="post.banuser === false" id="btn-ban-user" @click="(showBan = !showBan), banUserId(post.posterId,post._id)"
+                  title="bannir l'utilisateur">
+                  <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                  Bannir
                 </button>
-              </div>
+               
+                <button v-else id="btn-ban-user" @click="(showBan = !showBan), banUserId(post.posterId)"
+                  title="debannir l'utilisateur">
+                  <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                  Débannir
+                </button>
+              </v-list-item>
             </v-list>
-      <!-- <v-list>
-        <v-list-item
-          v-for="(action, index) in actions"
-          :key="index"
-        >
-          <v-list-item-title>{{ action.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list> -->
     </v-menu>
   </div>
 
-
-              <!-- <div class="btn-book-main">
-                <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
-                  title="modifier votre publication">
-                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>
-                  Modifier
-                </button>
-                <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
-                  title="supprimer votre publication">
-                  <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
-                </button>
-              </div> -->
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
@@ -182,9 +179,9 @@
                   <span id="number-like">{{ post.likers.length }}</span>
                 </div>
               </button>
-              <button id="btn-att">
+              <button id="btn-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)">
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)"
+                <p class="text-att-comment" tilte="commenter la publication"
                   :index="index" :postid="post._id">
                   Commenter
                 </p>
@@ -220,17 +217,17 @@
                   <span id="number-like">{{ post.likers.length }}</span>
                 </div>
               </button>
-              <button id="btn-att">
+              <button id="btn-att-comment">
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)"
+                <p class="text-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)" title="commenter la publication"
                   :index="index" :postid="post._id">
                   Commenter
                 </p>
               </button>
-              <!-- <button id="btn-att-flag" @click="showReport = !showReport"><v-icon class="img-att-flag">mdi-flag</v-icon><p class="text-att">Signaler</p></button> -->
+
               <button v-if="post.posterId !== userid" :class="
                       post.signalBy.includes(userid)
-                        ? 'reportPost'
+                        ? 'reportPost' 
                         : 'notReportPost'
                     " class="btn-att-flag" @click="
                       (showReport = !showReport),
@@ -244,9 +241,7 @@
                     " title="signaler la publication">
                 <v-icon class="img-att-flag">mdi-flag-outline</v-icon>
                 <p class="text-att-report">Signaler</p>
-                <!-- <div v-if="post.signalBy.length > 0" class="buble-report">
-                  <span id="number-report">{{ post.signalBy.length }}</span>
-                </div> -->
+
               </button>
             </div>
           </div>
@@ -273,23 +268,11 @@
               </form>
             </v-card-text>
           </div>
-
           <button class="deploy-comment-button" v-if="post.comments.length > 0 && (seetest.index !== index || !seetest.see)" @click="selectPost(index)"  :index="index" >Voir les commentaires</button>
       <button class="deploy-comment-button" v-if="post.comments.length > 0 && seetest.index === index && seetest.see" @click="selectPost(index)" :index="index">Cacher les commentaires</button>
 
-          <!-- <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment[index] " @click="seecomment[index] = !seecomment[index], SeeComment(index)" :index="index">
-            Voir les commentaires<v-icon class="arrow-comment">mdi-arrow-down</v-icon>
-          </button>
-          <button class="close-comment-button" v-if="post.comments.length > 0 && !seecomment[index]"
-            @click=" seecomment[index] = !seecomment[index], CloseComment(index)" :index="index">
-            Cacher les commentaires<v-icon class="arrow-comment">mdi-arrow-up</v-icon>
-          </button> -->
-          <!-- <button class="deploy-comment-button" v-if="post.comments.length > 0 && seecomment === false && index == !selectedPostIndexOpen" @click="DeployComment(index),seecomment = !seecomment" :index="index"  :class="seecomment == true ? 'open' : 'close'">Voir les commentaires</button> -->
 
           <v-card v-if="seetest.index === index && seetest.see"  v-for="(comment, indexcomment) in post.comments" :key="comment._id" :index="indexcomment" class="card-comment">
-
-          <!-- <v-card v-if="!seecomment[index]" v-for="(comment, indexcomment) in post.comments" :key="comment._id"
-            :index="indexcomment" class="card-comment"> -->
             <v-card-text class="card-comment-posted">
               <div class="title-card-comment-posted">
                 <img v-if="
@@ -326,7 +309,7 @@
               <p class="history">
                 Ceci restera écrit dans les livres d'histoire
               </p>
-              <!-- <p class="history">Ceci restera ecrit sur un disque dur</p> -->
+
               <p>Ceci restera stocké dans le cloud</p>
             </div>
           </div>
@@ -370,15 +353,15 @@
     <WarningDoubleComment v-if="WarningDoubleComment" v-show="WarningDoubleComment"
       @close-modale-double-save="WarningDoubleComment = !WarningDoubleComment" @close-modale-double-delete-confirm="
   (WarningDoubleComment = !WarningDoubleComment),
-  PostCommentOpenBis(indexpostOpen)
-" />
+  PostCommentOpenBis(indexpostOpen)" />
     <WarningClearComment v-if="WarningClearComment" v-show="WarningClearComment"
       @close-modale-clear-delete="WarningClearComment = !WarningClearComment" @close-modale-clear-comfirm="
-  (WarningClearComment = !WarningClearComment), clearComment()
-      " />
+  (WarningClearComment = !WarningClearComment), clearComment() " />
       <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId"
       :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname"
       @close-modale-report="showReport = false" @close-modale-report-comfirm="(showReport = false), getRefresh()" />
+      <WarningBanUser v-if="showBan" v-show="showBan" 
+      @close-modale-ban-delete="(showBan = false), getRefresh()" @close-modale-ban-confirm="(showBan = false), getRefresh()" />
   </div>
 </template>
 <script>
@@ -390,6 +373,11 @@ import Load from "../components/Waitload.vue";
 
   components: {
     Load,
+
+    WarningBanUser: () =>
+      import(
+        /* webpackChunkName:"WWarningBanUser"*/ "../components/warningbanuser.vue"
+      ),
     WarningClearComment: () =>
       import(
         /* webpackChunkName:"WarningClearComment"*/ "../components/warningclearcomment.vue"
@@ -431,6 +419,7 @@ import Load from "../components/Waitload.vue";
       showmodify: false,
       showdel: false,
       showpost: false,
+      showBan:false,
       like: false,
       userjwtid: "",
       userid: "",
@@ -468,7 +457,6 @@ import Load from "../components/Waitload.vue";
       seetest: {
         index: null,
         see: false
-
       },
       seeok : false,
       writecomment: false,
@@ -489,19 +477,6 @@ import Load from "../components/Waitload.vue";
       scTimer: 0,
       scY: 0,
 
-
-      actions: [
-        { 
-          title: 'Supprimer la publication',
-        
-      
-      
-      },
-        { title: 'Modifier la publication' },
-        { title: "Bannir l'utilisateur" },
-      ],
-
-
     };
    },
    computed: {
@@ -516,9 +491,6 @@ import Load from "../components/Waitload.vue";
       if (mm < 10) {
         mm = "0" + mm;
       }
-      // today = mm+'-'+dd+'-'+yyyy;
-      // today = mm+'/'+dd+'/'+yyyy;
-      // today = dd+'-'+mm+'-'+yyyy;
       today = dd + "/" + mm + "/" + yyyy;
       return today;
     },
@@ -556,16 +528,6 @@ import Load from "../components/Waitload.vue";
     }
   },
 
-  //   openPostComment(index) {
-  //   this.seetest.index = index;
-  //   this.seetest.see = true;
-  // },
-  // closePostComment(index) {
-  //   this.seetest.index = index;
-  //   this.seetest.see = false;
-  // },
-
- 
 
     clearComment() {
       this.CommentMessage = "";
@@ -709,7 +671,6 @@ import Load from "../components/Waitload.vue";
         userFfull: uffn,
         userFid: ufid,
       };
-      console.log(info);
       localStorage.setItem("info-signal-post", JSON.stringify(info));
     },
 
@@ -791,6 +752,7 @@ import Load from "../components/Waitload.vue";
           console.log(err);
         });
     },
+
 
     getPostsSignal() {
       axios
@@ -975,6 +937,15 @@ import Load from "../components/Waitload.vue";
       // this.getRefresh()
     },
 
+    banUserId(id,postid){
+      const info = { 
+        idban : id,
+        postidban : postid
+      };
+      localStorage.setItem("info-ban-user", JSON.stringify(info));
+    
+    },
+
     postIdDel(post) {
       const parse = JSON.stringify(post);
       localStorage.setItem("categories", parse);
@@ -1067,9 +1038,11 @@ import Load from "../components/Waitload.vue";
         console.log(error);
       });
 
+
     await axios
       .get(`http://localhost:5000/api/user/${this.userjwtid}`)
       .then((docs) => {
+        console.log(docs);
         this.role = docs.data.role;
         this.userid = docs.data._id;
         this.firstname = docs.data.firstname;
@@ -1178,10 +1151,6 @@ div.v-main__wrap {
   padding-left: 8%;
   width: 100%;
   height: 50px;
-  // border: solid 2px $secondary;
-  // border-radius: 10px/5px;
-  // margin-bottom: 2%;
-  // background-color: $secondary;
   cursor: pointer;
 
   &:hover {
@@ -1205,24 +1174,14 @@ div.v-main__wrap {
 }
 
 .post-option :hover {
-  // position: relative;
-  // left : 10%;
-  // border: solid black 1px;
   translate: 4px;
 }
 
 .post-option-dot:before {
   color: $primary;
-  // position: relative;
-  // left : 100%;
-  // &:hover{
-  // transform: 20px;
-  // }
 }
 
 .new-top {
-  // padding: 0;
-  // padding-left: 1%;
   border: solid 2px black;
   border-radius: 30px / 30px;
   height: 35px;
@@ -1231,9 +1190,31 @@ div.v-main__wrap {
 .new-top-span {
   display: flex;
   flex-direction: row;
-
   width: auto;
   color: black;
+}
+
+.new-top-span-bis {
+  display: none;
+}
+
+
+@media (max-width : 750px) {
+.new-top-span {
+  display: none;
+}
+.new-top{
+  border: none;
+  border-radius: 0px;
+  height: 35px;
+}
+.new-top-span-bis {
+  display: block;
+}
+#circle-top{
+  color : $tertiary;
+}
+
 }
 
 #btn-post-top {
@@ -1542,10 +1523,8 @@ button.close-comment-button {
 
   &:hover {
     border-color: $primary;
-    // border-color:green;
-    // border-color: $secondary;
     transform: scale(1.05);
-    // transition: ease 0.5s ;
+
   }
 }
 
@@ -1577,15 +1556,6 @@ button.close-comment-button {
   color: aliceblue;
   margin-right: 1%;
 
-  // margin-top: 1.5%;
-  // margin-right: 1%;
-  // display: flex;
-  // width: 50px;
-  // height: 50px;
-  // justify-content: center;
-  // align-items: center;
-  // border: solid 2px $secondary;
-  // border-radius: 50%;
 }
 
 .history {
@@ -1601,10 +1571,7 @@ button.close-comment-button {
   background-color: $tertiary;
   padding: 1%;
   border-bottom: solid 2px $secondary;
-  // margin-bottom: 1%;
-  // padding-top: 2%;
-  // border-bottom-left-radius: -5%;
-  // border-bottom-right-radius: -5%;
+
 }
 
 #card-autor-book-none {
@@ -1616,11 +1583,6 @@ button.close-comment-button {
   background-color: $tertiary;
   padding: 1%;
   border-bottom: solid 2px $secondary;
-  // height: 75px;
-  // margin-bottom: 1%;
-  // padding-top: 2%;
-  // border-bottom-left-radius: -5%;
-  // border-bottom-right-radius: -5%;
 }
 
 .user-book-main-none {
@@ -1628,7 +1590,7 @@ button.close-comment-button {
   flex-direction: row;
   align-items: center;
   width: 100%;
-  // padding-bottom: 2%;
+
 }
 
 p.fullname-none {
@@ -1638,23 +1600,10 @@ p.fullname-none {
   align-items: center;
   width: 100%;
   height: auto;
-  // margin-left: 1%;
-  // padding-top: 2%;
-  // padding-left: 3%;
-  // padding-right: 2%;
   margin-bottom: 0;
   cursor: default;
 }
 
-// margin-top: 1.5%;
-//   margin-right: 1%;
-//   display: flex;
-//   width: 50px;
-//   height: 50px;
-//   justify-content: center;
-//   align-items: center;
-//   border: solid 2px $secondary;
-//   border-radius: 50%;
 
 .pen-icon-main {
   padding-right: 5%;
@@ -1664,9 +1613,10 @@ p.fullname-none {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 105px;
   height: 30px;
   border: solid 2px $secondary;
-  margin-top: 1%;
+  margin-top: 3%;
   margin-right: 1%;
   border-radius: 15px;
   padding-left: 5px;
@@ -1694,6 +1644,7 @@ p.fullname-none {
   justify-content: center;
   align-items: center;
   height: 30px;
+  width: 105px;
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
@@ -1712,6 +1663,38 @@ p.fullname-none {
       color: $tertiary;
     }
   }
+}
+
+
+
+#btn-ban-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 105px;
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 15px;
+  padding-left: 2px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+
+  &:hover {
+    border-radius: 10px;
+    background-color: $secondary;
+    color: $tertiary;
+
+    &#btn-ban-user>.ban-icon-main {
+      color: $tertiary;
+    }
+  }
+}
+
+.ban-icon-main{
+  padding-right: 10%;
 }
 
 .image-card {
@@ -1734,14 +1717,10 @@ p.fullname-none {
   align-items: center;
   display: flex;
   object-fit: cover;
-  // overflow: hidden;
   max-height: 300px;
   max-width: 500px;
-  // width: 100%;
   min-width: 300px;
-  // padding: 1%;
   border: solid 2px $secondary;
-  // border-bottom: solid 2px $secondary;
   border-radius: 2%;
 }
 
@@ -1751,13 +1730,10 @@ p.fullname-none {
   align-items: center;
   display: flex;
   object-fit: cover;
-  // overflow: hidden;
   max-height: 300px;
   max-width: 500px;
   width: 100%;
-  // padding: 1%;
   border: solid 2px $secondary;
-  // border-bottom: solid 2px $secondary;
   border-radius: 2px;
 }
 
@@ -1775,13 +1751,14 @@ p.fullname-none {
   padding-bottom: 2%;
 }
 
-// .fullname-book{
-//   padding-top: 10%;
-//   padding-left: 3%;
-// }
 
 #fullname-main {
   cursor: default;
+}
+
+i.alert-signal-profil-admin{
+margin-left: 2%;
+margin-right: 2%;
 }
 
 p.full-date {
@@ -1833,7 +1810,7 @@ p.firstpost {
   }
 }
 
-#btn-att {
+#btn-att-comment {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1854,7 +1831,7 @@ p.firstpost {
     translate: 3px;
     border: solid 1px $secondary;
 
-    &#btn-att>.img-att:before {
+    &#btn-att-comment>.img-att:before {
       color: $secondary;
     }
   }
@@ -1880,7 +1857,6 @@ p.firstpost {
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
-
     &.notReportPost>.img-att-flag:before {
       color: $secondary;
     }
@@ -1902,23 +1878,58 @@ p.firstpost {
   cursor: pointer;
   padding: 2%;
 
-  &:hover {
-    background-color: $tertiary;
-    color: $secondary;
-    translate: 3px;
-    border: solid 1px $secondary;
-
-    &.reportPost>.img-att-flag:before {
-      color: $secondary;
-    }
-  }
 }
+
+.btn-book-admin-post{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80px;
+  width: 100px;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  height: 180px;
+   border: solid 2px $primary;
+   border-radius: 15px;
+   background-color: $tertiary;
+}
+
+.btn-book-main-list{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 1%;
+}
+
+p.btn-book-main-post{
+  font-weight: bold;
+  font-style: italic;
+  font-size: larger;
+  border-bottom: solid 2px red;
+  margin-bottom: 10%;
+}
+
+.btn-book-main-user{
+  font-weight: bold;
+  font-style: italic;
+  font-size: larger;
+  border-bottom: solid 2px red;
+  margin-bottom: 10%;
+  margin-top: 10%;
+
+}
+
 
 #manage-btn-admin-post{
 background-color: $secondary;
-
-
+width: 110px;
+margin-top: 3%;
+color:$tertiary;
+border: solid 2px $primary;
+border-radius: 10px;
+font-weight: bold;
 }
+
 
 #flag-admin-signal-icon{
 display: flex;
@@ -1936,7 +1947,7 @@ height: 20px;
   align-items: center;
   background-color: $secondary;
   border-radius: 20px;
-  margin-top: 2.5%;
+  margin-top: 2%;
   width: 55px;
   height: 38px;
 }
@@ -2193,6 +2204,26 @@ button.class-btn-att-like {
   color: $secondary;
   position: relative;
   top: -4px;
+}
+
+@media (max-width : 750px){
+
+  p.text-att {
+    display: none;
+}
+p.text-att-comment {
+  display: none;
+}
+
+
+p.text-att-like {
+  display: none;
+}
+
+p.text-att-report {
+display: none;
+}
+
 }
 
 p.text-att {

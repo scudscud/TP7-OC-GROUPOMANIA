@@ -1,6 +1,6 @@
 <template>
     <div class="overlay-delete">
-      <v-col v-if="!reportcheck.includes(userFromId )" class="d-flex justify-center align-center">
+      <v-col v-if="checkreport == false" class="d-flex justify-center align-center">
         <v-card class="popup-report-com">
           <p class="logo-disconnect-delete">
             <img class="logo-white" src="../logo/logo.png" alt="logo" />
@@ -17,8 +17,7 @@
             <v-icon class="img-flag">mdi-flag</v-icon>
           </p>
           <p v-if="!reportconfirm" id="span-report-post-2">
-            cette publication vous offense signaler la ainsi que son auteur ou
-            autrice
+            Ce profil vous offense signaler le
           </p>
           <div v-if="reportconfirm" id="span-report-post-signal">
             <h4>La team GROUPOMANIA</h4>
@@ -33,7 +32,7 @@
           <v-btn
             v-if="!reportconfirm"
             id="btn-notreport-comfirm"
-            @click="$emit('close-modale-report')"
+            @click="$emit('close-modale-report-user')"
           >
             <span>Retour</span>
           </v-btn>
@@ -64,7 +63,7 @@
             <v-icon class="img-flag">mdi-flag</v-icon>
           </p>
           <p v-if="!reportconfirm" id="span-report-post-2">
-            Vous avez déjà signalé cette publication et son autrice ou auteur
+            Vous avez déjà signalé ce profil
           </p>
           <div id="span-report-post-signal">
             <h4>La team GROUPOMANIA</h4>
@@ -99,49 +98,48 @@
   export default {
     // name: 'Delete',
     async mounted(){
-      this.reportcheck= []
-      const getInfo = localStorage.getItem('info-signal-profil')
-      const info = JSON.parse(localStorage.getItem('info-signal-profil'))
-      this.userFromFullname = info.userFfull
-      this.userFromId = info.userFid
-      this.userSignalId = info.userSid
-      this.userSignalFullname = info.userSfull
-     localStorage.removeItem('info-signal-profil')
-     axios.get(`http://localhost:5000/api/user/${this.userSignalId}`)
-          .then((docs) => {
-            console.log(docs.data.signalBy);
-            this.reportcheck = docs.data.signalBy
-          })
-          .catch((err) => { console.log(err); });
+        this.signaluser = []
+     
+      const infoprofil = JSON.parse(localStorage.getItem('info-signal-profil'))
+      this.userFromFullnameP = infoprofil.userFfullP
+      this.userFromIdP = infoprofil.userFidP
+      this.userSignalIdP = infoprofil.userSidP
+      this.userSignalFullnameP = infoprofil.userSfullP
+     
+     await axios.get(`http://localhost:5000/api/user/${this.userSignalIdP}`)
+          .then((profil) => {
+            localStorage.removeItem('info-signal-profil')
+            this.signaluser = profil.data.profilSignalBy
+            this.signaluser.forEach((user)=>{
+          if (user.signalById.includes(infoprofil.userFidP)) this.checkreport = true })
+          }).catch((err) => { console.log(err);});
     },
   
     data() {
       return {
         reportconfirm: false,
-        userFromFullname: '',
-        userFromId : '',
-        userSignalId : '',
-        userSignalFullname:'',
-        postSignal:'',
-        posts:'',
-        reportcheck:[],
+        userFromFullnameP: '',
+        userFromIdP : '',
+        userSignalIdP : '',
+        userSignalFullnameP:'',
+        checkreport : false,
+        signaluser : [],
       }
     },
     methods: {
       reportPost() {
         const sendInfo = {
-      userFromFullname: this.userFromFullname,
-      userFromId: this.userFromId,
-      userSignalId :this.userSignalId,
-      userSignalFullname: this.userSignalFullname,
+      userFromFullname: this.userFromFullnameP,
+      userFromId: this.userFromIdP,
+      userSignalId :this.userSignalIdP,
+      userSignalFullname: this.userSignalFullnameP,
         }
-        axios.patch(`http://localhost:5000/api/user/usersignal/${this.userSignalId}`,sendInfo)
+        axios.patch(`http://localhost:5000/api/user/signalUser/${this.userSignalIdP}`,sendInfo)
         .then((doc)=>{
-            console.log(doc);
-            this.reportcheck = []
+            this.signaluser = []
         })
         setTimeout(() => {
-          this.$emit('close-modale-report-user-comfirm')
+          this.$emit('close-modale-report-comfirm-user')
         }, 1500)
       },
     },
@@ -168,11 +166,7 @@
     padding-top: 1%;
     background-color: $secondary;
     margin-top: 250px;
-    // max-width: 300px;
-    // min-width: 300px;
     width: 320px;
-    // max-height: 200px;
-    // min-height: 200px;
     height: auto;
     display: flex;
     flex-direction: column;

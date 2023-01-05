@@ -4,17 +4,24 @@ const session = require("express-session")
 const cookieParser = require("cookie-parser");
 const ObjectID = require("mongoose").Types.ObjectId;
 const cors = require("cors");
+const fs = require("fs");
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 require("./config/db");
 require("dotenv").config({ path: ".env" });
 
+
+
 const path = require("path")
 // const multer = require('multer');
 
 const app = express();
 
+const dir = "images";
+if (!fs.existsSync(dir)) {fs.mkdirSync(dir)}
+const dirpicture = "images/default";
+if (!fs.existsSync(dirpicture)) {fs.mkdirSync(dirpicture)}
 
 // Cors parametre \\ 
 
@@ -65,21 +72,3 @@ app.listen(process.env.PORT, (port) =>
   console.log(`listening on port ${process.env.PORT}`)
 );
 
-// ===============ROUTE checkuser==ME=============================================================================\\
-
-// app.get('/me',authUser,(req,res)=>{res.status(200).send(res.locals.user_id)});
-
-
-//======================test session=========================================================\\
-
-// const sessionOption ={
-//   secret: 'wow very secret',
-//   cookie: {
-//     maxAge: 600000,
-//     secure: false},
-// saveUninitialized: false,
-//   resave: false,
-//   unset: 'destroy'
-// }
-
-// app.use(session(sessionOption))

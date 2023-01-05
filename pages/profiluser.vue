@@ -31,10 +31,10 @@
     <v-card-text v-else-if="modifyPictureUserInprogress === true" class="card-profil-name">
       <div class="block-picture-url">
         <label class="lab-pic-del" for="avatar">
-          <v-icon class="lab-pic-custom-url" size="25px">mdi-camera-plus</v-icon>
+          <v-icon class="lab-pic-custom-url-modif" size="25px">mdi-camera-plus</v-icon>
           <img class="form-avatar-dl" :src="url" alt="photo de l'utilisateur"/>
           <input id="avatar" class="form-avatar-profil-url" type="file" value="" name="avatar"
-            placeholder="votre photo/avatar" @change="picPreview" />
+          placeholder="votre photo/avatar" @change="picPreview" />
         </label>
         <div class="block-btn-pic-profil">
           <button id="btn-del-pic-profil" @click="delPicPreview()">
@@ -774,21 +774,21 @@ button#btn-del-pic-profil-choice {
   justify-content: center;
 }
 
-.lab-pic-custom {
-  position: relative;
-  top: 80px;
-  left: -30px;
-  height: 38px;
-  width: 38px;
-  background-color: $tertiary;
-  border-radius: 50%;
-  border: solid 2px $primary;
-  padding-bottom: 2%;
-  padding-right: 2%;
-  &:hover {
-    cursor: pointer;
-  }
-}
+// .lab-pic-custom {
+//   position: relative;
+//   top: 80px;
+//   left: -30px;
+//   height: 38px;
+//   width: 38px;
+//   background-color: $tertiary;
+//   border-radius: 50%;
+//   border: solid 2px $primary;
+//   padding-bottom: 2%;
+//   padding-right: 2%;
+//   &:hover {
+//     cursor: pointer;
+//   }
+// }
 
 .form-avatar-profil {
   padding-top: 2%;
@@ -896,6 +896,23 @@ button#btn-del-pic-profil {
   position: relative;
   top: 70px;
   left: 140px;
+  height: 38px;
+  width: 38px;
+  background-color: $tertiary;
+  border-radius: 50%;
+  border: solid 2px $primary;
+  padding-bottom: 2%;
+  padding-right: 2%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.lab-pic-custom-url-modif {
+  position: relative;
+  top: 75px;
+  left:20px;
+
   height: 38px;
   width: 38px;
   background-color: $tertiary;
