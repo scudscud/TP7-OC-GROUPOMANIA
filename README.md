@@ -28,3 +28,8 @@
     
       => se rendre à l'adresse http://localhost:3000/ 
      
+     
+   ## Précision :
+   
+        ### Une collection Mondodb à été crée avec les employé(e)s de GROUPOMANIA, dans le fichier 'employees groupomania',
+        vous trouverez les données necessaire pour l'enregistrement et la connection des utilisateurs et l'administrateur.
