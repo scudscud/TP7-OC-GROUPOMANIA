@@ -12,7 +12,8 @@
     
     => se rendre à la racine du projet à l'aide d'un terminal de commande.
     => exécuter ```npm install```.
-    => Placer le fichier ```env``` (rajouter un ```.``` devant le nom du fichier ```env``` => ```.env``` ) , que vous avez en votre possesion à la racine du dossier           ```backend```
+    => Placer le fichier ```env``` (rajouter un ```.``` devant le nom du fichier ```env``` => ```.env``` ) ,
+    que vous avez en votre possesion à la racine du dossier ```backend```
    
   ## Démarrage du projet :
 
@@ -31,4 +32,5 @@
      
    ## Précision :
    
-        ### Une collection Mondodb à été crée avec les employé(e)s de GROUPOMANIA, dans le fichier 'employees groupomania'  vous trouverez les données necessaire pour               l'enregistrement et la connection des utilisateurs et l'administrateur.
+        ### Une collection Mondodb à été crée avec les employé(e)s de GROUPOMANIA, dans le fichier 'employees groupomania',
+        vous trouverez les données necessaire pour l'enregistrement et la connection des utilisateurs et l'administrateur.
