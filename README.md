@@ -31,5 +31,7 @@
      
    ## Précision :
    
-        ### Une collection Mondodb à été crée avec les employé(e)s de GROUPOMANIA, dans le fichier 'employees groupomania',
-        vous trouverez les données necessaire pour l'enregistrement et la connection des utilisateurs et l'administrateur.
+        ### Une collection Mondodb à été crée avec les employé(e)s de GROUPOMANIA, car pour se pourvoir creer un compte il faut etre enregistrer
+        dans la collection employees.
+        Dans le dossier 'employees' en votre possession ,
+        vous trouverez les données necessaire pour l'enregistrement et la connection des utilisateurs et la connection de l'administrateur.
