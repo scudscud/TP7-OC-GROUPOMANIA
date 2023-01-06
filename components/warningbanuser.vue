@@ -8,36 +8,41 @@
             <img class="logo-white" src="../logo/logo.png" alt="logo" />
             <span>La team GROUPOMANIA</span>
           </p>
-          <p  id="span-report-post-titre">
+          <p v-if="!reportconfirm" id="span-report-post-titre">
             <v-icon class="img-flag">mdi-flag</v-icon>
             ban inactif
             <v-icon class="img-flag">mdi-flag</v-icon>
           </p>
-          <p v-if="!reportconfirm" id="span-report-post">
+          <p v-else id="span-report-post-titre">
+            <v-icon class="img-flag">mdi-flag</v-icon>
+            ban actif
+            <v-icon class="img-flag">mdi-flag</v-icon>
+          </p>
+          <p v-if="!reportconfirm && !banandpublication " id="span-report-post">
             <v-icon class="img-flag">mdi-flag</v-icon>
             Bannir {{ fullname }}
             <v-icon class="img-flag">mdi-flag</v-icon>
           </p>
-
-          <p v-else-if="!bananddelpostconfirm && profilban == false " id="span-report-post-titre">
-            <v-icon class="img-flag">mdi-flag</v-icon>
-              {{ fullname }} à été banni(e) et publication supprimer
-            <v-icon class="img-flag">mdi-flag</v-icon>
-          </p>
-          <p v-else id="span-report-post-titre">
+          <p v-if="reportconfirm " id="span-report-post-titre">
             <v-icon class="img-flag">mdi-flag</v-icon>
               {{ fullname }} à été banni(e)
             <v-icon class="img-flag">mdi-flag</v-icon>
           </p>
+          <p v-if="banandpublication  " id="span-ban-post-user">
+            <v-icon class="img-flag">mdi-flag</v-icon>
+              <span id="spanban1">{{ fullname }} à été banni(e),</span>
+              <span id="spanban1">publication supprimer</span>
+            <v-icon class="img-flag">mdi-flag</v-icon>
+          </p>
           <v-btn
-            v-if="!reportconfirm"
+            v-if="!reportconfirm && !banandpublication "
             @click="(reportconfirm = !reportconfirm),banSend()"
             id="btn-ban-confirm">
             <span>Bannir</span>
           </v-btn>
           <v-btn
-            v-if="!reportconfirm && profilban === false"
-            @click="(bananddelpostconfirm= !bananddelpostconfirm),banSend(),deletedPostBan(iduserban)"
+            v-if="!reportconfirm && profilban === false && !banandpublication "
+            @click="banSend(),deletedPostBan(iduserban)"
             id="btn-ban-and-del">
             <p id="pbandelpost" >
              <span>bannir</span>
@@ -46,7 +51,7 @@
            </p>
           </v-btn>
           <v-btn
-            v-if="!reportconfirm"
+            v-if="!reportconfirm && !banandpublication "
             id="btn-ban-delete"
             @click="$emit('close-modale-ban-delete')">
             <span>Retour</span>
@@ -75,8 +80,8 @@
       </v-col>
       <v-col 
     v-else
-      class="d-flex justify-center align-center">
-        <v-card class="popup-report-com">
+      class="d-flex justify-center align-center unban-user">
+        <v-card class="popup-report-com-unban">
           <p class="logo-disconnect-delete">
             <img class="logo-white" src="../logo/logo.png" alt="logo" />
             <span>La team GROUPOMANIA</span>
@@ -170,6 +175,7 @@
         }, 2500)
       },
       deletedPostBan(id) {
+        this.banandpublication = true
      axios.delete(`http://localhost:5000/api/post/${this.idpostban}`,{data : {id : id}}  )
       .then((Post) => {
           Post.data.likers.forEach(userDeleteLike=> {
@@ -223,6 +229,22 @@
     justify-content: center;
     align-items: center;
   }
+  .popup-report-com-unban {
+    padding-bottom: 1%;
+    padding-top: 1%;
+    background-color: $secondary;
+    margin-top: 250px;
+    // max-width: 300px;
+    // min-width: 300px;
+    width: 320px;
+    // max-height: 200px;
+    // min-height: 200px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   
   .logo-disconnect-delete {
     display: flex;
@@ -269,7 +291,20 @@
     text-align: center;
     color: rgb(37, 177, 46);
   }
+  #span-ban-post-user{
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     color:green
+  }
+
   #span-report-post-2 {
+    width: 100%;
+    text-align: center;
+    padding: 1%;
+    font-style: italic;
+  }
+  #spanban1{
     width: 100%;
     text-align: center;
     padding: 1%;

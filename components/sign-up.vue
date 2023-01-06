@@ -101,7 +101,7 @@
                 <input
                   id="passcom"
                   v-model.lazy="pswcom"
-                  :disabled="!passwordValidation.valid"
+         
                   name="passcom"
                   class="form-input"
                   type="password"
@@ -264,13 +264,16 @@ export default {
           this.successreg = "Compte creer avec succée, Bienvenue";
           window.prompt("entrer la clé reçu par mail ( n'importe quel touche)")
           setTimeout(() => {
+            window.location.href = "./";
+          }, 2000);
+          setTimeout(() => {
             this.firstname=""
           this.lastname="",
           this.badge="",
           this.email="",
-          this.psw="",
-            window.location.href = "./";
-          }, 2000);
+          this.psw="";
+          }, 2500)
+
         })
         .catch((error) => {
           this.firstname=""

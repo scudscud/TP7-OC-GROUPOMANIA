@@ -52,13 +52,15 @@
 
     <v-card-text class="card-profil-biographie">
       <h2>Ma bio</h2>
-      <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
+      <p v-if="this.bioUser == '' || this.bioUser == undefined" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
-      <button v-if='!modifbio' class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
-        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button>
+      <button v-if="this.bioUser == '' || this.bioUser == undefined" class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
+        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> ecrire ma bio </button>
 
-      <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
+      <button v-if="(this.bioUser !== '' && !modifbio) && this.bioUser != undefined   " class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
         <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer ma bio </button>
+        <button v-if="(this.bioUser !== '' && !modifbio) && this.bioUser != undefined   " class="btn-bio-mod" @click="getBio(),(modifbio = !modifbio)">
+        <v-icon class="pen-icon" size="15px">mdi-lead-pencil</v-icon> modifier ma bio </button>
     </v-card-text>
 
     <v-card-text class="deploy-modidify" v-show="modifbio" @change="controleBio()" >

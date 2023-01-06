@@ -2,16 +2,32 @@
   <div>
     <div id="Book" :key="componentKey">
       <div id="fix-top">
-        <div id="fix-top-bis" @click="PostCommentControleClear()" title="creer votre publication">
-          <img v-if="urlpic !== '' && urlpic !== undefined" class="picture-user-none-top" :src="urlpic"
-            alt="photo de l'utilisateur" />
+        <div
+          id="fix-top-bis"
+          @click="PostCommentControleClear()"
+          title="creer votre publication"
+        >
+          <img
+            v-if="urlpic !== '' && urlpic !== undefined"
+            class="picture-user-none-top"
+            :src="urlpic"
+            alt="photo de l'utilisateur"
+          />
           <div v-else id="avatar-empty-book-top">{{ avatarpicempty }}</div>
           <button class="new-top">
             <p class="new-top-span">Envie de partager, {{ firstname }} ?</p>
-            <p class="new-top-span-bis"><v-icon id="circle-top" size="35px">mdi-plus-circle-outline</v-icon></p>
+            <p class="new-top-span-bis">
+              <v-icon id="circle-top" size="35px"
+                >mdi-plus-circle-outline</v-icon
+              >
+            </p>
           </button>
         </div>
-        <button class="post-option" @focusin="showsort = !showsort" title="trier les publications">
+        <button
+          class="post-option"
+          @focusin="showsort = !showsort"
+          title="trier les publications"
+        >
           <v-icon class="post-option-dot">mdi-dots-horizontal </v-icon>
         </button>
       </div>
@@ -33,112 +49,188 @@
       </div>
 
       <div class="center-main" v-if="this.posts[0] != undefined">
-        <v-card class="card-post" v-for="(post, index) in posts" :key="post.id" :index="index">
+        <v-card
+          class="card-post"
+          v-for="(post, index) in posts"
+          :key="post.id"
+          :index="index"
+        >
           <div class="border-card">
             <div id="card-autor-book" v-if="post.posterId === userid">
-
               <div class="name-date-book">
-                <nuxt-link class="link" :to="{ name: 'profiluser' }" title="lien vers le profil de l'utilisateur">
-                  <img v-if="
-                          post.posterpicture !== '' &&
-                          post.posterpicture !== 'undefined'
-                        " class="picture-user" :src="post.posterpicture" alt="photo de l'utilisateur"
-                    title="lien vers le profil de l'utilisateur" />
-                  <div v-else id="avatar-empty-book" title="lien vers le profil de l'utilisateur">
+                <nuxt-link
+                  class="link"
+                  :to="{ name: 'profiluser' }"
+                  title="lien vers le profil de l'utilisateur"
+                >
+                  <img
+                    v-if="
+                      post.posterpicture !== '' &&
+                      post.posterpicture !== 'undefined'
+                    "
+                    class="picture-user"
+                    :src="post.posterpicture"
+                    alt="photo de l'utilisateur"
+                    title="lien vers le profil de l'utilisateur"
+                  />
+                  <div
+                    v-else
+                    id="avatar-empty-book"
+                    title="lien vers le profil de l'utilisateur"
+                  >
                     {{ avatarpicempty }}
                   </div>
                 </nuxt-link>
-                <span id="fullname-main">{{ post.posterfullname }} à {{ post.date }}</span>
-
+                <span id="fullname-main"
+                  >{{ post.posterfullname }} à {{ post.date }}</span
+                >
               </div>
               <div class="btn-book-main">
-                <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
-                  title=" modifier votre publication ">
-                  <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon>Modifier
+                <button
+                  id="btn-post-modify"
+                  type="submit"
+                  @click="(showmodify = !showmodify), postIdDel(post._id)"
+                  title=" modifier votre publication "
+                >
+                  <v-icon class="pen-icon-main" size="15px"
+                    >mdi-lead-pencil</v-icon
+                  >Modifier
                 </button>
-                <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
-                  title=" supprimer votre publication ">
-                  <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon>Supprimer
+                <button
+                  id="btn-post-delete"
+                  @click="(showdel = !showdel), postIdDel(post._id)"
+                  title=" supprimer votre publication "
+                >
+                  <v-icon class="delete-icon-main" size="20px"
+                    >mdi-delete-circle</v-icon
+                  >Supprimer
                 </button>
               </div>
             </div>
 
             <div id="card-autor-book" v-else-if="role !== undefined">
               <div class="name-date-book">
-                <nuxt-link class="link" :to="{
-                        name: 'profilUserAdmin-id',
-                        params: { id: `?id=${post.posterId}` },
-                      }" title="lien vers le profil de l'utilisateur"><img v-if="
-                        post.posterpicture !== '' &&
-                        post.posterpicture !== 'undefined'
-                      " class="picture-user-admin" :src="post.posterpicture" alt="photo de l'utilisateur"
-                    title="lien vers le profil de l'utilisateur" />
-                  <div v-else id="avatar-empty-book" title="lien vers le profil de l'utilisateur">
+                <nuxt-link
+                  class="link"
+                  :to="{
+                    name: 'profilUserAdmin-id',
+                    params: { id: `?id=${post.posterId}` },
+                  }"
+                  title="lien vers le profil de l'utilisateur"
+                  ><img
+                    v-if="
+                      post.posterpicture !== '' &&
+                      post.posterpicture !== 'undefined'
+                    "
+                    class="picture-user-admin"
+                    :src="post.posterpicture"
+                    alt="photo de l'utilisateur"
+                    title="lien vers le profil de l'utilisateur"
+                  />
+                  <div
+                    v-else
+                    id="avatar-empty-book"
+                    title="lien vers le profil de l'utilisateur"
+                  >
                     {{ post.posterlastname.split("")[0].toLocaleUpperCase() }}
                   </div>
                 </nuxt-link>
-                <span id="fullname-main">{{ post.posterfullname }} à {{ post.date }}</span>
-                <v-icon class="alert-signal-profil-admin" v-if="post.signalProfil.length > 0" color="red"  size="25px" >mdi-alert-outline</v-icon>
+                <span id="fullname-main"
+                  >{{ post.posterfullname }} à {{ post.date }}</span
+                >
+                <v-icon
+                  class="alert-signal-profil-admin"
+                  v-if="post.signalProfil.length > 0"
+                  color="red"
+                  size="25px"
+                  >mdi-alert-outline</v-icon
+                >
               </div>
 
               <div class="text-center">
-    <v-menu
-    id="btn-admin-menu"
-      open-on-hover
-      offset-y
-      transition="slide-y-transition"
-      bottom
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn id="manage-btn-admin-post"
-          v-bind="attrs"
-          v-on="on"
-        >
-          gestion 
-        </v-btn>
-      </template>
-      <v-list class="btn-book-main-list">
-      <v-list-item class="btn-book-admin-post">
-                  <p class="btn-book-main-post"> publication </p>
-                 <button id="btn-post-delete" @click="(showdel = !showdel), postIdDel(post._id)"
-                  title="supprimer votre publication">
-                  <!-- <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon> -->
-                  Supprimer
-                </button>
-                <button id="btn-post-modify" type="submit" @click="(showmodify = !showmodify), postIdDel(post._id)"
-                  title="modifier votre publication">
-                  <!-- <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> -->
-                  Modifier
-                </button>
-                <div class="btn-book-main-user"> utilisateur </div>
-                <button v-if="post.banuser === false" id="btn-ban-user" @click="(showBan = !showBan), banUserId(post.posterId,post._id)"
-                  title="bannir l'utilisateur">
-                  <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
-                  Bannir
-                </button>
-               
-                <button v-else id="btn-ban-user" @click="(showBan = !showBan), banUserId(post.posterId)"
-                  title="debannir l'utilisateur">
-                  <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
-                  Débannir
-                </button>
-              </v-list-item>
-            </v-list>
-    </v-menu>
-  </div>
+                <v-menu
+                  id="btn-admin-menu"
+                  open-on-hover
+                  offset-y
+                  transition="slide-y-transition"
+                  bottom
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn id="manage-btn-admin-post" v-bind="attrs" v-on="on">
+                      gestion
+                    </v-btn>
+                  </template>
+                  <v-list class="btn-book-main-list">
+                    <v-list-item class="btn-book-admin-post">
+                      <p class="btn-book-main-post">publication</p>
+                      <button
+                        id="btn-post-delete"
+                        @click="(showdel = !showdel), postIdDel(post._id)"
+                        title="supprimer votre publication"
+                      >
+                        <!-- <v-icon class="delete-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                        Supprimer
+                      </button>
+                      <button
+                        id="btn-post-modify"
+                        type="submit"
+                        @click="(showmodify = !showmodify), postIdDel(post._id)"
+                        title="modifier votre publication"
+                      >
+                        <!-- <v-icon class="pen-icon-main" size="15px">mdi-lead-pencil</v-icon> -->
+                        Modifier
+                      </button>
+                      <div class="btn-book-main-user">utilisateur</div>
+                      <button
+                        v-if="post.banuser === false"
+                        id="btn-ban-user"
+                        @click="
+                          (showBan = !showBan),
+                            banUserId(post.posterId, post._id)
+                        "
+                        title="bannir l'utilisateur"
+                      >
+                        <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                        Bannir
+                      </button>
 
+                      <button
+                        v-else
+                        id="btn-ban-user"
+                        @click="(showBan = !showBan), banUserId(post.posterId)"
+                        title="debannir l'utilisateur"
+                      >
+                        <!-- <v-icon class="ban-icon-main" size="20px">mdi-delete-circle</v-icon> -->
+                        Débannir
+                      </button>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
             </div>
             <div id="card-autor-book-none" v-else>
               <div class="user-book-main-none">
-                <nuxt-link class="link" :to="{
-                      name: 'profilUsermain-id',
-                      params: { id: `?id=${post.posterId}` },
-                    }"><img v-if="
+                <nuxt-link
+                  class="link"
+                  :to="{
+                    name: 'profilUsermain-id',
+                    params: { id: `?id=${post.posterId}` },
+                  }"
+                  ><img
+                    v-if="
                       post.posterpicture !== '' &&
                       post.posterpicture !== 'undefined'
-                    " class="picture-user-none" :src="post.posterpicture" alt="phtot de l'utilisateur"
-                    title="lien vers le profil de l'utilisateur" />
-                  <div v-else id="avatar-empty-book-book" title="lien vers le profil de l'utilisateur">
+                    "
+                    class="picture-user-none"
+                    :src="post.posterpicture"
+                    alt="phtot de l'utilisateur"
+                    title="lien vers le profil de l'utilisateur"
+                  />
+                  <div
+                    v-else
+                    id="avatar-empty-book-book"
+                    title="lien vers le profil de l'utilisateur"
+                  >
                     {{ post.posterlastname.split("")[0].toLocaleUpperCase() }}
                   </div>
                 </nuxt-link>
@@ -146,71 +238,113 @@
                   {{ post.posterfullname }} à {{ post.date }}
                 </p>
               </div>
-              <button v-if="
-                      post.posterId != userid &&
-                      userFollowingId.includes(post.posterId)
-                    " @click="addUnFollow(post.posterId, index)" type="submit" class="btn-main-follow"
-                title="se désabonner">
+              <button
+                v-if="
+                  post.posterId != userid &&
+                  userFollowingId.includes(post.posterId)
+                "
+                @click="addUnFollow(post.posterId, index)"
+                type="submit"
+                class="btn-main-follow"
+                title="se désabonner"
+              >
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">abonné</p>
               </button>
-              <button v-else @click="addFollow(post.posterId, index)" type="submit" class="btn-main-unfollow"
-                title="s'abonner">
+              <button
+                v-else
+                @click="addFollow(post.posterId, index)"
+                type="submit"
+                class="btn-main-unfollow"
+                title="s'abonner"
+              >
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">S'abonner</p>
               </button>
-             </div>
-             <div v-if="post.picture != ''" class="image-card">
+            </div>
+            <div v-if="post.picture != ''" class="image-card">
               <img class="card-img" :src="post.picture" alt="photo" />
-             </div>
+            </div>
 
-               <div v-if="post.message != ''" class="message-main">
+            <div v-if="post.message != ''" class="message-main">
               {{ post.message }}
-          </div>
+            </div>
             <div v-if="role !== undefined" class="btn-card" id="card-att">
-              <button :class="
-                    userLikePostId.includes(post._id)
-                      ? 'class-btn-att-like'
-                      : 'class-btn-att-unlike'
-                  " @click="clickLike(post._id, index)" class="classlikebtn" title="liker la publication">
+              <button
+                :class="
+                  userLikePostId.includes(post._id)
+                    ? 'class-btn-att-like'
+                    : 'class-btn-att-unlike'
+                "
+                @click="clickLike(post._id, index)"
+                class="classlikebtn"
+                title="liker la publication"
+              >
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                 <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length > 0" class="buble-like">
                   <span id="number-like">{{ post.likers.length }}</span>
                 </div>
               </button>
-              <button id="btn-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)">
+              <button
+                id="btn-att-comment"
+                @click="PostCommentControle(post._id, index), saveOpen(index)"
+              >
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att-comment" tilte="commenter la publication"
-                  :index="index" :postid="post._id">
+                <p
+                  class="text-att-comment"
+                  tilte="commenter la publication"
+                  :index="index"
+                  :postid="post._id"
+                >
                   Commenter
                 </p>
               </button>
-              <button v-if="post.posterId != userid && userFollowingId.includes(post.posterId) " @click="addUnFollow(post.posterId, index)" type="submit" class="btn-att-follow" title="se désabonner">
+              <button
+                v-if="
+                  post.posterId != userid &&
+                  userFollowingId.includes(post.posterId)
+                "
+                @click="addUnFollow(post.posterId, index)"
+                type="submit"
+                class="btn-att-follow"
+                title="se désabonner"
+              >
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">abonné</p>
               </button>
-              <button v-else-if="
-                    post.posterId != userid &&
-                    !userFollowingId.includes(post.posterId)
-                  " @click="addFollow(post.posterId, index)" type="submit" class="btn-att-unfollow" title="s'abonner">
+              <button
+                v-else-if="
+                  post.posterId != userid &&
+                  !userFollowingId.includes(post.posterId)
+                "
+                @click="addFollow(post.posterId, index)"
+                type="submit"
+                class="btn-att-unfollow"
+                title="s'abonner"
+              >
                 <v-icon class="img-att"> mdi-account-group </v-icon>
                 <p class="text-att">S'abonné</p>
               </button>
-              <div v-if="post.signalBy.length > 0"  id="flag-admin-signal"><v-icon id="flag-admin-signal-icon">mdi-flag</v-icon> 
+              <div v-if="post.signalBy.length > 0" id="flag-admin-signal">
+                <v-icon id="flag-admin-signal-icon">mdi-flag</v-icon>
                 <div v-if="post.signalBy.length > 0" class="buble-report">
                   <span id="number-report">{{ post.signalBy.length }}</span>
                 </div>
               </div>
-             
             </div>
 
             <div v-else class="btn-card" id="card-att">
-              <button :class="
-                        userLikePostId.includes(post._id)
-                          ? 'class-btn-att-like'
-                          : 'class-btn-att-unlike'
-                      " @click="clickLike(post._id, index)" class="classlikebtn" title="liker la publication">
+              <button
+                :class="
+                  userLikePostId.includes(post._id)
+                    ? 'class-btn-att-like'
+                    : 'class-btn-att-unlike'
+                "
+                @click="clickLike(post._id, index)"
+                class="classlikebtn"
+                title="liker la publication"
+              >
                 <v-icon class="img-att">mdi-thumb-up-outline</v-icon>
                 <p class="text-att-like">Like</p>
                 <div v-if="post.likers.length > 0" class="buble-like">
@@ -219,70 +353,127 @@
               </button>
               <button id="btn-att-comment">
                 <v-icon class="img-att"> mdi-message-outline</v-icon>
-                <p class="text-att-comment" @click="PostCommentControle(post._id, index), saveOpen(index)" title="commenter la publication"
-                  :index="index" :postid="post._id">
+                <p
+                  class="text-att-comment"
+                  @click="PostCommentControle(post._id, index), saveOpen(index)"
+                  title="commenter la publication"
+                  :index="index"
+                  :postid="post._id"
+                >
                   Commenter
                 </p>
               </button>
 
-              <button v-if="post.posterId !== userid" :class="
-                      post.signalBy.includes(userid)
-                        ? 'reportPost' 
-                        : 'notReportPost'
-                    " class="btn-att-flag" @click="
-                      (showReport = !showReport),
-                      reportInfo(
-                        post._id,
-                        post.posterfullname,
-                        post.posterId,
-                        fullname,
-                        userid
-                      )
-                    " title="signaler la publication">
+              <button
+                v-if="post.posterId !== userid"
+                :class="
+                  post.signalBy.includes(userid)
+                    ? 'reportPost'
+                    : 'notReportPost'
+                "
+                class="btn-att-flag"
+                @click="
+                  (showReport = !showReport),
+                    reportInfo(
+                      post._id,
+                      post.posterfullname,
+                      post.posterId,
+                      fullname,
+                      userid
+                    )
+                "
+                title="signaler la publication"
+              >
                 <v-icon class="img-att-flag">mdi-flag-outline</v-icon>
                 <p class="text-att-report">Signaler</p>
-
               </button>
             </div>
           </div>
 
           <div class="deploy-comment" :index="index" :postid="post._id">
             <v-card-text class="deploy-commentUser-card" v-show="writecomment">
-              <form class="deploy-commentUser-form" method="post" @submit.prevent>
+              <form
+                class="deploy-commentUser-form"
+                method="post"
+                @submit.prevent
+              >
                 <label for="comment">
                   <h2>Commentaire:</h2>
                 </label>
-                <textarea v-model="CommentMessage" name="comment" class="card-comment-area" type="textarea"
-                  placeholder="votre commentaire" maxlength="200" :index="index"></textarea>
+                <textarea
+                  v-model="CommentMessage"
+                  name="comment"
+                  class="card-comment-area"
+                  type="textarea"
+                  placeholder="votre commentaire"
+                  maxlength="200"
+                  :index="index"
+                ></textarea>
                 <div class="btn-comment">
-                  <button id="btn-comment-close" @click="ControleClose(index), saveClose(index)">
+                  <button
+                    id="btn-comment-close"
+                    @click="ControleClose(index), saveClose(index)"
+                  >
                     Fermer
                   </button>
                   <button id="btn-comment-delete" @click="deleteComment()">
                     Effacer
                   </button>
-                  <button id="btn-comment-send" type="submit" @click="controlePostComment(post._id, index)">
+                  <button
+                    id="btn-comment-send"
+                    type="submit"
+                    @click="controlePostComment(post._id, index)"
+                  >
                     Envoyer
                   </button>
                 </div>
               </form>
             </v-card-text>
           </div>
-          <button class="deploy-comment-button" v-if="post.comments.length > 0 && (seetest.index !== index || !seetest.see)" @click="selectPost(index)"  :index="index" >Voir les commentaires</button>
-      <button class="deploy-comment-button" v-if="post.comments.length > 0 && seetest.index === index && seetest.see" @click="selectPost(index)" :index="index">Cacher les commentaires</button>
+          <button
+            class="deploy-comment-button"
+            v-if="
+              post.comments.length > 0 &&
+              (seetest.index !== index || !seetest.see)
+            "
+            @click="selectPost(index)"
+            :index="index"
+          >
+            Voir les commentaires
+          </button>
+          <button
+            class="deploy-comment-button"
+            v-if="
+              post.comments.length > 0 && seetest.index === index && seetest.see
+            "
+            @click="selectPost(index)"
+            :index="index"
+          >
+            Cacher les commentaires
+          </button>
 
-
-          <v-card v-if="seetest.index === index && seetest.see"  v-for="(comment, indexcomment) in post.comments" :key="comment._id" :index="indexcomment" class="card-comment">
+          <v-card
+            v-if="seetest.index === index && seetest.see"
+            v-for="(comment, indexcomment) in post.comments"
+            :key="comment._id"
+            :index="indexcomment"
+            class="card-comment"
+          >
             <v-card-text class="card-comment-posted">
               <div class="title-card-comment-posted">
-                <img v-if="
-                              comment.commenterPicture !== '' &&
-                              comment.commenterPicture != undefined
-                            " class="picture-user-comment" :src="comment.commenterPicture" alt="photo de l'utilisateur" />
-                                            <div v-else id="avatar-empty-card-comment">
-                                              {{
-                                comment.commenterFirstname.split("")[0].toLocaleUpperCase()
-                            }}
+                <img
+                  v-if="
+                    comment.commenterPicture !== '' &&
+                    comment.commenterPicture != undefined
+                  "
+                  class="picture-user-comment"
+                  :src="comment.commenterPicture"
+                  alt="photo de l'utilisateur"
+                />
+                <div v-else id="avatar-empty-card-comment">
+                  {{
+                    comment.commenterFirstname.split("")[0].toLocaleUpperCase()
+                  }}
                 </div>
                 <p id="fullname-comment">
                   {{ comment.commenterFullname }} à {{ comment.commentDate }}
@@ -297,11 +488,17 @@
         <v-card class="card-post">
           <div class="border-card">
             <div id="card-autor-book-first">
-              <span class="firstpost">le {{ date }} à {{ hour }} {{ fullname }} va renter dans un
-                zone inexplorée</span>
+              <span class="firstpost"
+                >le {{ date }} à {{ hour }} {{ fullname }} va renter dans un
+                zone inexplorée</span
+              >
             </div>
             <div class="image-card">
-              <img class="card-img" src="../client/public/uploads/posts/pexels-gabriela-palai-590029.jpg" alt="photo" />
+              <img
+                class="card-img"
+                src="../client/public/uploads/posts/pexels-gabriela-palai-590029.jpg"
+                alt="photo"
+              />
             </div>
             <div class="message-main">
               <p>vous serez le 1 er à fouler cette terre inconnu</p>
@@ -317,58 +514,125 @@
       </div>
       <transition name="fade" bottom right fixed>
         <div id="pagetopscroll" v-show="scY > 300" @click="toTop">
-          <svg id="arrowscroll" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
-            fill="none" stroke="#4a5568" stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
+          <svg
+            id="arrowscroll"
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#4a5568"
+            stroke-width="1"
+            stroke-linecap="square"
+            stroke-linejoin="arcs"
+          >
             <path d="M18 15l-6-6-6 6" />
           </svg>
         </div>
       </transition>
     </div>
-    <Load v-show="showloader" @close-modale-loader="showloader = false" @open-modale-loader="true" />
-    <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId"
-      :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname"
-      @close-modale-report="showReport = false" @close-modale-report-comfirm="(showReport = false), getRefresh()" />
-    <sortPost v-if="showsort" v-show="showsort" @close-modale-sort="showsort = false"
+    <Load
+      v-show="showloader"
+      @close-modale-loader="showloader = false"
+      @open-modale-loader="true"
+    />
+    <report
+      v-if="showReport"
+      v-show="showReport"
+      :idpostsignal="post._id"
+      :useridsignal="post.posterId"
+      :useridfrom="this.userid"
+      :userfullnamesignal="post.posterfullname"
+      :userfullnamefrom="this.fullname"
+      @close-modale-report="showReport = false"
+      @close-modale-report-comfirm="(showReport = false), getRefresh()"
+    />
+    <sortPost
+      v-if="showsort"
+      v-show="showsort"
+      @close-modale-sort="showsort = false"
       @close-modale-sort-following="(showsort = false), getPostFollowing()"
       @close-modale-sort-follower="(showsort = false), getPostFollower()"
       @close-modale-sort-mypost="(showsort = false), getPostOwn()"
       @close-modale-sort-like="(showsort = false), getPostIlike()"
-      @close-modale-sort-all="(showsort = false), getPosts()" 
-      @close-modale-sort-signal="(showsort = false), getPostsSignal()" />
-    <deletepost v-if="showdel" :id="userid" :keyid="post._id" v-show="showdel"
-      @close-modale-delete="(showdel = false), getRefresh()" />
-    <modify v-if="showmodify" v-show="showmodify" @close-modale-modify="(showmodify = false), getRefresh()" />
-    <Postcreate v-show="showpost" @close-modale-post="(showpost = false), getPosts()" />
-    <WarningRecordComment v-if="warningRecordComment" v-show="warningRecordComment"
+      @close-modale-sort-all="(showsort = false), getPosts()"
+      @close-modale-sort-signal="(showsort = false), getPostsSignal()"
+    />
+    <deletepost
+      v-if="showdel"
+      :id="userid"
+      :keyid="post._id"
+      v-show="showdel"
+      @close-modale-delete="(showdel = false), getRefresh()"
+    />
+    <modify
+      v-if="showmodify"
+      v-show="showmodify"
+      @close-modale-modify="(showmodify = false), getRefresh()"
+    />
+    <Postcreate
+      v-show="showpost"
+      @close-modale-post="(showpost = false), getPosts()"
+    />
+    <WarningRecordComment
+      v-if="warningRecordComment"
+      v-show="warningRecordComment"
       @close-modale-record-comment-confirm="
-  (warningRecordComment = !warningRecordComment),
-  PostCommentClose(indexpostClose)
-" @close-modale-record-comment-confirm-delete="
-  warningRecordComment = !warningRecordComment
-" />
-    <WarningRecordCommentEmpty v-if="warningRecordCommentEmpty" v-show="warningRecordCommentEmpty"
+        (warningRecordComment = !warningRecordComment),
+          PostCommentClose(indexpostClose)
+      "
+      @close-modale-record-comment-confirm-delete="
+        warningRecordComment = !warningRecordComment
+      "
+    />
+    <WarningRecordCommentEmpty
+      v-if="warningRecordCommentEmpty"
+      v-show="warningRecordCommentEmpty"
       @close-modale-comment-empty="
-  warningRecordCommentEmpty = !warningRecordCommentEmpty
-" />
-    <WarningDoubleComment v-if="WarningDoubleComment" v-show="WarningDoubleComment"
-      @close-modale-double-save="WarningDoubleComment = !WarningDoubleComment" @close-modale-double-delete-confirm="
-  (WarningDoubleComment = !WarningDoubleComment),
-  PostCommentOpenBis(indexpostOpen)" />
-    <WarningClearComment v-if="WarningClearComment" v-show="WarningClearComment"
-      @close-modale-clear-delete="WarningClearComment = !WarningClearComment" @close-modale-clear-comfirm="
-  (WarningClearComment = !WarningClearComment), clearComment() " />
-      <report v-if="showReport" v-show="showReport" :idpostsignal="post._id" :useridsignal="post.posterId"
-      :useridfrom="this.userid" :userfullnamesignal="post.posterfullname" :userfullnamefrom="this.fullname"
-      @close-modale-report="showReport = false" @close-modale-report-comfirm="(showReport = false), getRefresh()" />
-      <WarningBanUser v-if="showBan" v-show="showBan" 
-      @close-modale-ban-delete="(showBan = false), getRefresh()" @close-modale-ban-confirm="(showBan = false), getRefresh()" />
+        warningRecordCommentEmpty = !warningRecordCommentEmpty
+      "
+    />
+    <WarningDoubleComment
+      v-if="WarningDoubleComment"
+      v-show="WarningDoubleComment"
+      @close-modale-double-save="WarningDoubleComment = !WarningDoubleComment"
+      @close-modale-double-delete-confirm="
+        (WarningDoubleComment = !WarningDoubleComment),
+          PostCommentOpenBis(indexpostOpen)
+      "
+    />
+    <WarningClearComment
+      v-if="WarningClearComment"
+      v-show="WarningClearComment"
+      @close-modale-clear-delete="WarningClearComment = !WarningClearComment"
+      @close-modale-clear-comfirm="
+        (WarningClearComment = !WarningClearComment), clearComment()
+      "
+    />
+    <report
+      v-if="showReport"
+      v-show="showReport"
+      :idpostsignal="post._id"
+      :useridsignal="post.posterId"
+      :useridfrom="this.userid"
+      :userfullnamesignal="post.posterfullname"
+      :userfullnamefrom="this.fullname"
+      @close-modale-report="showReport = false"
+      @close-modale-report-comfirm="(showReport = false), getRefresh()"
+    />
+    <WarningBanUser
+      v-if="showBan"
+      v-show="showBan"
+      @close-modale-ban-delete="(showBan = false), getRefresh()"
+      @close-modale-ban-confirm="(showBan = false), getRefresh()"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Load from "../components/Waitload.vue";
 
-  export default {
+export default {
   name: "Book",
 
   components: {
@@ -398,17 +662,18 @@ import Load from "../components/Waitload.vue";
       import(
         /* webpackChunkName:"report"*/ "../components/warningReportPost.vue"
       ),
-    sortPost: () => import( /* webpackChunkName:"sortPost"*/ "../components/sortpostby.vue"),
+    sortPost: () =>
+      import(/* webpackChunkName:"sortPost"*/ "../components/sortpostby.vue"),
     Postcreate: () =>
       import(/* webpackChunkName:"Postcreate"*/ "./index/postcreate.vue"),
     modify: () => import("./index/modifytest.vue"),
     deletepost: () =>
       import(/* webpackChunkName:"deletepost"*/ "./index/deletetest.vue"),
-   },
-   props: {
+  },
+  props: {
     // keytest : ['post._id']
-   },
-   asyncData() {
+  },
+  asyncData() {
     return {
       componentKey: 0,
       avatarpicempty: "",
@@ -419,7 +684,7 @@ import Load from "../components/Waitload.vue";
       showmodify: false,
       showdel: false,
       showpost: false,
-      showBan:false,
+      showBan: false,
       like: false,
       userjwtid: "",
       userid: "",
@@ -456,9 +721,9 @@ import Load from "../components/Waitload.vue";
       seecomment: [],
       seetest: {
         index: null,
-        see: false
+        see: false,
       },
-      seeok : false,
+      seeok: false,
       writecomment: false,
       commentValid: false,
       Comment: "",
@@ -476,10 +741,9 @@ import Load from "../components/Waitload.vue";
       showloader: true,
       scTimer: 0,
       scY: 0,
-
     };
-   },
-   computed: {
+  },
+  computed: {
     date() {
       let today = new Date();
       let dd = today.getDate();
@@ -516,18 +780,17 @@ import Load from "../components/Waitload.vue";
         [this.firstname, this.lastname] = newValue.split(" ");
       },
     },
-   },
-   events: {},
-   methods: {
-    selectPost(index) {
-    if (this.seetest.index === index) {
-      this.seetest.see = !this.seetest.see
-    } else { 
-      this.seetest.index = index
-      this.seetest.see = true
-    }
   },
-
+  events: {},
+  methods: {
+    selectPost(index) {
+      if (this.seetest.index === index) {
+        this.seetest.see = !this.seetest.see;
+      } else {
+        this.seetest.index = index;
+        this.seetest.see = true;
+      }
+    },
 
     clearComment() {
       this.CommentMessage = "";
@@ -753,7 +1016,6 @@ import Load from "../components/Waitload.vue";
         });
     },
 
-
     getPostsSignal() {
       axios
         .get(`http://localhost:5000/api/post/postsignaladmin/${this.userid}`)
@@ -937,13 +1199,12 @@ import Load from "../components/Waitload.vue";
       // this.getRefresh()
     },
 
-    banUserId(id,postid){
-      const info = { 
-        idban : id,
-        postidban : postid
+    banUserId(id, postid) {
+      const info = {
+        idban: id,
+        postidban: postid,
       };
       localStorage.setItem("info-ban-user", JSON.stringify(info));
-    
     },
 
     postIdDel(post) {
@@ -959,14 +1220,14 @@ import Load from "../components/Waitload.vue";
     getUsers() {
       axios
         .get("http://localhost:5000/api/user")
-        .then((docs) => { })
+        .then((docs) => {})
         .catch((err) => console.log(err));
     },
 
     async deletePost(postId) {
       await axios
         .delete(`http://localhost:5000/api/post/${postId}`)
-        .then((post) => { })
+        .then((post) => {})
         .catch((err) => console.log(err));
       // }
     },
@@ -1014,9 +1275,9 @@ import Load from "../components/Waitload.vue";
           err.message;
         });
     },
-   },
+  },
 
-   async mounted() {
+  async mounted() {
     axios.defaults.withCredentials = true;
     window.addEventListener("scroll", this.handleScroll);
     setTimeout(() => {
@@ -1037,7 +1298,6 @@ import Load from "../components/Waitload.vue";
       .catch((error) => {
         console.log(error);
       });
-
 
     await axios
       .get(`http://localhost:5000/api/user/${this.userjwtid}`)
@@ -1198,23 +1458,24 @@ div.v-main__wrap {
   display: none;
 }
 
+@media (max-width: 750px) {
+  .new-top-span {
+    display: none;
+  }
 
-@media (max-width : 750px) {
-.new-top-span {
-  display: none;
-}
-.new-top{
-  border: none;
-  border-radius: 0px;
-  height: 35px;
-}
-.new-top-span-bis {
-  display: block;
-}
-#circle-top{
-  color : $tertiary;
-}
+  .new-top {
+    border: none;
+    border-radius: 0px;
+    height: 35px;
+  }
 
+  .new-top-span-bis {
+    display: block;
+  }
+
+  #circle-top {
+    color: $tertiary;
+  }
 }
 
 #btn-post-top {
@@ -1326,11 +1587,12 @@ div.v-main__wrap {
   width: 100%;
 }
 
-textarea.card-comment-area{
-  color : white;
-  caret-color: red ;
+textarea.card-comment-area {
+  color: white;
+  caret-color: red;
   border: solid 2px $secondary;
   padding: 1%;
+
   &:focus {
     outline: none;
   }
@@ -1527,7 +1789,6 @@ button.close-comment-button {
   &:hover {
     border-color: $primary;
     transform: scale(1.05);
-
   }
 }
 
@@ -1558,7 +1819,6 @@ button.close-comment-button {
   text-decoration: none;
   color: aliceblue;
   margin-right: 1%;
-
 }
 
 .history {
@@ -1574,7 +1834,6 @@ button.close-comment-button {
   background-color: $tertiary;
   padding: 1%;
   border-bottom: solid 2px $secondary;
-
 }
 
 #card-autor-book-none {
@@ -1593,7 +1852,6 @@ button.close-comment-button {
   flex-direction: row;
   align-items: center;
   width: 100%;
-
 }
 
 p.fullname-none {
@@ -1606,7 +1864,6 @@ p.fullname-none {
   margin-bottom: 0;
   cursor: default;
 }
-
 
 .pen-icon-main {
   padding-right: 5%;
@@ -1632,7 +1889,7 @@ p.fullname-none {
     background-color: $secondary;
     color: $tertiary;
 
-    &#btn-post-modify>.pen-icon-main {
+    &#btn-post-modify > .pen-icon-main {
       color: $tertiary;
     }
   }
@@ -1662,13 +1919,11 @@ p.fullname-none {
     background-color: $secondary;
     color: $tertiary;
 
-    &#btn-post-delete>.delete-icon-main {
+    &#btn-post-delete > .delete-icon-main {
       color: $tertiary;
     }
   }
 }
-
-
 
 #btn-ban-user {
   display: flex;
@@ -1690,13 +1945,13 @@ p.fullname-none {
     background-color: $secondary;
     color: $tertiary;
 
-    &#btn-ban-user>.ban-icon-main {
+    &#btn-ban-user > .ban-icon-main {
       color: $tertiary;
     }
   }
 }
 
-.ban-icon-main{
+.ban-icon-main {
   padding-right: 10%;
 }
 
@@ -1754,14 +2009,13 @@ p.fullname-none {
   padding-bottom: 2%;
 }
 
-
 #fullname-main {
   cursor: default;
 }
 
-i.alert-signal-profil-admin{
-margin-left: 2%;
-margin-right: 2%;
+i.alert-signal-profil-admin {
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 p.full-date {
@@ -1834,7 +2088,7 @@ p.firstpost {
     translate: 3px;
     border: solid 1px $secondary;
 
-    &#btn-att-comment>.img-att:before {
+    &#btn-att-comment > .img-att:before {
       color: $secondary;
     }
   }
@@ -1860,7 +2114,8 @@ p.firstpost {
     color: $secondary;
     translate: 3px;
     border: solid 1px $secondary;
-    &.notReportPost>.img-att-flag:before {
+
+    &.notReportPost > .img-att-flag:before {
       color: $secondary;
     }
   }
@@ -1880,10 +2135,9 @@ p.firstpost {
   width: auto;
   cursor: pointer;
   padding: 2%;
-
 }
 
-.btn-book-admin-post{
+.btn-book-admin-post {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1892,19 +2146,19 @@ p.firstpost {
   padding-top: 0.5%;
   padding-bottom: 0.5%;
   height: 180px;
-   border: solid 2px $primary;
-   border-radius: 15px;
-   background-color: $tertiary;
+  border: solid 2px $primary;
+  border-radius: 15px;
+  background-color: $tertiary;
 }
 
-.btn-book-main-list{
- display: flex;
- justify-content: center;
- align-items: center;
- padding: 1%;
+.btn-book-main-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1%;
 }
 
-p.btn-book-main-post{
+p.btn-book-main-post {
   font-weight: bold;
   font-style: italic;
   font-size: larger;
@@ -1912,39 +2166,36 @@ p.btn-book-main-post{
   margin-bottom: 10%;
 }
 
-.btn-book-main-user{
+.btn-book-main-user {
   font-weight: bold;
   font-style: italic;
   font-size: larger;
   border-bottom: solid 2px red;
   margin-bottom: 10%;
   margin-top: 10%;
-
 }
 
-
-#manage-btn-admin-post{
-background-color: $secondary;
-width: 110px;
-margin-top: 3%;
-color:$tertiary;
-border: solid 2px $primary;
-border-radius: 10px;
-font-weight: bold;
+#manage-btn-admin-post {
+  background-color: $secondary;
+  width: 110px;
+  margin-top: 3%;
+  color: $tertiary;
+  border: solid 2px $primary;
+  border-radius: 10px;
+  font-weight: bold;
 }
 
-
-#flag-admin-signal-icon{
-display: flex;
-justify-content: center;
-align-items: center;
-margin-left: 10%;
-color: red;
-width: 20px;
-height: 20px;
+#flag-admin-signal-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10%;
+  color: red;
+  width: 20px;
+  height: 20px;
 }
 
-#flag-admin-signal{
+#flag-admin-signal {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -1954,7 +2205,6 @@ height: 20px;
   width: 55px;
   height: 38px;
 }
-
 
 .buble-report {
   background-color: $secondary;
@@ -2039,7 +2289,7 @@ height: 20px;
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.btn-att-follow>.img-att:before {
+    &.btn-att-follow > .img-att:before {
       color: $secondary;
     }
   }
@@ -2067,7 +2317,7 @@ height: 20px;
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.btn-main-follow>.img-att:before {
+    &.btn-main-follow > .img-att:before {
       color: $secondary;
     }
   }
@@ -2088,7 +2338,7 @@ height: 20px;
   cursor: pointer;
   padding: 2%;
 
-  &.btn-att-unfollow>.img-att:before {
+  &.btn-att-unfollow > .img-att:before {
     color: $secondary;
   }
 
@@ -2098,7 +2348,7 @@ height: 20px;
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.btn-att-unfollow>.img-att:before {
+    &.btn-att-unfollow > .img-att:before {
       color: $secondary;
     }
   }
@@ -2120,7 +2370,7 @@ height: 20px;
   cursor: pointer;
   padding: 2%;
 
-  &.btn-main-unfollow>.img-att:before {
+  &.btn-main-unfollow > .img-att:before {
     color: $secondary;
   }
 
@@ -2130,7 +2380,7 @@ height: 20px;
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.btn-main-unfollow>.img-att:before {
+    &.btn-main-unfollow > .img-att:before {
       color: $secondary;
     }
   }
@@ -2157,7 +2407,7 @@ button.class-btn-att-unlike {
     translate: 3px;
     border: solid 1px $secondary;
 
-    &.class-btn-att-unlike>.img-att:before {
+    &.class-btn-att-unlike > .img-att:before {
       color: $secondary;
     }
   }
@@ -2180,7 +2430,7 @@ button.class-btn-att-like {
   cursor: pointer;
   padding: 2%;
 
-  &.class-btn-att-like>.img-att:before {
+  &.class-btn-att-like > .img-att:before {
     color: $secondary;
   }
 
@@ -2209,24 +2459,22 @@ button.class-btn-att-like {
   top: -4px;
 }
 
-@media (max-width : 750px){
-
+@media (max-width: 750px) {
   p.text-att {
     display: none;
-}
-p.text-att-comment {
-  display: none;
-}
+  }
 
+  p.text-att-comment {
+    display: none;
+  }
 
-p.text-att-like {
-  display: none;
-}
+  p.text-att-like {
+    display: none;
+  }
 
-p.text-att-report {
-display: none;
-}
-
+  p.text-att-report {
+    display: none;
+  }
 }
 
 p.text-att {
@@ -2264,6 +2512,4 @@ p.text-att-report {
   margin-bottom: 0px;
   // padding-right: 20%;
 }
-
-
 </style>
