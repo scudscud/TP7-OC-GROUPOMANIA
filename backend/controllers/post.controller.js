@@ -75,7 +75,7 @@ exports.updatePost = (req, res) => {
   PostModel.findById(req.params.id).then((post) => {
     const postedBy = post.posterId;
     const connectedUser = req.user;
-    if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+    if (connectedUser !== process.env.ADMINID || connectedUser == !postedBy) {
       res.cookie('jwt','', { session:false, maxAge: 1 })
       res.status(400).json("delete");
     } else {
@@ -111,7 +111,7 @@ exports.updatePictureUserPost = async (req, res) => {
     .then((post) => {
   const postedBy = post.posterId;
   const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+  if (connectedUser !== process.env.ADMINID || connectedUser == !postedBy) {
     // res.cookie('jwt','', { session:false, maxAge: 1 })
     res.status(400).json("delete");
   } else {

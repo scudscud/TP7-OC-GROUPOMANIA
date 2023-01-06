@@ -1128,7 +1128,7 @@ export default {
     getRefresh() {
       this.sortPosts = localStorage.getItem("sort");
       // this.sortPosts = JSON.parse(localStorage.getItem('sort'))
-      console.log(this.sortPosts);
+      
       switch (this.sortPosts) {
         case "Own":
           this.getPostOwn();
