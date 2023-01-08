@@ -87,7 +87,7 @@
       <div v-for="(p, index) in info" class="btn-profil-follow">
         <p v-if="following.includes(p._id)" class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
         <p v-else class="card-profil-friend-abo">{{ p.firstname +" "+p.lastname }} est un(e) de vos abonné(e)</p>
-        <button v-if="!following.includes(p._id)" class="btn-followback-profil-user" @click="getFollowBack(p._id)">S'abonné</button>
+        <button v-if="!following.includes(p._id)" class="btn-followback-profil-user" @click="getFollowBack(p._id)">S'abonner</button>
       </div>
       <p v-if="follower[0] === undefined" class="card-profil-friend-p">{{ friend }}</p>
     </v-card-text>
@@ -100,7 +100,7 @@
       </div>
       <div v-for="(p, index) in infoAbo" class="btn-profil-follow">
         <p  class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
-        <button  v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonné </button>
+        <button  v-if="following.includes(p._id)" class="btn-unfollow " @click="getUnFollowBack(p._id)"> Se désabonner </button>
       </div>
     </v-card-text>
     <v-card-text  v-if="following[0] === undefined" class="card-profil-friend">
@@ -604,6 +604,7 @@ export default {
       })
       .then(() => {
         this.follower.forEach((i, u, l) => {
+          console.log('testt'+ i);
           axios.get(`http://localhost:5000/api/user/${i}`)
             .then((docs) => {
               this.followId = docs.data._id
@@ -1138,22 +1139,15 @@ p.card-profil-biographie-p {
 }
 
 .btn-unfollow {
-  width: 100px;
+  width: 120px;
   border: solid 2px $secondary;
-  // margin-top: 1%;
-  // margin-right: 1%;
-  // margin-left: 1%;
   border-radius:10px;
   padding-left: 5px;
   padding-right: 5px;
-
   &:hover {
     background-color: $secondary;
     color: $tertiary;
-
-    &.btn-unfollow>.pen-icon {
-      color: $tertiary;
-    }
+    
   }
 }
 

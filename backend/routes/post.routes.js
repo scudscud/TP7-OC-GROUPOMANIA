@@ -35,8 +35,8 @@ router.put('/photo/:id',requireAuth,(req, res, next) => {photo(req, res, functio
 // gestion des commentaire\\
 
 router.patch('/comment-post/:id',requireAuth, postController.commentPost);
-router.patch('/edit-comment-post/:id',requireAuth, postController.editCommentPost);
-router.patch('/delete-comment-post/:id',requireAuth, postController.deleteCommentPost );
+// router.patch('/edit-comment-post/:id',requireAuth, postController.editCommentPost);
+// router.patch('/delete-comment-post/:id',requireAuth, postController.deleteCommentPost );
 
 
 module.exports = router;

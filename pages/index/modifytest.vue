@@ -421,10 +421,9 @@ export default {
   background-color: $tertiary;
   border: solid;
   border-color: $secondary;
-  border-radius: 1%
+  border-radius: 1%;
 }
 
-;
 
 #card-autor-test {
   display: flex;
@@ -469,7 +468,7 @@ export default {
   min-width: 190px;
   width: 190px;
   background-color: $tertiary;
-  border-radius: 10%;
+  border-radius: 5px;
   border: solid 2px $secondary;
   padding-right: 1%;
   padding-left: 1%;
@@ -503,7 +502,7 @@ export default {
 
 #btn-del-create-pic {
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius: 15px;
   margin-top: 1%;
   padding-left: 5px;
   padding-right: 5px;
@@ -571,14 +570,14 @@ export default {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-top: 0%;
   padding-left: 1%;
   padding-right: 1%;
 
   &:hover {
     background-color: $secondary;
-    border-radius: 20%;
+    border-radius: 10px;
 
     &#back-book>#btn-back {
       color: $tertiary;
@@ -625,12 +624,12 @@ export default {
   width: 85px;
   // margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 1%;
   padding-right: 1%;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
 
@@ -648,7 +647,7 @@ export default {
   width: 100px;
   // margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 1%;
   padding-right: 1%;
 
@@ -658,7 +657,7 @@ export default {
 
   padding-right: 1rem;
   padding-left: 1rem;
-  border-radius: 30%;
+  border-radius: 15px;
   // margin-top: 20px;
   border: solid 2px $secondary;
   background: #ccc;
@@ -689,7 +688,7 @@ export default {
   align-items: center;
   border-top: solid 2px $secondary;
   border-bottom: solid 2px $secondary;
-  border-radius: 5%;
+  border-radius: 10%;
   margin-bottom: 1%;
   padding: 1.5%;
 }
@@ -743,7 +742,7 @@ h2.comment-title {
 
 #btn-picture-delete {
   border: solid 2px $secondary;
-  border-radius: 30%;
+  border-radius:15px;
   margin-right: auto;
   margin-top: 1%;
   padding-left: 5px;
@@ -751,7 +750,7 @@ h2.comment-title {
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -761,13 +760,13 @@ h2.comment-title {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius:15px;
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -777,13 +776,13 @@ h2.comment-title {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -793,13 +792,13 @@ h2.comment-title {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }
@@ -809,13 +808,13 @@ h2.comment-title {
   border: solid 2px $secondary;
   margin-top: 1%;
   margin-right: 1%;
-  border-radius: 30%;
+  border-radius: 15px;
   padding-left: 5px;
   padding-right: 5px;
   color: $secondary;
 
   &:hover {
-    border-radius: 20%;
+    border-radius: 10px;
     background-color: $secondary;
     color: $tertiary;
   }

@@ -38,12 +38,12 @@
 
 
     <v-card-text class="card-profil-biographie">
-      <h2>Ma bio</h2>
-      <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
+      <h2>La bio de {{ fullname }}</h2>
+      <p v-if="this.bioUser == '' || this.bioUser == undefined" class="card-profil-biographie-p">{{ biographiePadmin }}</p>
       <p v-else class="card-profil-biographie-p">{{ bioUser }}</p>
 
 
-      <button v-if="this.bioUser !== '' && !modifbio" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
+      <button v-if="this.bioUser !== '' && !modifbio && this.bioUser !== undefined" class="btn-bio-mod" @click="getBio(),(warningDelete= !warningDelete)">
         <v-icon class="pen-icon" size="15px">mdi-delete</v-icon> supprimer la biographie </button>
     </v-card-text>
 
@@ -59,7 +59,7 @@
     <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
       <p v-if="pi._id.includes(userjwtid) " class="card-profilAdmin-friend">{{fullname}} est un(e) de vos abonné(e) </p>
       <p v-else class="card-profil-friend-p">{{pi.firstname +" "+pi.lastname}} </p>
-      <button :key="followkey " v-if="pi._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné </button>       
+      <button :key="followkey " v-if="pi._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner </button>       
     </div>   
     <p v-if="following[0] == undefined" class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
   </v-card-text>
@@ -73,15 +73,15 @@
     <div v-for="(p, index) in info" class="btn-profil-follow">
       <p v-if="p._id !== userjwtid " class="card-profil-friend-p">{{ p.firstname +" "+p.lastname }} </p>
       <p v-if="p._id == userjwtid " class="card-profilAdmin-friend">Vous êtes abonné(e) à {{fullname}} </p>
-      <button v-if="p._id == userjwtid "  class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
+      <button v-if="p._id == userjwtid "  class="btn-unfollow-admin " @click="getUnFollowBack(userid)"> Se désabonner</button>
     </div>
     <div v-if="!following.includes(userjwtid) && newfollow && !followBack"   class="btn-profil-follow">
       <p  class="card-profilAdmin-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-      <button  class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+      <button  class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner</button>
     </div>
     <div v-if="following.includes(userjwtid) && newfollow && !followBack"   class="btn-profil-follow">
       <p  class="card-profilAdmin-friend-new">Abonnez-vous à {{fullname}}</p>
-      <button  class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+      <button  class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner</button>
     </div>
 
   </v-card-text>
@@ -92,7 +92,7 @@
     </div>
     <div class="btn-profil-follow">
       <p class="card-profilAdmin-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
-      <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
+      <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonner</button>
     </div>
   </v-card-text> 
    
@@ -168,7 +168,7 @@ export default {
       bio: "",
       bioUser: "",
       newBioUser: '',
-      biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
+      biographiePadmin: "C'est vide ,vous n'avez rien n'as modérer 😪",
       friend: "Aie c'est vide ",
       follower: [],
       followBack: false,
@@ -1050,8 +1050,8 @@ p.card-profil-biographie-p {
 }
 
 
-.btn-unfollow {
-  width: 100px;
+.btn-unfollow-admin {
+  width: 120px;
   border: solid 2px $secondary;
   // margin-top: 1%;
   // margin-right: 1%;
@@ -1064,9 +1064,7 @@ p.card-profil-biographie-p {
     background-color: $secondary;
     color: $tertiary;
 
-    &.btn-unfollow>.pen-icon {
-      color: $tertiary;
-    }
+    
   }
 }
 
@@ -1079,9 +1077,7 @@ padding-right: 5px;
 &:hover {
   background-color: $secondary;
   color: $tertiary;
-  &.btn-unfollow>.pen-icon {
-    color: $tertiary;
-  }
+ 
 }
 }
 

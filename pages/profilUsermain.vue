@@ -38,7 +38,7 @@
 
     <v-card-text class="card-profil-biographie">
       <h2>biographie </h2>
-      <p v-if="this.bioUser == ''" class="card-profil-biographie-p">{{ biographieP }}</p>
+      <p v-if="this.bioUser == '' || this.bioUser == undefined" class="card-profil-biographie-p">{{ biographieP }}</p>
       <p v-else class="card-profilusermain-biographie-p">{{ bioUser }}</p>
 
     </v-card-text>
@@ -56,7 +56,7 @@
       <div v-for="(pi, index) in infoAbo" class="btn-profil-follow">
         <p v-if="pi._id.includes(userjwtid) "  class="card-profiluser-friend">{{fullname }} est un(e) de vos abonné(e) </p>
         <p v-else  class="card-profil-friend-p">{{pi.firstname +" "+pi.lastname }} </p>
-        <button :key="followkey " v-if="pi._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné </button>       
+        <button :key="followkey " v-if="pi._id.includes(userjwtid) && followBack == false && follower[0] !== undefined" class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner </button>       
       </div>
           <p  v-if="following[0] == undefined"  class="card-profil-friend-p">{{fullname}} ne connait plus personne en Harley Davidson!!  </p>
     </v-card-text>
@@ -69,16 +69,16 @@
       <div v-for="(p, index) in info"  class="btn-profil-follow">
         <p v-if="p._id !== userjwtid" class="card-profil-friend-p">{{p.firstname +" "+p.lastname }} </p>
         <p v-if="p._id === userjwtid" class="card-profiluser-friend">Vous êtes abonné(e) à {{fullname}}</p>
-        <button v-if="p._id.includes(userjwtid)" class="btn-unfollow " @click="getUnFollowBack(userid)"> Se désabonné</button>
+        <button v-if="p._id.includes(userjwtid)" class="btn-unfollow-main " @click="getUnFollowBack(userid)"> Se désabonner</button>
       </div>
 
       <div v-if="newfollow && !followBack && following.includes(userjwtid)" class="btn-profil-follow">
         <p class="card-profiluser-friend-new">Abonnez-vous à {{fullname}}</p>
-        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner</button>
       </div>
       <div v-if="newfollow && !followBack && !following.includes(userjwtid)" class="btn-profil-follow">
         <p class="card-profiluser-friend-new">Faite le 1er pas Abonnez-vous à {{fullname}}</p>
-        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonné</button>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S'abonner</button>
       </div>
 
     </v-card-text>
@@ -89,7 +89,7 @@
       </div>
       <div class="btn-profil-follow">
         <p class="card-profiluser-friend-new">Soyez le 1er Abonné(e) de {{fullname}}</p>
-        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonné</button>
+        <button class="btn-followback-profil-user " @click="getFollowBack(userid)"> S abonner</button>
       </div>
     </v-card-text>
 
@@ -744,12 +744,9 @@ p.card-profilusermain-biographie-p {
   cursor: default;
 }
 
-.btn-unfollow {
-  width: 100px;
+.btn-unfollow-main {
+  width: 120px;
   border: solid 2px $secondary;
-  // margin-top: 1%;
-  // margin-right: 1%;
-  // margin-left: 1%;
   border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
@@ -764,7 +761,7 @@ p.card-profilusermain-biographie-p {
   }
 }
 .btn-followback-profil-user {
-  width: 100px;
+  width: 120px;
   border: solid 2px rgb(16, 148, 13);
   border-radius: 10px;
   padding-left: 5px;

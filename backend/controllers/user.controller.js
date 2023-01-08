@@ -33,10 +33,7 @@ exports.updateUser = async (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   const postedBy = req.params.id;
   const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-    res.cookie("jwt", "", { session: false, maxAge: 1 });
-    res.status(400).json("delete");
-  } else {
+  if (req.role === 'admin' || connectedUser === postedBy) {
     const updatedData = {
       bio: req.body.bio,
       photo:
@@ -46,7 +43,6 @@ exports.updateUser = async (req, res) => {
             }`
           : ``,
     };
-
     try {
       await UserModel.findByIdAndUpdate(
         req.params.id,
@@ -55,13 +51,12 @@ exports.updateUser = async (req, res) => {
       )
         .then((docs) => res.json("profil mise a jour"))
         .catch((err) => res.status(500).send({ message: err }));
-      // (err, docs)=>{
-      //   if(!err) return res.status(201).send(docs);
-      //   else return res.status(500).send({message : err})
-      // }
     } catch (err) {
       return res.status(400).json({ message: err });
     }
+  } else {
+    res.cookie("jwt", "", { session: false, maxAge: 1 });
+    res.status(400).json("non autoriser");
   }
 };
 
@@ -70,10 +65,7 @@ exports.signalUser = (req, res) => {
     return res.status(400).json("utilsateur inconnu :" + req.params.id);
   const postedBy = req.body.userFromId;
   const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-    res.cookie("jwt", "", { session: false, maxAge: 1 });
-    res.status(400).json("delete");
-  } else {
+  if (req.role === 'admin'|| connectedUser === postedBy) {
     const date = new Date(Date.now());
     const days = date.toLocaleDateString();
     const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -119,16 +111,18 @@ exports.signalUser = (req, res) => {
         }
       }
     );
+  } else {
+    res.cookie("jwt", "", { session: false, maxAge: 1 });
+    res.status(400).json("delete");
   }
 };
 
 exports.banuser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).json("utilsateur inconnu :" + req.params.id);
-  const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID) {
+  if (req.role !== 'admin') {
     res.cookie("jwt", "", { session: false, maxAge: 1 });
-    res.status(400).json("delete");
+    res.status(400).json("tu n'est pas l'admin");
   } else {
     UserModel.findById(req.params.id, { ban: true }, (err, doc) => {
       if (doc.ban == true) {
@@ -158,8 +152,7 @@ exports.banuser = (req, res) => {
 exports.unbanuser = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID) {
+  if (req.role !== 'admin') {
     res.cookie("jwt", "", { session: false, maxAge: 1 });
     res.status(400).json("delete");
   } else {
@@ -195,10 +188,7 @@ exports.delPicUser = (req, res) => {
     .then((post) => {
       const postedBy = post.posterId;
       const connectedUser = req.user;
-      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-        res.cookie("jwt", "", { session: false, maxAge: 1 });
-        res.status(400).json("nocookie");
-      } else {
+      if (req.role === 'admin' || connectedUser === postedBy) {
         let delimg = post.picture.split("images/default")[1];
         fs.unlink(`images/default/${delimg}`, () => {
           UserModel.findByIdAndRemove(req.params.id, (err, docs) => {
@@ -210,6 +200,9 @@ exports.delPicUser = (req, res) => {
             }
           });
         });
+      } else {
+        res.cookie("jwt", "", { session: false, maxAge: 1 });
+        res.status(400).json("nocookie");
       }
     })
     .catch((err) => {
@@ -217,56 +210,6 @@ exports.delPicUser = (req, res) => {
     });
 };
 
-// user delete end point \\
-
-exports.userDelete = async (req, res) => {
-  console.log(req.body.idrequest);
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  // try {
-  await UserModel.findById(req.params.id, (err, docs) => {
-    let token = req.cookies.jwt;
-    jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
-      if (err) {
-        console.log("no token");
-      } else {
-        let connectedUser = docs._id.toString().split('new ObjectId("')[0];
-        let jwtToken = decodedToken.id;
-        // console.log(connectedUser);
-        // console.log(jwtToken);
-        if (
-          jwtToken !== "62f8f745c348ae5b9f081062" &&
-          jwtToken !== connectedUser
-        ) {
-          return res.cookie("jwt", "", { session: false, maxAge: 1 });
-        } else {
-          console.log("ok");
-          let delimg = docs.photo.toString().split("images/default/")[1];
-          if (delimg != "") {
-            fs.unlink(`images/default/${delimg}`, (err) => {
-              if (err) console.log(err);
-              else {
-                console.log("photo supprimer");
-              }
-            });
-          } else console.log("utilisateur inconnu: " + err);
-        }
-      }
-    });
-
-    UserModel.deleteOne(req.body.idrequest)
-      .exec()
-      .then((doc) => {
-        if (!doc) {
-          return res.stauts(404).end();
-        }
-        return res
-          .status(200)
-          .json({ message: "utilisateur supprimer." })
-          .end();
-      });
-  });
-};
 
 // follow user  end point \\
 
@@ -278,15 +221,12 @@ exports.follow = async (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   const postedBy = req.params.id;
   const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-    res.cookie("jwt", "", { session: false, maxAge: 1 });
-    res.status(400).json("delete");
-  } else {
+  if (req.role === 'admin' || connectedUser === postedBy) {
     UserModel.find(
       { _id: req.params.id, following: req.body.idToFollow },
       (err, doc) => {
         if (doc[0] != undefined)
-          return res.status(400).json("utilisateur deja follow");
+        return res.status(400).json("utilisateur deja follow");
         else {
           try {
             UserModel.findByIdAndUpdate(
@@ -309,20 +249,23 @@ exports.follow = async (req, res) => {
               { posterId: req.body.idToFollow },
               { $push: { posterfollower: req.params.id } }
               // { new: true, upsert: true }
-            ).catch((err) => res.status(400).json({ message: err }));
-            PostModel.findOneAndUpdate(
-              { posterId: req.params.id },
-              { $push: { posterfollowing: req.body.idToFollow } }
-              // { new: true, upsert: true }
-            ).catch((err) => res.status(400).json({ message: err }));
-          } catch (err) {
-            res.status(500).json({ message: err });
+              ).catch((err) => res.status(400).json({ message: err }));
+              PostModel.findOneAndUpdate(
+                { posterId: req.params.id },
+                { $push: { posterfollowing: req.body.idToFollow } }
+                // { new: true, upsert: true }
+                ).catch((err) => res.status(400).json({ message: err }));
+              } catch (err) {
+                res.status(500).json({ message: err });
           }
         }
       }
-    );
-  }
-};
+      );
+    } else {
+      res.cookie("jwt", "", { session: false, maxAge: 1 });
+      res.status(400).json("non autoriser");
+    }
+  };
 
 // unfollow user end point \\
 
@@ -334,10 +277,7 @@ exports.unfollow = (req, res) => {
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
   const postedBy = req.params.id;
   const connectedUser = req.user;
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-    res.cookie("jwt", "", { session: false, maxAge: 1 });
-    res.status(400).json("delete");
-  } else {
+  if (req.role === 'admin'|| connectedUser === postedBy) {
     try {
       UserModel.findByIdAndUpdate(
         req.params.id,
@@ -347,8 +287,7 @@ exports.unfollow = (req, res) => {
           else res.status(201).json("unfollow ok ");
         }
       );
-      // .then((docs) =>  res.status(201).json(docs))
-      // .catch((err) => res.status(400).json({ message: err }));
+  
 
       UserModel.findByIdAndUpdate(
         req.body.idToUnFollow,
@@ -368,5 +307,62 @@ exports.unfollow = (req, res) => {
     } catch (err) {
       res.status(500).json({ message: err });
     }
+  } else {
+    res.cookie("jwt", "", { session: false, maxAge: 1 });
+    res.status(400).json("non autoriser");
   }
 };
+
+//=================================== non implant =========================================\\
+
+
+        // user delete end point \\
+        
+        // exports.userDelete = async (req, res) => {
+        //   console.log(req.body.idrequest);
+        //   if (!ObjectID.isValid(req.params.id))
+        //     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+        //   // try {
+        //   await UserModel.findById(req.params.id, (err, docs) => {
+        //     let token = req.cookies.jwt;
+        //     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
+        //       if (err) {
+        //         console.log("no token");
+        //       } else {
+        //         let connectedUser = docs._id.toString().split('new ObjectId("')[0];
+        //         let jwtToken = decodedToken.id;
+        //         // console.log(connectedUser);
+        //         // console.log(jwtToken);
+        //         if (
+        //           jwtToken !== "62f8f745c348ae5b9f081062" &&
+        //           jwtToken !== connectedUser
+        //         ) {
+        //           return res.cookie("jwt", "", { session: false, maxAge: 1 });
+        //         } else {
+        //           console.log("ok");
+        //           let delimg = docs.photo.toString().split("images/default/")[1];
+        //           if (delimg != "") {
+        //             fs.unlink(`images/default/${delimg}`, (err) => {
+        //               if (err) console.log(err);
+        //               else {
+        //                 console.log("photo supprimer");
+        //               }
+        //             });
+        //           } else console.log("utilisateur inconnu: " + err);
+        //         }
+        //       }
+        //     });
+        
+        //     UserModel.deleteOne(req.body.idrequest)
+        //       .exec()
+        //       .then((doc) => {
+        //         if (!doc) {
+        //           return res.stauts(404).end();
+        //         }
+        //         return res
+        //           .status(200)
+        //           .json({ message: "utilisateur supprimer" })
+        //           .end();
+        //       });
+        //   });
+        // };

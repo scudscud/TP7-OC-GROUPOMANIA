@@ -5,9 +5,7 @@ const SignalModel = require("../models/signal.model");
 const CommentModel = require("../models/comment.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 const fs = require("fs");
-let path = require("path");
-const { log } = require("console");
-// const { log } = require("console");
+
 
 // read post end point \\
 
@@ -28,7 +26,7 @@ exports.createPost = async (req, res) => {
   const postedBy = req.body._id
   if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
     res.cookie('jwt','', { session:false, maxAge: 1 })
-    res.status(400).json("erreur");}
+    res.status(400).json("erreur d'utlisateur");}
   
   const date = new Date(Date.now());
   const days = date.toLocaleDateString();
@@ -75,10 +73,7 @@ exports.updatePost = (req, res) => {
   PostModel.findById(req.params.id).then((post) => {
     const postedBy = post.posterId;
     const connectedUser = req.user;
-    if (connectedUser !== process.env.ADMINID || connectedUser == !postedBy) {
-      res.cookie('jwt','', { session:false, maxAge: 1 })
-      res.status(400).json("delete");
-    } else {
+    if (req.role === 'admin'|| connectedUser === postedBy) {
       const date = new Date(Date.now());
       const days = date.toLocaleDateString();
       const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -101,6 +96,9 @@ exports.updatePost = (req, res) => {
           else console.log("petit probleme : " + err);
         }
       );
+    } else { 
+      res.cookie('jwt','', { session:false, maxAge: 1 })
+      res.status(400).json("expulsion");
     }
   });
 };
@@ -111,10 +109,7 @@ exports.updatePictureUserPost = async (req, res) => {
     .then((post) => {
   const postedBy = post.posterId;
   const connectedUser = req.user;
-  if (connectedUser !== process.env.ADMINID || connectedUser == !postedBy) {
-    // res.cookie('jwt','', { session:false, maxAge: 1 })
-    res.status(400).json("delete");
-  } else {
+  if (req.role === 'admin'|| connectedUser === postedBy) {
     const updatedRecord = {
       posterpicture:
         req.file != null
@@ -132,6 +127,8 @@ exports.updatePictureUserPost = async (req, res) => {
         else console.log("petit probleme : " + err);
       }
     );
+  } else {
+    res.status(400).json("erreur de droit");
   }
   })
 };
@@ -192,7 +189,7 @@ exports.getPostSignalAdmin = async (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("Utilisateur inconnu : " + req.params.id);
   }
-  if (req.user != process.env.ADMINID ) {return res.status(400).json("tu n'est pas l'admin")}
+  if (req.role !== 'admin' ) {return res.status(400).json("tu n'est pas l'admin")}
 else{
   try {
     const docs = await PostModel.find({ signalBy: { $gte: 1 } }).sort({ signalpost: -1 });
@@ -285,15 +282,14 @@ exports.getPostSignal = (req, res) => {
 // delete post end point \\
 exports.deletePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+    return res.status(400).send("post inconnu :" + req.params.id);
+    if (!ObjectID.isValid(req.body.id))
+    return res.status(400).send("utilisateur inconnu:" + req.body.id);
   PostModel.findById(req.params.id)
     .then((post) => {
       const postedBy = post.posterId;
       const connectedUser = req.user;
-      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-        res.cookie("jwt", "", { session: false, maxAge: 1 });
-        res.status(400).json("nocookie");
-      } else {
+      if (req.role == 'admin' || connectedUser === postedBy) {
         let delimg = post.picture.split("images/")[1];
         fs.unlink(`images/${delimg}`, () => {
           PostModel.findByIdAndRemove(req.params.id, (err, docs) => {
@@ -304,6 +300,8 @@ exports.deletePost = (req, res) => {
             }
           });
         });
+      } else {
+        res.cookie('jwt','',{ExpiresIn:1}).status(400).json("erreur de personne")
       }
     })
     .catch((err) => {
@@ -318,10 +316,7 @@ exports.deleteOnePicture = (req, res) => {
     .then((post) => {
       const postedBy = post.posterId;
       const connectedUser = req.user;
-      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-        res.cookie("jwt", "", { session: false, maxAge: 1 });
-        res.status(400).json("erreur onepic");
-      } else {
+      if (req.role === 'admin' || connectedUser === postedBy) {
         let delimg = post.picture.split("images/")[1];
         fs.unlink(`images/${delimg}`, (err) => {
           if (err) {
@@ -330,6 +325,9 @@ exports.deleteOnePicture = (req, res) => {
             console.log("successfully deleted local image");
           }
         });
+      } else {
+        res.cookie("jwt", "", { session: false, maxAge: 1 })
+        res.status(400).json("erreur onepic")
       }
     })
     .catch((err) => {
@@ -342,21 +340,20 @@ exports.deleteOldPicModidify = (req, res) => {
     .then((post) => {
       const postedBy = post.posterId
       const connectedUser = req.user
-      if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
+      if (req.role === 'admin'|| connectedUser === postedBy) {
+        old = req.body.id;
+        let delimg = old.split("images/")[1];
+  
+        fs.unlink(`images/${delimg}`, (err) => {
+          if (err) {
+            console.log("failed to delete local image:" + err);
+          } else {
+            console.log("successfully deleted local image");
+          }
+        });
+      }else{
         res.cookie("jwt", "", { session: false, maxAge: 1 });
         res.status(400).json("erreur onepicuser");
-      }else{
-      console.log(req.body.id);
-      old = req.body.id;
-      let delimg = old.split("images/")[1];
-
-      fs.unlink(`images/${delimg}`, (err) => {
-        if (err) {
-          console.log("failed to delete local image:" + err);
-        } else {
-          console.log("successfully deleted local image");
-        }
-      });
       }
     })
     .catch((err) => {
@@ -368,85 +365,95 @@ exports.deleteOldPicModidify = (req, res) => {
 exports.likePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("post iconnu:" + req.params.id);
-    if (!req.user === req.params.id || !req.user === process.env.ADMINID) return res.status(400).json("erreur de user");
+  if (!ObjectID.isValid(req.body.id))
+    return res.status(400).send("utilisateur inconnu:" + req.params.id);
+  if (req.user === req.body.id || req.role === 'admin' ) { 
     PostModel.find({ _id: req.params.id, likers: req.body.id },(err,doc)=>{
-      console.log(doc[0]);
-      console.log(err);
-    if ( doc[0] != undefined)  res.status(400).json('publication deja liker')
-    else {
-    try {
-      PostModel.findByIdAndUpdate(
-        req.params.id,
-        {
-          $addToSet: {
-            likers: req.body.id,
+      if ( doc[0] != undefined) {
+        res.status(400).json('publication deja liker')
+      } else {
+      try {
+        PostModel.findByIdAndUpdate(
+          req.params.id,
+          {
+            $addToSet: {
+              likers: req.body.id,
+            },
           },
-        },
-        (err, docs) => {
-          if (err) {
-            return res.status(400).send(err.message);
+          (err, docs) => {
+            if (err) {
+              return res.status(400).send(err.message);
+            }
           }
-        }
-      );
-      UserModel.findByIdAndUpdate(
-        req.body.id,
-        {
-          $addToSet: { likes: req.params.id },
-        },
-        { new: true },
-        (err, docs) => {
-          if (!err) res.json("post liker");
-          else return res.status(400).send(err.message);
-        }
-      );
-    } catch (err) {
-      return res.status(400).send(err.message);
+        );
+        UserModel.findByIdAndUpdate(
+          req.body.id,
+          {
+            $addToSet: { likes: req.params.id },
+          },
+          { new: true },
+          (err, docs) => {
+            if (!err) res.json("post liker");
+            else return res.status(400).send(err.message);
+          }
+        );
+      } catch (err) {
+        return res.status(400).send(err.message);
+      }
     }
+      })
+  }else{
+    res.cookie('jwt','',{maxAge: 1 }).status(404).json("erreur d'utilisateur")    
   }
-
-    })
- 
 };
 
 // unlike post end point \\
 exports.unLikePost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("utilsateur inconnu :" + req.params.id);
-    if (!req.user === req.params.id || !req.user === process.env.ADMINID) return res.status(400).json("erreur de user");
-  try {
-    PostModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $pull: {
-          likers: req.body.id,
-        },
-      },
-      (err, docs) => {
-        if (err) {
-          return res.status(400).send(err.message);
-        }
+    if (req.user === req.body.id || req.role === 'admin' ) {
+      try {
+        PostModel.findByIdAndUpdate(
+          req.params.id,
+          {
+            $pull: {
+              likers: req.body.id,
+            },
+          },
+          (err, docs) => {
+            if (err) {
+              return res.status(400).send(err.message);
+            }
+          }
+        );
+        UserModel.findByIdAndUpdate(
+          req.body.id,
+          {
+            $pull: { likes: req.params.id },
+          },
+          { new: true },
+          (err, docs) => {
+            if (!err) res.json('unlike ok ');
+            else return res.status(400).send(err.message);
+          }
+        );
+      } catch (err) {
+        return res.status(400).send(err.message);
       }
-    );
-    UserModel.findByIdAndUpdate(
-      req.body.id,
-      {
-        $pull: { likes: req.params.id },
-      },
-      { new: true },
-      (err, docs) => {
-        if (!err) res.json('unlike ok ');
-        else return res.status(400).send(err.message);
-      }
-    );
-  } catch (err) {
-    return res.status(400).send(err.message);
-  }
+    } else {
+    res.cookie('jwt','',{maxAge:1})
+    res.status(400).json("erreur de user")
+}
 };
 
 // commentpost end point \\
 exports.commentPost = (req, res) => {
   if (!ObjectID.isValid(req.params.id))
     res.status(400).send("publication inconnu :" + req.params.id);
+    const postedBy = req.body.commenterId
+    if(postedBy !== req.user){
+      res.cookie('jwt','',{maxAge:1}).status(400).json("erreur d'utilisateur")
+    }else{
   PostModel.findById(req.params.id)
     .then((post) => {
       const postRecord = post;
@@ -476,8 +483,6 @@ exports.commentPost = (req, res) => {
           { new: true },
           (err, docs) => {
             if (err) res.send(err);
-            // if (!err)  res.send(docs);
-            // else res.status(400).send(err);
           }
         );
         const newComment = new CommentModel({
@@ -529,53 +534,56 @@ exports.commentPost = (req, res) => {
     .catch((err) => {
       res.status(400).send(err);
     });
+  }
 };
+
+//---------------------------end non implant ------------\\
 
 // editCommentpost end point \\
-exports.editCommentPost = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
-  try {
-    return PostModel.findById(req.params.id, (err, docs) => {
-      // console.log(Comment);
-      const Comment = docs.comments.find((comment) =>
-        comment._id.equals(req.body.commentId)
-      );
+// exports.editCommentPost = (req, res) => {
+//   if (!ObjectID.isValid(req.params.id))
+//     return res.status(400).send("utilsateur inconnu :" + req.params.id);
+//   try {
+//     return PostModel.findById(req.params.id, (err, docs) => {
+//       // console.log(Comment);
+//       const Comment = docs.comments.find((comment) =>
+//         comment._id.equals(req.body.commentId)
+//       );
 
-      if (!Comment) return res.status(404).json("Commentaire non trouver");
-      Comment.text = req.body.text;
-      return docs.save((err) => {
-        if (!err) return res.status(200).send(docs);
-        return res.status(500).send(err.message);
-      });
-    });
-  } catch (err) {
-    return res.status(400).send(err.message);
-  }
-};
+//       if (!Comment) return res.status(404).json("Commentaire non trouver");
+//       Comment.text = req.body.text;
+//       return docs.save((err) => {
+//         if (!err) return res.status(200).send(docs);
+//         return res.status(500).send(err.message);
+//       });
+//     });
+//   } catch (err) {
+//     return res.status(400).send(err.message);
+//   }
+// };
 
-// deleteCommentpost end point \
-exports.deleteCommentPost = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("utilsateur inconnu :" + req.params.id);
+// // deleteCommentpost end point \
+// exports.deleteCommentPost = (req, res) => {
+//   if (!ObjectID.isValid(req.params.id))
+//     return res.status(400).send("utilsateur inconnu :" + req.params.id);
 
-  try {
-    return PostModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $pull: {
-          comments: {
-            _id: req.body.commentId,
-          },
-        },
-      },
-      { new: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        else return res.status(400).send(err);
-      }
-    );
-  } catch (err) {
-    return res.status(400).send(err);
-  }
-};
+//   try {
+//     return PostModel.findByIdAndUpdate(
+//       req.params.id,
+//       {
+//         $pull: {
+//           comments: {
+//             _id: req.body.commentId,
+//           },
+//         },
+//       },
+//       { new: true },
+//       (err, docs) => {
+//         if (!err) return res.send(docs);
+//         else return res.status(400).send(err);
+//       }
+//     );
+//   } catch (err) {
+//     return res.status(400).send(err);
+//   }
+// };

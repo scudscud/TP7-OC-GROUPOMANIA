@@ -97,6 +97,16 @@
                   >Modifier
                 </button>
                 <button
+                  id="btn-post-modify-bis"
+                  type="submit"
+                  @click="(showmodify = !showmodify), postIdDel(post._id)"
+                  title=" modifier votre publication "
+                >
+                  <v-icon class="pen-icon-main-bis" size="15px"
+                    >mdi-lead-pencil</v-icon
+                  >
+                </button>
+                <button
                   id="btn-post-delete"
                   @click="(showdel = !showdel), postIdDel(post._id)"
                   title=" supprimer votre publication "
@@ -104,6 +114,15 @@
                   <v-icon class="delete-icon-main" size="20px"
                     >mdi-delete-circle</v-icon
                   >Supprimer
+                </button>
+                <button
+                  id="btn-post-delete-bis"
+                  @click="(showdel = !showdel), postIdDel(post._id)"
+                  title=" supprimer votre publication "
+                >
+                  <v-icon class="delete-icon-main-bis" size="20px"
+                    >mdi-delete-circle</v-icon
+                  >
                 </button>
               </div>
             </div>
@@ -164,7 +183,7 @@
                     <v-list-item class="btn-book-admin-post">
                       <p class="btn-book-main-post">publication</p>
                       <button
-                        id="btn-post-delete"
+                        id="btn-post-delete-admin"
                         @click="(showdel = !showdel), postIdDel(post._id)"
                         title="supprimer votre publication"
                       >
@@ -172,7 +191,7 @@
                         Supprimer
                       </button>
                       <button
-                        id="btn-post-modify"
+                        id="btn-post-modify-admin"
                         type="submit"
                         @click="(showmodify = !showmodify), postIdDel(post._id)"
                         title="modifier votre publication"
@@ -1894,6 +1913,28 @@ p.fullname-none {
     }
   }
 }
+#btn-post-modify-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 105px;
+  height: 30px;
+  border: solid 2px $secondary;
+  margin-top: 3%;
+  margin-right: 1%;
+  border-radius: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+
+  &:hover {
+    border-radius: 10px;
+    background-color: $secondary;
+    color: $tertiary;
+
+  }
+}
 
 .delete-icon-main {
   padding-right: 2%;
@@ -1923,6 +1964,97 @@ p.fullname-none {
       color: $tertiary;
     }
   }
+}
+#btn-post-delete-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 105px;
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 15px;
+  padding-left: 2px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+
+  &:hover {
+    border-radius: 10px;
+    background-color: $secondary;
+    color: $tertiary;
+  }
+}
+
+#btn-post-delete-bis {
+  display: none;
+}
+ #btn-post-modify-bis {
+  display: none;
+}
+
+@media (max-width: 750px) {
+  #btn-post-delete {
+  display: none;
+}
+
+#btn-post-delete-bis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 50px;
+  border: solid 2px $secondary;
+  margin-top: 1%;
+  margin-right: 1%;
+  border-radius: 15px;
+  padding-left: 2px;
+  padding-right: 5px;
+  color: $secondary;
+  &:hover {
+    border-radius: 10px;
+    background-color: $secondary;
+    color: $tertiary;
+
+    &#btn-post-delete-bis > .delete-icon-main-bis {
+      color: $tertiary;
+    }
+  }
+}
+
+#btn-post-modify {
+  display: none;
+}
+
+#btn-post-modify-bis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  border: solid 2px $secondary;
+  margin-top: 3%;
+  margin-right: 1%;
+  border-radius: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  // padding-bottom: 5px;
+  color: $secondary;
+
+  &:hover {
+    border-radius: 10px;
+    background-color: $secondary;
+    color: $tertiary;
+
+    &#btn-post-modify-bis > .pen-icon-main-bis {
+      color: $tertiary;
+    }
+  }
+}
+
+
+
 }
 
 #btn-ban-user {
