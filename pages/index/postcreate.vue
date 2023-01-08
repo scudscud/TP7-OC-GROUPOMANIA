@@ -5,7 +5,7 @@
           <h1 class="card-profil-title-h1">Publier</h1></v-card-text>
           <form method="post" enctype="multipart/form-data" action="/upload" @submit.prevent @mousemove="postValid()">
             <v-card-text id="card-autor-test">
-                    <!-- <img class="picture-user-create" src="this.userpicpro" alt="photo de profil"/> -->
+                 
                     <img v-if="urlpic !== '' && urlpic !== undefined" class="picture-user-create" alt="photo de profil" :src="urlpic"  />
                       <div v-else id="avatar-empty-post">{{avatarpicempty}}</div>
                     <p class="fullname-create">{{fullname}}</p>
@@ -33,7 +33,7 @@
                 <p v-else  id="pic-size"  @change="postValid()"> c'est vide .... vous n'avez rien à partager ?  😪 </p>
               </div>
               </div>
-              <!-- <button id="btn-picture-send"     @click.prevent="test" >Enregistrer votre photo</button> -->
+            
               <span class="error-style-span">{{maxsize}}</span><span class="error-style-span">{{format}}</span>
               <button v-if="url" id="btn-del-create-pic" @click="delPicPreview(),postValid()" >Annuler</button>
             </div>
@@ -52,10 +52,8 @@
               @mouseenter="postValid(),textValid()"
               @change="postValid(),textValid()"
             />
-            <!-- <input id="messagetext" v-model="message" name="messagetext" class="card-create-comment" type="text" placeholder="Ecrivez ici votre commentaire" maxlength="300" /> -->
+          
             <div class="btn-bio">
-              <!-- <button  v-if="!createText"  @change="postValid()"  id="btn-comment-send" >Enregistrer le commentaire</button>
-              <button  v-else ><v-icon id="btn-comment-send-icon"> mdi-check-circle</v-icon></button> -->
               <button id="btn-comment-delete" @click.stop="deletemess(),textValid()">Annuler</button>
             </div>
            </v-card-text>
@@ -65,7 +63,6 @@
     </template>
     <script>
     import axios from "axios";
-    // import { multerErrors } from "../backend/utils/errors.utils";
     export default{
       name: "postcreate",
       methods: {
@@ -125,9 +122,6 @@
     
       createPost(){
         if(this.message != '' || this.url != ''){
-            // const full= document.querySelector('.fullname-create').textContent;
-          // console.log(full);
-          // console.log(this.fullname);
           let formData = new FormData()
               formData.append('posterId', this.userid)
               formData.append('posterfirstname', this.firstname)
@@ -150,8 +144,7 @@
                 me.url = ''
                 me.posted = false
                 me.file = []
-                localStorage.removeItem('sort')
-                // window.location.reload()            
+                localStorage.removeItem('sort')         
                 }, 1500);         
               })
               .catch((errors,test)=>{
@@ -164,8 +157,6 @@
                  this.maxsize = ''
                 this.format =''
                }, 3000);
-                // console.log(errors.response.data.errors.maxsize);
-                // console.log(errors.response.data.errors.format);    
               }) 
         }else{
                  this.vide="aie c'est vide"
@@ -174,8 +165,7 @@
       getcolor(){
         if(this.urlpic === '' || this.urlpic === undefined  ){
        this.avatarpicempty = this.firstname.split('')[0].toLocaleUpperCase()
-        // let randomColor = Math.floor(Math.random()*16777215).toString(16);
-      //  document.getElementById('avatar-empty-post').style.backgroundColor = '#'
+ 
        }
       }
       
@@ -215,9 +205,7 @@
           role:'',
           userFollowingId: [],
           userFollowerId : [],
-           // biographieP: "C'est vide, Vous n'avez rien à nous raconter ? 😪",
-          // lastname: "",
-          // firstname: "",
+    
         }
         },
     
@@ -235,9 +223,7 @@
     {
         mm='0'+mm;
     } 
-    // today = mm+'-'+dd+'-'+yyyy;
-    // today = mm+'/'+dd+'/'+yyyy;
-    // today = dd+'-'+mm+'-'+yyyy;
+
     today = dd+'/'+mm+'/'+yyyy;
      return today
           },
@@ -269,11 +255,9 @@
     
        await axios.get(`http://localhost:5000/jwtid`)
         .then((res) => {
-          // console.log(res.data);
         this.userjwtid = res.data
         this.show = false
         this.log = true
-        // TODO => Insert loader \\ 
         }).catch((error)=>{
           console.log(error);
         })
@@ -294,22 +278,6 @@
           console.log(error);
         })
     
-      //  await axios.get("http://localhost:5000/api/post")
-      //     .then((docs) => {
-      //       console.log(docs);
-      //         this.posterfirstname = docs.data.firstname
-      //         this.posterlastname = docs.data.lastname
-      //         this.posterpicture = docs.data.picture
-      //         this.userlike = docs.data.likes;
-    
-      //     //  this.posts = docs
-      //     //  console.log(docs.data[0].posterId);
-      //       // let inputFile = document.querySelector('#picture')
-      //       // let fileName = document.querySelector('#file-name')
-      //       // inputFile.addEventListener('change', () => {
-      //       //   fileName.textContent = inputFile.files[0].name
-      //       // })
-      //     }).catch((err)=>{console.log(err);});
     
       this.getcolor()
     
@@ -329,7 +297,6 @@
       left: 0;
       right: 0;
       position: fixed;
-      // visibility: visible;
       opacity: 1;
       background-color: rgba(0, 0, 0, 0.7);
       transition: opacity 0.4s;
@@ -337,7 +304,6 @@
     }
     
     .card-profil-title {
-    // border-radius: 5%;
       border-bottom: solid 2px $primary;
       background-color: $secondary;
     }
@@ -351,14 +317,7 @@
       font-style: italic;
       color: $primary;
     }
-    // #h1-post{
-    // display: flex;
-    // border-top-left-radius: 20%;
-    // border-top-right-radius: 5%;
-    //   background-color: $secondary;
-    //   border-bottom: solid 5px $primary;
-    //   color:$primary;
-    // }
+  
     
     #card-post-modal{
       width: 75%;
@@ -439,7 +398,6 @@
     #pic-size{
       display: flex;
       object-fit: cover;
-    // overflow: hidden;
       max-height:300px ;
      max-width: 65vw;
     }
@@ -464,14 +422,12 @@
     .form-avatar-profil {
       padding-top: 3%;
       display: none;
-      // visibility: none;
       &:hover {
         cursor: pointer;
       }
     }
     
     .picture-user-create{
-      // margin-top: 5%;
       display: flex;
       width: 50px;
       height: 50px;
@@ -481,7 +437,6 @@
       border-radius: 50%; 
     }
     #avatar-empty-post{
-      // margin-top: 5%;
       font-size: 1.8rem;
       display: flex;
       width: 50px;
@@ -496,39 +451,10 @@
       margin-left: 1%;
       margin-right: auto;
       margin-bottom: 0%;
-      // padding-right: auto;
-      // padding-top: 2.5%;
       font-weight: bold;
     }
     
-    // .post-date-full{
-    //   display: flex;
-    //   width: 100%;
-    //   padding-top: 1.5% ;
-    // }
-    // .date-now{
-    //     padding-top: 1.5%;
-    //   margin-left: 0.5%;
-    //   font-style: italic;
-    // }
-    
-    // .hour-now{
-    //     padding-top: 1.5%;
-    //   margin-left: 0.5%;
-    //    font-style: italic;
-    //    margin-right: auto;
-    // }
-    
-    // .hour-à{
-    //     padding-top: 1.5%;
-    //   margin-left: 0.5%;
-     
-    // }
-    // .post-date{
-    //     padding-top: 1.5%;
-    //   margin-left: 0.5%;
-      
-    // }
+  
     #back-book{
       display: flex;
       height: 40px;
@@ -577,28 +503,14 @@
      color:$primary;
      text-decoration: underline;
     
-    
     }
-    // #btn-delete-post{
-    //   width: 100%;
-    //   margin-top: 10%;
-    //   margin-right: 1%;
-    //   padding-top: 10%;
-    //   padding-left: 5px;
-    //   padding-right: 5px;
-    //   color: $secondary;
-    //   :hover{
-    //     background-color: $secondary;
-    //     color: $tertiary;
-    //   }
-    // }
+   
     
     #btn-send-post{
       color:$secondary;
        border: solid 2px $secondary;
        height: 40px;
        width:85px ;
-      // margin-top: 1%;
       margin-right: 1%;
       border-radius: 15px;
       padding-left: 1%;
@@ -618,19 +530,12 @@
        background-color: rgb(38, 145, 49);
        height: 40px;
        width:100px ;
-      // margin-top: 1%;
+
       margin-right: 1%;
       border-radius: 15px;
       padding-left: 1%;
       padding-right: 1%;
-      // &:hover {
-      //   border-radius: 20%;
-      //   background-color: $secondary;
-      //   color: $tertiary;
-      //   &#btn-send-post>#div-btn-send>#icon-btn-send{
-      //       color:$tertiary;
-      //   }
-      // }
+    
     }
     
     #btn-send-post:disabled{
@@ -678,8 +583,7 @@
       padding-top: 1%;
       padding-bottom: 1%;
       justify-content: center;
-      // border-top:solid 2px $secondary;
-      // border-radius: 30%;
+  
     
       }
     
@@ -688,19 +592,11 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    // border-top: solid 2px $secondary;
-    // border-bottom: solid 2px $secondary;
-    // border-radius: 10%;
     max-height: 200px;
     padding: 1%;
     };
     
-    // .blockquote{
-    // margin-top: 10px;
-    // margin-right: 20px;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
-    // };
+  
     
     #messagetext-post {
       width: 100%;

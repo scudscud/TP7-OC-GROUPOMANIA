@@ -41,6 +41,8 @@ exports.requireAuth = (req, res, next) => {
   }
 };
 
+
+
 exports.checkUser = (req, res, next) => {
   const auth = req.headers.cookie;
   const token = auth && auth.split("=")[1];

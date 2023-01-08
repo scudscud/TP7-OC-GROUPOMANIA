@@ -1995,6 +1995,20 @@ p.fullname-none {
 }
 
 @media (max-width: 750px) {
+  .btn-book-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  // margin-left: auto;
+  height: 80px;
+  width: 100px;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+
+
+
   #btn-post-delete {
   display: none;
 }

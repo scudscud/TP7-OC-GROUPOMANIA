@@ -1,17 +1,16 @@
 const express = require("express")
 const router = express.Router();
 const { requireAuth } = require("../middleware/auth.middleware");
- 
 const postController = require('../controllers/post.controller');
 const modify = require('../middleware/picture.modify.middleware')
 const image = require("../middleware/picture.post.middleware");
 const photo = require("../middleware/photo.user.post.middleware");
 const { multerErrors } = require("../utils/errors.utils");
+// const {verifyUser} = require("../middleware/verif.middleware");
 
 router.get('/',requireAuth, postController.readPost);
 router.get('/:id',requireAuth,postController.getOnePost);
 router.get('/postby/:id',requireAuth,postController.getPostByPosterid);
-// router.get('/postown/:id',postController.getPostOwn);
 router.get('/postlike/:id',requireAuth,postController.getPostLike);
 router.get('/postfollowing/:id',requireAuth,postController.getPostFollowing);
 router.get('/postfollower/:id',requireAuth,postController.getPostFollower);

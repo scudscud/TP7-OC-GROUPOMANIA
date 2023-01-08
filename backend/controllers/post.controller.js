@@ -24,11 +24,9 @@ exports.createPost = async (req, res) => {
     if(!doc) res.status(400).send('utilisateur inconnu')})
   const connectedUser = req.user
   const postedBy = req.body._id
-  if (connectedUser == !process.env.ADMINID || connectedUser == !postedBy) {
-    res.cookie('jwt','', { session:false, maxAge: 1 })
-    res.status(400).json("erreur d'utlisateur");}
-  
-  const date = new Date(Date.now());
+  if (req.role === 'admin'|| connectedUser === postedBy) {
+  }else {
+    const date = new Date(Date.now());
   const days = date.toLocaleDateString();
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
@@ -62,6 +60,11 @@ exports.createPost = async (req, res) => {
   } catch (err) {
     return res.status(400).send(err.message);
   }
+  }
+  res.cookie('jwt','', { session:false, maxAge: 1 })
+  res.status(400).json("erreur d'utlisateur");
+  
+  
 };
 
 // update post end point \\
