@@ -12,7 +12,7 @@
     
     => se rendre à la racine du projet à l'aide d'un terminal de commande.
     => exécuter ```npm install```.
-    => Placer le fichier ```env``` (rajouter un ```.``` devant le nom du fichier ```env``` => ```.env``` ) , que vous avez en votre possesion à la racine du dossier           ```backend```
+    => Completer le fichier ```.env.exemple``` avec les variables d'environnement et renomer le en ```.env``` .
    
   ## Démarrage du projet :
 
